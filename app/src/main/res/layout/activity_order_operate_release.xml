@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_order_operate_release"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/spacing_small"
+    android:paddingTop="10dp"
+    android:paddingRight="@dimen/spacing_small"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/tv_release_down"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:layout_weight="1"
+        android:background="@drawable/bg_six_frame_btn"
+        android:gravity="center"
+        android:text="申请广告下播"
+        android:textColor="#ffababab"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_release_monit"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:layout_weight="1"
+        android:background="@drawable/bg_six_btn"
+        android:gravity="center"
+        android:text="查看视频监控"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+</LinearLayout>

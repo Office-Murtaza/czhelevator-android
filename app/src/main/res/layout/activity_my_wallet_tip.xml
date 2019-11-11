@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_wallet_records_tip"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:paddingLeft="@dimen/spacing_default"
+    android:paddingRight="@dimen/spacing_default"
+    android:paddingTop="12dp"
+    android:text="明细"
+    android:textColor="#ffec7a12"
+    android:textSize="@dimen/txt_big_content"
+    android:textStyle="bold" />

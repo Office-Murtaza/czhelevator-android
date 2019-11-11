@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_six"
+    android:paddingTop="@dimen/spacing_six">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing_divider"
+        android:layout_marginLeft="7.5dp"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_weight="1"
+        android:background="@color/black_divider" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="官方推荐"
+        android:textColor="#ff333333"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing_divider"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginRight="7.5dp"
+        android:layout_weight="1"
+        android:background="@color/black_divider" />
+</LinearLayout>

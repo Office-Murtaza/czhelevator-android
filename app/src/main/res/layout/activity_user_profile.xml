@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white_normal"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ll_head"
+                            style="@style/layout_padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="68dp"
+                            android:background="@drawable/bg_item"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/text_big_content"
+                                android:layout_width="0dp"
+                                android:layout_marginRight="@dimen/spacing_small"
+                                android:layout_weight="1"
+                                android:text="头像"
+                                android:textColor="#808080"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/img_head"
+                                android:layout_width="@dimen/spacing_avatar"
+                                android:layout_height="@dimen/spacing_avatar"
+                                android:src="@drawable/img_default_avatar" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableRight="@drawable/ic_user_right"
+                                android:gravity="right|center_vertical"
+                                android:textColor="#ff999999"
+                                android:textSize="@dimen/txt_normal_content" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_nick"
+                            style="@style/layout_padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:background="@drawable/bg_item"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/text_big_content.secondary"
+                                android:layout_marginRight="@dimen/spacing_small"
+                                android:text="昵称"
+                                android:textColor="#808080"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_nick"
+                                style="@style/text_big_content"
+                                android:layout_width="match_parent"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableRight="@drawable/ic_user_right"
+                                android:gravity="right|center_vertical"
+                                android:textColor="#333333"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                tools:text="1390000" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_pwd"
+                            style="@style/layout_padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:background="@drawable/bg_item"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/text_big_content.secondary"
+                                android:layout_marginRight="@dimen/spacing_small"
+                                android:text="密码"
+                                android:textColor="#808080"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_pwd"
+                                style="@style/text_big_content"
+                                android:layout_width="match_parent"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:gravity="right|center_vertical"
+                                android:textColor="#333333"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                tools:text="1390000" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_mobile"
+                            style="@style/layout_padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:background="@drawable/bg_item"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/text_big_content.secondary"
+                                android:layout_marginRight="@dimen/spacing_small"
+                                android:text="手机"
+                                android:textColor="#808080"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_mobile"
+                                style="@style/text_big_content"
+                                android:layout_width="match_parent"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:gravity="right|center_vertical"
+                                android:textColor="#333333"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                tools:text="1390000" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

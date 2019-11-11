@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--<include layout="@layout/ui_layout_divider" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_top_shadow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/spacing_default"
+        android:paddingRight="@dimen/spacing_default"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_check_big"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="我的第一个点位计划"
+            android:textColor="#808080"
+            android:textSize="@dimen/txt_normal_content"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（"
+            android:textColor="#FF6B00"
+            android:textSize="@dimen/txt_tips"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DIY"
+            android:textColor="#FF6B00"
+            android:textSize="@dimen/txt_tips"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=")"
+            android:textColor="#FF6B00"
+            android:textSize="@dimen/txt_tips"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_bottom_shadow" />
+    <!--<include layout="@layout/ui_layout_divider" />-->
+</LinearLayout>

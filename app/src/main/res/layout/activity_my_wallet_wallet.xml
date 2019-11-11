@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_wallet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:layout_marginTop="20dp"
+        app:proporty="2.00565">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_my_wallet" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="44dp"
+            android:layout_marginLeft="@dimen/spacing_avatar"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="44dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/spacing_four"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/spacing_twelve"
+                    android:drawableRight="@drawable/ic_right_black_tint"
+                    android:drawableTint="#333333"
+                    android:text="余额"
+                    android:textColor="#ff333333"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:maxWidth="180dp"
+                        android:singleLine="true"
+                        android:textColor="#ff333333"
+                        android:textSize="30sp"
+                        tools:text="34.00" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_small"
+                        android:text="元"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_big_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_recharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_raddius"
+                android:paddingBottom="@dimen/spacing_six"
+                android:paddingLeft="@dimen/spacing_twenty_four"
+                android:paddingRight="@dimen/spacing_twenty_four"
+                android:paddingTop="@dimen/spacing_six"
+                android:text="充值"
+                android:textColor="#ff333333"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
+</LinearLayout>

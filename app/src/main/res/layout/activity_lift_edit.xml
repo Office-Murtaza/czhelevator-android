@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_sn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:minWidth="72dp"
+                            android:text="电梯注册代码："
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_sn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入电梯注册代码"
+                            android:inputType="text"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:maxLength="20"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:minWidth="72dp"
+                            android:text="电梯号："
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入电梯号"
+                            android:inputType="text"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_max"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:minWidth="72dp"
+                            android:text="最高楼层："
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_max"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入最高楼层"
+                            android:inputType="numberSigned"
+                            android:maxLength="6"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_negative"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:minWidth="72dp"
+                            android:text="负楼层："
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_negative"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入负楼层"
+                            android:inputType="numberSigned"
+                            android:maxLength="6"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_base"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:minWidth="72dp"
+                            android:text="基层楼层："
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_base"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入基层楼层"
+                            android:inputType="numberSigned"
+                            android:maxLength="6"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <TextView
+                android:id="@+id/tv_create"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="@dimen/spacing_twelve"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:layout_marginTop="@dimen/spacing_twelve"
+                android:background="@drawable/bg_six_btn"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

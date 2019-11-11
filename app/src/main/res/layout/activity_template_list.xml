@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_avatar"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_small"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/fl_classify"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_avatar"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:layout_weight="1"
+            android:background="@drawable/bg_choose_type"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_classify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="分类"
+                android:textColor="@color/text_color_search_drop"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/img_classify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:src="@drawable/ic_type_check" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_newest"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_avatar"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:layout_weight="1"
+            android:background="@drawable/bg_choose_type"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="最新"
+                android:textColor="@color/text_color_search_drop"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/img_newest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:src="@drawable/ic_type_check" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_divider"
+        android:background="@color/black_divider"
+        android:visibility="gone" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pre_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/spacing_six"
+                android:paddingLeft="7.5dp"
+                android:paddingRight="7.5dp"
+                android:paddingTop="@dimen/spacing_six" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

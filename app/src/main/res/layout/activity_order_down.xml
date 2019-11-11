@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_default"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default"
+                    android:paddingTop="10dp"
+                    android:text="请选择下播原因:"
+                    android:textColor="#ffababab"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_reasons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/et_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_default"
+                    android:layout_marginLeft="@dimen/spacing_default"
+                    android:layout_marginRight="@dimen/spacing_default"
+                    android:background="@drawable/bg_login_edit"
+                    android:hint="请输入备注"
+                    android:inputType="textMultiLine"
+                    android:paddingBottom="@dimen/spacing_twelve"
+                    android:paddingTop="@dimen/spacing_twelve"
+                    android:textColor="#333333"
+                    android:textColorHint="#ABABAB"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_ensure"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginLeft="@dimen/spacing_default"
+                    android:layout_marginRight="@dimen/spacing_default"
+                    android:layout_marginTop="@dimen/spacing_twelve"
+                    android:background="@drawable/bg_six_btn"
+                    android:gravity="center"
+                    android:text="提交"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/txt_big_content"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    style="@style/layout_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_four"
+                    android:layout_marginTop="@dimen/spacing_four"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_tip"
+                        android:drawablePadding="@dimen/spacing_six"
+                        android:text="温馨提示："
+                        android:textColor="#ffababab"
+                        android:textSize="@dimen/txt_tips"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="请谨慎提交下播申请，一旦下播则金额不予退还。"
+                        android:textColor="#ffababab"
+                        android:textSize="@dimen/txt_tips"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

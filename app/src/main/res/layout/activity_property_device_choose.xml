@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/pre_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pre_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingTop="10dp" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:id="@+id/tv_ensure"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="@dimen/spacing_twelve"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_six_btn"
+                android:gravity="center"
+                android:text="保存"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

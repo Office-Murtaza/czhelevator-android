@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include
+        layout="@layout/fragment_my_coupons_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_small" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_normal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:id="@+id/tv_name_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minWidth="65dp"
+                    android:text="60元券"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_big_content" />
+
+                <TextView
+                    android:id="@+id/tv_discoun_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#ff999999"
+                    android:textSize="@dimen/txt_normal_content"
+                    tools:text="全品类全品类全品类全品类全品类全品" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@color/black_divider" />
+
+            <LinearLayout
+                android:id="@+id/ll_number_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="14dp"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default"
+                    android:paddingTop="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minWidth="65dp"
+                        android:text="数量"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_big_content" />
+
+                    <TextView
+                        android:id="@+id/tv_number_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/txt_normal_content"
+                        tools:text="25" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spacing_divider"
+                    android:layout_marginLeft="@dimen/spacing_default"
+                    android:layout_marginRight="@dimen/spacing_default"
+                    android:background="@color/black_divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minWidth="65dp"
+                    android:text="使用条件"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_big_content" />
+
+                <TextView
+                    android:id="@+id/tv_condition_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#ff999999"
+                    android:textSize="@dimen/txt_normal_content"
+                    tools:text="全品类全品类全品类全品类全品类全品" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@color/black_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minWidth="65dp"
+                    android:text="适用"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_big_content" />
+
+                <TextView
+                    android:id="@+id/tv_range_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#ff999999"
+                    android:textSize="@dimen/txt_normal_content"
+                    tools:text="全品类全品类全品类全品类全品类全品" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@color/black_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minWidth="65dp"
+                    android:text="过期时间"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_big_content" />
+
+                <TextView
+                    android:id="@+id/tv_expier_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#ff999999"
+                    android:textSize="@dimen/txt_normal_content"
+                    tools:text="全品类全品类全品类全品类全" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_to_use"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:background="@drawable/bg_normal_btn"
+        android:gravity="center"
+        android:text="立即使用"
+        android:textColor="@color/white_normal"
+        android:textSize="@dimen/txt_sub_title" />
+</LinearLayout>

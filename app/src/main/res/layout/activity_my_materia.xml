@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.kingyon.elevator.uis.widgets.RoundPagerSlidingTabStrip
+        android:id="@+id/pre_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white_normal"
+        app:normalTabTextColor="#808080"
+        app:pstsDividerColor="@color/colorAccent"
+        app:pstsIndicatorColor="@color/colorAccent"
+        app:pstsIndicatorHeight="1dp"
+        app:pstsTextAllCaps="false"
+        app:pstsUnderlineColor="@color/white_normal"
+        app:pstsUnderlineHeight="0dp"
+        app:selectedTabTextColor="@color/colorAccent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_divider"
+        android:background="@color/black_divider" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pre_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

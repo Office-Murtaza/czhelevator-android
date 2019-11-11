@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+    <!--android:id="@+id/pre_tv_title"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/spacing_tab_bar"-->
+    <!--android:background="@color/white_normal"-->
+    <!--android:gravity="center"-->
+    <!--android:textColor="@color/black_normal"-->
+    <!--android:textSize="@dimen/txt_big_content"-->
+    <!--android:textStyle="bold"-->
+    <!--tools:text="小区管理" />-->
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.leo.afbaselibrary.widgets.StateLayout
+            android:id="@+id/stateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/pre_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pre_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="72dp" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </com.leo.afbaselibrary.widgets.StateLayout>
+
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/spacing_twelve"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:layout_marginTop="@dimen/spacing_twelve"
+            android:background="@drawable/bg_four_btn"
+            android:gravity="center"
+            android:text="+ 添加小区"
+            android:textColor="@color/white_normal"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold" />
+    </FrameLayout>
+</LinearLayout>

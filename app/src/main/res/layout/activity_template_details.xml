@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <com.kingyon.elevator.uis.widgets.MaxHeightView
+            android:id="@+id/mhf_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
+                    android:id="@+id/pfl_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/img_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </com.kingyon.elevator.uis.widgets.MaxHeightView>
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white_normal"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default"
+            android:textColor="#ff333333"
+            android:textSize="16sp"
+            tools:text="上传时间：2018/03/30" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_use"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:background="@drawable/bg_six_btn"
+        android:gravity="center"
+        android:text="使用"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/txt_big_content" />
+</LinearLayout>

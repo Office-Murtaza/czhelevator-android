@@ -1,0 +1,60 @@
+package com.leo.afbaselibrary.utils;
+
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
+
+
+/**
+ * 16/11/22
+ * 17/06/14 modified by gongli
+ *
+ * @author zhengliao
+ */
+
+public class ToastUtils {
+    private static WeakReference<Toast> mToastRefrence;
+
+    public static void hide() {
+        Toast toast;
+        if (mToastRefrence != null) {
+            toast = mToastRefrence.get();
+            if (toast != null) {
+                toast.cancel();
+            }
+        }
+    }
+
+    public static void toast(Context context, String text) {
+        showToast(context, text, text.length() > 8 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+    }
+
+    public static void toast(Context context, int textRes) {
+        toast(context, context.getString(textRes));
+    }
+
+
+    public static void showToast(Context context, int resId, int duration) {
+        showToast(context, context.getString(resId), duration);
+    }
+
+    public static void showToast(Context context, String text, int duration) {
+        Toast toast = null;
+        if (mToastRefrence == null) {
+            toast = Toast.makeText(context, text, duration);
+            mToastRefrence = new WeakReference<>(toast);
+        }
+        toast = mToastRefrence.get();
+        if (toast == null) {
+            toast = Toast.makeText(context, text, duration);
+            mToastRefrence = new WeakReference<>(toast);
+        } else {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+}

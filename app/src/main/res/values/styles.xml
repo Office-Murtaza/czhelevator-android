@@ -1,0 +1,82 @@
+<resources>
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateAlwaysHidden</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="NoTitle_FullScreen" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="text_normal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_normal_content</item>
+        <item name="android:textColor">@color/black_normal</item>
+    </style>
+
+    <style name="text_normal.secondary">
+        <item name="android:textColor">@color/black_secondary</item>
+    </style>
+
+    <style name="text_big_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_big_content</item>
+        <item name="android:textColor">@color/black_normal</item>
+    </style>
+
+    <style name="text_big_content.secondary">
+        <item name="android:textColor">@color/black_secondary</item>
+    </style>
+
+    <style name="layout_padding">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/spacing_twelve</item>
+        <item name="android:paddingBottom">@dimen/spacing_twelve</item>
+        <item name="android:paddingLeft">@dimen/spacing_default</item>
+        <item name="android:paddingRight">@dimen/spacing_default</item>
+    </style>
+
+    <style name="layout_padding_small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:paddingBottom">@dimen/spacing_small</item>
+        <item name="android:paddingLeft">@dimen/spacing_twelve</item>
+        <item name="android:paddingRight">@dimen/spacing_twelve</item>
+    </style>
+
+    <style name="layout_padding_very_small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/spacing_four</item>
+        <item name="android:paddingBottom">@dimen/spacing_four</item>
+        <item name="android:paddingLeft">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
+    </style>
+
+    <style name="AppThemeProgress">
+        <item name="colorAccent">@color/colorAccent</item> <!-- Whatever color you want-->
+    </style>
+
+    <style name="normal_dialog.question" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/ui_white_corner_bg</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

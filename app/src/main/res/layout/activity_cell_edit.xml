@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:text="设备地区"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/ic_homepage_right"
+                            android:gravity="center_vertical|right"
+                            android:hint="请选择"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:text="地址"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical|right"
+                            android:hint="例如：双流区白云路81号"
+                            android:inputType="text"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                        <!--<EditText-->
+                        <!--android:id="@+id/et_address"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:background="@null"-->
+                        <!--android:gravity="center_vertical|right"-->
+                        <!--android:hint="例如：双流区白云路81号"-->
+                        <!--android:inputType="text"-->
+                        <!--android:paddingLeft="@dimen/spacing_default"-->
+                        <!--android:paddingRight="@dimen/spacing_default"-->
+                        <!--android:textColor="#333333"-->
+                        <!--android:textColorHint="#ABABAB"-->
+                        <!--android:textSize="@dimen/txt_normal_content"-->
+                        <!--android:textStyle="bold" />-->
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:text="小区名称"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical|right"
+                            android:hint="请输入小区名称"
+                            android:inputType="text"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:text="小区类型"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/ic_homepage_right"
+                            android:gravity="center_vertical|right"
+                            android:hint="请选择"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_flow"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:gravity="center_vertical"
+                            android:text="人流量"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical|right"
+                            android:hint="请输入小区人流量,如不清楚可不填写"
+                            android:inputType="number"
+                            android:maxLength="9"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:textColor="#333333"
+                            android:textColorHint="#ABABAB"
+                            android:textSize="@dimen/txt_normal_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="15dp"
+                        android:paddingLeft="@dimen/spacing_default"
+                        android:paddingRight="@dimen/spacing_default"
+                        android:text="小区封面"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_normal_content"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_logo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white_normal"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="@dimen/spacing_default"
+                        android:paddingRight="@dimen/spacing_default"
+                        android:paddingTop="15dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="15dp"
+                        android:paddingLeft="@dimen/spacing_default"
+                        android:paddingRight="@dimen/spacing_default"
+                        android:text="小区照片"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_normal_content"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white_normal"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="@dimen/spacing_default"
+                        android:paddingRight="@dimen/spacing_default"
+                        android:paddingTop="15dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:background="@drawable/white_margin_sixteen_divider" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <TextView
+                android:id="@+id/tv_create"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="@dimen/spacing_twelve"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:layout_marginTop="@dimen/spacing_twelve"
+                android:background="@drawable/bg_six_btn"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

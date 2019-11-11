@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/spacing_avatar"
+    android:background="@drawable/bg_search_cell_type"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="商业"
+        android:textColor="@color/text_color_search_drop"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_type_check" />
+</FrameLayout>

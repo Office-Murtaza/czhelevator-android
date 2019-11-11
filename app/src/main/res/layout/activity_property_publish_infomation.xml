@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发布位置"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_devices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/ic_plan_cell_right"
+                    android:gravity="right"
+                    android:hint="请选择"
+                    android:textColor="#333333"
+                    android:textColorHint="#ffababab"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:background="@drawable/white_margin_sixteen_divider" />
+
+            <LinearLayout
+                android:id="@+id/ll_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开始时间"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_start_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/ic_plan_cell_right"
+                    android:gravity="right"
+                    android:hint="请选择"
+                    android:textColor="#333333"
+                    android:textColorHint="#ffababab"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:background="@drawable/white_margin_sixteen_divider" />
+
+            <LinearLayout
+                android:id="@+id/ll_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="结束时间"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_end_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/ic_plan_cell_right"
+                    android:gravity="right"
+                    android:hint="请选择"
+                    android:textColor="#333333"
+                    android:textColorHint="#ffababab"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:background="@drawable/white_margin_sixteen_divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_normal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="15dp"
+                android:text="发布内容"
+                android:textColor="#ff333333"
+                android:textSize="@dimen/txt_normal_content"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@drawable/bg_gray_small_frame"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    style="@style/layout_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top|left"
+                    android:hint="*请输入发布内容"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingMultiplier="1.15"
+                    android:maxLength="100"
+                    android:maxLines="6"
+                    android:minLines="6"
+                    android:textColor="#333333"
+                    android:textColorHint="#ffababab"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_twelve"
+                    android:layout_marginRight="@dimen/spacing_six"
+                    android:text="0/100"
+                    android:textColor="#ffababab"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_create"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:background="@drawable/bg_six_btn"
+        android:gravity="center"
+        android:text="发布"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold" />
+
+</LinearLayout>

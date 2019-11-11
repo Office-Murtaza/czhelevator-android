@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_ad_operate"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_del"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:background="@drawable/white_round_del"
+        android:drawableLeft="@drawable/ic_del"
+        android:drawablePadding="@dimen/spacing_six"
+        android:gravity="center"
+        android:paddingLeft="@dimen/spacing_default"
+        android:paddingRight="16dp"
+        android:text="刪除"
+        android:textColor="#E84733" />
+
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginTop="@dimen/spacing_thirty_two"
+        android:background="@drawable/white_round_del"
+        android:drawableLeft="@drawable/ic_edit"
+        android:drawablePadding="@dimen/spacing_six"
+        android:gravity="center"
+        android:paddingLeft="@dimen/spacing_default"
+        android:paddingRight="@dimen/spacing_default"
+        android:text="编辑"
+        android:textColor="#5C5C5C" />
+</LinearLayout>

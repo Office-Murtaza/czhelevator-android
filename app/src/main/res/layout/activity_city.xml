@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <EditText
+        android:id="@+id/ed_search"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_search_small"
+        android:drawableLeft="@drawable/ic_homepage_search"
+        android:drawablePadding="@dimen/spacing_small"
+        android:gravity="center_vertical"
+        android:hint="请输入城市名查询"
+        android:paddingLeft="@dimen/spacing_default"
+        android:paddingRight="@dimen/spacing_default"
+        android:textColor="#333333"
+        android:textColorHint="#ABABAB"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold" />
+
+    <!--<include layout="@layout/ui_layout_divider" />-->
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.kingyon.elevator.uis.widgets.CustomSwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="48dp"-->
+                    <!--android:background="@color/background">-->
+
+                    <!--<EditText-->
+                    <!--android:id="@+id/ed_search"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:layout_marginBottom="@dimen/spacing_small"-->
+                    <!--android:layout_marginLeft="@dimen/spacing_default"-->
+                    <!--android:layout_marginRight="@dimen/spacing_default"-->
+                    <!--android:layout_marginTop="@dimen/spacing_small"-->
+                    <!--android:background="@drawable/bg_white_round"-->
+                    <!--android:drawableLeft="@drawable/ic_nearby_search"-->
+                    <!--android:drawablePadding="@dimen/spacing_six"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:hint="@string/search"-->
+                    <!--android:paddingLeft="@dimen/spacing_default"-->
+                    <!--android:paddingRight="@dimen/spacing_default"-->
+                    <!--android:textColorHint="@color/black_secondary"-->
+                    <!--android:textSize="12sp" />-->
+                    <!--</RelativeLayout>-->
+
+                    <LinearLayout
+                        android:id="@+id/ll_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_item"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="12dp"
+                            android:text="当前城市"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            tools:text="成都" />
+                    </LinearLayout>
+
+                    <!--<include layout="@layout/ui_layout_divider" />-->
+
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="26dp"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:text="热门"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/white_normal">-->
+
+                    <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:id="@+id/rv_hot"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingBottom="@dimen/spacing_six"-->
+                    <!--android:paddingLeft="@dimen/spacing_small"-->
+                    <!--android:paddingRight="@dimen/spacing_small"-->
+                    <!--android:paddingTop="@dimen/spacing_six" />-->
+                    <!--</LinearLayout>-->
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <com.gjiazhe.wavesidebar.WaveSideBar
+                    android:id="@+id/side_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingLeft="@dimen/spacing_four"
+                    android:paddingRight="@dimen/spacing_four"
+                    android:visibility="visible"
+                    app:sidebar_lazy_respond="false"
+                    app:sidebar_max_offset="80dp"
+                    app:sidebar_position="right"
+                    app:sidebar_text_alignment="center"
+                    app:sidebar_text_color="@color/colorAccent"
+                    app:sidebar_text_size="14sp" />
+            </FrameLayout>
+        </com.kingyon.elevator.uis.widgets.CustomSwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_normal">
+
+        <TextView
+            android:id="@+id/pre_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/spacing_tab_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:drawablePadding="@dimen/spacing_six"
+            android:drawableRight="@drawable/ic_order_drop"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default"
+            android:text="全部订单"
+            android:textColor="@color/black_normal"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pre_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

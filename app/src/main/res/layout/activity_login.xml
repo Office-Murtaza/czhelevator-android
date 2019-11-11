@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pre_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_tab_bar"
+        android:gravity="center"
+        android:textColor="@color/black_normal"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold"
+        tools:text="title" />
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_avatar"
+                android:layout_marginBottom="@dimen/spacing_avatar"
+                android:src="@drawable/ic_login_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/spacing_twenty_four"
+                android:paddingRight="@dimen/spacing_twenty_four">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/spacing_twelve"
+                    android:src="@drawable/ic_account" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_login_edit"
+                    android:drawableRight="@drawable/ic_login_bottom"
+                    android:drawablePadding="@dimen/spacing_four"
+                    android:gravity="center_vertical"
+                    android:text="+86"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/txt_big_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_login_edit"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="请输入手机号码"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/spacing_small"
+                        android:textColor="#333333"
+                        android:textColorHint="#ABABAB"
+                        android:textSize="@dimen/txt_big_content" />
+
+                    <!--<include layout="@layout/ui_layout_divider" />-->
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/spacing_twenty_four"
+                android:paddingRight="@dimen/spacing_twenty_four">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/spacing_twelve"
+                    android:src="@drawable/ic_pwd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_login_edit"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                        android:drawableRight="@drawable/ic_pwd_selector"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:gravity="center_vertical"
+                        android:hint="请输入密码"
+                        android:inputType="textPassword"
+                        android:maxLength="20"
+                        android:paddingRight="@dimen/spacing_small"
+                        android:textColor="#333333"
+                        android:textColorHint="#ABABAB"
+                        android:textSize="@dimen/txt_big_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_reset"
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_avatar"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/spacing_twelve"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/spacing_twelve"
+                android:paddingRight="@dimen/spacing_twelve"
+                android:text="忘记密码"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/txt_tips" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_twelve"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/spacing_twenty_four"
+                android:paddingRight="@dimen/spacing_twenty_four">
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    style="@style/text_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_four_btn"
+                    android:gravity="center"
+                    android:text="登录"
+                    android:textColor="@color/white_normal" />
+
+                <TextView
+                    android:id="@+id/tv_register"
+                    style="@style/text_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="@dimen/spacing_twelve"
+                    android:background="@drawable/bg_register_btn"
+                    android:gravity="center"
+                    android:text="注册"
+                    android:textColor="@color/colorAccent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_twenty_four"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/spacing_avatar"
+                    android:paddingRight="@dimen/spacing_avatar"
+                    android:visibility="visible">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:layout_weight="1"
+                        android:background="@color/black_divider" />
+
+                    <TextView
+                        style="@style/text_normal.secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/spacing_default"
+                        android:paddingRight="@dimen/spacing_default"
+                        android:text="其他登入方式"
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/txt_normal_content" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/spacing_divider"
+                        android:layout_weight="1"
+                        android:background="@color/black_divider" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/spacing_twenty_four"
+                    android:paddingRight="@dimen/spacing_twenty_four"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/img_wx"
+                        android:layout_width="@dimen/spacing_tab_bar"
+                        android:layout_height="@dimen/spacing_tab_bar"
+                        android:src="@drawable/ic_wx_login" />
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/img_qq"
+                            android:layout_width="@dimen/spacing_tab_bar"
+                            android:layout_height="@dimen/spacing_tab_bar"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_qq_login" />
+                    </FrameLayout>
+
+
+                    <ImageView
+                        android:id="@+id/img_sina"
+                        android:layout_width="@dimen/spacing_tab_bar"
+                        android:layout_height="@dimen/spacing_tab_bar"
+                        android:src="@drawable/ic_sina_login" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_small">
+
+                <TextView
+                    style="@style/text_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/spacing_avatar"
+                    android:gravity="center_vertical"
+                    android:text="登录即代表阅读并同意"
+                    android:textColor="#9b9b9b"
+                    android:textSize="@dimen/txt_tips" />
+
+                <TextView
+                    android:id="@+id/tv_agreement"
+                    style="@style/text_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/spacing_avatar"
+                    android:gravity="center_vertical"
+                    android:text="屏多多用户协议"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/txt_tips" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

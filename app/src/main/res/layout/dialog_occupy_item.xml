@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/spacing_avatar"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/spacing_default"
+    android:paddingRight="@dimen/spacing_default"
+    android:text="2019年12月28日"
+    android:textColor="@color/red"
+    android:textSize="@dimen/txt_normal_content"
+    android:textStyle="bold" />

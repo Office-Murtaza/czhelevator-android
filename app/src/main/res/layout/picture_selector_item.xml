@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kingyon.elevator.uis.widgets.ProportionFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_six"
+    android:layout_marginLeft="@dimen/spacing_six"
+    android:layout_marginRight="@dimen/spacing_six"
+    android:layout_marginTop="@dimen/spacing_six"
+    app:proporty="1">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_item"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/white_normal"
+        app:cardCornerRadius="@dimen/spacing_four"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/spacing_six"
+                android:layout_marginRight="@dimen/spacing_six"
+                android:background="@drawable/bg_image_number"
+                android:paddingBottom="@dimen/spacing_one"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="@dimen/spacing_one"
+                android:textColor="@color/white_normal"
+                android:textSize="@dimen/txt_tips"
+                tools:text="9P" />
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+</com.kingyon.elevator.uis.widgets.ProportionFrameLayout>

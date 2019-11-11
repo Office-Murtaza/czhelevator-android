@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_six"
+    android:paddingLeft="@dimen/spacing_default"
+    android:paddingRight="@dimen/spacing_default"
+    android:paddingTop="@dimen/spacing_six">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_check_big"
+        android:gravity="center_vertical"
+        android:textColor="#ff333333"
+        android:textSize="@dimen/txt_normal_content"
+        tools:text="新建点位计划" />
+</LinearLayout>

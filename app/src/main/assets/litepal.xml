@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="elevator" />
+
+    <version value="3" />
+
+    <list>
+        <mapping class="com.kingyon.elevator.entities.SearchHistoryEntity" />
+        <mapping class="com.kingyon.elevator.entities.LocalMaterialEntity" />
+    </list>
+</litepal>

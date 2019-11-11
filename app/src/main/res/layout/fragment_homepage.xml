@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/nsv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
+                            android:id="@+id/pfl_banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:proporty="2.25904">
+
+                            <com.kingyon.elevator.uis.widgets.viewpager.AutoScrollViewPager
+                                android:id="@+id/vp_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
+
+                        <cn.wj.android.colorcardview.CardView
+                            android:id="@+id/cv1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="-40dp"
+                            app:cardBackgroundColor="@color/white_normal"
+                            app:cardCornerRadius="@dimen/spacing_six"
+                            app:cardElevation="10dp"
+                            app:cardPreventCornerOverlap="true"
+                            app:cardShadowColorEnd="#00EAEAEA"
+                            app:cardShadowColorStart="#FFEAEAEA"
+                            app:cardUseCompatPadding="true">
+
+                            <!--<android.support.v7.widget.CardView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="14dp"-->
+                            <!--android:layout_marginRight="14dp"-->
+                            <!--android:layout_marginTop="-26dp"-->
+                            <!--app:cardBackgroundColor="@color/white_normal"-->
+                            <!--app:cardCornerRadius="@dimen/spacing_six"-->
+                            <!--app:cardElevation="2dp"-->
+                            <!--app:cardPreventCornerOverlap="false"-->
+                            <!--app:cardUseCompatPadding="true">-->
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/spacing_three"
+                                android:paddingTop="@dimen/spacing_three">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_location"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:drawableLeft="@drawable/ic_location"
+                                        android:drawablePadding="@dimen/spacing_small"
+                                        android:ellipsize="end"
+                                        android:hint="还没有查找到当前位置"
+                                        android:maxLines="1"
+                                        android:orientation="horizontal"
+                                        android:padding="18dp"
+                                        android:paddingRight="0dp"
+                                        android:singleLine="true"
+                                        android:textColor="#333333"
+                                        android:textColorHint="#ABABAB"
+                                        android:textSize="@dimen/txt_big_content"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:id="@+id/img_current_location"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingBottom="@dimen/spacing_twelve"
+                                        android:paddingLeft="@dimen/spacing_twelve"
+                                        android:paddingRight="@dimen/spacing_twelve"
+                                        android:paddingTop="@dimen/spacing_twelve"
+                                        android:src="@drawable/ic_current_location" />
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/spacing_divider"
+                                    android:layout_marginLeft="38dp"
+                                    android:background="@color/black_divider" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_search"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:drawableLeft="@drawable/ic_homepage_search"
+                                        android:drawablePadding="@dimen/spacing_small"
+                                        android:ellipsize="end"
+                                        android:hint="搜索小区名称、地址"
+                                        android:maxLines="1"
+                                        android:orientation="horizontal"
+                                        android:padding="16dp"
+                                        android:paddingRight="20dp"
+                                        android:singleLine="true"
+                                        android:textColor="#333333"
+                                        android:textColorHint="#ABABAB"
+                                        android:textSize="@dimen/txt_big_content"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:id="@+id/img_search"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingBottom="@dimen/spacing_twelve"
+                                        android:paddingLeft="@dimen/spacing_twelve"
+                                        android:paddingRight="@dimen/spacing_default"
+                                        android:paddingTop="@dimen/spacing_twelve"
+                                        android:src="@drawable/ic_homepage_right" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    style="@style/layout_padding"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_small"
+                                    android:orientation="horizontal"
+                                    android:paddingTop="@dimen/spacing_two">
+
+                                    <TextView
+                                        android:id="@+id/tv_text"
+                                        android:layout_width="0dp"
+                                        android:layout_height="46dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/bg_six_btn"
+                                        android:gravity="center"
+                                        android:text="开始查找电梯广告点位"
+                                        android:textColor="#ffffffff"
+                                        android:textSize="16sp" />
+
+                                    <ImageView
+                                        android:id="@+id/img_map"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="46dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:src="@drawable/ic_homepage_map" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <!--</android.support.v7.widget.CardView>-->
+                        </cn.wj.android.colorcardview.CardView>
+
+                        <TextView
+                            android:id="@+id/tv_notice"
+                            style="@style/text_normal.secondary"
+                            android:layout_width="match_parent"
+                            android:drawableLeft="@drawable/ic_homepage_notice"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center_vertical"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:paddingBottom="@dimen/spacing_small"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:paddingTop="@dimen/spacing_small"
+                            android:singleLine="true"
+                            android:textColor="#808080"
+                            android:textStyle="bold"
+                            tools:text="打卡需要在当天完成，连续五次未打卡将判定习惯养成失败连续五次未打卡将判定习惯养成失败。" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="-14dp"
+                                android:layout_weight="1"
+                                android:clipChildren="false"
+                                android:clipToPadding="false">
+
+                                <ImageView
+                                    android:id="@+id/img_knowledges"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="-6dp"
+                                    android:src="@drawable/img_homepage_knowledges" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="-14dp"
+                                android:layout_weight="1"
+                                android:clipChildren="false"
+                                android:clipToPadding="false">
+
+                                <ImageView
+                                    android:id="@+id/img_examples"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="-6dp"
+                                    android:src="@drawable/img_homepage_examples" />
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_classify"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/spacing_default" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="You want"
+                                    android:textColor="#ffababab"
+                                    android:textSize="@dimen/txt_small"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="猜你想找"
+                                    android:textColor="#ff333333"
+                                    android:textSize="@dimen/txt_sub_title"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="查看更多"
+                                android:textColor="#ffababab"
+                                android:textSize="@dimen/txt_normal_content"
+                                android:textStyle="bold"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_cell"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+
+                <LinearLayout
+                    android:id="@+id/ll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_normal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_tab_bar"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/spacing_thirty_two"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_eight_gray"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_location_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:drawablePadding="@dimen/spacing_four"
+                                android:drawableRight="@drawable/ic_location_bottom"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:hint="未知"
+                                android:maxLength="5"
+                                android:maxLines="1"
+                                android:paddingBottom="4dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="4dp"
+                                android:singleLine="true"
+                                android:textColor="#ff333333"
+                                android:textColorHint="#ABABAB"
+                                android:textSize="@dimen/txt_big_content"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_one"
+                                android:layout_height="14dp"
+                                android:background="#ABABAB" />
+
+                            <TextView
+                                android:id="@+id/tv_search_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="搜索小区名称、地址"
+                                android:textColor="#ffababab"
+                                android:textColorHint="#ffababab"
+                                android:textSize="@dimen/txt_normal_content"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_map_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:text="地图"
+                            android:textColor="#ff333333"
+                            android:textSize="@dimen/txt_big_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <include layout="@layout/ui_layout_divider" />
+                </LinearLayout>
+            </FrameLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</FrameLayout>

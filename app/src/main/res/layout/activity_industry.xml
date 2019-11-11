@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="87"
+                android:background="@color/white_normal" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="288"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_default"
+                    android:layout_marginRight="@dimen/spacing_default"
+                    android:layout_marginTop="@dimen/spacing_twenty_four"
+                    android:textColor="#ff808080"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:textStyle="bold"
+                    tools:text="医疗健康" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/spacing_six"
+                    android:layout_marginRight="@dimen/spacing_six" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

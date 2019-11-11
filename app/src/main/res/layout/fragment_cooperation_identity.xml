@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_normal">
+
+        <RelativeLayout
+            android:id="@+id/head_root"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tab_bar">
+
+            <ImageView
+                android:id="@+id/pre_v_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_title_back"
+                android:paddingLeft="@dimen/spacing_twelve"
+                android:paddingRight="@dimen/spacing_twelve"
+                android:src="@drawable/icon_back" />
+
+            <TextView
+                android:id="@+id/pre_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="我要合作"
+                android:textColor="@color/black_normal"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_authing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="@dimen/spacing_avatar"
+                android:src="@drawable/img_cooperation_authing" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:text="您的申请还在审核中，请耐心等待哦~"
+                android:textColor="#ffababab"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_apply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_cooperation_auth"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_notice"
+                style="@style/text_normal.secondary"
+                android:layout_width="match_parent"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingBottom="10dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="10dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="@color/white_normal"
+                android:textStyle="bold"
+                tools:text="打卡需要在当天完成，连续五次未打卡将判定习惯养成失败连续五次未打卡将判定习惯养成失败。" />
+
+            <LinearLayout
+                android:id="@+id/ll_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@drawable/bg_invite_six_frame"
+                android:orientation="vertical">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/nsv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/ll_apply"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginLeft="@dimen/spacing_default"
+                        android:layout_marginRight="@dimen/spacing_default"
+                        android:layout_marginTop="30dp"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:background="@drawable/bg_gray_six_frame"
+                            android:gravity="center_vertical"
+                            android:hint="请输入真实姓名"
+                            android:inputType="text"
+                            android:paddingLeft="@dimen/spacing_twelve"
+                            android:paddingRight="@dimen/spacing_twelve"
+                            android:textColor="#333333"
+                            android:textColorHint="#ffababab"
+                            android:textSize="@dimen/txt_big_content"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/et_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_gray_six_frame"
+                            android:gravity="center_vertical"
+                            android:hint="请输入手机号码"
+                            android:inputType="number"
+                            android:paddingLeft="@dimen/spacing_twelve"
+                            android:paddingRight="@dimen/spacing_twelve"
+                            android:textColor="#333333"
+                            android:textColorHint="#ffababab"
+                            android:textSize="@dimen/txt_big_content"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_gray_six_frame"
+                            android:drawableRight="@drawable/ic_right_cooperation_auth"
+                            android:gravity="center_vertical"
+                            android:hint="请选择城市"
+                            android:paddingLeft="@dimen/spacing_twelve"
+                            android:paddingRight="@dimen/spacing_twelve"
+                            android:textColor="#333333"
+                            android:textColorHint="#ffababab"
+                            android:textSize="@dimen/txt_big_content"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_apply"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginBottom="@dimen/spacing_default"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/bg_six_btn"
+                            android:gravity="center"
+                            android:text="立刻申请"
+                            android:textColor="#ffffffff"
+                            android:textSize="@dimen/txt_big_content"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+</LinearLayout>

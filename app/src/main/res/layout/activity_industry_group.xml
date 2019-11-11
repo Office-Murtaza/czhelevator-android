@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_industry_group"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:textColor="@color/color_industry_group"
+        android:textStyle="bold"
+        tools:text="生活服务" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_divider"
+        android:background="@color/black_divider" />
+</LinearLayout>

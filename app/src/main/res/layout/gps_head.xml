@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_six"
+    android:paddingTop="@dimen/spacing_six">
+
+    <TextView
+        android:id="@+id/tv_current"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/spacing_six"
+        android:paddingLeft="@dimen/spacing_default"
+        android:paddingTop="@dimen/spacing_six"
+        android:text="当前城市"
+        android:textSize="@dimen/txt_normal_content" />
+
+    <LinearLayout
+        android:id="@+id/ll_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_small">
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_six"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_six"
+            android:background="@drawable/hot_choose_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_six"
+            android:paddingLeft="@dimen/spacing_twelve"
+            android:paddingRight="@dimen/spacing_twelve"
+            android:paddingTop="@dimen/spacing_six"
+            android:textColor="@color/color_effect_choose_text"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold"
+            tools:text="成都" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_six"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_six"
+            android:background="@drawable/hot_choose_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_six"
+            android:paddingLeft="@dimen/spacing_twelve"
+            android:paddingRight="@dimen/spacing_twelve"
+            android:paddingTop="@dimen/spacing_six"
+            android:singleLine="true"
+            android:textColor="@color/color_effect_choose_text"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold"
+            tools:text="成都花样年▪美年广场一期" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="@dimen/spacing_six"
+        android:text="热门城市"
+        android:textSize="@dimen/txt_normal_content"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_hot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_six"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_twelve"
+        android:paddingTop="@dimen/spacing_six"
+        android:visibility="gone" />
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_order_operate_waitpay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/spacing_small"
+    android:paddingRight="@dimen/spacing_small">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应付金额:￥"
+            android:textColor="#ffababab"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_waitpay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#EC7A12"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="180.00" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_waitpay_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:background="@drawable/bg_six_frame_btn"
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingLeft="@dimen/spacing_twelve"
+        android:paddingRight="@dimen/spacing_twelve"
+        android:paddingTop="@dimen/spacing_small"
+        android:text="取消订单"
+        android:textColor="#ffababab"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_waitpay_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:background="@drawable/bg_six_btn"
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingLeft="@dimen/spacing_twelve"
+        android:paddingRight="@dimen/spacing_twelve"
+        android:paddingTop="@dimen/spacing_small"
+        android:visibility="gone"
+        android:text="立即付款"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+</LinearLayout>

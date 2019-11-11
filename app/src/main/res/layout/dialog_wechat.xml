@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/spacing_four"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_four"
+        android:padding="@dimen/spacing_small"
+        android:src="@drawable/ic_privilege_close" />
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="@dimen/spacing_default"
+        android:paddingLeft="@dimen/spacing_twenty_four"
+        android:paddingRight="@dimen/spacing_twenty_four"
+        android:paddingTop="@dimen/spacing_six"
+        android:textColor="#FF4A4A4A"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/txt_normal_content"
+        tools:text="微信号6262364已复制到剪贴板，请去微信添加好友" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_divider"
+        android:background="@color/black_divider" />
+
+    <TextView
+        android:id="@+id/tv_wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_wechat"
+        android:paddingBottom="@dimen/spacing_six"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_small"
+        android:paddingTop="@dimen/spacing_six"
+        android:text="去微信"
+        android:textColor="#44CC59"
+        android:textSize="@dimen/txt_normal_content" />
+</LinearLayout>

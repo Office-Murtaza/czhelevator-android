@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+version = "1.5"
+group = "com.acker"
+
+android {
+    def globalConfig = rootProject.ext.android
+    compileSdkVersion globalConfig.compileSdkVersion as int
+
+    defaultConfig {
+        minSdkVersion globalConfig.minSdkVersion as int
+        targetSdkVersion globalConfig.targetSdkVersion as int
+        versionCode globalConfig.versionCode as int
+        versionName globalConfig.versionName as String
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api files('libs/zxing-core-3.3.0.jar')
+}
+
+ext {
+    PUBLISH_GROUP_ID = group
+    PUBLISH_ARTIFACT_ID = 'simplezxing'
+    PUBLISH_VERSION = version
+}
+
+//apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

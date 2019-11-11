@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kingyon.elevator.uis.widgets.AdScreenProportionFrame xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aspf"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/fl_full_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_full_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:layout_width="@dimen/spacing_avatar"
+            android:layout_height="@dimen/spacing_avatar"
+            android:layout_gravity="center"
+            android:src="@drawable/img_video_play"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_full_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/ll_incise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1080">
+
+            <ImageView
+                android:id="@+id/img_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_width="@dimen/spacing_thirty_two"
+                android:layout_height="@dimen/spacing_thirty_two"
+                android:layout_gravity="center"
+                android:src="@drawable/img_video_play"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/img_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="657"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+</com.kingyon.elevator.uis.widgets.AdScreenProportionFrame>

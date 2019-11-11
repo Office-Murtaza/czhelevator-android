@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black_divider">#DDDDDD</color>
+    <color name="black_hint">#42000000</color>
+    <color name="black_second">#8A000000</color>
+    <color name="black_normal">#DE000000</color>
+    <color name="black">#FF000000</color>
+</resources>

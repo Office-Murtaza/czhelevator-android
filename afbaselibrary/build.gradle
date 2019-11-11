@@ -1,0 +1,97 @@
+apply plugin: 'com.android.library'
+
+android {
+    def globalConfig = rootProject.ext.android
+    compileSdkVersion globalConfig.compileSdkVersion as int
+    buildToolsVersion globalConfig.buildToolsVersion as String
+
+    defaultConfig {
+        minSdkVersion globalConfig.minSdkVersion as int
+        targetSdkVersion globalConfig.targetSdkVersion as int
+        versionCode globalConfig.versionCode as int
+        versionName globalConfig.versionName as String
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    def googleDependencies = rootProject.ext.dependencies.googleSupportVersion
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation 'junit:junit:4.12'
+    api "com.android.support:appcompat-v7:${googleDependencies}"
+    api "com.android.support:recyclerview-v7:${googleDependencies}"
+    api "com.android.support:design:${googleDependencies}"
+    api "com.android.support:support-v4:${googleDependencies}"
+    api "com.android.support:percent:${googleDependencies}"
+    api "com.android.support:cardview-v7:${googleDependencies}"
+
+    //retrofit+rxjava
+    api 'com.squareup.retrofit2:retrofit:2.1.0'
+    api 'com.squareup.retrofit2:converter-gson:2.1.0'
+    api 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    api 'io.reactivex:rxjava:1.2.3'
+    api 'io.reactivex:rxandroid:1.2.1'
+
+    //    compile 'io.reactivex:rxjava:2.0.0'
+
+    //    compile 'io.reactivex:rxandroid:2.0.0'
+    api 'com.google.code.gson:gson:2.8.1'
+    api 'com.github.bumptech.glide:okhttp3-integration:4.3.1@aar'
+
+    //图片加载
+    api 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+
+    //页面事件交互
+    api 'org.greenrobot:eventbus:3.0.0'
+//    api 'xiaofei.library:hermes-eventbus:0.3.0'//跨进程通信
+
+    //分割线
+    api 'com.chanven.lib:cptr:1.1.0'
+    api 'com.yqritc:recyclerview-flexibledivider:1.2.9'
+
+    //view注解
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //日志
+    api 'com.orhanobut:logger:2.2.0'
+
+    //数据库
+    api 'de.greenrobot:greendao:2.1.0'
+    api 'com.github.ybq:Android-SpinKit:1.2.0'
+    api 'com.umeng.sdk:common:1.5.3'
+    api 'com.umeng.sdk:analytics:7.5.3'
+    api 'com.liulishuo.filedownloader:library:1.7.6'
+
+    //仿ios选择器
+    api 'com.contrarywind:Android-PickerView:3.2.5'
+
+    //列表动画
+    api 'jp.wasabeef:recyclerview-animators:2.2.7'
+
+    //WebView
+
+    //    compile 'com.github.delight-im:Android-AdvancedWebView:v3.0.0'
+
+    //七牛云
+    api 'com.qiniu:qiniu-android-sdk:7.3.+'
+    api files('libs/tbs_sdk_thirdapp_v3.2.0.1104_43200_sharewithdownload_withfilereader_withoutGame_obfs_20170609_115346.jar')
+    api 'com.zzhoujay.richtext:richtext:3.0.7'
+
+    //数据库
+    api 'org.litepal.android:core:1.6.1'
+
+//    implementation 'commons-codec:commons-codec:1.11'
+//    implementation 'commons-io:commons-io:2.6'
+}

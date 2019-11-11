@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/img_order_pay" />
+
+                    <TextView
+                        android:id="@+id/tv_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff4a4a4a"
+                        android:textSize="@dimen/txt_title"
+                        tools:text="订单提交成功" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/txt_normal_content"
+                        tools:text="请在00小时59分59秒内完成支付" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="支付金额"
+                            android:textColor="#ff999999"
+                            android:textSize="@dimen/txt_tips" />
+
+                        <TextView
+                            android:id="@+id/tv_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥180.00"
+                            android:textColor="#FFD60000"
+                            android:textSize="@dimen/txt_big_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_twelve"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/white_normal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_twelve"
+                            android:layout_marginTop="@dimen/spacing_twelve"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:text="支付方式"
+                            android:textColor="#ff9b9b9b"
+                            android:textSize="@dimen/txt_tips" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <TextView
+                            android:id="@+id/tv_ali_pay"
+                            style="@style/text_normal.secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:drawableLeft="@drawable/ic_ali_pay"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:drawableRight="@drawable/ic_plan_cell_right"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:text="支付宝" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <TextView
+                            android:id="@+id/tv_wx_pay"
+                            style="@style/text_normal.secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:drawableLeft="@drawable/ic_wx_pay"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:drawableRight="@drawable/ic_plan_cell_right"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:text="微信" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+
+                        <TextView
+                            android:id="@+id/tv_balance_pay"
+                            style="@style/text_normal.secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:drawableLeft="@drawable/ic_balance_pay"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:drawableRight="@drawable/ic_plan_cell_right"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/spacing_default"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:text="余额" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_divider"
+                            android:layout_marginLeft="@dimen/spacing_default"
+                            android:layout_marginRight="@dimen/spacing_default"
+                            android:background="@color/black_divider" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</LinearLayout>

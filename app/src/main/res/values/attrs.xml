@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Custom_FlowLayout_Attr">
+        <attr name="lineSpacing" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomProgressView">
+        <attr name="startColor" format="color" />
+        <attr name="endColor" format="color" />
+        <attr name="percent" format="float" />
+        <attr name="text" format="string" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="FancyCoverFlow">
+        <attr name="unselectedAlpha" format="float" />
+        <attr name="unselectedSaturation" format="float" />
+        <attr name="unselectedScale" format="float" />
+        <attr name="maxRotation" format="integer" />
+        <attr name="scaleDownGravity" format="float" />
+        <attr name="actionDistance" format="integer">
+            <enum name="auto" value="2147483647" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ProportionFrameLayout">
+        <attr name="proporty" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="AdScreenProportionFrame">
+        <attr name="adScreenProporty" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="MaxHeightView">
+        <attr name="mhv_HeightRatio" format="reference|float" />
+        <attr name="mhv_HeightDimen" format="reference|dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MaxHeightLinearLayout">
+        <attr name="mhll_HeightRatio" format="reference|float" />
+        <attr name="mhll_HeightDimen" format="reference|dimension" />
+    </declare-styleable>
+</resources>

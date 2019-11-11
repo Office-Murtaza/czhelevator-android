@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kingyon.elevator.uis.widgets.ProportionFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_four"
+    app:proporty="1">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/white_normal"
+        app:cardCornerRadius="@dimen/spacing_six"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_time_gradient"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_tips"
+                android:textStyle="bold"
+                tools:text="12:02" />
+
+            <ImageView
+                android:id="@+id/img_choose_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/white_round_6"
+                android:src="@drawable/ic_check_big"
+                android:visibility="gone" />
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+</com.kingyon.elevator.uis.widgets.ProportionFrameLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/layout_padding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold"
+            tools:text="美年广场" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#ff808080"
+            android:textSize="13sp"
+            tools:text="1栋1单元一号电梯" />
+
+        <TextView
+            android:id="@+id/tv_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="："
+            android:textColor="#ff808080"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_oritation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff808080"
+            android:textSize="13sp"
+            tools:text="左屏" />
+
+        <ImageView
+            android:id="@+id/img_oritation"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_marginLeft="3dp"
+            tools:src="@drawable/ic_screen_left" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_sn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_four"
+        android:textColor="#ffababab"
+        android:textSize="@dimen/txt_normal_content"
+        tools:text="设备特征码：6451667616" />
+
+    <TextView
+        android:id="@+id/tv_device_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_four"
+        android:textColor="#ffababab"
+        android:textSize="@dimen/txt_normal_content"
+        tools:text="设备编号：6451667616" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_four"
+        android:textColor="#ffababab"
+        android:textSize="@dimen/txt_normal_content"
+        tools:text="创建时间：2018.10.23 15:25" />
+</LinearLayout>

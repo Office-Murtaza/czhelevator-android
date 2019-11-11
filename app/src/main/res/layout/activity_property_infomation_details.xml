@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:orientation="vertical"
+        app:cardBackgroundColor="@color/white_normal"
+        app:cardCornerRadius="@dimen/spacing_four"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_default"
+                android:textColor="#ff333333"
+                android:textSize="@dimen/txt_normal_content"
+                android:textStyle="bold"
+                tools:text="告全体业主书：2018年10月31日10点在小区广场召开栋长选举大会..." />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:background="@drawable/white_margin_sixteen_divider" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/spacing_default"
+                android:paddingRight="@dimen/spacing_default"
+                android:paddingTop="14dp"
+                android:textColor="#ffababab"
+                android:textSize="@dimen/txt_normal_content"
+                android:textStyle="bold"
+                tools:text="发布时间：2018年10月22日" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

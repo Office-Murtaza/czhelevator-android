@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="@dimen/spacing_default"
+        android:right="@dimen/spacing_default">
+        <shape android:shape="rectangle">
+            <gradient
+                android:endColor="@color/black_divider"
+                android:startColor="@color/black_divider" />
+        </shape>
+    </item>
+    <item android:bottom="@dimen/spacing_divider">
+        <shape android:shape="rectangle">
+            <gradient
+                android:endColor="@color/white_normal"
+                android:startColor="@color/white_normal" />
+        </shape>
+    </item>
+</layer-list>

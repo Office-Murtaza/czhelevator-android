@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ll_root"
+    android:background="@color/white_normal"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.leo.afbaselibrary.widgets.StateLayout
+            android:id="@+id/stateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/pre_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pre_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="70dp"
+                    android:paddingLeft="@dimen/spacing_four"
+                    android:paddingRight="@dimen/spacing_four" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </com.leo.afbaselibrary.widgets.StateLayout>
+
+        <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:layout_marginTop="@dimen/spacing_twelve"
+            android:alpha="0.8"
+            app:proporty="3.70968">
+
+            <TextView
+                android:id="@+id/tv_open_third"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_open_third"
+                android:gravity="center"
+                android:text="海报工厂可以为您制作精美广告,点击下载>>"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_big_content"
+                android:textStyle="bold" />
+        </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_create"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:background="@drawable/bg_six_btn"
+        android:gravity="center"
+        android:text="创建广告"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_right" />
+
+    <include layout="@layout/ui_layout_divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.kingyon.elevator.uis.widgets.AdScreenProportionFrame
+            android:id="@+id/ad_pfl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/white_normal">
+
+            <com.kingyon.elevator.uis.widgets.TemplateView
+                android:id="@+id/v_template"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.kingyon.elevator.uis.widgets.AdScreenProportionFrame>
+    </FrameLayout>
+</LinearLayout>

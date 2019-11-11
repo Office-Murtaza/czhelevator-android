@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal">
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_normal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default"
+                    android:text="添加到点位计划"
+                    android:textColor="#ff808080"
+                    android:textSize="@dimen/txt_big_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_ensure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default"
+                    android:text="确定"
+                    android:textColor="#ff808080"
+                    android:textSize="@dimen/txt_normal_content" />
+            </LinearLayout>
+
+            <include layout="@layout/ui_layout_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/spacing_twelve"
+                android:paddingRight="@dimen/spacing_twelve">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_business"
+                        style="@style/layout_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:drawableLeft="@drawable/ic_check_big"
+                        android:drawablePadding="@dimen/spacing_four"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/spacing_four"
+                        android:paddingRight="@dimen/spacing_four"
+                        android:text="商业广告"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_normal_content" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_diy"
+                        style="@style/layout_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:drawableLeft="@drawable/ic_check_big"
+                        android:drawablePadding="@dimen/spacing_four"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/spacing_four"
+                        android:paddingRight="@dimen/spacing_four"
+                        android:text="DIY广告"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_normal_content" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:drawableLeft="@drawable/ic_check_big"
+                        android:drawablePadding="@dimen/spacing_four"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/spacing_four"
+                        android:paddingRight="@dimen/spacing_four"
+                        android:text="便民信息"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/txt_normal_content" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_divider"
+                android:layout_marginLeft="@dimen/spacing_default"
+                android:layout_marginRight="@dimen/spacing_default"
+                android:background="@color/black_divider" />
+
+            <com.kingyon.elevator.uis.widgets.MaxHeightView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:mhv_HeightDimen="121dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_plans"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/spacing_six"
+                    android:paddingTop="@dimen/spacing_six" />
+            </com.kingyon.elevator.uis.widgets.MaxHeightView>
+        </LinearLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
+</FrameLayout>

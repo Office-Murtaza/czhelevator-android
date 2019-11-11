@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white_normal"
+    app:cardCornerRadius="@dimen/spacing_small"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/layout_ad_item" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_avatar"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_ad_status"
+                android:gravity="center_vertical|right"
+                android:paddingLeft="@dimen/spacing_small"
+                android:paddingRight="@dimen/spacing_small"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/txt_big_content"
+                tools:text="已发布" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="#ff333333"
+            android:textSize="@dimen/txt_normal_content"
+            android:textStyle="bold"
+            tools:text="美年广场美年广场美年广场美年广场" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_industry"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/spacing_small"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="@dimen/spacing_two"-->
+        <!--android:textColor="#ffababab"-->
+        <!--android:textSize="@dimen/txt_normal_content"-->
+        <!--android:textStyle="bold"-->
+        <!--tools:text="房产" />-->
+    </LinearLayout>
+</android.support.v7.widget.CardView>

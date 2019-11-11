@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_order_head_failed"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_failed_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="投放失败"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/txt_title"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_six"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="原因："
+                android:textColor="#99FFFFFF"
+                android:textSize="@dimen/txt_normal_content"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_failed_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_normal"
+                android:textStyle="bold"
+                tools:text="有不符合相关法律内容请修改后重新上传" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

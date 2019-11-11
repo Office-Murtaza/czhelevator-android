@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BaseSocialLibrary</string>
+    <string name="hold_on">请稍候</string>
+    <string name="share_complete">分享成功</string>
+    <string name="share_cancel">分享取消</string>
+    <string name="share_error">分享出错</string>
+</resources>

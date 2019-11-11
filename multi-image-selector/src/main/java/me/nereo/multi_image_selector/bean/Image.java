@@ -1,0 +1,36 @@
+package me.nereo.multi_image_selector.bean;
+
+import android.text.TextUtils;
+
+import me.nereo.multi_image_selector.utils.FileUtils;
+
+/**
+ * 图片实体
+ * Created by Nereo on 2015/4/7.
+ */
+public class Image {
+    public String path;
+    public String name;
+    public long time;
+    public String mimeType;
+    public boolean video;
+
+    public Image(String path, String name, long time, String mimeType) {
+        this.path = path;
+        this.name = name;
+        this.time = time;
+        this.mimeType = mimeType;
+        this.video = FileUtils.isVideo(mimeType);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            Image other = (Image) o;
+            return TextUtils.equals(this.path, other.path);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+        return super.equals(o);
+    }
+}

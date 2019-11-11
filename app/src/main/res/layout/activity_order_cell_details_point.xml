@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_normal"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingLeft="@dimen/spacing_default"
+    android:paddingRight="@dimen/spacing_default"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="#ff808080"
+        android:textSize="@dimen/txt_normal_content"
+        android:textStyle="bold"
+        tools:text="一号梯" />
+
+    <ImageView
+        android:id="@+id/img_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_six"
+        android:layout_marginRight="@dimen/spacing_six"
+        android:src="@drawable/ic_screen_center" />
+
+    <TextView
+        android:id="@+id/tv_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffababab"
+        android:textSize="@dimen/txt_normal_content"
+        android:textStyle="bold"
+        tools:text="中屏" />
+</LinearLayout>
