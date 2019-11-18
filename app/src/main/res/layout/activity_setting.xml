@@ -125,6 +125,42 @@
             android:layout_marginLeft="@dimen/spacing_default"
             android:layout_marginRight="@dimen/spacing_default"
             android:background="@color/black_divider" />
+
+        <LinearLayout
+            android:id="@+id/ll_user_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="用户隐私政策"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawablePadding="@dimen/spacing_small"
+                android:drawableRight="@drawable/ic_user_right"
+                android:gravity="center_vertical"
+                android:textColor="#FF999999" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
     </LinearLayout>
 
     <TextView

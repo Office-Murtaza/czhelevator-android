@@ -115,7 +115,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     money = 0D;
                 }
                 Double taxation = money * entity.getTaxation();
-                tvTaxation.setText(CommonUtil.getTwoFloat(taxation));
+                tvTaxation.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
             }
         });
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");

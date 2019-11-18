@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.utils.GlideCacheUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -50,6 +52,9 @@ public class SettingActivity extends BaseSwipeBackActivity {
     TextView tvVersion;
     @BindView(R.id.tv_logout)
     TextView tvLogout;
+    @BindView(R.id.ll_user_privacy)
+    LinearLayout ll_user_privacy;
+
 
     @Override
     protected String getTitleText() {
@@ -68,7 +73,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
         requestUpdate(false);
     }
 
-    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout})
+    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout,R.id.ll_user_privacy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cache:
@@ -86,6 +91,9 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 } else {
                     showExitDialog();
                 }
+                break;
+            case R.id.ll_user_privacy:
+                AgreementActivity.start(this, "用户隐私政策", Constants.AgreementType.USER_RULE.getValue());
                 break;
         }
     }

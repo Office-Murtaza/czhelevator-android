@@ -44,8 +44,8 @@ ext {
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 18,
             targetSdkVersion : 26,
-            versionCode      : 36,
-            versionName      : "1.3.8"]//修改合伙人页面布局，高度自适应"
+            versionCode      : 38,
+            versionName      : "1.4.0"]//修改合伙人页面布局，高度自适应"
     dependencies = [
             googleSupportVersion: "27.1.1"
     ]
