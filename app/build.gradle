@@ -146,6 +146,7 @@ dependencies {
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     //    implementation "org.java-websocket:Java-WebSocket:1.4.0"
     implementation 'com.neovisionaries:nv-websocket-client:2.6'
+    implementation 'com.blankj:utilcode:1.25.9'
 }
 
 MobSDK {

@@ -8,8 +8,10 @@ import android.text.TextUtils;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
@@ -30,10 +32,13 @@ import com.kingyon.elevator.uis.fragments.main.OrderFragment;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
 import com.kingyon.elevator.utils.OCRUtil;
+import com.kingyon.elevator.utils.RichTextUtil;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -47,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,7 +61,6 @@ import cn.jpush.android.api.JPushInterface;
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
     @BindView(R.id.tabBar)
     TabStripView tabBar;
-
     private String currentTag;
     private BaseFragment currentFragment;
     private long logTime;
@@ -70,20 +75,16 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         StatusBarUtil.setTransparent(this, false);
         EventBus.getDefault().register(this);
         currentTag = "首页";
-//        tabBar.postDelayed(new Runnable() {
-//            @Overridegit
-//            public void run() {
-//                checkLocation();
-//            }
-//        }, 5 * 60 * 1000);
         checkLocation();
         initTab(savedInstanceState);
         initPushId();
-        dealOpenActivity((PushMessageEntity) getIntent().getParcelableExtra("pushEntity"));
+        dealOpenActivity(getIntent().getParcelableExtra("pushEntity"));
         checkVersion();
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
+        tabBar.postDelayed(() -> loadUserPrivacy(),400);
     }
+
 
     private void initTab(Bundle savedInstanceState) {
         //设置tab栏
@@ -102,7 +103,6 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             public void run() {
                 tabBar.createFragmentByTag(OrderFragment.newInstance(null), "订单");
                 tabBar.createFragmentByTag(PlanNewFragment.newInstance(), "计划");
-//                tabBar.createFragmentByTag(UserFragment.newInstance(), "我的");
             }
         });
     }
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (currentFragment == null) {
-            currentFragment = tabBar.getCurrentFragment(currentTag);
+            tabBar.getCurrentFragment(currentTag);
         }
         if (currentFragment != null) {
             currentFragment.onActivityResult(requestCode, resultCode, data);
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         requestAdPubFailNumber();
         super.onResume();
         if (currentFragment == null) {
-            currentFragment = tabBar.getCurrentFragment(currentTag);
+            tabBar.getCurrentFragment(currentTag);
         }
         if (currentFragment != null) {
             currentFragment.setUserVisibleHint(true);
@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     protected void onPause() {
         super.onPause();
         if (currentFragment == null) {
-            currentFragment = tabBar.getCurrentFragment(currentTag);
+            tabBar.getCurrentFragment(currentTag);
         }
     }
 
@@ -344,6 +344,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         }
     }
 
+    /**
+     * 获取系统消息的未读个数
+     */
     private void requestUnreadNumber() {
         if (TextUtils.isEmpty(Net.getInstance().getToken())) {
             EventBus.getDefault().post(new UnreadNumberEntity());
@@ -388,4 +391,29 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                     });
         }
     }
+
+
+    /**
+     * 首页弹出用户协议框，YYB审核需要做首次启动弹出处理
+     */
+    private void loadUserPrivacy() {
+        Boolean isShow = DataSharedPreferences.getBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
+        if (!isShow) {
+            NetService.getInstance().richText(Constants.AgreementType.USER_RULE.getValue())
+                    .compose(this.<DataEntity<String>>bindLifeCycle())
+                    .subscribe(new CustomApiCallback<DataEntity<String>>() {
+                        @Override
+                        protected void onResultError(ApiException ex) {
+
+                        }
+
+                        @Override
+                        public void onNext(DataEntity<String> dataEntity) {
+                            DialogUtils.getInstance().showUserPrivacyTipsDialog(MainActivity.this, dataEntity.getData());
+                            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, true);
+                        }
+                    });
+        }
+    }
+
 }

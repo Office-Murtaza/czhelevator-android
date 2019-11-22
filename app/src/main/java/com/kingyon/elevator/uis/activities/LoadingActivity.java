@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
@@ -52,6 +53,8 @@ public class LoadingActivity extends BaseActivity {
     TextView tvAd;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.root_container)
+    LinearLayout root_container;
 
     private boolean isFinishedByUser = false;
     private Subscription subscribe;
@@ -84,6 +87,11 @@ public class LoadingActivity extends BaseActivity {
         startCountDown();
     }
 
+    @Override
+    protected void statusbarLightMode() {
+
+    }
+
     private void onAdvertisionSuccess(AdvertisionEntity advertisionEntity) {
         if (advertisionEntity != null && advertisionEntity.isUseable()) {
             File advertisionDownloadFile = PathUtils.getAdvertisionDownloadFile(advertisionEntity);
@@ -91,26 +99,28 @@ public class LoadingActivity extends BaseActivity {
                 GlideUtils.loadDrawable(LoadingActivity.this, advertisionDownloadFile, new GlideUtils.BitmapReadyCallBack() {
                     @Override
                     public void onExceptoin(Exception e) {
-
+                        root_container.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onBitmapReady(Drawable drawable, int width, int height) {
                         Logger.i("from download");
                         showAdertision(drawable);
+                        root_container.setVisibility(View.VISIBLE);
                     }
                 });
             } else {
                 GlideUtils.loadDrawable(LoadingActivity.this, advertisionEntity.getPicture(), new GlideUtils.BitmapReadyCallBack() {
                     @Override
                     public void onExceptoin(Exception e) {
-
+                        root_container.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onBitmapReady(Drawable drawable, int width, int height) {
                         Logger.i("from Glide");
                         showAdertision(drawable);
+                        root_container.setVisibility(View.VISIBLE);
                     }
                 });
                 downloadAdertision(advertisionEntity);

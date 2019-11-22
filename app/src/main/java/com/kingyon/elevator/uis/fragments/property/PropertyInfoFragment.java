@@ -174,7 +174,7 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
         if (tipDialog == null) {
             tipDialog = new TipDialog<>(getContext(), null);
         }
-        tipDialog.showEnsureNoClose(String.format("每月结算时间为5号，若有疑问可致电：%s", getString(R.string.service_phone)), "知道了", "");
+        tipDialog.showEnsureNoClose(String.format("每月结算时间为15号，若有疑问可致电：%s", getString(R.string.service_phone)), "知道了", "");
     }
 
     private Drawable getBackDrawable(int color) {

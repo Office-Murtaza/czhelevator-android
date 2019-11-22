@@ -28,6 +28,9 @@ public class DataSharedPreferences {
     private static final String LATLON_CACHE = "LATLON_CACHE";
     private static final String LOADING_ADVERTISING = "LOADING_ADVERTISING";
 
+    //是否已经显示过用户隐私政策对话框
+    public static final String IS_SHOW_ALREADY_PRIVACY_DIALOG = "IS_SHOW_ALREADY_PRIVACY_DIALOG";
+
     private static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext());
     }

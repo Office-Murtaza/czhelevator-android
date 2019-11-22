@@ -172,16 +172,17 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
 
                     @Override
                     public void onNext(final HomepageDataEntity homepageDataEntity) {
+                        loadingComplete(STATE_CONTENT);
                         updateBanner(homepageDataEntity.getBanners());
                         updateClassifies();
-                        cellsAdaper.refreshDatas(homepageDataEntity.getCells());
-                        loadingComplete(STATE_CONTENT);
-                        tvNotice.post(new Runnable() {
+                        updateNotice(homepageDataEntity.getAnnouncements());
+                        tvNotice.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                updateNotice(homepageDataEntity.getAnnouncements());
+                                //优化首页卡顿，只加载15条数据
+                                cellsAdaper.refreshDatas(homepageDataEntity.getCells().subList(0, 15));
                             }
-                        });
+                        }, 200);
                     }
                 });
     }

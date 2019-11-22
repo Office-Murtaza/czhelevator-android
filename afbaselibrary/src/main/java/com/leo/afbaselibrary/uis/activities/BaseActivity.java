@@ -1,7 +1,10 @@
 package com.leo.afbaselibrary.uis.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +27,8 @@ import com.leo.afbaselibrary.utils.EasyPermissions;
 import com.leo.afbaselibrary.utils.RxCheckLifeCycleTransformer;
 import com.leo.afbaselibrary.utils.statusbar.Eyes;
 import com.umeng.analytics.MobclickAgent;
+
+import org.litepal.util.LogUtil;
 
 import java.util.List;
 
@@ -264,5 +270,31 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
         super.onDestroy();
         ActivityUtil.removeActivity(this);
         eventBehaviorSubject.onNext(RxCheckLifeCycleTransformer.LifeCycleEvent.DESTROY);
+    }
+
+    /**
+     * 重写getResources，防止因为系统字体大小变更引起布局变化
+     * @return
+     */
+    @Override
+    public Resources getResources() {
+        Resources resources = super.getResources();
+        try {
+            Configuration newConfig = resources.getConfiguration();
+            DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+            if (resources != null && newConfig.fontScale != 1) {
+                newConfig.fontScale = 1;
+                if (Build.VERSION.SDK_INT >= 17) {
+                    Context configurationContext = createConfigurationContext(newConfig);
+                    resources = configurationContext.getResources();
+                    displayMetrics.scaledDensity = displayMetrics.density * newConfig.fontScale;
+                } else {
+                    resources.updateConfiguration(newConfig, displayMetrics);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resources;
     }
 }

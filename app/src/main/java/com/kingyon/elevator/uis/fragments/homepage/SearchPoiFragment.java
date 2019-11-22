@@ -126,7 +126,7 @@ public class SearchPoiFragment extends BaseStateRefreshLoadingFragment<Object> i
                         @Override
                         public void onNext(ArrayList<PoiItem> poiItems) {
                             if (poiItems == null) {
-                                throw new ResultException(9002, "AMap PoiSearch error!");
+                                throw new ResultException(9002, "未检索到与此地点相似的结果");
                             }
                             mItems.clear();
                             if (!TextUtils.isEmpty(city)) {

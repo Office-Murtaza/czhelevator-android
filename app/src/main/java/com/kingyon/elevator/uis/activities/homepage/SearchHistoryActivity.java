@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,8 +71,17 @@ public class SearchHistoryActivity extends BaseSwipeBackActivity {
         return "搜索";
     }
 
+    /**
+     * 禁止输入空格进行检索
+     */
+    private InputFilter filter = (source, start, end, dest, dstart, dend) -> {
+        if (source.equals(" ")) return "";
+        else return null;
+    };
+
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        etSearch.setFilters(new InputFilter[]{filter});
         RxTextView.textChanges(etSearch)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<CharSequence>() {

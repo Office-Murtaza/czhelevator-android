@@ -208,7 +208,6 @@ public class LoginActivity extends BaseSwipeBackActivity implements AuthorizeUti
                             DataSharedPreferences.saveToken(loginResultEntity.getToken());
                             Net.getInstance().setToken(DataSharedPreferences.getToken());
                             hideProgress();
-
                             boolean needFinish = !TextUtils.equals(oldUserRole, userEntity.getRole());
                             if (needFinish || !getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_1, false)) {
                                 ActivityUtil.finishAllNotLogin();
