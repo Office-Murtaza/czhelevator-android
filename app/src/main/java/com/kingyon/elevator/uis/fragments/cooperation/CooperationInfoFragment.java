@@ -11,16 +11,21 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
+import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
+import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationEarningsActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationIncomeActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawActivity;
+import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawRecordsActivity;
 import com.kingyon.elevator.uis.activities.cooperation.OpticalFeeActivity;
 import com.kingyon.elevator.uis.activities.cooperation.PropertyFeeActivity;
 import com.kingyon.elevator.uis.activities.devices.CellChooseActivity;
@@ -28,8 +33,10 @@ import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,6 +62,28 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     @BindView(R.id.tv_fee_optical)
     TextView tvFeeOptical;
 
+    @BindView(R.id.service_phone_num)
+    TextView service_phone_num;
+    @BindView(R.id.btn_apply_crash)
+    TextView btn_apply_crash;
+    @BindView(R.id.tv_device_manager)
+    TextView tv_device_manager;
+    @BindView(R.id.crash_money_history)
+    TextView crash_money_history;
+    @BindView(R.id.tv_can_crash)
+    TextView tv_can_crash;
+    @BindView(R.id.tv_already_crash)
+    TextView tv_already_crash;
+    @BindView(R.id.yesterday_income)
+    TextView yesterday_income;
+    @BindView(R.id.tv_all_income)
+    TextView tv_all_income;
+    @BindView(R.id.my_action_bar)
+    MyActionBar my_action_bar;
+    @BindView(R.id.container_view)
+    RelativeLayout container_view;
+
+
     private CooperationInfoEntity entity;
     private TipDialog<String> tipDialog;
 
@@ -78,7 +107,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         } else {
             entity = new CooperationInfoEntity();
         }
-        StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
+        StatusBarUtil.setHeadViewPadding(getActivity(), container_view);
         preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         updateUI(entity);
     }
@@ -90,9 +119,9 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     }
 
     private void updateUI(CooperationInfoEntity entity) {
-        tvTotalMoney.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getAllIncome())));
-        tvWithdrawMoney.setText(CommonUtil.getTwoFloat(entity.getUsefulIncome()));
-        tvIncomeToday.setText(CommonUtil.getMayTwoFloat(entity.getTodayIncome()));
+        tv_all_income.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getAllIncome())));
+        tv_can_crash.setText(CommonUtil.getTwoFloat(entity.getUsefulIncome()));
+        yesterday_income.setText(CommonUtil.getMayTwoFloat(entity.getTodayIncome()));
         tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
         tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
         tvFeeProperty.setText(CommonUtil.getMayTwoFloat(entity.getPropertyPay()));
@@ -105,7 +134,10 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         return spannableString;
     }
 
-    @OnClick({R.id.pre_v_back, R.id.tv_withdraw, R.id.ll_income_today, R.id.ll_income_month, R.id.ll_income_year, R.id.ll_fee_property, R.id.ll_fee_optical, R.id.tv_income, R.id.tv_devices, R.id.ll_cells, R.id.pre_v_right})
+    @OnClick({R.id.pre_v_back, R.id.btn_apply_crash, R.id.ll_income_today, R.id.ll_income_month,
+            R.id.ll_income_year, R.id.ll_fee_property, R.id.ll_fee_optical, R.id.tv_income,
+            R.id.tv_device_manager, R.id.ll_cells, R.id.pre_v_right, R.id.crash_money_history,
+            R.id.yesterday_income_container, R.id.tv_all_income, R.id.already_crash_container})
     public void onViewClicked(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -115,9 +147,22 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                     activity.finish();
                 }
                 break;
-            case R.id.tv_withdraw:
-                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
-                startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
+            case R.id.crash_money_history:
+                startActivity(CooperationWithdrawRecordsActivity.class);
+                break;
+            case R.id.tv_all_income:
+                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
+                break;
+            case R.id.yesterday_income_container:
+                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
+                break;
+            case R.id.already_crash_container:
+                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
+                break;
+            case R.id.btn_apply_crash:
+//                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+//                startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
+                MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class,FragmentConstants.CashMethodSettingFragment, bundle);
                 break;
             case R.id.ll_income_today:
                 bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);
@@ -141,7 +186,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 startActivity(CooperationEarningsActivity.class);
 //                startActivity(CooperationIncomeActivity.class);
                 break;
-            case R.id.tv_devices:
+            case R.id.tv_device_manager:
                 bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.PARTNER);
                 startActivity(CooperationDeviceActivity.class, bundle);
                 break;

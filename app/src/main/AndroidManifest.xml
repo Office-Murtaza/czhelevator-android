@@ -3,18 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kingyon.elevator">
 
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!--图片选择器权限配置-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 图片选择器权限配置 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!--友盟统计权限配置-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 友盟统计权限配置 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <!--ShareSdk权限配置-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- ShareSdk权限配置 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -22,29 +17,17 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-    <!--高德地图-->
-    <!--允许程序打开网络套接字-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--允许程序设置内置sd卡的写权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--允许程序获取网络状态-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--允许程序访问WiFi网络信息-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--允许程序读写手机状态和身份-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!--用于申请调用A-GPS模块-->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
-    <!--极光推送-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 高德地图 -->
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 极光推送 -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
@@ -56,9 +39,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-
-    <!-- 锐动视频编辑SDK需要 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 锐动视频编辑SDK需要 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -70,6 +51,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme,android:name">
+        <activity
+            android:name=".uis.activities.cooperation.AddNewBankCardActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
+        </activity>
+        <activity android:name=".uis.activities.FragmentContainerActivity" />
         <activity
             android:name=".uis.activities.LoadingActivity"
             android:screenOrientation="portrait"
@@ -109,9 +96,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.IncomeRecordsActivity"
-            android:screenOrientation="portrait" />
-
-        <!--登录注册-->
+            android:screenOrientation="portrait" /> <!-- 登录注册 -->
         <activity
             android:name=".uis.activities.password.LoginActivity"
             android:launchMode="singleTask"
@@ -130,9 +115,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.password.ModifyPhoneSecondActivity"
-            android:screenOrientation="portrait" />
-
-        <!--业务人员-->
+            android:screenOrientation="portrait" /> <!-- 业务人员 -->
         <activity
             android:name=".uis.activities.salesman.SalesmanActivity"
             android:screenOrientation="portrait" />
@@ -144,17 +127,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.salesman.SalesUnitLiftActivity"
-            android:screenOrientation="portrait" />
-
-        <!--安装人员-->
+            android:screenOrientation="portrait" /> <!-- 安装人员 -->
         <activity
             android:name=".uis.activities.installer.InstallerActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.installer.InstallerDeviceDetailsActivity"
-            android:screenOrientation="portrait" />
-
-        <!--首页-->
+            android:screenOrientation="portrait" /> <!-- 首页 -->
         <activity
             android:name=".uis.activities.homepage.CityActivity"
             android:screenOrientation="portrait" />
@@ -175,9 +154,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.homepage.CellDetailsActivity"
-            android:screenOrientation="portrait" />
-
-        <!--点位计划-->
+            android:screenOrientation="portrait" /> <!-- 点位计划 -->
         <activity
             android:name=".uis.activities.plan.AssignActivity"
             android:screenOrientation="portrait" />
@@ -198,9 +175,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.plan.OrderCouponsActivity"
-            android:screenOrientation="portrait" />
-
-        <!--广告-->
+            android:screenOrientation="portrait" /> <!-- 广告 -->
         <activity
             android:name=".uis.activities.advertising.InfomationAdvertisingActivity"
             android:screenOrientation="portrait" />
@@ -232,9 +207,7 @@
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".uis.activities.advertising.NetVideoPlayActivity"
-            android:screenOrientation="portrait" />
-
-        <!--订单-->
+            android:screenOrientation="portrait" /> <!-- 订单 -->
         <activity
             android:name=".uis.activities.order.OrderPayActivity"
             android:screenOrientation="portrait" />
@@ -258,9 +231,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.order.DeviceLiveActivity"
-            android:screenOrientation="portrait" />
-
-        <!--个人中心-->
+            android:screenOrientation="portrait" /> <!-- 个人中心 -->
         <activity
             android:name=".uis.activities.user.UserProfileActivity"
             android:screenOrientation="portrait" />
@@ -342,9 +313,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.user.MyAdActivity"
-            android:screenOrientation="portrait" />
-
-        <!--合伙人-->
+            android:screenOrientation="portrait" /> <!-- 合伙人 -->
         <activity
             android:name=".uis.activities.cooperation.CooperationActivity"
             android:screenOrientation="portrait" />
@@ -377,9 +346,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.cooperation.CooperationDeviceReportActivity"
-            android:screenOrientation="portrait" />
-
-        <!--物业-->
+            android:screenOrientation="portrait" /> <!-- 物业 -->
         <activity
             android:name=".uis.activities.property.PropertyActivity"
             android:screenOrientation="portrait" />
@@ -415,9 +382,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.property.PropertyDeviceChooseActivity"
-            android:screenOrientation="portrait" />
-
-        <!--设备-->
+            android:screenOrientation="portrait" /> <!-- 设备 -->
         <activity
             android:name=".uis.activities.devices.DeviceEditActivity"
             android:screenOrientation="portrait" />
@@ -444,17 +409,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.devices.CameraBrandActivity"
-            android:screenOrientation="portrait" />
-
-        <!--****************友盟配置******************************-->
+            android:screenOrientation="portrait" /> <!-- ****************友盟配置****************************** -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5c468908f1f5566fbe000297" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="umeng" />
-
-        <!--****************图片选择器配置******************************-->
+            android:value="umeng" /> <!-- ****************图片选择器配置****************************** -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -463,33 +424,26 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
-
-        <!--****************ShareSDK配置******************************-->
-        <!--<activity-->
-        <!--android:name="com.mob.tools.MobUIShell"-->
-        <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
-        <!--android:windowSoftInputMode="stateHidden|adjustResize">-->
-        <!--<intent-filter>-->
-        <!--<data android:scheme="tencent1108783025" />-->
-
-        <!--<action android:name="android.intent.action.VIEW" />-->
-
-        <!--<category android:name="android.intent.category.BROWSABLE" />-->
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-
-        <!--&lt;!&ndash; 调用新浪原生SDK，需要注册的回调activity &ndash;&gt;-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />-->
-
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-        <!--****************极光推送配置******************************-->
+        </provider> <!-- ****************ShareSDK配置****************************** -->
+        <!-- <activity -->
+        <!-- android:name="com.mob.tools.MobUIShell" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" -->
+        <!-- android:windowSoftInputMode="stateHidden|adjustResize"> -->
+        <!-- <intent-filter> -->
+        <!-- <data android:scheme="tencent1108783025" /> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- </intent-filter> -->
+        <!-- &lt;!&ndash; 调用新浪原生SDK，需要注册的回调activity &ndash;&gt; -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- ****************极光推送配置****************************** -->
         <receiver
             android:name=".receiver.JPushReceiver"
             android:enabled="true">
@@ -504,6 +458,7 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -515,24 +470,29 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
+
         <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="${applicationId}.DataProvider"
             android:exported="false" />
+
         <service
             android:name="cn.jpush.android.service.DaemonService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </service>
+
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
@@ -575,6 +535,7 @@
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
             android:exported="false" />
+
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
         <meta-data
@@ -582,24 +543,20 @@
             android:value="jpush" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="f1e1f8cbb1f9ab97ec6c6a00" />
-
-        <!-- 微信 -->
+            android:value="f1e1f8cbb1f9ab97ec6c6a00" /> <!-- 微信 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!--高德-->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 高德 -->
         <service android:name="com.amap.api.location.APSService" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="df1a3e341c09daaebadd22be11ddcc48" />

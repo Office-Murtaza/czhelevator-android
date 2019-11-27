@@ -22,4 +22,18 @@
     <string name="ad_ratio_full">长高比例\n16:10</string>
     <string name="ad_ratio_split_video">长高比例\n5:4</string>
     <string name="ad_ratio_split_image">长高比例\n3:4</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="ketixian">可提现</string>
+    <string name="yitixian">已提现</string>
+    <string name="zuorishouyi">昨日收益</string>
+    <string name="shouyijilu">收益记录</string>
+    <string name="no_pramater">无对应参数</string>
+
+    <string name="input_pwd">请输入新支付密码</string>
+    <string name="again_input_pwd">请再次输入新支付密码</string>
+
+    <string name="bind_card_tips">温馨提示：请仔细核实账户信息填写是否正确，如若有误将影响您的账户提现</string>
 </resources>

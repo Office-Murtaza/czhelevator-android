@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.ReceivedPushEntity;
@@ -48,6 +49,7 @@ import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DownloadUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RoleUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
@@ -355,7 +357,8 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(InviteActivity.class);
                 break;
             case R.id.tv_cooperation:
-                startActivity(CooperationActivity.class);
+               // startActivity(CooperationActivity.class);
+                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.SetPasswordFragment);
                 break;
             case R.id.tv_property:
                 startActivity(PropertyActivity.class);

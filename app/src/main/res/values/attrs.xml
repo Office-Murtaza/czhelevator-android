@@ -43,4 +43,92 @@
         <attr name="mhll_HeightRatio" format="reference|float" />
         <attr name="mhll_HeightDimen" format="reference|dimension" />
     </declare-styleable>
+
+    <declare-styleable name="MyActionBar">
+        <attr name="title" format="string" />
+        <attr name="lefticon" format="reference" />
+        <attr name="righticon" format="reference" />
+        <attr name="rightmenuname" format="string" />
+        <attr name="rightmenuname_color" format="color" />
+        <attr name="title_color" format="color" />
+        <attr name="action_bar_background" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SelfAdaptionImageView">
+        <attr name="WidthRatio" format="integer" />
+        <attr name="HeightRatio" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SelfAdaptionRelativeLayout">
+        <attr name="RWidthRatio" format="integer" />
+        <attr name="RHeightRatio" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SelfAdaptionLinerLayout">
+        <attr name="LWidthRatio" format="integer" />
+        <attr name="LHeightRatio" format="integer" />
+    </declare-styleable>
+
+
+    <declare-styleable name="MyTextItemView">
+        <attr name="smallTitleColor" format="color" />
+        <attr name="smallTitleSize" format="integer" />
+        <attr name="smallTitleStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="blod" value="1" />
+        </attr>
+        <attr name="mainTitleColor" format="color" />
+        <attr name="mainTitleSize" format="integer" />
+        <attr name="mainTitleStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="blod" value="1" />
+        </attr>
+        <!-- mainTitleTop默认单位为dp       -->
+        <attr name="mainTitleTop" format="integer" />
+        <attr name="mainTitleAlpha" format="float" />
+        <attr name="smallTitleAlpha" format="float" />
+        <attr name="mainTitleText" format="string" />
+        <attr name="smallTitleText" format="string" />
+    </declare-styleable>
+
+    <attr name="halfVisibleItemCount" format="integer" />
+    <attr name="itemTextSize" format="dimension" />
+    <attr name="itemMaximumWidthText" format="string" />
+    <attr name="itemTextColor" format="color" />
+    <attr name="textGradual" format="boolean" />
+    <attr name="selectedTextColor" format="color" />
+    <attr name="selectedTextSize" format="dimension" />
+    <attr name="currentItemPosition" format="integer" />
+    <attr name="itemWidthSpace" format="dimension" />
+    <attr name="itemHeightSpace" format="dimension" />
+    <attr name="zoomInSelectedItem" format="boolean" />
+    <attr name="wheelCyclic" format="boolean" />
+    <attr name="wheelCurtain" format="boolean" />
+    <attr name="wheelCurtainColor" format="color" />
+    <attr name="wheelCurtainBorder" format="boolean" />
+    <attr name="wheelCurtainBorderColor" format="color" />
+    <attr name="indicatorText" format="string" />
+    <attr name="indicatorTextSize" format="dimension" />
+    <attr name="indicatorTextColor" format="color" />
+    <declare-styleable name="WheelPicker">
+        <attr name="halfVisibleItemCount" />
+        <attr name="itemTextSize" />
+        <attr name="itemMaximumWidthText" />
+        <attr name="itemTextColor" />
+        <attr name="textGradual" />
+        <attr name="selectedTextColor" />
+        <attr name="selectedTextSize" />
+        <attr name="currentItemPosition" />
+        <attr name="itemWidthSpace" />
+        <attr name="itemHeightSpace" />
+        <attr name="zoomInSelectedItem" />
+        <attr name="wheelCyclic" />
+        <attr name="wheelCurtain" />
+        <attr name="wheelCurtainColor" />
+        <attr name="wheelCurtainBorder" />
+        <attr name="wheelCurtainBorderColor" />
+        <attr name="indicatorText" />
+        <attr name="indicatorTextSize" />
+        <attr name="indicatorTextColor" />
+    </declare-styleable>
 </resources>

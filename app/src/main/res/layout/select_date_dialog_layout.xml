@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="290dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#9A9A9A"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="选择时间"
+        android:textColor="#404040"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="确定"
+        android:textColor="#EB7A12"
+        android:textSize="15sp" />
+
+
+    <LinearLayout
+        android:id="@+id/tab_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_annian"
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:background="@drawable/shape_bg_date_dialog_tab_select"
+            android:gravity="center"
+            android:text="按年"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_anyue"
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:background="@drawable/shape_bg_date_dialog_tab_unselect"
+            android:gravity="center"
+            android:text="按月"
+            android:textColor="#EB7A12"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+    <com.kingyon.elevator.date.DateWheelPicker
+        android:id="@+id/year_picker_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_view"
+        android:layout_marginTop="20dp"
+        app:selectedTextColor="#404040"
+        app:wheelCurtainBorderColor="@color/white"
+        app:wheelCurtainColor="#F2F2F2"
+        app:wheelCyclic="false" />
+
+
+    <LinearLayout
+        android:id="@+id/month_select_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_view"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.kingyon.elevator.date.DateWheelPicker
+            android:id="@+id/year_month_picker_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:selectedTextColor="#404040"
+            app:wheelCurtainBorderColor="@color/white"
+            app:wheelCurtainColor="#F2F2F2"
+            app:wheelCyclic="false" />
+
+        <com.kingyon.elevator.date.DateWheelPicker
+            android:id="@+id/month_picker_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:selectedTextColor="#404040"
+            app:wheelCurtainBorderColor="@color/white"
+            app:wheelCurtainColor="#F2F2F2"
+            app:wheelCyclic="false" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -3,6 +3,8 @@ package com.kingyon.elevator.utils;
 import android.content.Context;
 
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
+import com.kingyon.elevator.date.DatePickerListener;
+import com.kingyon.elevator.date.SelectDateDialog;
 
 /**
  * Date:2019/11/21
@@ -16,6 +18,7 @@ public class DialogUtils {
 
 
     private UserPrivacyTipsDialog userPrivacyTipsDialog;
+    private SelectDateDialog selectDateDialog;
 
     private DialogUtils() {
 
@@ -39,12 +42,12 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showUserPrivacyTipsDialog(Context context,String data) {
+    public void showUserPrivacyTipsDialog(Context context, String data) {
         if (userPrivacyTipsDialog != null && userPrivacyTipsDialog.isShowing()) {
             userPrivacyTipsDialog.dismiss();
             userPrivacyTipsDialog = null;
         }
-        userPrivacyTipsDialog = new UserPrivacyTipsDialog(context,data);
+        userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data);
         userPrivacyTipsDialog.setCancelable(true);
         userPrivacyTipsDialog.show();
     }
@@ -56,8 +59,34 @@ public class DialogUtils {
                 userPrivacyTipsDialog = null;
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
+
+    /**
+     * 显示日期选择框
+     *
+     * @param context
+     */
+    public void showSelectDateDialog(Context context, DatePickerListener datePickerListener) {
+        if (selectDateDialog != null && selectDateDialog.isShowing()) {
+            selectDateDialog.dismiss();
+            selectDateDialog = null;
+        }
+        selectDateDialog = new SelectDateDialog(context,datePickerListener);
+        selectDateDialog.setCancelable(true);
+        selectDateDialog.show();
+    }
+
+    public void hideSelectDateDialog() {
+        try {
+            if (selectDateDialog != null) {
+                selectDateDialog.dismiss();
+                selectDateDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
