@@ -97,6 +97,7 @@ public class MyTextItemView extends RelativeLayout {
 
     /**
      * 设置小标题的文字颜色
+     *
      * @param color
      */
     public void setSmallTitleColor(int color) {
@@ -108,4 +109,13 @@ public class MyTextItemView extends RelativeLayout {
     }
 
 
+    public void setMainTitleText(String mainTitleText) {
+        this.mainTitleText = mainTitleText;
+        mian_title.setText(mainTitleText);
+    }
+
+    public void setSmallTitleText(String smallTitleText) {
+        this.smallTitleText = smallTitleText;
+        small_title.setText(smallTitleText);
+    }
 }

@@ -23,6 +23,7 @@ import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.entities.UnreadNumberEntity;
 import com.kingyon.elevator.entities.VersionEntity;
+import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
@@ -409,8 +410,17 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
 
                         @Override
                         public void onNext(DataEntity<String> dataEntity) {
-                            DialogUtils.getInstance().showUserPrivacyTipsDialog(MainActivity.this, dataEntity.getData());
-                            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, true);
+                            DialogUtils.getInstance().showUserPrivacyTipsDialog(MainActivity.this, dataEntity.getData(), new PrivacyTipsListener() {
+                                @Override
+                                public void onNoAgree() {
+
+                                }
+
+                                @Override
+                                public void onAgree() {
+
+                                }
+                            });
                         }
                     });
         }

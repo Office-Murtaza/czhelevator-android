@@ -12,4 +12,6 @@
 
     <color name="hint_text_color">#9A9A9A</color>
 
+    <color name="split_line_color">#7F7F7F</color>
+
 </resources>

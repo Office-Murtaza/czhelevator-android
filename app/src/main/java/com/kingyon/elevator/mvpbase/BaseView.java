@@ -1,5 +1,7 @@
 package com.kingyon.elevator.mvpbase;
 
+import android.app.ProgressDialog;
+
 /**
  * Created By SongPeng  on 2019/11/18
  * Email : 1531603384@qq.com
@@ -41,5 +43,21 @@ public interface BaseView {
      * 显示内容为空的view
      */
     void showEmptyContentView(String content);
+
+    void showErrorView();
+
+    void showErrorView(String content);
+
+    void showContentView();
+
+
+    void showProgressView();
+
+    void showProgressView(String content);
+
+
+    void showProgressDialog(String message,Boolean  isCancel);
+
+    void hideProgressDailog();
 
 }

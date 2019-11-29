@@ -176,12 +176,9 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                         updateBanner(homepageDataEntity.getBanners());
                         updateClassifies();
                         updateNotice(homepageDataEntity.getAnnouncements());
-                        tvNotice.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                //优化首页卡顿，只加载15条数据
-                                cellsAdaper.refreshDatas(homepageDataEntity.getCells().subList(0, 15));
-                            }
+                        tvNotice.postDelayed(() -> {
+                            //优化首页卡顿，只加载15条数据
+                            cellsAdaper.refreshDatas(homepageDataEntity.getCells().subList(0, 15));
                         }, 200);
                     }
                 });
@@ -217,13 +214,15 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                 }
             }
         }
-        if (stringBuilder.length() > 0) {
-            tvNotice.setVisibility(View.VISIBLE);
-            tvNotice.setText(stringBuilder.toString());
-            tvNotice.setFocusable(true);
-            tvNotice.requestFocus();
-        } else {
-            tvNotice.setVisibility(View.GONE);
+        if (tvNotice != null) {
+            if (stringBuilder.length() > 0) {
+                tvNotice.setVisibility(View.VISIBLE);
+                tvNotice.setText(stringBuilder.toString());
+                tvNotice.setFocusable(true);
+                tvNotice.requestFocus();
+            } else {
+                tvNotice.setVisibility(View.GONE);
+            }
         }
     }
 

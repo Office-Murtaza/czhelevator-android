@@ -11,7 +11,7 @@
     <string name="notice_space">&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;</string>
     <string name="number_max">99+</string>
     <string name="service_phone">400-651-9299</string>
-    <string name="cooperation_withdraw_tip">每月16-20日为可提现时间，若未在此时间内提现，则自动顺延至下月。\n申请提现后请耐心等待工作人员处理，超过一个工作日未通过请联系客服。</string>
+    <string name="cooperation_withdraw_tip">每月16-20日为可提现时间，若未在此时间内提现，则自动顺延至下月。申请提现后请耐心等待工作人员处理，超过一个工作日未通过请联系客服。</string>
     <string name="cooperation_withdraw_success">您的提现申请已经提交，工作人员将在1-3个工作日内（节假日顺延）处理您的申请。</string>
     <string name="wechat_official_account">梯联网股份</string>
     <string name="hbgc_package_name">com.meitu.poster</string>

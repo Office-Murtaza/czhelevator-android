@@ -11,10 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
+import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.CashMethodSettingPresenter;
 import com.kingyon.elevator.uis.activities.cooperation.AddNewBankCardActivity;
@@ -44,7 +48,7 @@ public class CashMethodSettingFragment extends MvpBaseFragment<CashMethodSetting
 
     BindedCardAdapter bindedCardAdapter;
     LinearLayoutManager linearLayoutManager;
-    private CooperationInfoEntity entity;
+    private CooperationInfoNewEntity entity;
 
     @Override
     public CashMethodSettingPresenter initPresenter() {
@@ -54,7 +58,10 @@ public class CashMethodSettingFragment extends MvpBaseFragment<CashMethodSetting
     @Override
     public void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this, getContentView());
-        entity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
+        if (getArguments() != null) {
+            entity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
+            LogUtils.i("提现方式界面收到的参数：", GsonUtils.toJson(entity));
+        }
         initData();
     }
 
@@ -68,13 +75,25 @@ public class CashMethodSettingFragment extends MvpBaseFragment<CashMethodSetting
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_add_card:
-                MyActivityUtils.goActivity(getActivity(), AddNewBankCardActivity.class, "ZFB");
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+                DialogUtils.getInstance().showSelectCashBindTypeDialog(getActivity(), new SelectCashBindTypeListener() {
+                    @Override
+                    public void selectBindZfb() {
+                        MyActivityUtils.goActivity(getActivity(), AddNewBankCardActivity.class,bundle, "ZFB");
+                    }
+
+                    @Override
+                    public void selectBindBankCard() {
+                        MyActivityUtils.goActivity(getActivity(), AddNewBankCardActivity.class, bundle,"BANK");
+                    }
+                });
                 break;
         }
     }
 
 
-    public static CashMethodSettingFragment newInstance(CooperationInfoEntity entity) {
+    public static CashMethodSettingFragment newInstance(CooperationInfoNewEntity entity) {
         Bundle args = new Bundle();
         args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
         CashMethodSettingFragment fragment = new CashMethodSettingFragment();
@@ -103,4 +122,9 @@ public class CashMethodSettingFragment extends MvpBaseFragment<CashMethodSetting
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        DialogUtils.getInstance().hideSelectCashBindTypeDialog();
+    }
 }

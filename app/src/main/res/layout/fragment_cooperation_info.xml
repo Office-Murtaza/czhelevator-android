@@ -622,7 +622,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="30dp"
                 android:text="客服热线   400-651-9299"
-                android:textColor="#ff000000"
+                android:textColor="#3D3D3D"
                 android:textSize="13sp" />
         </RelativeLayout>
     </RelativeLayout>

@@ -19,6 +19,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
@@ -84,10 +85,10 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     RelativeLayout container_view;
 
 
-    private CooperationInfoEntity entity;
+    private CooperationInfoNewEntity entity;
     private TipDialog<String> tipDialog;
 
-    public static CooperationInfoFragment newInstance(CooperationInfoEntity entity) {
+    public static CooperationInfoFragment newInstance(CooperationInfoNewEntity entity) {
         Bundle args = new Bundle();
         args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
         CooperationInfoFragment fragment = new CooperationInfoFragment();
@@ -105,7 +106,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         if (getArguments() != null) {
             entity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
         } else {
-            entity = new CooperationInfoEntity();
+            entity = new CooperationInfoNewEntity();
         }
         StatusBarUtil.setHeadViewPadding(getActivity(), container_view);
         preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
@@ -114,18 +115,19 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
 
     @Override
     public void onParamsChange(Object... objects) {
-        entity = (CooperationInfoEntity) objects[0];
+        entity = (CooperationInfoNewEntity) objects[0];
         updateUI(entity);
     }
 
-    private void updateUI(CooperationInfoEntity entity) {
-        tv_all_income.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getAllIncome())));
-        tv_can_crash.setText(CommonUtil.getTwoFloat(entity.getUsefulIncome()));
-        yesterday_income.setText(CommonUtil.getMayTwoFloat(entity.getTodayIncome()));
-        tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
-        tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
-        tvFeeProperty.setText(CommonUtil.getMayTwoFloat(entity.getPropertyPay()));
-        tvFeeOptical.setText(CommonUtil.getMayTwoFloat(entity.getNetworkPay()));
+    private void updateUI(CooperationInfoNewEntity entity) {
+        tv_all_income.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getTotalIncome())));
+        tv_can_crash.setText(CommonUtil.getTwoFloat(entity.getRealizableIncome()));
+        yesterday_income.setText(CommonUtil.getMayTwoFloat(entity.getYesterdayIncome()));
+        tv_already_crash.setText(CommonUtil.getMayTwoFloat(entity.getFulfilledIncome()));
+//        tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
+//        tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
+//        tvFeeProperty.setText(CommonUtil.getMayTwoFloat(entity.getPropertyPay()));
+//        tvFeeOptical.setText(CommonUtil.getMayTwoFloat(entity.getNetworkPay()));
     }
 
     private CharSequence getSumSpan(String twoFloat) {
@@ -160,7 +162,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
                 break;
             case R.id.btn_apply_crash:
-//                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
 //                startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
                 MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class,FragmentConstants.CashMethodSettingFragment, bundle);
                 break;

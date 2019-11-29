@@ -9,6 +9,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
@@ -48,7 +49,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                     @Override
                     public void onNext(CooperationEntity cooperationEntity) {
                         CooperationIdentityEntity identity = cooperationEntity.getIdentity();
-                        CooperationInfoEntity info = cooperationEntity.getInfo();
+                        CooperationInfoNewEntity info = cooperationEntity.getInfo();
                         if (!cooperationEntity.isBePartner() && identity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -62,7 +63,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                 });
     }
 
-    private void showFragment(boolean authed, CooperationIdentityEntity identity, CooperationInfoEntity info) {
+    private void showFragment(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (identityFragment != null) {
             fragmentTransaction.hide(identityFragment);

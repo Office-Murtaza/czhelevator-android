@@ -1,116 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.afbaselibrary.widgets.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stateLayout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg_color"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="28dp"
-        android:background="@color/white"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_select_time"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:drawableEnd="@mipmap/nianshouru_xiabiaotupian"
-            android:drawablePadding="2dp"
-            android:gravity="center"
-            android:text="2019年"
-            android:textColor="#ff000000"
-            android:textSize="15sp" />
-
-
-        <com.kingyon.elevator.customview.MyTextItemView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:mainTitleColor="#474747"
-            app:mainTitleSize="19"
-            app:mainTitleStyle="blod"
-            app:mainTitleText="000.00"
-            app:mainTitleTop="10"
-            app:smallTitleColor="#9F9F9F"
-            app:smallTitleSize="14"
-            app:smallTitleStyle="normal"
-            app:smallTitleText="总收益(元)" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:orientation="horizontal">
+            android:layout_margin="28dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_select_time"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:drawableEnd="@mipmap/nianshouru_xiabiaotupian"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:text="2019年"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
+
 
             <com.kingyon.elevator.customview.MyTextItemView
-                android:id="@+id/user_income"
+                android:id="@+id/tv_user_all_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_weight="1"
-                app:mainTitleColor="#DD575F"
-                app:mainTitleSize="14"
-                app:mainTitleStyle="normal"
-                app:mainTitleText="000.00"
-                app:mainTitleTop="10"
-                app:smallTitleColor="#9F9F9F"
-                app:smallTitleSize="14"
-                app:smallTitleStyle="normal"
-                app:smallTitleText="收入(元)" />
-
-            <com.kingyon.elevator.customview.MyTextItemView
-                android:id="@+id/user_pay_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_weight="1"
+                android:layout_marginTop="20dp"
                 app:mainTitleColor="#474747"
-                app:mainTitleSize="14"
-                app:mainTitleStyle="normal"
+                app:mainTitleSize="19"
+                app:mainTitleStyle="blod"
                 app:mainTitleText="000.00"
                 app:mainTitleTop="10"
                 app:smallTitleColor="#9F9F9F"
                 app:smallTitleSize="14"
                 app:smallTitleStyle="normal"
-                app:smallTitleText="支出(元)" />
+                app:smallTitleText="总收益(元)" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:orientation="horizontal">
+
+                <com.kingyon.elevator.customview.MyTextItemView
+                    android:id="@+id/user_income"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    app:mainTitleColor="#DD575F"
+                    app:mainTitleSize="14"
+                    app:mainTitleStyle="normal"
+                    app:mainTitleText="000.00"
+                    app:mainTitleTop="10"
+                    app:smallTitleColor="#9F9F9F"
+                    app:smallTitleSize="14"
+                    app:smallTitleStyle="normal"
+                    app:smallTitleText="收入(元)" />
+
+                <com.kingyon.elevator.customview.MyTextItemView
+                    android:id="@+id/user_pay_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    app:mainTitleColor="#474747"
+                    app:mainTitleSize="14"
+                    app:mainTitleStyle="normal"
+                    app:mainTitleText="000.00"
+                    app:mainTitleTop="10"
+                    app:smallTitleColor="#9F9F9F"
+                    app:smallTitleSize="14"
+                    app:smallTitleStyle="normal"
+                    app:smallTitleText="支出(元)" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_current_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="每月收入"
-        android:textColor="#ff000000"
-        android:textSize="15sp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_current_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="每月收入"
+            android:textColor="#ff000000"
+            android:textSize="15sp" />
 
         <RelativeLayout
-            android:id="@+id/chart_container"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="16dp">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/line_chart_view"
+            <RelativeLayout
+                android:id="@+id/chart_container"
                 android:layout_width="match_parent"
-                android:layout_height="220dp" />
+                android:layout_height="220dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="16dp">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/line_chart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp" />
+            </RelativeLayout>
+
         </RelativeLayout>
-
-    </RelativeLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</com.leo.afbaselibrary.widgets.StateLayout>

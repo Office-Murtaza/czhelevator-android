@@ -18,7 +18,9 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
+import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
@@ -26,6 +28,7 @@ import com.kingyon.elevator.uis.dialogs.WithdrawSuccessDialog;
 import com.kingyon.elevator.uis.widgets.CustomImageSpan;
 import com.kingyon.elevator.uis.widgets.DecimalDigitsInputFilter;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
@@ -68,8 +71,17 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     TextView tvEnsure;
     @BindView(R.id.tv_tip)
     TextView tvTip;
+    @BindView(R.id.tv_shuilv)
+    TextView tv_shuilv;
+    @BindView(R.id.ed_input_cash_money)
+    EditText ed_input_cash_money;
+    @BindView(R.id.tv_shuihou_suode)
+    TextView tv_shuihou_suode;
+    @BindView(R.id.tv_cash_all_money)
+    TextView tv_cash_all_money;
 
-    private CooperationInfoEntity entity;
+
+    private CooperationInfoNewEntity entity;
 
     private OptionsPickerView wayPicker;
     private List<NormalParamEntity> wayOptions;
@@ -79,7 +91,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
         if (entity == null) {
-            entity = new CooperationInfoEntity();
+            entity = new CooperationInfoNewEntity();
         }
         return "申请提现";
     }
@@ -92,10 +104,10 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         preVRight.setText("提现记录");
-        tvTip.setText(getTipSpan(getString(R.string.cooperation_withdraw_tip)));
+        tvTip.setText(getString(R.string.cooperation_withdraw_tip));
         updateMoneyInfo();
-        etMoney.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
-        etMoney.addTextChangedListener(new TextWatcher() {
+        ed_input_cash_money.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
+        ed_input_cash_money.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -115,18 +127,20 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     money = 0D;
                 }
                 Double taxation = money * entity.getTaxation();
-                tvTaxation.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
+                tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
             }
         });
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
     }
 
     private void updateMoneyInfo() {
-        etMoney.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getUsefulIncome())));
-        tvTaxationPercent.setText(String.format("税点%s%%", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
+//        etMoney.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
+//        tvTaxationPercent.setText(String.format("税点%s%%", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
+        tv_shuilv.setText(String.format("税后所得(%s%%)", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
+        ed_input_cash_money.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
     }
 
-    @OnClick({R.id.pre_v_right, R.id.ll_way, R.id.tv_ensure})
+    @OnClick({R.id.pre_v_right, R.id.ll_way, R.id.tv_ensure, R.id.tv_confirm_cash, R.id.tv_cash_all_money})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_right:
@@ -137,6 +151,17 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.tv_ensure:
                 onEnsureClick();
+                break;
+            case R.id.tv_confirm_cash:
+                DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this, new InputPayPwdListener() {
+                    @Override
+                    public void userInputPassWord(String password) {
+                        DialogUtils.getInstance().hideInputPayPwdToCashDailog();
+                    }
+                });
+                break;
+            case R.id.tv_cash_all_money:
+                ed_input_cash_money.setText(entity.getRealizableIncome() + "");
                 break;
         }
     }
@@ -156,7 +181,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             showToast("提现金额必须大于0");
             return;
         }
-        if (money > entity.getUsefulIncome()) {
+        if (money > entity.getRealizableIncome()) {
             showToast("超过可提现金额");
             return;
         }
@@ -205,7 +230,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     public void onNext(String s) {
                         showToast("提交成功");
                         hideProgress();
-                        entity.setUsefulIncome(entity.getUsefulIncome() - money);
+                        entity.setRealizableIncome(entity.getRealizableIncome() - money);
                         updateMoneyInfo();
                         etMoney.setText("");
                         etMoney.setSelection(etMoney.getText().length());

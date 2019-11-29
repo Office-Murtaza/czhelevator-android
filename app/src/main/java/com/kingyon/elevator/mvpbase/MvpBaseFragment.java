@@ -1,5 +1,6 @@
 package com.kingyon.elevator.mvpbase;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.kingyon.elevator.R;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 /**
  * Created by zeng on 2017/7/17.
@@ -22,6 +25,9 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
     protected P presenter;
     public Boolean isLoadData = false;//是否已经加载数据，懒加载控制
     private boolean currentVisibleState = false;
+    StateLayout stateLayout;
+    protected ProgressDialog progressDialog;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +45,12 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
         presenter.attachView(this);
         initView(savedInstanceState);
         return contentView;
+    }
+
+
+    //如果是有刷新或者显示空内容的，则需要先初始化
+    public void setStateLayout() {
+        stateLayout = contentView.findViewById(R.id.stateLayout);
     }
 
     @Override
@@ -86,21 +98,92 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
 
     @Override
     public void showShortToast(String tipsContent) {
-        ToastUtils.showToast(getContext(),tipsContent, Toast.LENGTH_SHORT);
+        ToastUtils.showToast(getContext(), tipsContent, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void showLongToast(String tipsContent) {
-        ToastUtils.showToast(getContext(),tipsContent, Toast.LENGTH_LONG);
+        ToastUtils.showToast(getContext(), tipsContent, Toast.LENGTH_LONG);
     }
 
     @Override
     public void showEmptyContentView() {
-
+        if (stateLayout != null) {
+            stateLayout.showEmptyView();
+        }
     }
 
     @Override
     public void showEmptyContentView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showEmptyView(content);
+        }
+    }
 
+
+    @Override
+    public void showErrorView() {
+        if (stateLayout != null) {
+            stateLayout.showErrorView();
+        }
+    }
+
+    @Override
+    public void showErrorView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showErrorView(content);
+        }
+    }
+
+    @Override
+    public void showContentView() {
+        if (stateLayout != null) {
+            stateLayout.showContentView();
+        }
+    }
+
+    @Override
+    public void showProgressView() {
+        if (stateLayout != null) {
+            stateLayout.showProgressView();
+        }
+    }
+
+    @Override
+    public void showProgressView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showProgressView(content);
+        }
+    }
+
+    public void showProgressDialogView(String message, Boolean isCancel) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(isCancel);
+        }
+        progressDialog.setMessage(message != null ? message : "");
+        if (!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialogView() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+
+    @Override
+    public void showProgressDialog(String message, Boolean isCancel) {
+        showProgressDialogView(message, isCancel);
+    }
+
+
+    @Override
+    public void hideProgressDailog() {
+        hideProgressDialogView();
     }
 }

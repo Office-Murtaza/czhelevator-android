@@ -32,6 +32,7 @@ import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.DeviceDetailsInfo;
 import com.kingyon.elevator.entities.DeviceNumberEntity;
@@ -41,6 +42,7 @@ import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.FeedBackMessageEntity;
 import com.kingyon.elevator.entities.HomepageDataEntity;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
+import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.IncomeRecordEntity;
 import com.kingyon.elevator.entities.IncomeStatisticsEntity;
 import com.kingyon.elevator.entities.IndustryEntity;
@@ -51,6 +53,7 @@ import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.LoginResultEntity;
 import com.kingyon.elevator.entities.MateriaEntity;
+import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
 import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.entities.NormalMessageEntity;
@@ -104,6 +107,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.http.Field;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -964,21 +968,21 @@ public class NetService {
                         return identityEntityObservable;
                     }
                 })
-                .flatMap(new Func1<CooperationIdentityEntity, Observable<CooperationInfoEntity>>() {
+                .flatMap(new Func1<CooperationIdentityEntity, Observable<CooperationInfoNewEntity>>() {
                     @Override
-                    public Observable<CooperationInfoEntity> call(CooperationIdentityEntity cooperationIdentityEntity) {
-                        Observable<CooperationInfoEntity> observable;
+                    public Observable<CooperationInfoNewEntity> call(CooperationIdentityEntity cooperationIdentityEntity) {
+                        Observable<CooperationInfoNewEntity> observable;
                         if (entity.isBePartner() || (cooperationIdentityEntity != null && TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, cooperationIdentityEntity.getStatus()))) {
-                            observable = getApi().cooperationInfo();
+                            observable = getApi().cooperationInfoNew();
                         } else {
                             observable = Observable.just(null);
                         }
                         entity.setIdentity(cooperationIdentityEntity);
                         return observable;
                     }
-                }).flatMap(new Func1<CooperationInfoEntity, Observable<CooperationEntity>>() {
+                }).flatMap(new Func1<CooperationInfoNewEntity, Observable<CooperationEntity>>() {
                     @Override
-                    public Observable<CooperationEntity> call(CooperationInfoEntity cooperationInfoEntity) {
+                    public Observable<CooperationEntity> call(CooperationInfoNewEntity cooperationInfoEntity) {
                         entity.setInfo(cooperationInfoEntity);
                         return Observable.just(entity);
                     }
@@ -1167,5 +1171,38 @@ public class NetService {
     //@(?:Field|Query)\([\s\S].*?\)
     //@(?:GET|POST)\([\s\S].*?\)
     //
+
+
+    /**
+     * 获取收益记录 详情  总收益 收入 支出等
+     *
+     * @param date
+     * @return
+     */
+    public Observable<IncomeOrPayEntity> getIncomeAndPayByDate(String date) {
+        return addSchedulers(getApi().getIncomeAndPayByDate(date));
+    }
+
+
+    /**
+     * 获取月收入 或者支出的数据 填充图表
+     *
+     * @param date
+     * @return
+     */
+    public Observable<List<MonthOrDayIncomeOrPayEntity>> getMonthIncomeOrPayByDate(String type, String date) {
+        return addSchedulers(getApi().getMonthIncomeAndPayByDate(type, date));
+    }
+
+    /**
+     * 获取年收入 或者支出的数据 填充图表
+     *
+     * @param date
+     * @return
+     */
+    public Observable<List<MonthOrDayIncomeOrPayEntity>> getYearIncomeOrPayByDate(String type, String date) {
+        return addSchedulers(getApi().getYearIncomeAndPayByDate(type, date));
+    }
+
 }
 

@@ -54,6 +54,10 @@ public class SettingActivity extends BaseSwipeBackActivity {
     TextView tvLogout;
     @BindView(R.id.ll_user_privacy)
     LinearLayout ll_user_privacy;
+    @BindView(R.id.security_setting)
+    LinearLayout security_setting;
+
+
 
 
     @Override
@@ -73,7 +77,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
         requestUpdate(false);
     }
 
-    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout,R.id.ll_user_privacy})
+    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout,R.id.ll_user_privacy,R.id.security_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cache:
@@ -94,6 +98,9 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.ll_user_privacy:
                 AgreementActivity.start(this, "用户隐私政策", Constants.AgreementType.USER_RULE.getValue());
+                break;
+            case R.id.security_setting:
+
                 break;
         }
     }

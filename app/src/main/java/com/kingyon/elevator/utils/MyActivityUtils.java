@@ -97,4 +97,21 @@ public class MyActivityUtils {
         }
     }
 
+    /**
+     * 带一个参数的跳转
+     * @param context
+     * @param classes
+     */
+    public static void goActivity(Context context,Class classes, Bundle bundle,String  value1) {
+        try {
+            Intent intent = new Intent(context, classes);
+            intent.putExtras(bundle);
+            intent.putExtra("value1", value1);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            ToastUtils.showShort("跳转失败，请重试");
+            LogUtils.e("跳转失败："+e.toString());
+        }
+    }
+
 }

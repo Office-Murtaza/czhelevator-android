@@ -24,6 +24,8 @@ public class CooperationInfoEntity implements Parcelable {
     private double propertyPay;
     private double networkPay;
 
+
+
     public float getTaxation() {
         return taxation;
     }

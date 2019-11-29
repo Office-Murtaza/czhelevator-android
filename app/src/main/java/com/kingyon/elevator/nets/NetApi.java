@@ -24,9 +24,9 @@ public interface NetApi {
     String socketDomainName = "ws://219.151.9.234:8282";
 
     //    String domainName = "http://rap2api.taobao.org/app/mock/121571/";
-    String domainName = "http://api.pddtv.cn/";//外网正式服地址
-        //String domainName = "http://pddapi.scjiazhidao.com/";//外网测试服地址
-       //String domainName = "http://192.168.1.16:1510/";  //公司测试服
+    //String domainName = "http://api.pddtv.cn/";//外网正式服地址
+    //String domainName = "http://pddapi.scjiazhidao.com/";//外网测试服地址
+    String domainName = "http://192.168.1.16:1510/";  //公司测试服
     //    String domainName = "http://192.168.0.50:1510/";
 //    String domainName = "http://192.168.0.86:1510/"; //白小川
     //    String domainName = "http://192.168.0.104:2510/";//代国伟
@@ -439,8 +439,45 @@ public interface NetApi {
     @POST("partner/getInfo")
     Observable<CooperationInfoEntity> cooperationInfo();
 
+    //新版合伙人查询接口
+    @POST("partner/getPartnerInfo")
+    Observable<CooperationInfoNewEntity> cooperationInfoNew();
+
     @GET("partner/applyStatus")
     Observable<CooperationIdentityEntity> cooperationIentityInfo();
+
+
+    /**
+     * 获取收益记录里的总收益  收入 支出三个数据
+     *
+     * @param date
+     * @return
+     */
+    @POST("partner/getIncomeAndPayByDate")
+    @FormUrlEncoded
+    Observable<IncomeOrPayEntity> getIncomeAndPayByDate(@Field("date") String date);
+
+
+    /**
+     * 获取月支出 收入数据
+     *
+     * @param date
+     * @return
+     */
+    @POST("partner/getIncomePayDataPerDay")
+    @FormUrlEncoded
+    Observable<List<MonthOrDayIncomeOrPayEntity>> getMonthIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+
+    /**
+     * 获取年收入 支出数据
+     *
+     * @param date
+     * @return
+     */
+    @POST("partner/getIncomePayDataPerMonth")
+    @FormUrlEncoded
+    Observable<List<MonthOrDayIncomeOrPayEntity>> getYearIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+
 
     @POST("partner/apply")
     @FormUrlEncoded

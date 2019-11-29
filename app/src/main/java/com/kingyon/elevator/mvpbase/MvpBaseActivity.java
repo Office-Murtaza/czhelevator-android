@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.umeng.analytics.MobclickAgent;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -15,6 +17,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBackActivity implements BaseView {
     protected P presenter;
+    StateLayout stateLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,6 +27,11 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
         setSwipeBackEnable(true);
         presenter = initPresenter();
         getLifecycle().addObserver(presenter);
+    }
+
+    //如果是有刷新或者显示空内容的，则需要先初始化
+    public void setStateLayout(){
+        stateLayout = (StateLayout) findViewById(R.id.stateLayout);
     }
 
     @Override
@@ -99,11 +107,62 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
 
     @Override
     public void showEmptyContentView() {
-
+        if (stateLayout != null) {
+            stateLayout.showEmptyView();
+        }
     }
 
     @Override
     public void showEmptyContentView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showEmptyView(content);
+        }
+    }
+
+
+    @Override
+    public void showErrorView() {
+        if (stateLayout != null) {
+            stateLayout.showErrorView();
+        }
+    }
+
+    @Override
+    public void showErrorView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showErrorView(content);
+        }
+    }
+
+    @Override
+    public void showContentView() {
+        if (stateLayout != null) {
+            stateLayout.showContentView();
+        }
+    }
+
+    @Override
+    public void showProgressView() {
+        if (stateLayout != null) {
+            stateLayout.showProgressView();
+        }
+    }
+
+    @Override
+    public void showProgressView(String content) {
+        if (stateLayout != null) {
+            stateLayout.showProgressView(content);
+        }
+    }
+
+
+    @Override
+    public void showProgressDialog(String message, Boolean isCancel) {
+
+    }
+
+    @Override
+    public void hideProgressDailog() {
 
     }
 }

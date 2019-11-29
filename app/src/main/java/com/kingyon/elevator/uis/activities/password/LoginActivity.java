@@ -1,5 +1,6 @@
 package com.kingyon.elevator.uis.activities.password;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,19 +18,23 @@ import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.LoginResultEntity;
 import com.kingyon.elevator.entities.RegisterIdEntity;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.library.social.AuthorizeUser;
 import com.kingyon.library.social.AuthorizeUtils;
 import com.leo.afbaselibrary.nets.callbacks.AbsAPICallback;
+import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,6 +65,8 @@ public class LoginActivity extends BaseSwipeBackActivity implements AuthorizeUti
     ImageView imgSina;
     @BindView(R.id.tv_register)
     TextView tvRegister;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     private AuthorizeUtils authorizeUtils;
     private String oldUserRole;
@@ -78,8 +85,16 @@ public class LoginActivity extends BaseSwipeBackActivity implements AuthorizeUti
         return R.layout.activity_login;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        stateLayout.showProgressView();
+        stateLayout.setErrorAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadUserPrivacy();
+            }
+        });
         DataSharedPreferences.clearLoginInfo();
         etPassword.setOnTouchListener(new View.OnTouchListener() {
 
@@ -106,6 +121,7 @@ public class LoginActivity extends BaseSwipeBackActivity implements AuthorizeUti
                 return false;
             }
         });
+        loadUserPrivacy();
     }
 
     @OnClick({R.id.tv_reset, R.id.tv_login, R.id.tv_register, R.id.img_wx, R.id.img_qq, R.id.img_sina, R.id.ll_agreement, R.id.tv_agreement})
@@ -289,5 +305,43 @@ public class LoginActivity extends BaseSwipeBackActivity implements AuthorizeUti
         imgWx.setEnabled(enabled);
         imgQq.setEnabled(enabled);
         imgSina.setEnabled(enabled);
+    }
+
+    /**
+     * 弹出用户协议框，YYB审核需要做首次启动弹出处理
+     */
+    private void loadUserPrivacy() {
+        Boolean isShow = DataSharedPreferences.getBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
+        if (!isShow) {
+            stateLayout.showProgressView();
+            NetService.getInstance().richText(Constants.AgreementType.USER_RULE.getValue())
+                    .compose(this.<DataEntity<String>>bindLifeCycle())
+                    .subscribe(new CustomApiCallback<DataEntity<String>>() {
+                        @Override
+                        protected void onResultError(ApiException ex) {
+                            // showToast("请检查网络后重试");
+                            stateLayout.showErrorView("请检查网络后重试");
+                        }
+
+                        @Override
+                        public void onNext(DataEntity<String> dataEntity) {
+                            DialogUtils.getInstance().showUserPrivacyTipsDialog(LoginActivity.this, dataEntity.getData(), new PrivacyTipsListener() {
+                                @Override
+                                public void onNoAgree() {
+                                    //退出登录界面
+                                    finish();
+                                }
+
+                                @Override
+                                public void onAgree() {
+
+                                }
+                            });
+                            stateLayout.showContentView();
+                        }
+                    });
+        } else {
+            stateLayout.showContentView();
+        }
     }
 }

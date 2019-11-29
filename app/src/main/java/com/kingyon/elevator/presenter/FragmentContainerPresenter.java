@@ -7,6 +7,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -46,7 +47,7 @@ public class FragmentContainerPresenter extends BasePresenter<FragmentContainerV
                     @Override
                     public void onNext(CooperationEntity cooperationEntity) {
                         CooperationIdentityEntity identity = cooperationEntity.getIdentity();
-                        CooperationInfoEntity info = cooperationEntity.getInfo();
+                        CooperationInfoNewEntity info = cooperationEntity.getInfo();
                         if (!cooperationEntity.isBePartner() && identity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

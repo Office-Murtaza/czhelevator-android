@@ -2,14 +2,14 @@ package com.kingyon.elevator.entities;
 
 public class CooperationEntity {
     private boolean bePartner;
-    private CooperationInfoEntity info;
+    private CooperationInfoNewEntity info;
     private CooperationIdentityEntity identity;
 
-    public CooperationInfoEntity getInfo() {
+    public CooperationInfoNewEntity getInfo() {
         return info;
     }
 
-    public void setInfo(CooperationInfoEntity info) {
+    public void setInfo(CooperationInfoNewEntity info) {
         this.info = info;
     }
 

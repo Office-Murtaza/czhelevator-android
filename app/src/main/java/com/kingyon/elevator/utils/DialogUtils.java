@@ -2,9 +2,14 @@ package com.kingyon.elevator.utils;
 
 import android.content.Context;
 
+import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
+import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
 import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.SelectDateDialog;
+import com.kingyon.elevator.interfaces.InputPayPwdListener;
+import com.kingyon.elevator.interfaces.PrivacyTipsListener;
+import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 
 /**
  * Date:2019/11/21
@@ -19,6 +24,8 @@ public class DialogUtils {
 
     private UserPrivacyTipsDialog userPrivacyTipsDialog;
     private SelectDateDialog selectDateDialog;
+    private SelectCashBindTypeDialog selectCashBindTypeDialog;
+    private InputPayPwdToCashDailog inputPayPwdToCashDailog;
 
     private DialogUtils() {
 
@@ -42,14 +49,18 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showUserPrivacyTipsDialog(Context context, String data) {
-        if (userPrivacyTipsDialog != null && userPrivacyTipsDialog.isShowing()) {
-            userPrivacyTipsDialog.dismiss();
-            userPrivacyTipsDialog = null;
+    public void showUserPrivacyTipsDialog(Context context, String data, PrivacyTipsListener privacyTipsListener) {
+        try {
+            if (userPrivacyTipsDialog != null && userPrivacyTipsDialog.isShowing()) {
+                userPrivacyTipsDialog.dismiss();
+                userPrivacyTipsDialog = null;
+            }
+            userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data,privacyTipsListener);
+            userPrivacyTipsDialog.setCancelable(true);
+            userPrivacyTipsDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data);
-        userPrivacyTipsDialog.setCancelable(true);
-        userPrivacyTipsDialog.show();
     }
 
     public void hideUserPrivacyTipsDialog() {
@@ -59,7 +70,7 @@ public class DialogUtils {
                 userPrivacyTipsDialog = null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -74,7 +85,7 @@ public class DialogUtils {
             selectDateDialog.dismiss();
             selectDateDialog = null;
         }
-        selectDateDialog = new SelectDateDialog(context,datePickerListener);
+        selectDateDialog = new SelectDateDialog(context, datePickerListener);
         selectDateDialog.setCancelable(true);
         selectDateDialog.show();
     }
@@ -84,6 +95,60 @@ public class DialogUtils {
             if (selectDateDialog != null) {
                 selectDateDialog.dismiss();
                 selectDateDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 显示绑定账号类型选择框
+     *
+     * @param context
+     */
+    public void showSelectCashBindTypeDialog(Context context, SelectCashBindTypeListener selectCashBindTypeListener) {
+        if (selectCashBindTypeDialog != null && selectCashBindTypeDialog.isShowing()) {
+            selectCashBindTypeDialog.dismiss();
+            selectCashBindTypeDialog = null;
+        }
+        selectCashBindTypeDialog = new SelectCashBindTypeDialog(context, selectCashBindTypeListener);
+        selectCashBindTypeDialog.setCancelable(true);
+        selectCashBindTypeDialog.show();
+    }
+
+    public void hideSelectCashBindTypeDialog() {
+        try {
+            if (selectCashBindTypeDialog != null) {
+                selectCashBindTypeDialog.dismiss();
+                selectCashBindTypeDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 弹出密码验证输入框
+     *
+     * @param context
+     */
+    public void showInputPayPwdToCashDailog(Context context, InputPayPwdListener inputPayPwdListener) {
+        if (inputPayPwdToCashDailog != null && inputPayPwdToCashDailog.isShowing()) {
+            inputPayPwdToCashDailog.dismiss();
+            inputPayPwdToCashDailog = null;
+        }
+        inputPayPwdToCashDailog = new InputPayPwdToCashDailog(context, inputPayPwdListener);
+        inputPayPwdToCashDailog.setCancelable(true);
+        inputPayPwdToCashDailog.show();
+    }
+
+    public void hideInputPayPwdToCashDailog() {
+        try {
+            if (inputPayPwdToCashDailog != null) {
+                inputPayPwdToCashDailog.dismiss();
+                inputPayPwdToCashDailog = null;
             }
         } catch (Exception e) {
             e.printStackTrace();

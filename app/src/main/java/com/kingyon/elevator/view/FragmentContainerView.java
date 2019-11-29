@@ -2,6 +2,7 @@ package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 /**
@@ -13,5 +14,5 @@ public interface FragmentContainerView extends BaseView {
     void loadingComplete(int stateCode);
 
 
-    void  goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoEntity info);
+    void  goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info);
 }

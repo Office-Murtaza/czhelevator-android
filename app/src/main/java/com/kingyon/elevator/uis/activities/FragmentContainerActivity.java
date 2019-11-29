@@ -5,11 +5,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.FragmentContainerPresenter;
 import com.kingyon.elevator.uis.fragments.user.CashMethodSettingFragment;
@@ -38,7 +41,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     String type = "";
-    private CooperationInfoEntity entity;
+    private CooperationInfoNewEntity entity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
             case FragmentConstants.CashMethodSettingFragment:
                 my_action_bar.setTitle("提现方式");
                 entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
+                //LogUtils.e("接收到的参数：", GsonUtils.toJson(entity));
                 fragmentTransaction.replace(R.id.fragment_container, CashMethodSettingFragment.newInstance(entity));
                 fragmentTransaction.commit();
                 break;
@@ -147,7 +151,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
     }
 
     @Override
-    public void goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoEntity info) {
+    public void goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info) {
 
     }
 }

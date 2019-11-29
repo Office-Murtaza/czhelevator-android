@@ -14,6 +14,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.HtmlFormUtil;
 
@@ -32,11 +34,16 @@ public class UserPrivacyTipsDialog extends Dialog {
     WebView webview;
     @BindView(R.id.tv_i_konw)
     TextView tv_i_konw;
+    @BindView(R.id.tv_no_agree)
+    TextView tv_no_agree;
     String data;
+    PrivacyTipsListener privacyTipsListener;
 
-    public UserPrivacyTipsDialog(Context context,String data) {
+
+    public UserPrivacyTipsDialog(Context context, String data, PrivacyTipsListener privacyTipsListener) {
         super(context, R.style.MyDialog);
         this.data = data;
+        this.privacyTipsListener = privacyTipsListener;
     }
 
 
@@ -58,7 +65,17 @@ public class UserPrivacyTipsDialog extends Dialog {
         webview.setWebChromeClient(new WebChromeClient());
         String s = HtmlFormUtil.dealHtml(data);
         webview.loadDataWithBaseURL("about:blank", s, "text/html", "utf-8", null);
-        tv_i_konw.setOnClickListener(v -> DialogUtils.getInstance().hideUserPrivacyTipsDialog());
+        tv_i_konw.setOnClickListener(v -> {
+            privacyTipsListener.onAgree();
+            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, true);
+            DialogUtils.getInstance().hideUserPrivacyTipsDialog();
+        });
+        tv_no_agree.setOnClickListener(v -> {
+            //用户未同意，会一直提示
+            privacyTipsListener.onNoAgree();
+            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
+            DialogUtils.getInstance().hideUserPrivacyTipsDialog();
+        });
     }
 
 
