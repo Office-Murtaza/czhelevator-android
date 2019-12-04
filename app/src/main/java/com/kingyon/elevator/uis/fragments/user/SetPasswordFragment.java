@@ -12,20 +12,22 @@ import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.SetPasswordPresenter;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
 import com.kingyon.elevator.utils.KeyBoardUtils;
+import com.kingyon.elevator.view.SetPasswordView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 设置密码界面
+ * 设置支付密码界面
  */
-public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> {
+public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> implements SetPasswordView {
 
     @BindView(R.id.ppe_pwd_text)
     PayPasswordEditView ppe_pwd_text;
     @BindView(R.id.tv_input_tips)
     TextView tv_input_tips;
 
+    private String from = "";
 
     private String lastPayPwd = "";
 
@@ -38,6 +40,7 @@ public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> {
     @Override
     public void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this, getContentView());
+        from = getArguments().getString("from");
         ppe_pwd_text.setPayPasswordListener(pwd -> {
             if (lastPayPwd.isEmpty()) {
                 lastPayPwd = pwd;
@@ -49,8 +52,7 @@ public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> {
                 if (lastPayPwd.equals(pwd)) {
                     //两次密码相同
                     KeyBoardUtils.closeKeybord(ppe_pwd_text.getEt_input_password(), getActivity());
-                    startActivity(new Intent(getActivity(), CooperationActivity.class));
-                    getActivity().finish();
+                    presenter.initPayPassword(pwd);
                 } else {
                     lastPayPwd = "";
                     showShortToast("两次输入的支付密码不一致，请重新输入");
@@ -69,10 +71,9 @@ public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> {
         return R.layout.fragment_set_password;
     }
 
-    public static SetPasswordFragment newInstance() {
-
+    public static SetPasswordFragment newInstance(String from) {
         Bundle args = new Bundle();
-
+        args.putString("from", from);
         SetPasswordFragment fragment = new SetPasswordFragment();
         fragment.setArguments(args);
         return fragment;
@@ -84,4 +85,11 @@ public class SetPasswordFragment extends MvpBaseFragment<SetPasswordPresenter> {
         KeyBoardUtils.closeKeybord(ppe_pwd_text.getEt_input_password(), getActivity());
     }
 
+    @Override
+    public void passwordInitSuccess() {
+        if (from.equals("partner")) {
+            startActivity(new Intent(getActivity(), CooperationActivity.class));
+        }
+        getActivity().finish();
+    }
 }

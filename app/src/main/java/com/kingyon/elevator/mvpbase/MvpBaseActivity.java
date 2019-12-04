@@ -1,11 +1,14 @@
 package com.kingyon.elevator.mvpbase;
 
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.widget.Toast;
 
-import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.leo.afbaselibrary.utils.ActivityUtil;
@@ -18,19 +21,22 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBackActivity implements BaseView {
     protected P presenter;
     StateLayout stateLayout;
+    protected ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyStatusBarUtils.setStatusBar(this,"#ffffff");
+        MyStatusBarUtils.setStatusBar(this, "#ffffff");
         ActivityUtil.addActivity(this);
         setSwipeBackEnable(true);
+        ToastUtils.setGravity(Gravity.CENTER,0,0);
         presenter = initPresenter();
+        presenter.attachView(this);
         getLifecycle().addObserver(presenter);
     }
 
     //如果是有刷新或者显示空内容的，则需要先初始化
-    public void setStateLayout(){
+    public void setStateLayout() {
         stateLayout = (StateLayout) findViewById(R.id.stateLayout);
     }
 
@@ -59,6 +65,7 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
             presenter.detachView();//在presenter中解绑释放view
             presenter = null;
         }
+        hideProgressDialogView();
     }
 
     /**
@@ -97,12 +104,12 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
 
     @Override
     public void showShortToast(String tipsContent) {
-
+       ToastUtils.showShort(tipsContent);
     }
 
     @Override
     public void showLongToast(String tipsContent) {
-
+        ToastUtils.showLong(tipsContent);
     }
 
     @Override
@@ -155,14 +162,34 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
         }
     }
 
+    public void showProgressDialogView(String message, Boolean isCancel) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(isCancel);
+        }
+        progressDialog.setMessage(message != null ? message : "");
+        if (!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialogView() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
     @Override
     public void showProgressDialog(String message, Boolean isCancel) {
-
+        showProgressDialogView(message, isCancel);
     }
 
     @Override
     public void hideProgressDailog() {
-
+        hideProgressDialogView();
     }
+
+
 }

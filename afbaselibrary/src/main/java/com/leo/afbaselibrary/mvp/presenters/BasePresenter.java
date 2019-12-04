@@ -8,6 +8,7 @@ import android.view.View;
 
 
 import com.leo.afbaselibrary.R;
+import com.leo.afbaselibrary.mvp.views.IBaseView;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
 
@@ -15,7 +16,7 @@ import com.leo.afbaselibrary.utils.ToastUtils;
  * created by arvin on 16/10/24 14:47
  * email：1035407623@qq.com
  */
-public class BasePresenter {
+public class BasePresenter<S extends IBaseView> {
 
     private FragmentActivity mActivity;
     private View mRootView;

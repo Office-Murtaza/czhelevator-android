@@ -466,7 +466,7 @@ public interface NetApi {
      */
     @POST("partner/getIncomePayDataPerDay")
     @FormUrlEncoded
-    Observable<List<MonthOrDayIncomeOrPayEntity>> getMonthIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+    Observable<MonthOrDayIncomeOrPayEntity> getMonthIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
 
     /**
      * 获取年收入 支出数据
@@ -476,7 +476,7 @@ public interface NetApi {
      */
     @POST("partner/getIncomePayDataPerMonth")
     @FormUrlEncoded
-    Observable<List<MonthOrDayIncomeOrPayEntity>> getYearIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+    Observable<MonthOrDayIncomeOrPayEntity> getYearIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
 
 
     @POST("partner/apply")
@@ -552,4 +552,131 @@ public interface NetApi {
 
     @POST("property/deviceList")
     Observable<List<PointItemEntity>> propertyDeviceList();
+
+    /**
+     * 根据日期查询合伙人支出详情列表
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/getPayDetailedList")
+    @FormUrlEncoded
+    Observable<List<IncomeDetailsEntity>> getPayDetailedList(@Field("start") String startPosition, @Field("size") String size, @Field("date") String date);
+
+
+    /**
+     * 根据日期查询合伙人收入详情列表
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/getIncomeDetailedList")
+    @FormUrlEncoded
+    Observable<List<IncomeDetailsEntity>> getIncomeDetailedList(@Field("start") String startPosition, @Field("size") String size, @Field("date") String date);
+
+    /**
+     * 查询昨日收益
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/getYesterdayIncomeDetailedList")
+    @FormUrlEncoded
+    Observable<List<YesterdayIncomeEntity>> getYesterdayIncomeDetailedList(@Field("start") String startPosition, @Field("size") String size);
+
+    /**
+     * 查询已提现的数据
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/getCashedList")
+    @FormUrlEncoded
+    Observable<List<YesterdayIncomeEntity>> getCashedList(@Field("start") String startPosition, @Field("size") String size);
+
+
+    /**
+     * 查询提现绑定的账号
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/cashType/getUserCashTypeList")
+    @FormUrlEncoded
+    Observable<List<BindAccountEntity>> getUserCashTypeList(@Field("start") String startPosition, @Field("size") String size);
+
+    /**
+     * 绑定提现账号
+     *
+     * @param cashAccount 账号
+     * @param cashType    提现类型 1银行卡 2支付宝
+     * @param cashName    名字
+     * @param openingBank 开户行
+     * @return
+     */
+    @POST("partner/cashType/add")
+    @FormUrlEncoded
+    Observable<String> addCashAccount(@Field("cashAccount") String cashAccount, @Field("cashType") String cashType
+            , @Field("cashName") String cashName, @Field("openingBank") String openingBank);
+
+
+    /**
+     * 初始化支付密码
+     *
+     * @param password 密码
+     * @return
+     */
+    @POST("user/pay/initPassword")
+    @FormUrlEncoded
+    Observable<String> initPayPassword(@Field("password") String password);
+
+
+    /**
+     * 原密码的方式修改支付密码
+     *
+     * @param oldPassword 旧密码
+     * @param newPasswrod 新密码
+     * @return
+     */
+    @POST("user/pay/changePasswordByOld")
+    @FormUrlEncoded
+    Observable<String> changePasswordByOld(@Field("oldPassword") String oldPassword, @Field("newPassword") String newPasswrod);
+
+
+    /**
+     * 验证码的方式修改支付密码
+     *
+     * @param phone     手机号
+     * @param vaildCode 验证码
+     * @param password  密码
+     * @return
+     */
+    @POST("user/pay/changePasswordByCode")
+    @FormUrlEncoded
+    Observable<String> changePasswordByCode(@Field("phone") String phone, @Field("vaildCode") String vaildCode, @Field("password") String password);
+
+
+    /**
+     * 验证是否已经设置支付密码
+     * @return
+     */
+    @POST("user/pay/vaildInit")
+    Observable<Boolean> vaildInitPayPwd();
+
+
+    /**
+     * 验证码的方式修改支付密码
+     * @param password  支付密码
+     * @return
+     */
+    @POST("user/pay/vaildPassword")
+    @FormUrlEncoded
+    Observable<String> vaildPasswordIsRight(@Field("password") String password);
+
+
 }

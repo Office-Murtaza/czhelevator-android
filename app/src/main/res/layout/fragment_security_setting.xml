@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    tools:context=".uis.fragments.user.SecuritySettingFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/main_bg_color" />
+
+        <LinearLayout
+            android:id="@+id/password_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="安全设置"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawableRight="@drawable/ic_user_right"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:text="密码、指纹"
+                android:textColor="#ABABAB"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+
+        <LinearLayout
+            android:id="@+id/finger_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="指纹识别"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/finger_status"
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawableRight="@drawable/ic_user_right"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:text="未开启"
+                android:textColor="#ABABAB"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+
+    </LinearLayout>
+
+</LinearLayout>

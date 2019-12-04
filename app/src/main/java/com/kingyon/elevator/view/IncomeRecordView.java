@@ -1,6 +1,7 @@
 package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
+import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 /**
@@ -12,5 +13,15 @@ public interface IncomeRecordView extends BaseView {
     void showIncomeOrPayData(IncomeOrPayEntity incomeOrPayEntity);
 
 
+    /**
+     * 显示图表数据
+     * @param monthOrDayIncomeOrPayEntity
+     */
+    void showChartData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity);
 
+
+    void  showChartLoadingTips(String tips);
+
+
+    void  hideChartLoadingTips();
 }

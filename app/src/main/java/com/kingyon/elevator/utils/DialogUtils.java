@@ -2,12 +2,18 @@ package com.kingyon.elevator.utils;
 
 import android.content.Context;
 
+import androidx.annotation.ColorRes;
+
+import com.kingyon.elevator.customview.EditSuccessTipsDialog;
+import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
 import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
 import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.SelectDateDialog;
+import com.kingyon.elevator.interfaces.FingerCheckListener;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
+import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 
@@ -26,6 +32,8 @@ public class DialogUtils {
     private SelectDateDialog selectDateDialog;
     private SelectCashBindTypeDialog selectCashBindTypeDialog;
     private InputPayPwdToCashDailog inputPayPwdToCashDailog;
+    private FingerCheckDailog fingerCheckDailog;
+    private EditSuccessTipsDialog editSuccessTipsDialog;
 
     private DialogUtils() {
 
@@ -55,7 +63,7 @@ public class DialogUtils {
                 userPrivacyTipsDialog.dismiss();
                 userPrivacyTipsDialog = null;
             }
-            userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data,privacyTipsListener);
+            userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data, privacyTipsListener);
             userPrivacyTipsDialog.setCancelable(true);
             userPrivacyTipsDialog.show();
         } catch (Exception e) {
@@ -149,6 +157,70 @@ public class DialogUtils {
             if (inputPayPwdToCashDailog != null) {
                 inputPayPwdToCashDailog.dismiss();
                 inputPayPwdToCashDailog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 指纹识别验证框
+     *
+     * @param context
+     */
+    public void showFingerCheckDailog(Context context, FingerCheckListener fingerCheckListener) {
+        if (fingerCheckDailog != null && fingerCheckDailog.isShowing()) {
+            fingerCheckDailog.dismiss();
+            fingerCheckDailog = null;
+        }
+        fingerCheckDailog = new FingerCheckDailog(context, fingerCheckListener);
+        fingerCheckDailog.setCancelable(false);
+        fingerCheckDailog.show();
+    }
+
+    public void hideFingerCheckDailog() {
+        try {
+            if (fingerCheckDailog != null) {
+                fingerCheckDailog.dismiss();
+                fingerCheckDailog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setFingerTips(String tip, @ColorRes int colorId) {
+        try {
+            if (fingerCheckDailog != null) {
+                fingerCheckDailog.setTip(tip, colorId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 显示修改成功对话框
+     *
+     * @param context
+     */
+    public void showEditSuccessTipsDialog(Context context, OnItemClick onItemClick) {
+        if (editSuccessTipsDialog != null && editSuccessTipsDialog.isShowing()) {
+            editSuccessTipsDialog.dismiss();
+            editSuccessTipsDialog = null;
+        }
+        editSuccessTipsDialog = new EditSuccessTipsDialog(context, onItemClick);
+        editSuccessTipsDialog.setCancelable(false);
+        editSuccessTipsDialog.show();
+    }
+
+    public void hideEditSuccessTipsDialog() {
+        try {
+            if (editSuccessTipsDialog != null) {
+                editSuccessTipsDialog.dismiss();
+                editSuccessTipsDialog = null;
             }
         } catch (Exception e) {
             e.printStackTrace();

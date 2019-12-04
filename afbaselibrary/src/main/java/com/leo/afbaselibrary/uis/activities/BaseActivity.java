@@ -10,13 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.leo.afbaselibrary.R;
 import com.leo.afbaselibrary.mvp.presenters.BasePresenter;
@@ -27,8 +25,6 @@ import com.leo.afbaselibrary.utils.EasyPermissions;
 import com.leo.afbaselibrary.utils.RxCheckLifeCycleTransformer;
 import com.leo.afbaselibrary.utils.statusbar.Eyes;
 import com.umeng.analytics.MobclickAgent;
-
-import org.litepal.util.LogUtil;
 
 import java.util.List;
 
@@ -42,7 +38,7 @@ import rx.subjects.BehaviorSubject;
 public abstract class BaseActivity extends AppCompatActivity implements IBaseView, EasyPermissions.PermissionCallbacks {
 
     private static final String TAG = "BaseActivity";
-    private BasePresenter mPresenter;
+    private BasePresenter<IBaseView> mPresenter;
     protected BehaviorSubject<RxCheckLifeCycleTransformer.LifeCycleEvent> eventBehaviorSubject = BehaviorSubject.create();
 
     /**
@@ -57,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
         super.onCreate(savedInstanceState);
         statusbarLightMode();
         setContentView(getContentViewId());
-        mPresenter = new BasePresenter(this);
+        mPresenter = new BasePresenter<IBaseView>(this);
         ButterKnife.bind(this);
         ActivityUtil.addActivity(this);
         init(savedInstanceState);

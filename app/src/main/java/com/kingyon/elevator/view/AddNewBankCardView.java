@@ -7,4 +7,6 @@ import com.kingyon.elevator.mvpbase.BaseView;
  * Email : 1531603384@qq.com
  */
 public interface AddNewBankCardView extends BaseView {
+
+    void bindSuccess(String bingType,String account, String name, String kaihuhang);
 }

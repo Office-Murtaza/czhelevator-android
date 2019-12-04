@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical"
+    tools:context=".uis.fragments.user.EditPassWordFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/main_bg_color" />
+
+        <LinearLayout
+            android:id="@+id/reset_login_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="重置登录密码"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawableRight="@drawable/ic_user_right"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#ABABAB"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+
+        <LinearLayout
+            android:id="@+id/reset_pay_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="重置支付密码"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/finger_status"
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawableRight="@drawable/ic_user_right"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#ABABAB"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

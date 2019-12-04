@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.activities.user;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -19,6 +22,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.utils.GlideCacheUtil;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
@@ -58,8 +62,6 @@ public class SettingActivity extends BaseSwipeBackActivity {
     LinearLayout security_setting;
 
 
-
-
     @Override
     protected String getTitleText() {
         return "设置";
@@ -77,7 +79,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
         requestUpdate(false);
     }
 
-    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout,R.id.ll_user_privacy,R.id.security_setting})
+    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout, R.id.ll_user_privacy, R.id.security_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cache:
@@ -100,7 +102,22 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 AgreementActivity.start(this, "用户隐私政策", Constants.AgreementType.USER_RULE.getValue());
                 break;
             case R.id.security_setting:
-
+                if (DataSharedPreferences.getUserBean() == null) {
+                    try {
+                        Context currentActivity = ActivityUtil.getCurrentActivity();
+                        if (currentActivity != null) {
+                            Intent intent = new Intent(currentActivity, Class.forName("com.kingyon.elevator.uis.activities.password.LoginActivity"));
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("value_1", true);
+                            intent.putExtras(bundle);
+                            currentActivity.startActivity(intent);//只释放这一行
+                        }
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                } else {
+                    MyActivityUtils.goFragmentContainerActivity(SettingActivity.this, FragmentConstants.SecuritySettingFragment);
+                }
                 break;
         }
     }
@@ -138,6 +155,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
                     @Override
                     public void onNext(String s) {
                         DataSharedPreferences.clearLoginInfo();
+                        DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
                         tvLogout.setEnabled(true);
                         hideProgress();
                         ActivityUtil.finishAllNotMain();

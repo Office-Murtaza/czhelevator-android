@@ -23,6 +23,7 @@ import com.kingyon.elevator.entities.AdvertisionEntity;
 import com.kingyon.elevator.entities.AnnouncementEntity;
 import com.kingyon.elevator.entities.AvInfoEntity;
 import com.kingyon.elevator.entities.BannerEntity;
+import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CameraBrandEntity;
 import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.entities.CellDeviceNumberEntity;
@@ -42,6 +43,7 @@ import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.FeedBackMessageEntity;
 import com.kingyon.elevator.entities.HomepageDataEntity;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
+import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.IncomeRecordEntity;
 import com.kingyon.elevator.entities.IncomeStatisticsEntity;
@@ -74,6 +76,7 @@ import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
+import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -1190,7 +1193,7 @@ public class NetService {
      * @param date
      * @return
      */
-    public Observable<List<MonthOrDayIncomeOrPayEntity>> getMonthIncomeOrPayByDate(String type, String date) {
+    public Observable<MonthOrDayIncomeOrPayEntity> getMonthIncomeOrPayByDate(String type, String date) {
         return addSchedulers(getApi().getMonthIncomeAndPayByDate(type, date));
     }
 
@@ -1200,9 +1203,115 @@ public class NetService {
      * @param date
      * @return
      */
-    public Observable<List<MonthOrDayIncomeOrPayEntity>> getYearIncomeOrPayByDate(String type, String date) {
+    public Observable<MonthOrDayIncomeOrPayEntity> getYearIncomeOrPayByDate(String type, String date) {
         return addSchedulers(getApi().getYearIncomeAndPayByDate(type, date));
     }
 
+    /**
+     * 根据日期查询合伙人支出详情列表
+     *
+     * @param date
+     * @return
+     */
+    public Observable<List<IncomeDetailsEntity>> getPayDetailedList(String startPosition, String size, String date) {
+        return addSchedulers(getApi().getPayDetailedList(startPosition, size, date));
+    }
+
+    /**
+     * 根据日期查询合伙人收入详情列表
+     *
+     * @param date
+     * @return
+     */
+    public Observable<List<IncomeDetailsEntity>> getIncomeDetailedList(String startPosition, String size, String date) {
+        return addSchedulers(getApi().getIncomeDetailedList(startPosition, size, date));
+    }
+
+
+    /**
+     * 查询昨日收益
+     *
+     * @return
+     */
+    public Observable<List<YesterdayIncomeEntity>> getYesterdayIncomeDetailedList(String startPosition, String size) {
+        return addSchedulers(getApi().getYesterdayIncomeDetailedList(startPosition, size));
+    }
+
+    /**
+     * 查询已提现数据
+     *
+     * @return
+     */
+    public Observable<List<YesterdayIncomeEntity>> getCashedList(String startPosition, String size) {
+        return addSchedulers(getApi().getCashedList(startPosition, size));
+    }
+
+    /**
+     * 查询已绑定的账号
+     *
+     * @return
+     */
+    public Observable<List<BindAccountEntity>> getUserCashTypeList(String startPosition, String size) {
+        return addSchedulers(getApi().getUserCashTypeList(startPosition, size));
+    }
+
+
+    /**
+     * 绑定提现账号
+     *
+     * @return
+     */
+    public Observable<String> addCashAccount(String cashAccount, String cashType, String cashName, String openingBank) {
+        return addSchedulers(getApi().addCashAccount(cashAccount, cashType, cashName, openingBank));
+    }
+
+
+    /**
+     * 初始化支付密码
+     *
+     * @return
+     */
+    public Observable<String> initPayPassword(String password) {
+        return addSchedulers(getApi().initPayPassword(password));
+    }
+
+    /**
+     * 验证是否设置支付密码
+     *
+     * @return
+     */
+    public Observable<Boolean> vaildInitPayPwd() {
+        return addSchedulers(getApi().vaildInitPayPwd());
+    }
+
+
+    /**
+     * 用验证码修改支付密码
+     *
+     * @return
+     */
+    public Observable<String> changePasswordByCode(String phone, String vaildCode, String password) {
+        return addSchedulers(getApi().changePasswordByCode(phone, vaildCode, password));
+    }
+
+
+    /**
+     * 用原密码修改支付密码
+     *
+     * @return
+     */
+    public Observable<String> changePasswordByOld(String oldPassword, String newPasswrod) {
+        return addSchedulers(getApi().changePasswordByOld(oldPassword, newPasswrod));
+    }
+
+
+    /**
+     * 支付密码验证是否正确
+     *
+     * @return
+     */
+    public Observable<String> vaildPasswordIsRight(String pwd) {
+        return addSchedulers(getApi().vaildPasswordIsRight(pwd));
+    }
 }
 

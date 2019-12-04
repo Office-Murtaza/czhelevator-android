@@ -60,6 +60,7 @@
         <TextView
             android:id="@+id/default_setting"
             style="@style/text_big_content"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_tab_bar"
             android:background="@drawable/bg_item"
@@ -76,6 +77,7 @@
             android:layout_height="@dimen/spacing_divider"
             android:layout_marginLeft="@dimen/spacing_default"
             android:layout_marginRight="@dimen/spacing_default"
+            android:visibility="gone"
             android:background="@color/black_divider" />
 
     </LinearLayout>

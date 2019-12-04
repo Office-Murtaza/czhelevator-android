@@ -8,4 +8,6 @@ import com.kingyon.elevator.mvpbase.BaseView;
  */
 public interface SetPasswordView extends BaseView {
 
+    void passwordInitSuccess();
+
 }

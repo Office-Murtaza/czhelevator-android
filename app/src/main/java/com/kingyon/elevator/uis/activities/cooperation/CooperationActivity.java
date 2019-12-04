@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
@@ -14,6 +15,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationInfoFragment;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -57,8 +59,24 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                         if (authed && info == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
-                        loadingComplete(STATE_CONTENT);
-                        showFragment(authed, identity, info);
+                        //未认证时不先设置密码，认证过的才需要先设置密码
+                        if (authed) {
+                            if (!info.isSetPayPassword()) {
+                                //未设置支付密码
+                                showToast("您还未设置支付密码，请先设置支付密码");
+                                loadingComplete(STATE_CONTENT);
+                                MyActivityUtils.goFragmentContainerActivity(CooperationActivity.this, FragmentConstants.SetPasswordFragment, "partner");
+                                finish();
+                            } else {
+                                loadingComplete(STATE_CONTENT);
+                                showFragment(authed, identity, info);
+                            }
+                        } else {
+                            loadingComplete(STATE_CONTENT);
+                            showFragment(false, identity, info);
+                        }
+//                        loadingComplete(STATE_CONTENT);
+//                        showFragment(authed, identity, info);
                     }
                 });
     }

@@ -3,8 +3,11 @@ package com.kingyon.elevator.application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.nets.Net;
@@ -84,6 +87,11 @@ public class App extends LitePalApplication {
                 return isDebug();
             }
         });
+        if (isDebug()) {
+            LogUtils.getConfig().setLogSwitch(true);
+        }else {
+            LogUtils.getConfig().setLogSwitch(false);
+        }
     }
 
     public boolean isDebug() {

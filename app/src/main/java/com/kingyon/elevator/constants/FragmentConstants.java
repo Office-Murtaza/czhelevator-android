@@ -15,18 +15,37 @@ public class FragmentConstants {
     //收益记录界面
     public static final String IncomeRecordFragment = "IncomeRecordFragment";
 
-    //月收入详情
-    public static final String IncomeWithMonth = "IncomeWithMonth";
-    //日收入详情
-    public static final String IncomeWithDay = "IncomeWithDay";
-    //月支出详情
-    public static final String PayWithMonth = "PayWithMonth";
-    //日支出详情
-    public static final String PayWithDay = "PayWithDay";
+    //年收入支出或者月收入支出详情
+    public static final String IncomeWithYearOrMonth = "IncomeWithYearOrMonth";
+
 
     //设置密码界面
     public static final String SetPasswordFragment = "SetPasswordFragment";
 
     //选择账户界面
     public static final String CashMethodSettingFragment = "CashMethodSettingFragment";
+
+    //安全设置界面
+    public static final String SecuritySettingFragment = "SecuritySettingFragment";
+
+    //密码修改设置界面
+    public static final String EditPassWordFragment = "EditPassWordFragment";
+
+    //指纹设置界面
+    public static final String FingerSettingFragment = "FingerSettingFragment";
+
+    //是否记得原密码界面
+    public static final String RemeberPasswordFragment = "RemeberPasswordFragment";
+    //修改支付密码，记得原密码
+    public static final String EditPayPasswordFragment = "EditPayPasswordFragment";
+
+    //修改登录密码
+    public static final String EditLoginPasswordFragment = "EditLoginPasswordFragment";
+
+    //重置登录密码
+    public static final String ResetLoginPasswordFragment = "ResetLoginPasswordFragment";
+    //获取验证码校验用于设置支付密码
+    public static final String CheckPayVerCodeFragment = "CheckPayVerCodeFragment";
+
+
 }

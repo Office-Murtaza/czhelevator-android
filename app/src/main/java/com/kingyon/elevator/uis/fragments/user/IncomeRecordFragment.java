@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -37,13 +38,16 @@ import com.kingyon.elevator.customview.MyMarkView;
 import com.kingyon.elevator.customview.MyTextItemView;
 import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.DateUtils;
+import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
+import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.IncomeRecordPresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.IncomeRecordView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
@@ -72,16 +76,19 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     MyTextItemView tv_user_all_income;
     @BindView(R.id.tv_current_tips)
     TextView tv_current_tips;
+    @BindView(R.id.tv_no_chart_data)
+    TextView tv_no_chart_data;
     Button catIncomeBtn;//覆盖在markerview上的按钮，为了点击跳转到详情
     private Boolean isAddButton = false;
     private int markerViewWidth = 100;//单位为dp
     private int markerViewHeight = 35;//单位为dp
-    private int selectCatType = 0;//当前按年查看  1表示为按月查看
+    private int selectCatType = 1;//当前按年查看  1表示为按月查看
 
     private int currentSelectYear = 2019;//当前选择的年份
     private int currentSelectMonth = 1;//当前选择的月份
+    private int currentSelectDay = 1;//当前选择日期
     private int selectIncomeOrPay = 0;//选择的是收入还是支出  0收入 1支出
-
+    MyMarkView myMarkView;
     YAxis yAxis;
     XAxis xAxis;
 
@@ -101,13 +108,14 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         setStateLayout();
         currentSelectYear = DateUtils.getCurrentYear();
         currentSelectMonth = DateUtils.getCurrentMonth();
-        selectCatType = 0;
+        currentSelectDay= DateUtils.getCurrentDay();
+        tv_select_time.setText(currentSelectYear+"年"+currentSelectMonth+"月");
+        selectCatType = 1;
         selectIncomeOrPay = 0;
         creatButton();
         initChartView();
-        showYeardata();
         presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
-        //setData(12, 100);
+        presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
     }
 
 
@@ -121,10 +129,11 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         line_chart_view.getLegend().setEnabled(false);
         line_chart_view.setScaleXEnabled(false);
         line_chart_view.setScaleYEnabled(false);
-        MyMarkView mv = new MyMarkView(getActivity(), R.layout.my_marke_view_layout);
+        myMarkView = new MyMarkView(getActivity(), R.layout.my_marke_view_layout);
         // Set the marker to the chart
-        mv.setChartView(line_chart_view);
-        line_chart_view.setMarker(mv);
+        myMarkView.setShowType(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
+        myMarkView.setChartView(line_chart_view);
+        line_chart_view.setMarker(myMarkView);
         xAxis = line_chart_view.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -142,48 +151,43 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     /**
      * 按年展示数据
      */
-    private void showYeardata() {
+    private void showYeardata(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1.0f);
-        xAxis.setLabelCount(12);
-        xAxis.setAxisMaximum(12f);
-        yAxis.setAxisMaximum(110f);
+        xAxis.setAxisMaximum(monthOrDayIncomeOrPayEntity.getList().size());
+        xAxis.setLabelCount(monthOrDayIncomeOrPayEntity.getList().size());
+        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue()*2);
         yAxis.setAxisMinimum(0f);
         line_chart_view.getViewPortHandler().setMaximumScaleX(1.0f);
         line_chart_view.getViewPortHandler().setMinimumScaleX(1.0f);
         line_chart_view.setScaleMinima(1f, 1f);
-        setYearData();
+        setYearData(monthOrDayIncomeOrPayEntity);
     }
 
 
-    private void showMonthData() {
+    private void showMonthData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
         xAxis.setAxisMinimum(0f);
-        xAxis.setAxisMaximum(31f);
+        xAxis.setAxisMaximum(monthOrDayIncomeOrPayEntity.getList().size());
         xAxis.setGranularity(1.0f);
-        xAxis.setLabelCount(31);
+        xAxis.setLabelCount(monthOrDayIncomeOrPayEntity.getList().size());
         line_chart_view.getViewPortHandler().setMaximumScaleX(2.0f);
         line_chart_view.setScaleMinima(2f, 1f);
-        yAxis.setAxisMaximum(110f);
+        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue()*2);
         yAxis.setAxisMinimum(0f);
-        setData(31, 100);
+        setData(monthOrDayIncomeOrPayEntity);
     }
 
 
-    private void setYearData() {
+    private void setYearData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
         ArrayList<Entry> values = new ArrayList<>();
-
-        for (int i = 0; i < 12; i++) {
-
-            float val = (float) (Math.random() * 100);
-            values.add(new Entry(i + 1, val, null));
+        for (int i = 0; i < monthOrDayIncomeOrPayEntity.getList().size(); i++) {
+            values.add(new Entry(i + 1, (float) monthOrDayIncomeOrPayEntity.getList().get(i).getValue(), null));
         }
-
+        LogUtils.d("图表数据集大小：" + values.size());
         LineDataSet set1;
-
         if (line_chart_view.getData() != null) {
             line_chart_view.clearValues();
         }
-
         set1 = new LineDataSet(values, "提示信息");
         set1.setDrawIcons(false);
         set1.setColor(Color.RED);
@@ -208,11 +212,12 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         dataSets.add(set1);
         LineData data = new LineData(dataSets);
         line_chart_view.setData(data);
-        //}
+        line_chart_view.invalidate();
+        line_chart_view.highlightValue(currentSelectMonth,0,true);
     }
 
 
-    @OnClick({R.id.tv_select_time, R.id.user_income, R.id.user_pay_money})
+    @OnClick({R.id.tv_select_time, R.id.user_income, R.id.user_pay_money, R.id.tv_no_chart_data})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_select_time:
@@ -220,14 +225,13 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                     currentSelectYear = year;
                     currentSelectMonth = month;
                     selectCatType = type;
-                    if (type == 0) {
+                    if (selectCatType == 0) {
                         //按年查看数据
                         tv_select_time.setText(year + "年");
-                        showYeardata();
                     } else {
-                        tv_select_time.setText(year + "年" + month + "月");
-                        showMonthData();
+                        tv_select_time.setText(currentSelectYear + "年" + currentSelectMonth + "月");
                     }
+                    myMarkView.setShowType(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                     presenter.filterIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
                     presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                     if (selectIncomeOrPay == 0) {
@@ -242,6 +246,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 user_income.setMainTitleColor(Color.parseColor("#DD575F"));
                 user_pay_money.setMainTitleColor(Color.parseColor("#474747"));
                 setIncomeDesc();
+                myMarkView.setShowType(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
             case R.id.user_pay_money:
@@ -249,6 +254,11 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 user_income.setMainTitleColor(Color.parseColor("#474747"));
                 user_pay_money.setMainTitleColor(Color.parseColor("#DD575F"));
                 setPayDesc();
+                myMarkView.setShowType(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
+                presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
+                break;
+            case R.id.tv_no_chart_data:
+                presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
         }
@@ -303,13 +313,10 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 catIncomeBtn.setX(h.getXPx() - DensityUtil.dip2px(markerViewWidth) / 2);
             }
             catIncomeBtn.setY(0);
-            catIncomeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LogUtils.e("点击查看事件--------------------------");
-                    showShortToast("月份：" + e.getX() + "--收入：" + e.getY());
-                    MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.IncomeWithMonth);
-                }
+            catIncomeBtn.setOnClickListener(v -> {
+                RuntimeUtils.chartSelectParameterEntity = new ChartSelectParameterEntity(selectCatType, currentSelectYear, currentSelectMonth, selectIncomeOrPay);
+                RuntimeUtils.chartSelectParameterEntity.setCurrentSelectDay((int) e.getX());
+                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.IncomeWithYearOrMonth);
             });
             isAddButton = true;
             chart_container.addView(catIncomeBtn);
@@ -319,7 +326,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        //LogUtils.d("图表已设置高亮值-----------------------",GsonUtils.toJson(h));
         addButton(e, h);
+
     }
 
     @Override
@@ -330,57 +339,32 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         }
     }
 
-    private void setData(int count, float range) {
+    private void setData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
 
         ArrayList<Entry> values = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range);
-            values.add(new Entry(i + 1, val, null));
+        for (int i = 0; i < monthOrDayIncomeOrPayEntity.getList().size(); i++) {
+            values.add(new Entry(i + 1, (float) monthOrDayIncomeOrPayEntity.getList().get(i).getValue(), null));
         }
-
         LineDataSet set1;
 
         if (line_chart_view.getData() != null) {
             line_chart_view.clearValues();
             line_chart_view.invalidate();
         }
-//        if (line_chart_view.getData() != null &&
-//                line_chart_view.getData().getDataSetCount() > 0) {
-//            set1 = (LineDataSet) line_chart_view.getData().getDataSetByIndex(0);
-//            set1.setValues(values);
-//            set1.notifyDataSetChanged();
-//            line_chart_view.getData().notifyDataChanged();
-//            line_chart_view.notifyDataSetChanged();
-//        } else {
-        // create a dataset and give it a type
         set1 = new LineDataSet(values, "提示信息");
-
         set1.setDrawIcons(false);
-
-        // draw dashed line
-        //set1.enableDashedLine(10f, 5f, 0f);
-
-        // black lines and points
         set1.setColor(Color.RED);
         set1.setCircleColor(Color.parseColor("#569EBE"));
-
-        // line thickness and point size
         set1.setLineWidth(1f);
         set1.setCircleRadius(2f);
-
-        // draw points as solid circles
         set1.setDrawCircleHole(false);
-
-        // customize legend entry
         set1.setFormLineWidth(1f);
-        //set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
         set1.setFormSize(15.f);
         set1.setDrawValues(false);
         // text size of values
         set1.setValueTextSize(9f);
         set1.setDrawHorizontalHighlightIndicator(false);
-        // draw selection line as dashed
         set1.enableDashedHighlightLine(10f, 0f, 0f);
         // set the filled area
         set1.setDrawFilled(false);
@@ -391,6 +375,8 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         dataSets.add(set1);
         LineData data = new LineData(dataSets);
         line_chart_view.setData(data);
+        line_chart_view.invalidate();
+        line_chart_view.highlightValue(currentSelectDay,0,true);
         // }
     }
 
@@ -401,6 +387,30 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
             user_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.getIncome()));
             user_pay_money.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.getPay()));
         }
+    }
+
+    @Override
+    public void showChartData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
+        tv_no_chart_data.setVisibility(View.GONE);
+        LogUtils.d("图表数据：", GsonUtils.toJson(monthOrDayIncomeOrPayEntity));
+        if (selectCatType == 0) {
+            //按年查看数据
+            showYeardata(monthOrDayIncomeOrPayEntity);
+        } else {
+            showMonthData(monthOrDayIncomeOrPayEntity);
+        }
+
+    }
+
+    @Override
+    public void showChartLoadingTips(String tips) {
+        tv_no_chart_data.setText(tips);
+        tv_no_chart_data.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideChartLoadingTips() {
+        tv_no_chart_data.setVisibility(View.GONE);
     }
 
 

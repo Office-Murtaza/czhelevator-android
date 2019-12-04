@@ -35,6 +35,8 @@ import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.widgets.StateLayout;
@@ -108,6 +110,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         } else {
             entity = new CooperationInfoNewEntity();
         }
+        RuntimeUtils.cooperationInfoNewEntity = entity;
         StatusBarUtil.setHeadViewPadding(getActivity(), container_view);
         preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         updateUI(entity);
@@ -124,10 +127,6 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         tv_can_crash.setText(CommonUtil.getTwoFloat(entity.getRealizableIncome()));
         yesterday_income.setText(CommonUtil.getMayTwoFloat(entity.getYesterdayIncome()));
         tv_already_crash.setText(CommonUtil.getMayTwoFloat(entity.getFulfilledIncome()));
-//        tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
-//        tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
-//        tvFeeProperty.setText(CommonUtil.getMayTwoFloat(entity.getPropertyPay()));
-//        tvFeeOptical.setText(CommonUtil.getMayTwoFloat(entity.getNetworkPay()));
     }
 
     private CharSequence getSumSpan(String twoFloat) {
@@ -141,6 +140,9 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
             R.id.tv_device_manager, R.id.ll_cells, R.id.pre_v_right, R.id.crash_money_history,
             R.id.yesterday_income_container, R.id.tv_all_income, R.id.already_crash_container})
     public void onViewClicked(View view) {
+        if (QuickClickUtils.isFastClick()) {
+            return;
+        }
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.pre_v_back:
@@ -162,9 +164,13 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
                 break;
             case R.id.btn_apply_crash:
-                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+                if (entity.isDisable()) {
+                    showToast("您已被禁止提现，如有问题请联系客服！");
+                } else {
+                    bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
 //                startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
-                MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class,FragmentConstants.CashMethodSettingFragment, bundle);
+                    MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
+                }
                 break;
             case R.id.ll_income_today:
                 bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);

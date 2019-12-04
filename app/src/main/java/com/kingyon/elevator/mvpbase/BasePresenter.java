@@ -13,7 +13,7 @@ import com.blankj.utilcode.util.LogUtils;
  * 基础mvp框架中的basepresenter
  */
 public class BasePresenter<V extends BaseView> implements IPresenter {
-    Context mContext;
+   public Context mContext;
 
     public BasePresenter(Context mContext){
         this.mContext = mContext;

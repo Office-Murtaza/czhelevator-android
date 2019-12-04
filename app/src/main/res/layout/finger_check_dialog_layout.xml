@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="232dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:background="@drawable/shape_finger_check_bg">
+
+
+        <ImageView
+            android:id="@+id/cancel_finger_check"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:padding="14dp"
+            android:src="@mipmap/zhiwenshibie_shangchutubiao" />
+
+
+        <ImageView
+            android:id="@+id/finger_img"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/zhiwenshibie_zhiwenwenzi" />
+
+        <TextView
+            android:id="@+id/tv_check_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/finger_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:text="请验证已录入指纹"
+            android:textColor="#ff7f7f7f"
+            android:textSize="19sp" />
+
+
+        <TextView
+            android:id="@+id/error_hint_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/finger_img"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="18dp"
+            android:text="请重新尝试识别"
+            android:textColor="#FF5454"
+            android:textSize="19sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</RelativeLayout>

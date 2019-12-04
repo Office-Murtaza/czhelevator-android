@@ -5,13 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
-import com.leo.afbaselibrary.utils.ToastUtils;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
 /**
@@ -25,7 +25,7 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
     protected P presenter;
     public Boolean isLoadData = false;//是否已经加载数据，懒加载控制
     private boolean currentVisibleState = false;
-    StateLayout stateLayout;
+    public StateLayout stateLayout;
     protected ProgressDialog progressDialog;
 
 
@@ -33,6 +33,7 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
+        ToastUtils.setGravity(Gravity.CENTER, 0, 0);
     }
 
     public abstract P initPresenter();
@@ -98,12 +99,12 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
 
     @Override
     public void showShortToast(String tipsContent) {
-        ToastUtils.showToast(getContext(), tipsContent, Toast.LENGTH_SHORT);
+        ToastUtils.showShort(tipsContent);
     }
 
     @Override
     public void showLongToast(String tipsContent) {
-        ToastUtils.showToast(getContext(), tipsContent, Toast.LENGTH_LONG);
+        ToastUtils.showLong(tipsContent);
     }
 
     @Override

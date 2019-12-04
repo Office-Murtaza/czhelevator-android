@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    tools:context=".uis.fragments.user.CheckPayVerCodeFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="26dp"
+            android:text="@string/edit_pay_check_tips"
+            android:textColor="#ff7f7f7f"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_phone_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="26dp"
+            android:text="请输入111****1111手机号收到的验证码"
+            android:textColor="#ff383838"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/tv_input_code"
+                android:layout_width="149dp"
+                android:layout_height="34dp"
+                android:background="@drawable/shape_ver_code_et_bg"
+                android:hint="请输入短信验证码"
+                android:inputType="number"
+                android:maxLength="6"
+                android:paddingStart="3dp"
+                android:textColor="@color/default_text_color"
+                android:textColorHint="#939393"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_get_code"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="14dp"
+                android:gravity="center"
+                android:text="获取验证码"
+                android:textColor="#ffeb7a12"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_next_confirm"
+            android:layout_width="274dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="86dp"
+            android:background="@drawable/shape_next_btn_bg"
+            android:gravity="center"
+            android:text="下一步"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

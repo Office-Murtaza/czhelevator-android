@@ -16,12 +16,21 @@ import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.FragmentContainerPresenter;
 import com.kingyon.elevator.uis.fragments.user.CashMethodSettingFragment;
+import com.kingyon.elevator.uis.fragments.user.CheckPayVerCodeFragment;
+import com.kingyon.elevator.uis.fragments.user.EditLoginPasswordFragment;
+import com.kingyon.elevator.uis.fragments.user.EditPassWordFragment;
+import com.kingyon.elevator.uis.fragments.user.EditPayPasswordFragment;
+import com.kingyon.elevator.uis.fragments.user.FingerSettingFragment;
 import com.kingyon.elevator.uis.fragments.user.IncomeOrPayDetailsFragment;
 import com.kingyon.elevator.uis.fragments.user.IncomeRecordFragment;
 import com.kingyon.elevator.uis.fragments.user.PartnerFragment;
+import com.kingyon.elevator.uis.fragments.user.RemeberPasswordFragment;
+import com.kingyon.elevator.uis.fragments.user.ResetLoginPasswordFragment;
+import com.kingyon.elevator.uis.fragments.user.SecuritySettingFragment;
 import com.kingyon.elevator.uis.fragments.user.SetPasswordFragment;
 import com.kingyon.elevator.uis.fragments.user.YesterDayIncomeFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.FragmentContainerView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
@@ -65,11 +74,6 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
         }
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (type) {
-            case FragmentConstants.IncomeWithMonth:
-                my_action_bar.setTitle("9月收入");
-                fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());
-                fragmentTransaction.commit();
-                break;
             case FragmentConstants.CashMethodSettingFragment:
                 my_action_bar.setTitle("提现方式");
                 entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
@@ -79,23 +83,35 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
                 break;
             case FragmentConstants.SetPasswordFragment:
                 my_action_bar.setTitle("密码设置");
-                fragmentTransaction.replace(R.id.fragment_container, SetPasswordFragment.newInstance());
+                String from = getIntent().getStringExtra("from");
+                fragmentTransaction.replace(R.id.fragment_container, SetPasswordFragment.newInstance(from));
                 fragmentTransaction.commit();
                 break;
-            case FragmentConstants.IncomeWithDay:
-                my_action_bar.setTitle("9月1日收入");
-                fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());
-                fragmentTransaction.commit();
-                break;
-            case FragmentConstants.PayWithDay:
-                my_action_bar.setTitle("9月1日支出");
-                fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());
-                fragmentTransaction.commit();
-                break;
-            case FragmentConstants.PayWithMonth:
-                my_action_bar.setTitle("9月支出");
-                fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());
-                fragmentTransaction.commit();
+            case FragmentConstants.IncomeWithYearOrMonth:
+                if (RuntimeUtils.chartSelectParameterEntity != null) {
+                    if (RuntimeUtils.chartSelectParameterEntity.getSelectIncomeOrPay() == 0) {
+                        //收入
+                        if (RuntimeUtils.chartSelectParameterEntity.getSelectCatType() == 0) {
+                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月收入");
+                        } else {
+                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
+                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日收入");
+                        }
+                    } else {
+                        //支出
+                        if (RuntimeUtils.chartSelectParameterEntity.getSelectCatType() == 0) {
+                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月支出");
+                        } else {
+                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
+                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日支出");
+                        }
+                    }
+                    fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());
+                    fragmentTransaction.commit();
+                } else {
+                    showShortToast("数据错误，请重试");
+                    finish();
+                }
                 break;
             case FragmentConstants.YesterDayIncomeFragment:
                 my_action_bar.setTitle(getString(R.string.zuorishouyi));
@@ -110,6 +126,47 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
             case FragmentConstants.IncomeRecordFragment:
                 my_action_bar.setTitle(getString(R.string.shouyijilu));
                 fragmentTransaction.replace(R.id.fragment_container, IncomeRecordFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.SecuritySettingFragment:
+                my_action_bar.setTitle("安全设置");
+                fragmentTransaction.replace(R.id.fragment_container, SecuritySettingFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.EditPassWordFragment:
+                my_action_bar.setTitle("密码设置");
+                fragmentTransaction.replace(R.id.fragment_container, EditPassWordFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.FingerSettingFragment:
+                my_action_bar.setTitle("指纹识别");
+                fragmentTransaction.replace(R.id.fragment_container, FingerSettingFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.RemeberPasswordFragment:
+                my_action_bar.setTitle("修改支付密码");
+                fragmentTransaction.replace(R.id.fragment_container, RemeberPasswordFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.EditPayPasswordFragment:
+                my_action_bar.setTitle("密码设置");
+                Boolean isRemember = getIntent().getBooleanExtra("isRememberPwd", false);
+                fragmentTransaction.replace(R.id.fragment_container, EditPayPasswordFragment.newInstance(isRemember));
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.EditLoginPasswordFragment:
+                my_action_bar.setTitle("修改登录密码");
+                fragmentTransaction.replace(R.id.fragment_container, EditLoginPasswordFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.ResetLoginPasswordFragment:
+                my_action_bar.setTitle("重置登录密码");
+                fragmentTransaction.replace(R.id.fragment_container, ResetLoginPasswordFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.CheckPayVerCodeFragment:
+                my_action_bar.setTitle("密码设置");
+                fragmentTransaction.replace(R.id.fragment_container, CheckPayVerCodeFragment.newInstance());
                 fragmentTransaction.commit();
                 break;
             default:

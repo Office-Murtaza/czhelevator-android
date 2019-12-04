@@ -25,7 +25,7 @@ import rx.subjects.BehaviorSubject;
 public abstract class BaseDialogFragment extends AppCompatDialogFragment implements IBaseView {
     protected View mRoot;
     protected Unbinder unbinder;
-    protected BasePresenter mPresenter;
+    protected BasePresenter<IBaseView> mPresenter;
     protected BehaviorSubject<RxCheckLifeCycleTransformer.LifeCycleEvent> eventBehaviorSubject = BehaviorSubject.create();
 
     @Nullable
@@ -33,7 +33,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = LayoutInflater.from(getActivity()).inflate(getContentViewId(), container, false);
         unbinder = ButterKnife.bind(this, mRoot);
-        mPresenter = new BasePresenter(getActivity(), mRoot);
+        mPresenter = new BasePresenter<IBaseView>(getActivity(), mRoot);
         eventBehaviorSubject.onNext(RxCheckLifeCycleTransformer.LifeCycleEvent.CREATE_VIEW);
         init(savedInstanceState);
         return mRoot;

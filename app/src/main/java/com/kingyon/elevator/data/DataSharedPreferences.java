@@ -31,6 +31,8 @@ public class DataSharedPreferences {
     //是否已经显示过用户隐私政策对话框
     public static final String IS_SHOW_ALREADY_PRIVACY_DIALOG = "IS_SHOW_ALREADY_PRIVACY_DIALOG";
 
+    public static final String IS_OPEN_FINGER = "IS_OPEN_FINGER";//是否开启指纹设置
+
     private static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext());
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.leo.afbaselibrary.widgets.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/stateLayout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg_color"
@@ -116,6 +116,18 @@
                     android:id="@+id/line_chart_view"
                     android:layout_width="match_parent"
                     android:layout_height="220dp" />
+
+                <TextView
+                    android:id="@+id/tv_no_chart_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:text="图表数据加载中"
+                    android:textColor="@color/default_text_color">
+
+                </TextView>
             </RelativeLayout>
 
         </RelativeLayout>

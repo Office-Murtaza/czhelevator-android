@@ -357,8 +357,8 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(InviteActivity.class);
                 break;
             case R.id.tv_cooperation:
-               // startActivity(CooperationActivity.class);
-                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.SetPasswordFragment);
+                startActivity(CooperationActivity.class);
+                //MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.SetPasswordFragment);
                 break;
             case R.id.tv_property:
                 startActivity(PropertyActivity.class);

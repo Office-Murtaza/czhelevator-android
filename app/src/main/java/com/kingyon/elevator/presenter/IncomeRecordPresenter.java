@@ -99,53 +99,86 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
      * @param month
      */
     public void getIncomePayDataPerDay(int selectIncomeOrPay, int selectCatType, int year, int month) {
+        if (isViewAttached()) {
+            getView().showChartLoadingTips("图表数据加载中...");
+        }
         if (selectIncomeOrPay == 0) {
             //查询收入
             if (selectCatType == 0) {
                 //查询年收入
-                getYearOrMonthIncomeData(year + "");
+                getYearIncomeData(year + "");
             } else {
                 //查询月收入
-                getYearOrMonthIncomeData(year + "-" + month);
+                getMonthIncomeData(year + "-" + month);
             }
         } else {
             //查询支出
             if (selectCatType == 0) {
                 //查询年收入
-                getYearOrMonthPayData(year + "");
+                getYearPayData(year + "");
             } else {
                 //查询月收入
-                getYearOrMonthPayData(year + "-" + month);
+                getMonthPayData(year + "-" + month);
             }
         }
     }
 
 
     /**
-     * 获取收入数据
+     * 获取年份收入数据
      *
      * @param date
      */
-    private void getYearOrMonthIncomeData(String date) {
+    private void getYearIncomeData(String date) {
         if (isViewAttached()) {
             getView().showProgressDialog("数据获取中", true);
         }
         NetService.getInstance().getYearIncomeOrPayByDate("1", date)
-                .subscribe(new CustomApiCallback<List<MonthOrDayIncomeOrPayEntity>>() {
+                .subscribe(new CustomApiCallback<MonthOrDayIncomeOrPayEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            getView().showShortToast("数据加载失败，请重试");
+                            getView().showChartLoadingTips("图表数据加载失败，请点击重试");
                         }
                     }
 
                     @Override
-                    public void onNext(List<MonthOrDayIncomeOrPayEntity> monthOrDayIncomeOrPayEntityList) {
+                    public void onNext(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntityList) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            LogUtils.d("收入数据：" + monthOrDayIncomeOrPayEntityList.size());
-                            //getView().showIncomeOrPayData(incomeOrPayEntity);
+                            LogUtils.d("收入数据：" + monthOrDayIncomeOrPayEntityList.getList().size());
+                            getView().showChartData(monthOrDayIncomeOrPayEntityList);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 获取月份收入数据
+     *
+     * @param date
+     */
+    private void getMonthIncomeData(String date) {
+        if (isViewAttached()) {
+            getView().showProgressDialog("数据获取中", true);
+        }
+        NetService.getInstance().getMonthIncomeOrPayByDate("1", date)
+                .subscribe(new CustomApiCallback<MonthOrDayIncomeOrPayEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        if (isViewAttached()) {
+                            getView().hideProgressDailog();
+                            getView().showChartLoadingTips("图表数据加载失败，请点击重试");
+                        }
+                    }
+
+                    @Override
+                    public void onNext(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntityList) {
+                        if (isViewAttached()) {
+                            getView().hideProgressDailog();
+                            LogUtils.d("收入数据：" + monthOrDayIncomeOrPayEntityList.getList().size());
+                            getView().showChartData(monthOrDayIncomeOrPayEntityList);
                         }
                     }
                 });
@@ -153,33 +186,63 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
 
 
     /**
-     * 获取支出数据
+     * 获取年份支出数据
      *
      * @param date
      */
-    private void getYearOrMonthPayData(String date) {
+    private void getYearPayData(String date) {
         if (isViewAttached()) {
             getView().showProgressDialog("数据获取中", true);
         }
         NetService.getInstance().getYearIncomeOrPayByDate("2", date)
-                .subscribe(new CustomApiCallback<List<MonthOrDayIncomeOrPayEntity>>() {
+                .subscribe(new CustomApiCallback<MonthOrDayIncomeOrPayEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            getView().showShortToast("数据加载失败，请重试");
+                            getView().showChartLoadingTips("图表数据加载失败，请点击重试");
                         }
                     }
 
                     @Override
-                    public void onNext(List<MonthOrDayIncomeOrPayEntity> monthOrDayIncomeOrPayEntityList) {
+                    public void onNext(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntityList) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            LogUtils.d("支出数据：" + monthOrDayIncomeOrPayEntityList.size());
-                            //getView().showIncomeOrPayData(incomeOrPayEntity);
+                            LogUtils.d("支出数据：" + monthOrDayIncomeOrPayEntityList.getList().size());
+                            getView().showChartData(monthOrDayIncomeOrPayEntityList);
                         }
                     }
                 });
     }
 
+
+    /**
+     * 获取月份支出数据
+     *
+     * @param date
+     */
+    private void getMonthPayData(String date) {
+        if (isViewAttached()) {
+            getView().showProgressDialog("数据获取中", true);
+        }
+        NetService.getInstance().getMonthIncomeOrPayByDate("2", date)
+                .subscribe(new CustomApiCallback<MonthOrDayIncomeOrPayEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        if (isViewAttached()) {
+                            getView().hideProgressDailog();
+                            getView().showChartLoadingTips("图表数据加载失败，请点击重试");
+                        }
+                    }
+
+                    @Override
+                    public void onNext(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntityList) {
+                        if (isViewAttached()) {
+                            getView().hideProgressDailog();
+                            LogUtils.d("支出数据：" + monthOrDayIncomeOrPayEntityList.getList().size());
+                            getView().showChartData(monthOrDayIncomeOrPayEntityList);
+                        }
+                    }
+                });
+    }
 }

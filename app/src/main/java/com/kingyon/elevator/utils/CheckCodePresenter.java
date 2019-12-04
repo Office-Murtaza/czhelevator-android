@@ -9,6 +9,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.listeners.IWeakHandler;
 import com.leo.afbaselibrary.mvp.presenters.BasePresenter;
+import com.leo.afbaselibrary.mvp.views.IBaseView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.WeakHandler;
@@ -17,7 +18,7 @@ import com.leo.afbaselibrary.utils.WeakHandler;
  * created by arvin on 16/12/12 10:20
  * email：1035407623@qq.com
  */
-public class CheckCodePresenter extends BasePresenter implements IWeakHandler {
+public class CheckCodePresenter extends BasePresenter<IBaseView> implements IWeakHandler {
     private TextView tvGetCode;
     private WeakHandler mHandler;
     private String verifyCode;

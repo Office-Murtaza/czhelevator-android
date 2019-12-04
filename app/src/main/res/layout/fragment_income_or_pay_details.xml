@@ -7,13 +7,18 @@
     android:background="@color/main_bg_color"
     tools:context=".uis.fragments.user.IncomeOrPayDetailsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/income_details_list_view"
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="17dp">
+        android:layout_height="match_parent">
 
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/income_details_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="17dp">
 
+        </android.support.v7.widget.RecyclerView>
+    </com.leo.afbaselibrary.widgets.StateLayout>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

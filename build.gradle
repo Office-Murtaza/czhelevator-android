@@ -9,6 +9,9 @@ buildscript {
         maven { url "https://jitpack.io" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven {
+            url "https://dl.bintray.com/tencent-soter/maven/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'

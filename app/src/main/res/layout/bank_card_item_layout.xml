@@ -13,21 +13,27 @@
         android:src="@mipmap/zhanghao_zhifubaotubaio" />
 
     <TextView
+        android:id="@+id/cash_account"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/card_type_img"
         android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:maxLength="30"
         android:text="155****8811@163.com"
         android:textColor="#ff000000"
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/cash_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="25dp"
         android:gravity="center_vertical"
+        android:maxLength="4"
+        android:ellipsize="end"
         android:text="王大川"
         android:textColor="#ff000000"
         android:textSize="15sp" />

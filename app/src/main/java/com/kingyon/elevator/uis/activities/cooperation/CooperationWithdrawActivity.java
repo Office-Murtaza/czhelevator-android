@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.activities.cooperation;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spannable;
@@ -15,11 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
+import com.kingyon.elevator.finger.FingerprintCallback;
+import com.kingyon.elevator.finger.FingerprintVerifyManager;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -27,9 +33,11 @@ import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.uis.dialogs.WithdrawSuccessDialog;
 import com.kingyon.elevator.uis.widgets.CustomImageSpan;
 import com.kingyon.elevator.uis.widgets.DecimalDigitsInputFilter;
+import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.KeyBoardUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 
@@ -47,8 +55,6 @@ import butterknife.OnClick;
 public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @BindView(R.id.pre_v_right)
     TextView preVRight;
-    @BindView(R.id.et_money)
-    EditText etMoney;
     @BindView(R.id.tv_taxation_percent)
     TextView tvTaxationPercent;
     @BindView(R.id.tv_taxation)
@@ -79,9 +85,16 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     TextView tv_shuihou_suode;
     @BindView(R.id.tv_cash_all_money)
     TextView tv_cash_all_money;
+    @BindView(R.id.tv_account_type)
+    TextView tv_account_type;
+    @BindView(R.id.tv_account_num)
+    TextView tv_account_num;
+    @BindView(R.id.tv_account_name)
+    TextView tv_account_name;
 
 
     private CooperationInfoNewEntity entity;
+    private BindAccountEntity bindAccountEntity;
 
     private OptionsPickerView wayPicker;
     private List<NormalParamEntity> wayOptions;
@@ -90,6 +103,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
+        bindAccountEntity = RuntimeUtils.selectBindAccountEntity;
         if (entity == null) {
             entity = new CooperationInfoNewEntity();
         }
@@ -103,7 +117,14 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        preVRight.setText("提现记录");
+        // preVRight.setText("提现记录");
+        if (bindAccountEntity == null) {
+            showToast("数据异常，请重试");
+            finish();
+            return;
+        }
+        setCashInfoData();
+        preVRight.setVisibility(View.GONE);
         tvTip.setText(getString(R.string.cooperation_withdraw_tip));
         updateMoneyInfo();
         ed_input_cash_money.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
@@ -133,9 +154,18 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
     }
 
+    private void setCashInfoData() {
+        if (bindAccountEntity.getCashType() == 1) {
+            tv_account_type.setText("银行卡");
+            tv_account_num.setText(AccountNumUtils.hideBankCardNum(bindAccountEntity.getCashAccount()));
+        } else {
+            tv_account_type.setText("支付宝");
+            tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.getCashAccount()));
+        }
+        tv_account_name.setText(bindAccountEntity.getCashName());
+    }
+
     private void updateMoneyInfo() {
-//        etMoney.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
-//        tvTaxationPercent.setText(String.format("税点%s%%", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
         tv_shuilv.setText(String.format("税后所得(%s%%)", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
         ed_input_cash_money.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
     }
@@ -153,12 +183,8 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 onEnsureClick();
                 break;
             case R.id.tv_confirm_cash:
-                DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this, new InputPayPwdListener() {
-                    @Override
-                    public void userInputPassWord(String password) {
-                        DialogUtils.getInstance().hideInputPayPwdToCashDailog();
-                    }
-                });
+                checkData();
+                cashHandler();
                 break;
             case R.id.tv_cash_all_money:
                 ed_input_cash_money.setText(entity.getRealizableIncome() + "");
@@ -166,14 +192,106 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         }
     }
 
-    private void onEnsureClick() {
-        if (TextUtils.isEmpty(CommonUtil.getEditText(etMoney))) {
+
+    private void cashHandler() {
+        if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+            //开启了指纹识别，验证指纹
+            fingerprintInit();
+        } else {
+            showPayPwdDialog();
+        }
+    }
+
+    private void showPayPwdDialog() {
+        DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this, password -> {
+            DialogUtils.getInstance().hideInputPayPwdToCashDailog();
+            checkPayPasswordIsRight(password);
+        });
+    }
+
+
+    public void checkPayPasswordIsRight(String pwd) {
+        showProgressDialog("支付密码验证中...");
+        NetService.getInstance().vaildPasswordIsRight(pwd)
+                .compose(this.<String>bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        showToast(ex.getDisplayMessage());
+                        hideProgress();
+                    }
+
+                    @Override
+                    public void onNext(String content) {
+                        hideProgress();
+                        if (content.equals("成功")) {
+                            onEnsureClick();
+                        } else {
+                            showToast("支付密码错误");
+                        }
+                    }
+                });
+    }
+
+    private void fingerprintInit() {
+        FingerprintVerifyManager.Builder builder = new FingerprintVerifyManager.Builder(this);
+        builder.callback(fingerprintCallback)
+                .fingerprintColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .build();
+    }
+
+
+    private FingerprintCallback fingerprintCallback = new FingerprintCallback() {
+        @Override
+        public void onSucceeded() {
+            onEnsureClick();
+        }
+
+        @Override
+        public void onFailed() {
+            LogUtils.d("指纹识别失败--------");
+        }
+
+        @Override
+        public void onUsepwd() {
+
+        }
+
+        @Override
+        public void onCancel() {
+            LogUtils.d("指纹识别取消");
+            showPayPwdDialog();
+        }
+
+        @Override
+        public void tooManyAttempts() {
+            LogUtils.d("指纹识别尝试次数过多-------------");
+            showToast("验证错误次数过多，请稍后再试");
+            DialogUtils.getInstance().hideFingerCheckDailog();
+            showPayPwdDialog();
+        }
+
+        @Override
+        public void onHwUnavailable() {
+            LogUtils.d("指纹识别模块不可用");
+            showToast("您的手机暂不支持指纹识别或指纹识别不可用");
+        }
+
+        @Override
+        public void onNoneEnrolled() {
+            LogUtils.d("指纹识别模块不可用");
+            showToast("您还未录入指纹，请先去系统设置里录入指纹！");
+        }
+    };
+
+    private void checkData() {
+        if (TextUtils.isEmpty(CommonUtil.getEditText(ed_input_cash_money))) {
             showToast("请输入提现金额");
             return;
         }
         Double money;
         try {
-            money = Double.parseDouble(CommonUtil.getEditText(etMoney));
+            money = Double.parseDouble(CommonUtil.getEditText(ed_input_cash_money));
         } catch (NumberFormatException e) {
             money = 0D;
         }
@@ -189,28 +307,63 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             showToast("请选择提现方式");
             return;
         }
-        if (llAliInfo.getVisibility() == View.VISIBLE) {
-            if (TextUtils.isEmpty(CommonUtil.getEditText(etAliAccount))) {
-                showToast("请输入支付宝账号");
-                return;
-            }
-            requestWithdraw(money, Constants.WithdrawType.ALI, etAliAccount.getText().toString(), null, null, null);
+    }
+
+
+    private void onEnsureClick() {
+        if (TextUtils.isEmpty(CommonUtil.getEditText(ed_input_cash_money))) {
+            showToast("请输入提现金额");
+            return;
         }
-        if (llBankInfo.getVisibility() == View.VISIBLE) {
-            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankHolder))) {
-                showToast("请输入持卡人姓名");
-                return;
-            }
-            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankNo))) {
-                showToast("请输入银行卡号");
-                return;
-            }
-//            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankName))) {
-//                showToast("请输入银行名称");
+        Double money;
+        try {
+            money = Double.parseDouble(CommonUtil.getEditText(ed_input_cash_money));
+        } catch (NumberFormatException e) {
+            money = 0D;
+        }
+        if (money <= 0) {
+            showToast("提现金额必须大于0");
+            return;
+        }
+        if (money > entity.getRealizableIncome()) {
+            showToast("超过可提现金额");
+            return;
+        }
+        if (bindAccountEntity.getCashType() == 1) {
+            //银行卡
+            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null, bindAccountEntity.getCashName(), bindAccountEntity.getCashAccount(), bindAccountEntity.getOpeningBank());
+        } else {
+            //支付宝
+            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.getCashAccount(), bindAccountEntity.getCashName(), null, null);
+        }
+
+
+//        if (llAliInfo.getVisibility() == View.GONE && llBankInfo.getVisibility() == View.GONE) {
+//            showToast("请选择提现方式");
+//            return;
+//        }
+//        if (llAliInfo.getVisibility() == View.VISIBLE) {
+//            if (TextUtils.isEmpty(CommonUtil.getEditText(etAliAccount))) {
+//                showToast("请输入支付宝账号");
 //                return;
 //            }
-            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null, etBankName.getText().toString(), etBankNo.getText().toString(), etBankHolder.getText().toString());
-        }
+//            requestWithdraw(money, Constants.WithdrawType.ALI, etAliAccount.getText().toString(), null, null, null);
+//        }
+//        if (llBankInfo.getVisibility() == View.VISIBLE) {
+//            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankHolder))) {
+//                showToast("请输入持卡人姓名");
+//                return;
+//            }
+//            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankNo))) {
+//                showToast("请输入银行卡号");
+//                return;
+//            }
+////            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankName))) {
+////                showToast("请输入银行名称");
+////                return;
+////            }
+//            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null, etBankName.getText().toString(), etBankNo.getText().toString(), etBankHolder.getText().toString());
+//        }
     }
 
     private void requestWithdraw(final double money, String way, String aliAccount, String bankName, String bankNo, String bankHolder) {
@@ -232,8 +385,8 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                         hideProgress();
                         entity.setRealizableIncome(entity.getRealizableIncome() - money);
                         updateMoneyInfo();
-                        etMoney.setText("");
-                        etMoney.setSelection(etMoney.getText().length());
+                        ed_input_cash_money.setText("");
+                        ed_input_cash_money.setSelection(ed_input_cash_money.getText().length());
                         showSuccessDialog();
                     }
                 });
