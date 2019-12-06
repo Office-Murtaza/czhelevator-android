@@ -6,7 +6,7 @@ package com.kingyon.elevator.utils;
  */
 public class QuickClickUtils {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private static final int MIN_CLICK_DELAY_TIME = 500;
     private static long lastClickTime=0L;
 
     public static boolean isFastClick() {

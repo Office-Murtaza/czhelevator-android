@@ -51,5 +51,6 @@ public class EditSuccessTipsDialog extends Dialog {
     @Override
     public void dismiss() {
         super.dismiss();
+        
     }
 }

@@ -19,6 +19,7 @@ import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditLoginPasswordPresenter;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
+import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.view.EditLoginPasswordView;
@@ -58,7 +59,7 @@ public class EditLoginPasswordFragment extends MvpBaseFragment<EditLoginPassword
         ButterKnife.bind(this, getContentView());
         userEntity = DataSharedPreferences.getUserBean();
         if (userEntity != null) {
-            edit_tips.setText("正在为您的账号（" + userEntity.getPhone() + "）修改登录密码");
+            edit_tips.setText("正在为您的账号（" + AccountNumUtils.hidePhoneNum(userEntity.getPhone()) + "）修改登录密码");
         } else {
             getActivity().finish();
         }
@@ -70,9 +71,7 @@ public class EditLoginPasswordFragment extends MvpBaseFragment<EditLoginPassword
     }
 
     public static EditLoginPasswordFragment newInstance() {
-
         Bundle args = new Bundle();
-
         EditLoginPasswordFragment fragment = new EditLoginPasswordFragment();
         fragment.setArguments(args);
         return fragment;
@@ -94,15 +93,15 @@ public class EditLoginPasswordFragment extends MvpBaseFragment<EditLoginPassword
 
     @Override
     public void passwordEditSuccess() {
-       // DialogUtils.getInstance().showEditSuccessTipsDialog(getActivity(), position -> {
-            //DialogUtils.getInstance().hideEditSuccessTipsDialog();
-            ActivityUtils.finishAllActivities();
-            MyActivityUtils.goActivity(getContext(), LoginActivity.class);
+        // DialogUtils.getInstance().showEditSuccessTipsDialog(getActivity(), position -> {
+        //DialogUtils.getInstance().hideEditSuccessTipsDialog();
+        ActivityUtils.finishAllActivities();
+        MyActivityUtils.goActivity(getContext(), LoginActivity.class);
         //});
     }
 
     @Override
     public void showCountDownTime(int downtime) {
-        
+
     }
 }

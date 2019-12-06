@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.activities.cooperation;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -19,10 +20,12 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
@@ -40,6 +43,8 @@ import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +96,8 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     TextView tv_account_num;
     @BindView(R.id.tv_account_name)
     TextView tv_account_name;
-
+    @BindView(R.id.tv_confirm_cash)
+    TextView tv_confirm_cash;
 
     private CooperationInfoNewEntity entity;
     private BindAccountEntity bindAccountEntity;
@@ -103,7 +109,6 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
-        bindAccountEntity = RuntimeUtils.selectBindAccountEntity;
         if (entity == null) {
             entity = new CooperationInfoNewEntity();
         }
@@ -118,7 +123,9 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         // preVRight.setText("提现记录");
+        bindAccountEntity = RuntimeUtils.selectBindAccountEntity;
         if (bindAccountEntity == null) {
+            LogUtils.d("跳转到提现界面了-----------------------异常");
             showToast("数据异常，请重试");
             finish();
             return;
@@ -149,6 +156,13 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 }
                 Double taxation = money * entity.getTaxation();
                 tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
+                if (s.length()>0) {
+                    tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_apply_crash_btn);
+                    tv_confirm_cash.setTextColor(Color.parseColor("#ffffff"));
+                }else {
+                    tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_device_manager_btn);
+                    tv_confirm_cash.setTextColor(Color.parseColor("#EB7A12"));
+                }
             }
         });
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
@@ -184,7 +198,6 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.tv_confirm_cash:
                 checkData();
-                cashHandler();
                 break;
             case R.id.tv_cash_all_money:
                 ed_input_cash_money.setText(entity.getRealizableIncome() + "");
@@ -266,7 +279,6 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         @Override
         public void tooManyAttempts() {
             LogUtils.d("指纹识别尝试次数过多-------------");
-            showToast("验证错误次数过多，请稍后再试");
             DialogUtils.getInstance().hideFingerCheckDailog();
             showPayPwdDialog();
         }
@@ -303,10 +315,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             showToast("超过可提现金额");
             return;
         }
-        if (llAliInfo.getVisibility() == View.GONE && llBankInfo.getVisibility() == View.GONE) {
-            showToast("请选择提现方式");
-            return;
-        }
+        cashHandler();
     }
 
 
@@ -382,6 +391,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     @Override
                     public void onNext(String s) {
                         showToast("提交成功");
+                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPartnerInfo,null));
                         hideProgress();
                         entity.setRealizableIncome(entity.getRealizableIncome() - money);
                         updateMoneyInfo();

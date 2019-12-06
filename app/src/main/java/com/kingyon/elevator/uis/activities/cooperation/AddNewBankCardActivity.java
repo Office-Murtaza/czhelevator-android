@@ -2,6 +2,8 @@ package com.kingyon.elevator.uis.activities.cooperation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -22,6 +24,7 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.TextChangedListener;
 import com.kingyon.elevator.view.AddNewBankCardView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,12 +68,16 @@ public class AddNewBankCardActivity extends MvpBaseActivity<AddNewBankCardPresen
             tv_zfb_name.setHint("请输入支付宝绑定的真实姓名");
             kaihuhang_container.setVisibility(View.GONE);
             bindAccountEntity.setCashType(2);
+            tv_zfb_account.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
+            TextChangedListener.StringWatcher(tv_zfb_account);
         } else {
             //绑定银行卡
             tv_account_type.setText("银行卡提现");
             tv_zfb_account.setHint("请输入银行卡账号");
             tv_zfb_name.setHint("请输入真实姓名");
             bindAccountEntity.setCashType(1);
+            tv_zfb_account.setInputType(InputType.TYPE_CLASS_NUMBER);
+            tv_zfb_account.setFilters(new InputFilter[] {new InputFilter.LengthFilter(19)});
             kaihuhang_container.setVisibility(View.VISIBLE);
         }
 

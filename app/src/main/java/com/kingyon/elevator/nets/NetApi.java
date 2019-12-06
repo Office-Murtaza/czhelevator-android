@@ -576,6 +576,19 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<List<IncomeDetailsEntity>> getIncomeDetailedList(@Field("start") String startPosition, @Field("size") String size, @Field("date") String date);
 
+
+    /**
+     * 根据年份和月份查询某一个月的收入或支出详情
+     *
+     * @param startPosition
+     * @param size
+     * @return
+     */
+    @POST("partner/getIncomePayDataDayList")
+    @FormUrlEncoded
+    Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(@Field("start") String startPosition,@Field("size") String size, @Field("type") String type, @Field("date") String date);
+
+
     /**
      * 查询昨日收益
      *

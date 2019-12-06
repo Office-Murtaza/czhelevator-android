@@ -74,7 +74,7 @@
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请输入支付宝账号"
-                android:textColor="@color/hint_text_color"
+                android:textColor="@color/default_text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 
@@ -107,7 +107,7 @@
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请输入支付宝绑定的真实姓名"
-                android:textColor="@color/hint_text_color"
+                android:textColor="@color/default_text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 
@@ -141,7 +141,7 @@
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请输入银行卡开户行"
-                android:textColor="@color/hint_text_color"
+                android:textColor="@color/default_text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 

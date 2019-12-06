@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
@@ -55,6 +56,8 @@ public class IncomeOrPayDetailsFragment extends MvpBaseFragment<IncomeOrPayDetai
     public void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this, getContentView());
         setStateLayout();
+        stateLayout.setErrorAction(v -> smart_refresh_layout.autoRefresh());
+        stateLayout.setEmptyAction(v -> smart_refresh_layout.autoRefresh());
         smart_refresh_layout.setEnableAutoLoadMore(false);
         initData();
 
@@ -99,6 +102,11 @@ public class IncomeOrPayDetailsFragment extends MvpBaseFragment<IncomeOrPayDetai
     public void showDetailsListData(List<IncomeDetailsEntity> incomeDetailsEntities) {
         if (incomeDetailsAdapter != null) {
             incomeDetailsAdapter.reflashData(incomeDetailsEntities);
+        }
+        if (incomeDetailsEntities.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.showEmptyView("暂无数据");
         }
     }
 

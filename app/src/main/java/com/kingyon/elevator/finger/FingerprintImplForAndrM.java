@@ -9,6 +9,7 @@ import android.support.v4.os.CancellationSignal;
 import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.finger.bean.VerificationDialogStyleBean;
 import com.kingyon.elevator.finger.uitls.CipherHelper;
@@ -22,7 +23,6 @@ import com.kingyon.elevator.utils.DialogUtils;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class FingerprintImplForAndrM implements IFingerprint {
 
-    private final String TAG = FingerprintImplForAndrM.class.getName();
     private Activity context;
 
     private static FingerprintImplForAndrM fingerprintImplForAndrM;
@@ -36,6 +36,7 @@ public class FingerprintImplForAndrM implements IFingerprint {
     private static FingerprintManagerCompat.CryptoObject cryptoObject;
     //Android 6.0 指纹管理
     private FingerprintManagerCompat fingerprintManagerCompat;
+    private int checkCount = 0;//当前验证次数
 
     @Override
     public void authenticate(Activity context, VerificationDialogStyleBean bean, FingerprintCallback callback) {
@@ -47,7 +48,10 @@ public class FingerprintImplForAndrM implements IFingerprint {
 
         //取消扫描，每次取消后需要重新创建新示例
         cancellationSignal = new CancellationSignal();
-        cancellationSignal.setOnCancelListener(() -> DialogUtils.getInstance().hideFingerCheckDailog());
+        cancellationSignal.setOnCancelListener(() -> {
+            checkCount = 0;
+            DialogUtils.getInstance().hideFingerCheckDailog();
+        });
 
         //调起指纹验证
         fingerprintManagerCompat.authenticate(cryptoObject, 0, cancellationSignal, authenticationCallback, null);
@@ -56,16 +60,19 @@ public class FingerprintImplForAndrM implements IFingerprint {
             public void onUsepwd() {
                 if (fingerprintCallback != null)
                     fingerprintCallback.onUsepwd();
+                checkCount = 0;
             }
 
             @Override
             public void onCancle() {
                 if (fingerprintCallback != null)
                     fingerprintCallback.onCancel();
+                checkCount = 0;
             }
 
             @Override
             public void onDismiss() {
+                checkCount = 0;
                 if (cancellationSignal != null && !cancellationSignal.isCanceled())
                     cancellationSignal.cancel();
             }
@@ -122,8 +129,16 @@ public class FingerprintImplForAndrM implements IFingerprint {
         @Override
         public void onAuthenticationFailed() {
             super.onAuthenticationFailed();
-            DialogUtils.getInstance().setFingerTips(context.getString(R.string.biometricprompt_verify_failed), R.color.biometricprompt_color_FF5555);
-            fingerprintCallback.onFailed();
+            if (checkCount == 3) {
+                checkCount = 0;
+                DialogUtils.getInstance().hideFingerCheckDailog();
+                fingerprintCallback.tooManyAttempts();
+            } else {
+                checkCount++;
+                ToastUtils.showShort("剩余验证次数" + (4 - checkCount)+"次");
+                DialogUtils.getInstance().setFingerTips(context.getString(R.string.biometricprompt_verify_failed), R.color.biometricprompt_color_FF5555);
+                fingerprintCallback.onFailed();
+            }
         }
     };
 

@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
@@ -87,7 +88,7 @@ public class App extends LitePalApplication {
                 return isDebug();
             }
         });
-        if (isDebug()) {
+        if (AppUtils.isAppDebug()) {
             LogUtils.getConfig().setLogSwitch(true);
         }else {
             LogUtils.getConfig().setLogSwitch(false);

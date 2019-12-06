@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
@@ -20,6 +23,10 @@ import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class CooperationActivity extends BaseStateRefreshingActivity {
 
@@ -34,6 +41,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
     @Override
     public int getContentViewId() {
         StatusBarUtil.setTransparent(this, false);
+        EventBus.getDefault().register(this);
         return R.layout.activity_cooperation;
     }
 
@@ -121,5 +129,19 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                 autoRefresh();
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventHandler(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.ReflashPartnerInfo) {
+            LogUtils.d("提现成功刷新合伙人信息----------------------------------");
+            autoRefresh();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

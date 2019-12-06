@@ -68,4 +68,10 @@ public class InputPayPwdToCashDailog extends MyBaseBottomDialog {
     public void show() {
         super.show();
     }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        context = null;
+    }
 }

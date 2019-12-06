@@ -91,7 +91,7 @@ public class CheckPayVerCodeFragment extends MvpBaseFragment<EditPayPasswordFrag
             tv_get_code.setText("获取验证码");
         } else {
             tv_get_code.setEnabled(false);
-            tv_get_code.setText(downtime + "S");
+            tv_get_code.setText("重新获取"+downtime + "S");
         }
     }
 

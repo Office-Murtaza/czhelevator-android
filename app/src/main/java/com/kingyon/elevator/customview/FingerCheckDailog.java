@@ -80,5 +80,6 @@ public class FingerCheckDailog extends MyBaseBottomDialog {
         super.dismiss();
         if (fingerCheckListener != null)
             fingerCheckListener.onDismiss();
+        context = null;
     }
 }

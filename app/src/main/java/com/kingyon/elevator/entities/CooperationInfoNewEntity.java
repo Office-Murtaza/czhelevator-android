@@ -22,6 +22,7 @@ public class CooperationInfoNewEntity implements Parcelable {
     private double yesterdayIncome;
     private boolean disable;
     private boolean isSetPayPassword;
+    private boolean isCashing;
 
     public double getTotalIncome() {
         return totalIncome;
@@ -79,6 +80,14 @@ public class CooperationInfoNewEntity implements Parcelable {
         isSetPayPassword = setPayPassword;
     }
 
+    public boolean isCashing() {
+        return isCashing;
+    }
+
+    public void setCashing(boolean cashing) {
+        isCashing = cashing;
+    }
+
     public CooperationInfoNewEntity(){
 
     }
@@ -97,6 +106,7 @@ public class CooperationInfoNewEntity implements Parcelable {
         dest.writeDouble(this.yesterdayIncome);
         dest.writeByte((byte)(this.disable ?1:0));
         dest.writeByte((byte)(this.isSetPayPassword ?1:0));
+        dest.writeByte((byte)(this.isCashing ?1:0));
     }
 
     protected CooperationInfoNewEntity(Parcel in) {
@@ -107,6 +117,7 @@ public class CooperationInfoNewEntity implements Parcelable {
         this.yesterdayIncome = in.readDouble();
         this.disable =in.readByte()!=0;
         this.isSetPayPassword =in.readByte()!=0;
+        this.isCashing =in.readByte()!=0;
     }
 
     public static final Creator<CooperationInfoNewEntity> CREATOR = new Creator<CooperationInfoNewEntity>() {

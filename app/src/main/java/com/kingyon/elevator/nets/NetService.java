@@ -1229,6 +1229,17 @@ public class NetService {
 
 
     /**
+     * 根据年份和月份查询某一个月的收入或支出详情
+     *
+     * @return
+     */
+    public Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(String startPosition, String size,String type, String date) {
+        return addSchedulers(getApi().getIncomePayDataDayList(startPosition, size,type, date));
+    }
+
+
+
+    /**
      * 查询昨日收益
      *
      * @return

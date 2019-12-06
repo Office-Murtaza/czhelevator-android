@@ -45,14 +45,14 @@ public class IncomeDetailsAdapter extends RecyclerView.Adapter<IncomeDetailsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       try {
-           IncomeDetailsEntity incomeDetailsEntity = incomeDetailsEntityList.get(position);
-           holder.tv_income_date.setText(incomeDetailsEntity.getDateValue());
-           holder.tv_income_type.setText(incomeDetailsEntity.getTypeName());
-           holder.tv_income_money.setText("¥"+incomeDetailsEntity.getAmount());
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            IncomeDetailsEntity incomeDetailsEntity = incomeDetailsEntityList.get(position);
+            holder.tv_income_date.setText(incomeDetailsEntity.getDateValue() + "\t\t" + (incomeDetailsEntity.getTimeValue() == null ? "" : incomeDetailsEntity.getTimeValue()));
+            holder.tv_income_type.setText(incomeDetailsEntity.getTypeName());
+            holder.tv_income_money.setText("¥" + incomeDetailsEntity.getAmount());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

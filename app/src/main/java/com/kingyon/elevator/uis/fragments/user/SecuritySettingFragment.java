@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.fragments.user;
 
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
@@ -43,14 +44,12 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
     LinearLayout finger_switch;
     @BindView(R.id.finger_status)
     TextView finger_status;
-    private String TAG = "指纹识别";
     UserEntity userEntity;
 
     @Override
     public SecuritySettingFragmentPresenter initPresenter() {
         return new SecuritySettingFragmentPresenter(getActivity());
     }
-
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -66,7 +65,6 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
             showShortToast("您未登录");
             getActivity().finish();
         }
-
     }
 
     @Override
@@ -79,14 +77,22 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.finger_switch:
-                if (!FingerprintManagerCompat.from(getActivity()).isHardwareDetected()) {
-                    showShortToast("您的设备不支持指纹识别");
-                    return;
-                }
-                if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
-                    showTipsDialog();
-                } else {
-                    presenter.checkIsInitPayPwd();
+                try {
+                    if (!FingerprintManagerCompat.from(getActivity()).isHardwareDetected()) {
+                        showShortToast("您的设备不支持指纹识别");
+                        return;
+                    }
+                    if (Build.VERSION.SDK_INT < 6.0) {
+                        showShortToast("您的设备系统版本过低");
+                        return;
+                    }
+                    if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                        showTipsDialog();
+                    } else {
+                        presenter.checkIsInitPayPwd();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
             case R.id.password_setting:
@@ -99,13 +105,10 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
         new AlertDialog.Builder(getActivity())
                 .setTitle("提示")
                 .setMessage("指纹识别已经开启，是否需要关闭？")
-                .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
-                        finger_status.setText("未开启");
-                        showShortToast("指纹识别已经关闭");
-                    }
+                .setPositiveButton("关闭", (dialog, which) -> {
+                    DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
+                    finger_status.setText("未开启");
+                    showShortToast("指纹识别已经关闭");
                 })
                 .setNegativeButton("取消", null)
                 .show();
@@ -129,7 +132,7 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
 
         @Override
         public void onFailed() {
-            LogUtils.d("指纹识别失败--------");
+
         }
 
         @Override
@@ -139,26 +142,22 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
 
         @Override
         public void onCancel() {
-            LogUtils.d("指纹识别取消");
             showShortToast("您取消了指纹验证");
         }
 
         @Override
         public void tooManyAttempts() {
-            LogUtils.d("指纹识别尝试次数过多-------------");
-            showShortToast("验证错误次数过多，请稍后再试");
+            showShortToast("验证错误次数过多，请30s稍后再试");
             DialogUtils.getInstance().hideFingerCheckDailog();
         }
 
         @Override
         public void onHwUnavailable() {
-            LogUtils.d("指纹识别模块不可用");
             showShortToast("您的手机暂不支持指纹识别或指纹识别不可用");
         }
 
         @Override
         public void onNoneEnrolled() {
-            LogUtils.d("指纹识别模块不可用");
             showShortToast("您还未录入指纹，请先去系统设置里录入指纹！");
         }
 

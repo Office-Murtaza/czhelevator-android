@@ -91,6 +91,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     MyMarkView myMarkView;
     YAxis yAxis;
     XAxis xAxis;
+    private Highlight lastHighLight;
 
     @Override
     public IncomeRecordPresenter initPresenter() {
@@ -108,8 +109,8 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         setStateLayout();
         currentSelectYear = DateUtils.getCurrentYear();
         currentSelectMonth = DateUtils.getCurrentMonth();
-        currentSelectDay= DateUtils.getCurrentDay();
-        tv_select_time.setText(currentSelectYear+"年"+currentSelectMonth+"月");
+        currentSelectDay = DateUtils.getCurrentDay();
+        tv_select_time.setText(currentSelectYear + "年" + currentSelectMonth + "月");
         selectCatType = 1;
         selectIncomeOrPay = 0;
         creatButton();
@@ -144,6 +145,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         yAxis.enableGridDashedLine(10f, 0f, 0f);
         yAxis.setTextColor(Color.parseColor("#00000000"));
         yAxis.setAxisMinimum(0);
+        yAxis.setLabelCount(5);
         yAxis.setDrawLabels(false);
     }
 
@@ -156,8 +158,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         xAxis.setGranularity(1.0f);
         xAxis.setAxisMaximum(monthOrDayIncomeOrPayEntity.getList().size());
         xAxis.setLabelCount(monthOrDayIncomeOrPayEntity.getList().size());
-        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue()*2);
+        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue() * 2);
         yAxis.setAxisMinimum(0f);
+        yAxis.setLabelCount(5);
         line_chart_view.getViewPortHandler().setMaximumScaleX(1.0f);
         line_chart_view.getViewPortHandler().setMinimumScaleX(1.0f);
         line_chart_view.setScaleMinima(1f, 1f);
@@ -172,8 +175,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         xAxis.setLabelCount(monthOrDayIncomeOrPayEntity.getList().size());
         line_chart_view.getViewPortHandler().setMaximumScaleX(2.0f);
         line_chart_view.setScaleMinima(2f, 1f);
-        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue()*2);
+        yAxis.setAxisMaximum((float) monthOrDayIncomeOrPayEntity.getMaxValue() * 2);
         yAxis.setAxisMinimum(0f);
+        yAxis.setLabelCount(5);
         setData(monthOrDayIncomeOrPayEntity);
     }
 
@@ -213,7 +217,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         LineData data = new LineData(dataSets);
         line_chart_view.setData(data);
         line_chart_view.invalidate();
-        line_chart_view.highlightValue(currentSelectMonth,0,true);
+        line_chart_view.highlightValue(currentSelectMonth, 0, true);
     }
 
 
@@ -328,7 +332,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     public void onValueSelected(Entry e, Highlight h) {
         //LogUtils.d("图表已设置高亮值-----------------------",GsonUtils.toJson(h));
         addButton(e, h);
-
+        lastHighLight = h;
     }
 
     @Override
@@ -336,6 +340,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         if (isAddButton) {
             chart_container.removeView(catIncomeBtn);
             isAddButton = false;
+            if (lastHighLight!=null) {
+                line_chart_view.highlightValue(lastHighLight);
+            }
         }
     }
 
@@ -376,7 +383,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         LineData data = new LineData(dataSets);
         line_chart_view.setData(data);
         line_chart_view.invalidate();
-        line_chart_view.highlightValue(currentSelectDay,0,true);
+        line_chart_view.highlightValue(currentSelectDay, 0, true);
         // }
     }
 
@@ -392,7 +399,6 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     @Override
     public void showChartData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
         tv_no_chart_data.setVisibility(View.GONE);
-        LogUtils.d("图表数据：", GsonUtils.toJson(monthOrDayIncomeOrPayEntity));
         if (selectCatType == 0) {
             //按年查看数据
             showYeardata(monthOrDayIncomeOrPayEntity);

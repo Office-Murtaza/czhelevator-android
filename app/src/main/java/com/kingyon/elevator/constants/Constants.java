@@ -212,4 +212,9 @@ public interface Constants {
         String MAINTAIN = "MAINTAIN";
         String OCCUPY = "OCCUPY";
     }
+
+    interface QueryDataType {//收益详情 查询支出还是收入
+        String PayType = "2";
+        String IncomeType = "1";
+    }
 }

@@ -49,32 +49,32 @@ public class BasePresenter<V extends BaseView> implements IPresenter {
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onCreate");
+
     }
 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onResume");
+
     }
 
     @Override
     public void onPause(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onPause");
+
     }
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onStart");
+
     }
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onStop");
+
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
-        LogUtils.d("mvp-LifecycleOwner----onDestroy");
+
     }
 
 

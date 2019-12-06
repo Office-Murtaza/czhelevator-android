@@ -211,4 +211,11 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
     public void goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fragmentManager=null;
+        fragmentTransaction=null;
+    }
 }
