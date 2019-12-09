@@ -8,7 +8,7 @@ public class IncomeDetailsEntity {
 
     private int id;
     private String typeName;
-    private double amount;
+    private String amount;
     private String dateValue;
     private String timeValue;
     private String createTime;
@@ -29,11 +29,11 @@ public class IncomeDetailsEntity {
         this.typeName = typeName;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

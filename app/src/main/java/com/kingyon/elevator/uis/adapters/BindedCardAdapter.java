@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.BindAccountEntity;
-import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.PublicFuncation;
