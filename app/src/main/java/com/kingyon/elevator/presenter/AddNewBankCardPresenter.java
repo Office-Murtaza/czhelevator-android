@@ -72,7 +72,7 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            getView().showShortToast("绑定失败，请重试");
+                            getView().showShortToast(ex.getDisplayMessage());
                         }
                     }
 

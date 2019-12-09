@@ -74,7 +74,7 @@ public class AddNewBankCardActivity extends MvpBaseActivity<AddNewBankCardPresen
             //绑定银行卡
             tv_account_type.setText("银行卡提现");
             tv_zfb_account.setHint("请输入银行卡账号");
-            tv_zfb_name.setHint("请输入真实姓名");
+            tv_zfb_name.setHint("请输入银行卡绑定的真实姓名");
             bindAccountEntity.setCashType(1);
             tv_zfb_account.setInputType(InputType.TYPE_CLASS_NUMBER);
             tv_zfb_account.setFilters(new InputFilter[] {new InputFilter.LengthFilter(19)});
