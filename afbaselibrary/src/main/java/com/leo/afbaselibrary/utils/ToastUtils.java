@@ -2,7 +2,11 @@ package com.leo.afbaselibrary.utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.leo.afbaselibrary.R;
 
 import java.lang.ref.WeakReference;
 
@@ -49,10 +53,18 @@ public class ToastUtils {
         toast = mToastRefrence.get();
         if (toast == null) {
             toast = Toast.makeText(context, text, duration);
+
             mToastRefrence = new WeakReference<>(toast);
         } else {
             toast.setText(text);
             toast.setDuration(duration);
+        }
+        try {
+            LinearLayout linearLayout = (LinearLayout) toast.getView();
+            TextView messageTextView = (TextView) linearLayout.getChildAt(0);
+            messageTextView.setTextSize(16);
+        }catch (Exception e){
+
         }
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();

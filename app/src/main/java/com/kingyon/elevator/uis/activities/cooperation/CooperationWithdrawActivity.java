@@ -180,7 +180,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     }
 
     private void updateMoneyInfo() {
-        tv_shuilv.setText(String.format("税后所得(%s%%)", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
+        //tv_shuilv.setText(String.format("税后所得(%s%%)", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
         ed_input_cash_money.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
     }
 
@@ -287,12 +287,15 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         public void onHwUnavailable() {
             LogUtils.d("指纹识别模块不可用");
             showToast("您的手机暂不支持指纹识别或指纹识别不可用");
+            showPayPwdDialog();
         }
 
         @Override
         public void onNoneEnrolled() {
             LogUtils.d("指纹识别模块不可用");
             showToast("您还未录入指纹，请先去系统设置里录入指纹！");
+            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
+            showPayPwdDialog();
         }
     };
 

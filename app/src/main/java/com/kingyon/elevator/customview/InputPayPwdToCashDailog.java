@@ -53,15 +53,13 @@ public class InputPayPwdToCashDailog extends MyBaseBottomDialog {
                     inputPayPwdListener.userInputPassWord(pwd);
                 }
         );
-        tv_forget_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //忘记支付密码
-                MyActivityUtils.goFragmentContainerActivity(context, FragmentConstants.CheckPayVerCodeFragment);
-                KeyboardUtils.hideSoftInput(pay_password_input_view.getEt_input_password());
-                DialogUtils.getInstance().hideInputPayPwdToCashDailog();
-            }
+        tv_forget_password.setOnClickListener(v -> {
+            //忘记支付密码
+            MyActivityUtils.goFragmentContainerActivity(context, FragmentConstants.CheckPayVerCodeFragment);
+            KeyboardUtils.hideSoftInput(pay_password_input_view.getEt_input_password());
+            DialogUtils.getInstance().hideInputPayPwdToCashDailog();
         });
+        pay_password_input_view.postDelayed(() -> KeyboardUtils.showSoftInput(pay_password_input_view.getEt_input_password()), 200);
     }
 
     @Override

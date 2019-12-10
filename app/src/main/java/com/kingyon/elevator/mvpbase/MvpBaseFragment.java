@@ -34,6 +34,7 @@ public abstract class MvpBaseFragment<P extends BasePresenter> extends Fragment 
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
         ToastUtils.setGravity(Gravity.CENTER, 0, 0);
+        ToastUtils.setMsgTextSize(20);
     }
 
     public abstract P initPresenter();

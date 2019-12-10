@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="52dp">
+    android:layout_height="52dp"
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/tv_income_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="25dp"
-        android:alpha="0.46"
-        android:text="2019年10月15日  14：22"
-        android:textColor="#ff000000"
-        android:textSize="15sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="7">
 
-    <TextView
-        android:id="@+id/tv_income_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="21dp"
-        android:alpha="0.8"
-        android:text="¥ 00.00"
-        android:textColor="#000000"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tv_income_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:alpha="0.46"
+            android:ellipsize="end"
+            android:gravity="center_vertical|left"
+            android:maxLines="1"
+            android:paddingStart="19dp"
+            android:paddingEnd="0dp"
+            android:text="2019年10月15日  14：22"
+            android:textColor="#ff000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_income_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="广告"
+            android:textColor="#9C9C9C"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_income_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:alpha="0.8"
+            android:gravity="center_vertical|right"
+            android:paddingStart="0dp"
+            android:paddingEnd="19dp"
+            android:text="¥ 00.00"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

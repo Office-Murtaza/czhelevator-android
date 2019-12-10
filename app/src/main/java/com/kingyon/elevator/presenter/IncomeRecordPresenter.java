@@ -38,7 +38,8 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
      */
     public void getIncomeAndPayData(int type, int year, int month) {
         getView().showProgressView();
-        NetService.getInstance().getIncomeAndPayByDate(type == 0 ? year + "" : year + "-" + month)
+        String currentMonth = month < 10 ? "0"+month :""+month;
+        NetService.getInstance().getIncomeAndPayByDate(type == 0 ? year + "" : year + "-" + currentMonth)
                 .subscribe(new CustomApiCallback<IncomeOrPayEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -69,7 +70,8 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
         if (isViewAttached()) {
             getView().showProgressDialog("数据加载中", true);
         }
-        NetService.getInstance().getIncomeAndPayByDate(type == 0 ? year + "" : year + "-" + month)
+        String currentMonth = month < 10 ? "0"+month :""+month;
+        NetService.getInstance().getIncomeAndPayByDate(type == 0 ? year + "" : year + "-" + currentMonth)
                 .subscribe(new CustomApiCallback<IncomeOrPayEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -102,6 +104,7 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
         if (isViewAttached()) {
             getView().showChartLoadingTips("图表数据加载中...");
         }
+        String currentMonth = month < 10 ? "0"+month :""+month;
         if (selectIncomeOrPay == 0) {
             //查询收入
             if (selectCatType == 0) {
@@ -109,7 +112,7 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
                 getYearIncomeData(year + "");
             } else {
                 //查询月收入
-                getMonthIncomeData(year + "-" + month);
+                getMonthIncomeData(year + "-" + currentMonth);
             }
         } else {
             //查询支出
@@ -118,7 +121,7 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
                 getYearPayData(year + "");
             } else {
                 //查询月收入
-                getMonthPayData(year + "-" + month);
+                getMonthPayData(year + "-" + currentMonth);
             }
         }
     }
@@ -214,7 +217,6 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
                     }
                 });
     }
-
 
     /**
      * 获取月份支出数据

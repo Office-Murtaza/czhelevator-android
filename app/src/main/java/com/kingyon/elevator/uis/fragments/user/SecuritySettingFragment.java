@@ -159,6 +159,7 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
         @Override
         public void onNoneEnrolled() {
             showShortToast("您还未录入指纹，请先去系统设置里录入指纹！");
+            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
         }
 
     };
@@ -188,6 +189,10 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
 
     @Override
     public void checkPayPwdIsSuccess() {
-        fingerprintInit();
+        try {
+            fingerprintInit();
+        }catch (Exception e){
+            finger_status.postDelayed(() -> fingerprintInit(),200);
+        }
     }
 }

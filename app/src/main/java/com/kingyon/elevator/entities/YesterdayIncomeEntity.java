@@ -10,6 +10,15 @@ public class YesterdayIncomeEntity {
     private String amount;
     private String dateValue;
     private String timeValue;
+    private String typeName;
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getAmount() {
         return amount;

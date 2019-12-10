@@ -30,6 +30,7 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
         ActivityUtil.addActivity(this);
         setSwipeBackEnable(true);
         ToastUtils.setGravity(Gravity.CENTER,0,0);
+        ToastUtils.setMsgTextSize(20);
         presenter = initPresenter();
         presenter.attachView(this);
         getLifecycle().addObserver(presenter);

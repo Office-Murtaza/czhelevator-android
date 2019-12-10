@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.finger.bean.VerificationDialogStyleBean;
 import com.kingyon.elevator.finger.uitls.AndrVersionUtil;
 

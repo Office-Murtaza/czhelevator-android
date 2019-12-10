@@ -454,16 +454,14 @@
             android:layout_below="@+id/my_action_bar"
             android:background="@color/main_bg_color">
 
-            <com.kingyon.elevator.customview.SelfAdaptionRelativeLayout
+            <RelativeLayout
                 android:id="@+id/card_container"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="170dp"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="56dp"
                 android:layout_marginEnd="23dp"
-                android:background="@mipmap/partner_zhangmuminxi"
-                app:RHeightRatio="160"
-                app:RWidthRatio="330">
+                android:background="@mipmap/partner_zhangmuminxi">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -487,14 +485,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="22dp"
+                    android:layout_marginBottom="15dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
@@ -503,24 +501,25 @@
                             android:id="@+id/tv_can_crash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:text="0.00"
                             android:textColor="#ffffffff"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/ketixian"
                             android:textColor="#ffffffff"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/already_crash_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
@@ -529,24 +528,25 @@
                             android:id="@+id/tv_already_crash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:text="0.00"
                             android:textColor="#ffffffff"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/yitixian"
                             android:textColor="#ffffffff"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/yesterday_income_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
@@ -555,22 +555,23 @@
                             android:id="@+id/yesterday_income"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:text="0.00"
                             android:textColor="#ffffffff"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/zuorishouyi"
                             android:textColor="#ffffffff"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-            </com.kingyon.elevator.customview.SelfAdaptionRelativeLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/crash_money_history"
@@ -580,8 +581,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="23dp"
-                android:text="提现记录"
                 android:alpha="0.54"
+                android:text="提现记录"
                 android:textColor="#000000"
                 android:textSize="17sp" />
 

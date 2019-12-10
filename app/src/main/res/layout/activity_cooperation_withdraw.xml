@@ -518,7 +518,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:text="税后所得（0%）"
+                android:text="税后所得"
                 android:textColor="@color/hint_text_color"
                 android:textSize="19sp" />
 
