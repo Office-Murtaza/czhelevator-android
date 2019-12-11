@@ -132,8 +132,8 @@ public class ResetPasswordActivity extends BaseSwipeBackActivity {
             showToast("请输入密码");
             return;
         }
-        if (CommonUtil.getEditText(etPassword).length() < 6) {
-            showToast("新密码长度不足6位");
+        if (CommonUtil.getEditText(etPassword).length() < 8) {
+            showToast("新密码长度不足8位");
             return;
         }
         if (TextUtils.isEmpty(CommonUtil.getEditText(etPasswordRepeat))) {

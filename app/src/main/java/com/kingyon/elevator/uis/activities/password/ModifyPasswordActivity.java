@@ -77,8 +77,8 @@ public class ModifyPasswordActivity extends BaseSwipeBackActivity {
             showToast("输入新旧密码不能一致");
             return;
         }
-        if (CommonUtil.getEditText(etNewPassword).length() < 6) {
-            showToast("新密码长度不足6位");
+        if (CommonUtil.getEditText(etNewPassword).length() < 8) {
+            showToast("新密码长度不足8位");
             return;
         }
         if (TextUtils.isEmpty(CommonUtil.getEditText(etNewRepeate))) {
