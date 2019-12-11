@@ -167,13 +167,13 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 if (entity.isDisable()) {
                     showToast("您已被禁止提现，如有问题请联系客服！");
                 } else {
-                   // if (entity.isCashing()) {
+                    if (entity.isCashing()) {
                         bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
                         //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
                         MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
-//                    } else {
-//                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
-//                    }
+                    } else {
+                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
+                    }
                 }
                 break;
             case R.id.ll_income_today:
