@@ -14,6 +14,11 @@
 
     <color name="split_line_color">#7F7F7F</color>
 
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="btn_start_crop_color">#00ff00</color>
+
     <color name="biometricprompt_color_primary">#415FFF</color>
     <color name="biometricprompt_color_ffffff">#ffffff</color>
     <color name="biometricprompt_color_333333">#333333</color>

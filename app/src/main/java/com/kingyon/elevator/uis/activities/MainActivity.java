@@ -1,14 +1,20 @@
 package com.kingyon.elevator.uis.activities;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -33,18 +39,25 @@ import com.kingyon.elevator.uis.fragments.main.OrderFragment;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
 import com.kingyon.elevator.utils.OCRUtil;
 import com.kingyon.elevator.utils.RichTextUtil;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.animationutils.AnimatorPath;
+import com.kingyon.elevator.utils.animationutils.PathEvaluator;
+import com.kingyon.elevator.utils.animationutils.PathPoint;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.utils.GlideUtils;
+import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.download.DownloadApkUtil;
 import com.leo.afbaselibrary.widgets.TabStripView;
 import com.orhanobut.logger.Logger;
@@ -62,9 +75,13 @@ import cn.jpush.android.api.JPushInterface;
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
     @BindView(R.id.tabBar)
     TabStripView tabBar;
+    @BindView(R.id.iv_add_plan_animation_view)
+    ImageView iv_add_plan_animation_view;
+
     private String currentTag;
     private BaseFragment currentFragment;
     private long logTime;
+    private AnimatorPath path;//声明动画集合
 
     @Override
     public int getContentViewId() {
@@ -83,7 +100,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         checkVersion();
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
-        tabBar.postDelayed(() -> loadUserPrivacy(),400);
+        tabBar.postDelayed(() -> loadUserPrivacy(), 400);
     }
 
 
@@ -188,8 +205,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             finish();
         } else {
             if (tabBar != null) {
-                tabBar.setCurrentSelectedTab(tabEntity.getPos());
+
                 if (tabEntity.getPos() == 2 && tabEntity.getOrderType() != null) {
+                    tabBar.setCurrentSelectedTab(tabEntity.getPos());
                     String tagByPos = tabBar.getTagByPos(2);
                     if (tabBar.isExist(tagByPos)) {
                         BaseFragment curFragment = tabBar.getCurrentFragment(tagByPos);
@@ -201,7 +219,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 if (tabEntity.getPos() == 1 && !TextUtils.isEmpty(tabEntity.getPlanType())) {
                     String tagByPos = tabBar.getTagByPos(1);
                     if (tabBar.isExist(tagByPos)) {
-                        BaseFragment curFragment = tabBar.getCurrentFragment(tagByPos);
+                        BaseFragment curFragment = tabBar.findFragmentByTag(tagByPos);
                         if (curFragment != null && curFragment instanceof PlanNewFragment) {
                             ((PlanNewFragment) curFragment).onTypeModify(tabEntity.getPlanType());
                         }
@@ -214,6 +232,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChangeTab(ToPlanTab toPlanTab) {
         ActivityUtil.finishAllNotMain();
+        startAddPlanAnimation();
         onChangeTab(new TabEntity(1, toPlanTab.getType()));
     }
 
@@ -230,6 +249,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        DialogUtils.getInstance().hidePlanSelectDateDialog();
         super.onDestroy();
     }
 
@@ -252,6 +272,56 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             showToast("再次点击退出应用");
             logTime = currentTime;
         }
+    }
+
+    /**
+     * 执行加入购物车的动画
+     */
+    public void startAddPlanAnimation() {
+        if (RuntimeUtils.clickPositionAnimation != null) {
+            if (RuntimeUtils.animationImagePath!=null) {
+                GlideUtils.loadImage(this,RuntimeUtils.animationImagePath,iv_add_plan_animation_view);
+            }
+            iv_add_plan_animation_view.setX(20);
+            iv_add_plan_animation_view.setY(RuntimeUtils.clickPositionAnimation[1] - 150);
+            iv_add_plan_animation_view.setVisibility(View.VISIBLE);
+            path = new AnimatorPath();
+            path.moveTo(DensityUtil.dip2px(16), RuntimeUtils.clickPositionAnimation[1] - 150);
+            path.secondBesselCurveTo(ScreenUtils.getScreenWidth() / 2, RuntimeUtils.clickPositionAnimation[1] - 50, ScreenUtils.getScreenWidth() / 4 + 20, ScreenUtils.getScreenHeight() - 80);
+            ObjectAnimator anim = ObjectAnimator.ofObject(this, "addPlan", new PathEvaluator(), path.getPoints().toArray());
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.setDuration(1000);
+            anim.start();
+            iv_add_plan_animation_view.animate().scaleX(0f).scaleY(0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    iv_add_plan_animation_view.setVisibility(View.GONE);
+                    iv_add_plan_animation_view.setScaleX(1f);
+                    iv_add_plan_animation_view.setScaleY(1f);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            }).start();
+            RuntimeUtils.clickPositionAnimation = null;
+        }
+    }
+
+    public void setAddPlan(PathPoint newLoc) {
+        iv_add_plan_animation_view.setTranslationX(newLoc.mX);
+        iv_add_plan_animation_view.setTranslationY(newLoc.mY);
     }
 
     private void initPushId() {

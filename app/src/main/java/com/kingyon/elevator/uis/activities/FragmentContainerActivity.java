@@ -30,6 +30,7 @@ import com.kingyon.elevator.uis.fragments.user.SecuritySettingFragment;
 import com.kingyon.elevator.uis.fragments.user.SetPasswordFragment;
 import com.kingyon.elevator.uis.fragments.user.YesterDayIncomeFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.FragmentContainerView;
 import com.leo.afbaselibrary.widgets.StateLayout;
@@ -210,6 +211,13 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
     @Override
     public void goPartnerDetailsInfo(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DialogUtils.getInstance().hideInputPayPwdToCashDailog();
+        DialogUtils.getInstance().hideFingerCheckDailog();
     }
 
     @Override

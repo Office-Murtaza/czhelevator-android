@@ -8,42 +8,184 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fl_title"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white_normal">
+        android:layout_height="186dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:background="@mipmap/jihuadan_dingbujianbian" />
+
+
+        <FrameLayout
+            android:id="@+id/fl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/head_root"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_tab_bar">
+
+                <TextView
+                    android:id="@+id/pre_tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="计划"
+                    android:textColor="@color/black_normal"
+                    android:textSize="@dimen/txt_big_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_title_back"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default"
+                    android:text="编辑"
+                    android:textColor="@color/black_normal"
+                    android:textSize="@dimen/txt_normal_content" />
+            </RelativeLayout>
+        </FrameLayout>
 
         <RelativeLayout
-            android:id="@+id/head_root"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_tab_bar">
+            android:layout_height="117dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12.5dp"
+            android:layout_marginEnd="12.5dp"
+            android:background="@drawable/shape_plan_tab_bg">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:clipChildren="false"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_plan_tab_title_bg" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tab_business"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="商业"
+                        android:textColor="@color/white"
+                        android:textSize="14.5sp" />
+
+                    <TextView
+                        android:id="@+id/tab_diy_ad"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_plan_tab_title_selected_bg"
+                        android:gravity="center"
+                        android:text="DIY"
+                        android:textColor="@color/black"
+                        android:textSize="14.5sp" />
+
+                    <TextView
+                        android:id="@+id/tab_bianmin"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="便民"
+                        android:textColor="@color/white"
+                        android:textSize="14.5sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/select_date_container"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:gravity="center_vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12月15日"
+                    android:singleLine="true"
+                    android:textColor="#ffeb7a12"
+                    android:textSize="23sp" />
+
+                <TextView
+                    android:id="@+id/tv_start_date_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(今天)"
+                    android:singleLine="true"
+                    android:textColor="#ff404040"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#7F7F7F" />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12月15日"
+                    android:singleLine="true"
+                    android:textColor="#ffeb7a12"
+                    android:textSize="23sp" />
+
+                <TextView
+                    android:id="@+id/tv_end_date_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(今天)"
+                    android:singleLine="true"
+                    android:textColor="#ff404040"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
 
             <TextView
-                android:id="@+id/pre_tv_title"
+                android:id="@+id/tv_total_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="计划"
-                android:textColor="@color/black_normal"
-                android:textSize="@dimen/txt_big_content"
-                android:textStyle="bold" />
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="11dp"
+                android:text="共1天"
+                android:textColor="#ff404040"
+                android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/tv_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_title_back"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_default"
-                android:paddingRight="@dimen/spacing_default"
-                android:text="编辑"
-                android:textColor="@color/black_normal"
-                android:textSize="@dimen/txt_normal_content" />
         </RelativeLayout>
-    </FrameLayout>
+
+    </RelativeLayout>
 
     <com.kingyon.elevator.uis.widgets.RoundPagerSlidingTabStrip
         android:id="@+id/pre_tab_layout"
@@ -51,6 +193,7 @@
         android:layout_height="46dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/white_normal"
+        android:visibility="gone"
         app:normalTabTextColor="#808080"
         app:pstsDividerColor="@color/colorAccent"
         app:pstsIndicatorColor="@color/colorAccent"
@@ -60,10 +203,9 @@
         app:pstsUnderlineHeight="0dp"
         app:selectedTabTextColor="@color/colorAccent" />
 
-    <include layout="@layout/ui_layout_divider" />
-
     <android.support.v4.view.ViewPager
         android:id="@+id/pre_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="7.5dp" />
 </LinearLayout>

@@ -86,7 +86,12 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                 holder.setTextNotHide(R.id.tv_name, String.format("%s%s", item.getCellName(), item.getBuildName()));
                 holder.setSelected(R.id.tv_name, item.isChoosed());
                 holder.setSelected(R.id.img_expand, item.isExpand());
-                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+                if (position == 0) {
+                    item.setExpand(true);
+                    holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+                } else {
+                    holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+                }
                 RecyclerView rvPoints = holder.getView(R.id.rv_points);
                 AssignChildrenAdapter childrenAdapter = (AssignChildrenAdapter) rvPoints.getAdapter();
                 if (childrenAdapter == null) {

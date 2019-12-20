@@ -18,11 +18,23 @@
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_check_big"
         android:drawablePadding="10dp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:textColor="#ff808080"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
         tools:text="一号梯" />
+
+    <TextView
+        android:id="@+id/tv_device_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_two"
+        android:text="100000"
+        android:textColor="#7F7F7F"
+        android:textSize="@dimen/txt_normal_content" />
 
     <TextView
         android:id="@+id/tv_deliver"

@@ -38,6 +38,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
 
     private boolean editMode;
     private OnOperateClickListener onOperateClickListener;
+    private Boolean isSelectAll = false;//是否选中全部
 
     public PlanAdapter(Context context, List<Object> mItems, OnOperateClickListener onOperateClickListener) {
         super(context, mItems);
@@ -72,6 +73,15 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         }
     }
 
+
+    public Boolean getSelectAll() {
+        return isSelectAll;
+    }
+
+    public void setSelectAll(Boolean selectAll) {
+        isSelectAll = selectAll;
+    }
+
     private class CellDelegate implements ItemViewDelegate<Object> {
         @Override
         public int getItemViewLayoutId() {
@@ -86,7 +96,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         @Override
         public void convert(CommonHolder holder, Object o, int position) {
             CellItemEntity item = (CellItemEntity) o;
-            holder.setSelected(R.id.item_root, item.getPlanPosition() % 2 == 1);
+           // holder.setSelected(R.id.item_root, item.getPlanPosition() % 2 == 1);
             holder.setImage(R.id.img_cover, item.getCellLogo());
             holder.setTextNotHide(R.id.tv_name, item.getCellName());
             List<PointItemEntity> points = item.getPoints();
@@ -173,6 +183,8 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
             }
             return unUseds;
         }
+
+
 
         private List<PointItemEntity> solution(List<PointItemEntity> entities, int length) {
             List<PointItemEntity> result;

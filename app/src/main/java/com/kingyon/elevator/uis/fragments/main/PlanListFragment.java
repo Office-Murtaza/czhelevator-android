@@ -11,15 +11,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.entities.StateHolder;
 import com.kingyon.elevator.entities.TimeHolder;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignNewActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderEditActivity;
@@ -27,6 +30,9 @@ import com.kingyon.elevator.uis.adapters.PlanAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.MyToastUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -38,6 +44,8 @@ import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.widgets.emptyprovider.FadeViewAnimProvider;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -51,10 +59,10 @@ import butterknife.OnClick;
  */
 
 public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> implements PlanAdapter.OnOperateClickListener {
-    @BindView(R.id.tv_start_time)
-    TextView tvStartTime;
-    @BindView(R.id.tv_end_time)
-    TextView tvEndTime;
+    //    @BindView(R.id.tv_start_time)
+//    TextView tvStartTime;
+//    @BindView(R.id.tv_end_time)
+//    TextView tvEndTime;
     @BindView(R.id.tv_cell_num)
     TextView tvCellNum;
     @BindView(R.id.tv_screen_num)
@@ -75,6 +83,12 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     LinearLayout llDelete;
     @BindView(R.id.ll_bar)
     LinearLayout llBar;
+    @BindView(R.id.tv_select_all)
+    TextView tv_select_all;
+    /**
+     * 是否全部选中
+     */
+    private Boolean isSelectAll = false;
 
     private String planType;
     private Long startTime;
@@ -86,6 +100,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     private DatePickerDialog startDialog;
     private DatePickerDialog endDialog;
     private Long startTimeCache;
+    SimpleDateFormat simpleDateFormat;
+
 
     public static PlanListFragment newInstance(String planType) {
         Bundle args = new Bundle();
@@ -105,12 +121,13 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         if (getArguments() != null) {
             planType = getArguments().getString(CommonUtil.KEY_VALUE_1);
         }
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         super.init(savedInstanceState);
         long curTime = System.currentTimeMillis();
         startTime = TimeUtil.getDayStartTimeMilliseconds(curTime);
 //        startTime = curTime;
         endTime = TimeUtil.getDayEndTimeMilliseconds(curTime);
-        updateTimeUI();
+        //updateTimeUI();
         tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(0)));
         updateMode();
     }
@@ -119,6 +136,23 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     protected MultiItemTypeAdapter<Object> getAdapter() {
         planAdapter = new PlanAdapter(getContext(), mItems, this);
         return planAdapter;
+    }
+
+    /**
+     * 更新选择的时间
+     *
+     * @param startDate
+     * @param endDate
+     */
+    public void updateTime(String startDate, String endDate) {
+        try {
+            startTime = simpleDateFormat.parse(startDate).getTime();
+            endTime = simpleDateFormat.parse(endDate).getTime();
+            LogUtils.d("刷新选择的时间-------------", startDate, endDate);
+            updatePriceUI();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -341,12 +375,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         return spannableString;
     }
 
-    @OnClick({R.id.ll_time, R.id.tv_ensure, R.id.tv_delete_all, R.id.tv_delete})
+    @OnClick({R.id.tv_ensure, R.id.tv_delete_all, R.id.tv_delete, R.id.tv_select_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_time:
-                showStartPicker();
-                break;
             case R.id.tv_ensure:
                 toCommitOrder();
                 break;
@@ -356,6 +387,31 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             case R.id.tv_delete:
                 requestDelete();
                 break;
+            case R.id.tv_select_all:
+                if (mItems.size() > 0) {
+                    if (mItems.size() == 1) {
+                        if (mItems.get(0) instanceof StateHolder) {
+                            MyToastUtils.showShort("没有小区可供选择，请先添加小区");
+                            return;
+                        }
+                        clickSelectAll();
+                    } else {
+                        clickSelectAll();
+                    }
+                }
+                break;
+        }
+    }
+
+    private void clickSelectAll() {
+        if (isSelectAll) {
+            isSelectAll = false;
+            tv_select_all.setText("全选");
+            setSelectAllStatus(false);
+        } else {
+            isSelectAll = true;
+            tv_select_all.setText("取消");
+            setSelectAllStatus(true);
         }
     }
 
@@ -365,12 +421,17 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             showToast("至少需要一个小区一面屏");
             return;
         }
-        Bundle bundle = new Bundle();
-        bundle.putString(CommonUtil.KEY_VALUE_1, planType);
-        bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
-        bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
-        bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
-        startActivityForResult(OrderEditActivity.class, 8101, bundle);
+       // if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(CommonUtil.KEY_VALUE_1, planType);
+            bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
+            bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
+            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
+            startActivityForResult(OrderEditActivity.class, 8101, bundle);
+//        }else {
+//            RuntimeUtils.goPlaceAnOrderEntity = new GoPlaceAnOrderEntity(orderCells,startTime,endTime,planType);
+//            MyActivityUtils.goActivity(getActivity(), PhotoPickerActivity.class);
+//        }
     }
 
     private ArrayList<CellItemEntity> getOrderCells() {
@@ -385,6 +446,20 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         }
         return cells;
     }
+
+    /**
+     * 设置为选中全部
+     */
+    private void setSelectAllStatus(Boolean isSelectAll) {
+        for (Object obj : mItems) {
+            if (obj instanceof CellItemEntity) {
+                ((CellItemEntity) obj).setChoosed(isSelectAll);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+        updatePriceUI();
+    }
+
 
     private void setAllCellEdit(boolean edit) {
         for (Object obj : mItems) {
@@ -508,8 +583,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     }
 
     private void updateTimeUI() {
-        tvStartTime.setText(TimeUtil.getYMdTime(startTime));
-        tvEndTime.setText(TimeUtil.getYMdTime(endTime));
+//        tvStartTime.setText(TimeUtil.getYMdTime(startTime));
+//        tvEndTime.setText(TimeUtil.getYMdTime(endTime));
+
     }
 
     @Override

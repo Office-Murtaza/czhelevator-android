@@ -7,6 +7,8 @@ import androidx.annotation.ColorRes;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
+import com.kingyon.elevator.customview.PlanSelectDateDialog;
+import com.kingyon.elevator.customview.RuleDescTipsDialog;
 import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
 import com.kingyon.elevator.date.DatePickerListener;
@@ -14,8 +16,10 @@ import com.kingyon.elevator.date.SelectDateDialog;
 import com.kingyon.elevator.interfaces.FingerCheckListener;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.interfaces.OnItemClick;
+import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
+import com.kingyon.elevator.interfaces.ShowPlanDateDailogLisenter;
 
 /**
  * Date:2019/11/21
@@ -34,6 +38,8 @@ public class DialogUtils {
     private InputPayPwdToCashDailog inputPayPwdToCashDailog;
     private FingerCheckDailog fingerCheckDailog;
     private EditSuccessTipsDialog editSuccessTipsDialog;
+    private PlanSelectDateDialog planSelectDateDialog;
+    private RuleDescTipsDialog ruleDescTipsDialog;
 
     private DialogUtils() {
 
@@ -76,6 +82,37 @@ public class DialogUtils {
             if (userPrivacyTipsDialog != null) {
                 userPrivacyTipsDialog.dismiss();
                 userPrivacyTipsDialog = null;
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    /**
+     * 显示广告上传规则说明对话框
+     *
+     * @param context
+     */
+    public void showRuleDescTipsDialog(Context context) {
+        try {
+            if (ruleDescTipsDialog != null && ruleDescTipsDialog.isShowing()) {
+                ruleDescTipsDialog.dismiss();
+                ruleDescTipsDialog = null;
+            }
+            ruleDescTipsDialog = new RuleDescTipsDialog(context);
+            ruleDescTipsDialog.setCancelable(true);
+            ruleDescTipsDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideRuleDescTipsDialog() {
+        try {
+            if (ruleDescTipsDialog != null) {
+                ruleDescTipsDialog.dismiss();
+                ruleDescTipsDialog = null;
             }
         } catch (Exception e) {
 
@@ -226,4 +263,32 @@ public class DialogUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 显示计划单选择日期对话框
+     *
+     * @param context
+     */
+    public void showPlanSelectDateDialog(Context context, ShowPlanDateDailogLisenter showPlanDateDailogLisenter, PlanSelectDateLinsener planSelectDateLinsener) {
+        showPlanDateDailogLisenter.startShow();
+        if (planSelectDateDialog != null && planSelectDateDialog.isShowing()) {
+            planSelectDateDialog.dismiss();
+            planSelectDateDialog = null;
+        }
+        planSelectDateDialog = new PlanSelectDateDialog(context, planSelectDateLinsener);
+        planSelectDateDialog.setCancelable(false);
+        planSelectDateDialog.show();
+    }
+
+    public void hidePlanSelectDateDialog() {
+        try {
+            if (planSelectDateDialog != null) {
+                planSelectDateDialog.dismiss();
+                planSelectDateDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

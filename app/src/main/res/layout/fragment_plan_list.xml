@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/fragment_plan_time" />
+<!--            <include layout="@layout/fragment_plan_time" />-->
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/pre_refresh"
@@ -60,20 +60,30 @@
                 android:background="@color/white_normal"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_float_btn"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+
+                    <TextView
+                        android:id="@+id/tv_select_all"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_marginStart="28dp"
                         android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/spacing_default"
-                        android:paddingRight="@dimen/spacing_default">
+                        android:text="全选"
+                        android:textColor="#ff7f7f7f"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toStartOf="@+id/tv_ensure"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -138,6 +148,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0.00"
+                                android:singleLine="true"
                                 android:textColor="#EC7A12"
                                 android:textSize="@dimen/txt_title"
                                 android:textStyle="bold" />
@@ -146,19 +157,18 @@
 
                     <TextView
                         android:id="@+id/tv_ensure"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/spacing_default"
+                        android:layout_width="88dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="28dp"
                         android:background="@drawable/bg_six_btn"
-                        android:paddingLeft="@dimen/spacing_thirty_two"
-                        android:paddingTop="10dp"
-                        android:paddingRight="@dimen/spacing_thirty_two"
-                        android:paddingBottom="10dp"
-                        android:text="去下单"
+                        android:gravity="center"
+                        android:text="下单"
                         android:textColor="#ffffffff"
                         android:textSize="@dimen/txt_big_content"
                         android:textStyle="bold" />
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

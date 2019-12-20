@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+    <com.kingyon.elevator.customview.MyGridView
+        android:id="@+id/date_grid_item_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:horizontalSpacing="0dp"
+        android:listSelector="@color/transparent"
+        android:numColumns="7"
+        android:scrollbars="none"
+        android:verticalSpacing="0dp"
+        android:visibility="visible" />
+
+</LinearLayout>

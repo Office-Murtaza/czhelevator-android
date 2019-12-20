@@ -255,6 +255,10 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
         return currentFragment;
     }
 
+    public BaseFragment findFragmentByTag(String tag) {
+        return (BaseFragment) mFragmentActivity.getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
     private boolean isFragmentShown(FragmentTransaction transaction, String newTag) {
         if (TextUtils.equals(newTag, mCurrentTag)) {
             return true;

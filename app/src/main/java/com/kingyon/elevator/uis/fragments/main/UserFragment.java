@@ -17,16 +17,19 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
+import com.kingyon.elevator.customview.PlanSelectDateDialog;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.ReceivedPushEntity;
 import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.UnreadNumberEntity;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
+import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
@@ -47,6 +50,7 @@ import com.kingyon.elevator.uis.activities.user.SettingActivity;
 import com.kingyon.elevator.uis.activities.user.UserProfileActivity;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.DownloadUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
@@ -308,7 +312,7 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(MessageCenterActivity.class);
                 break;
             case R.id.img_setting:
-                startActivity(SettingActivity.class);
+               startActivity(PhotoPickerActivity.class);
                 break;
             case R.id.ll_info:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {

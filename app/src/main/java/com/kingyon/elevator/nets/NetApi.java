@@ -24,9 +24,9 @@ public interface NetApi {
     String socketDomainName = "ws://219.151.9.234:8282";
 
     //    String domainName = "http://rap2api.taobao.org/app/mock/121571/";
-    String domainName = "http://api.pddtv.cn/";//外网正式服地址
+    //String domainName = "http://api.pddtv.cn/";//外网正式服地址
     //String domainName = "http://pddapi.scjiazhidao.com/";//外网测试服地址
-    //String domainName = "http://192.168.1.16:1510/";  //公司测试服
+    String domainName = "http://192.168.1.16:1510/";  //公司测试服
     //    String domainName = "http://192.168.0.50:1510/";
 //    String domainName = "http://192.168.0.86:1510/"; //白小川
     //    String domainName = "http://192.168.0.104:2510/";//代国伟

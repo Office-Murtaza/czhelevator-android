@@ -15,6 +15,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.CouponsAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.MyToastUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
@@ -43,6 +44,7 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
 
     private boolean choosedInit;
     private ArrayList<CouponItemEntity> choosedCoupons;
+    private Boolean isMaxOrderMoney = false;//是否达到最大优惠金额
 
     @Override
     protected String getTitleText() {
@@ -136,10 +138,14 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
             if (entity.isChoosed()) {
                 entity.setChoosed(false);
             } else {
+                if (isMaxOrderMoney) {
+                    MyToastUtils.showShort("已达到最大优惠金额");
+                    return;
+                }
                 setCouponChoosed(entity);
             }
             mAdapter.notifyDataSetChanged();
-            calculateCouponPrice();
+            calculateCouponPrice(entity);
         }
     }
 
@@ -165,6 +171,24 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
             showToast("只能选择一种类型的优惠券");
         }
     }
+
+    private void calculateCouponPrice(CouponItemEntity entity) {
+        String choosedCouponType = getChoosedCouponType();
+        if (TextUtils.equals(Constants.CouponType.VOUCHER, choosedCouponType)) {
+            List<CouponItemEntity> choosedVoucherCoupons = getChoosedVoucherCoupons();
+            float voucherSum = 0;
+            for (CouponItemEntity item : choosedVoucherCoupons) {
+                voucherSum += item.getMoney();
+            }
+            updatePriceUI(totalPrice, voucherSum,entity);
+        } else if (TextUtils.equals(Constants.CouponType.DISCOUNT, choosedCouponType)) {
+            CouponItemEntity choosedDiscountCoupon = getChoosedDiscountCoupon();
+            updatePriceUI(totalPrice, (1 - choosedDiscountCoupon.getDiscount() / 10) * totalPrice,entity);
+        } else {
+            updatePriceUI(totalPrice, 0,entity);
+        }
+    }
+
 
     private void calculateCouponPrice() {
         String choosedCouponType = getChoosedCouponType();
@@ -237,13 +261,29 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
         return result;
     }
 
+    private void updatePriceUI(float totalPrice, float discount,CouponItemEntity entity) {
+        tvTotalPrice.setText(String.format("总金额：¥%s", CommonUtil.getMayTwoFloat(totalPrice)));
+        float resultPrice = totalPrice - discount;
+        if (resultPrice > 0) {
+            isMaxOrderMoney = false;
+            tvDiscounts.setText(String.format("优惠金额：%s¥", CommonUtil.getMayTwoFloat(discount)));
+            tvOrderPrice.setText(String.format("订单金额：%s¥", CommonUtil.getMayTwoFloat(resultPrice)));
+        } else {
+            isMaxOrderMoney = true;
+            tvDiscounts.setText(String.format("优惠金额：%s¥", CommonUtil.getMayTwoFloat(totalPrice)));
+            tvOrderPrice.setText(String.format("订单金额：%s¥", CommonUtil.getMayTwoFloat(0)));
+        }
+    }
+
     private void updatePriceUI(float totalPrice, float discount) {
         tvTotalPrice.setText(String.format("总金额：¥%s", CommonUtil.getMayTwoFloat(totalPrice)));
         float resultPrice = totalPrice - discount;
         if (resultPrice > 0) {
+            isMaxOrderMoney = false;
             tvDiscounts.setText(String.format("优惠金额：%s¥", CommonUtil.getMayTwoFloat(discount)));
             tvOrderPrice.setText(String.format("订单金额：%s¥", CommonUtil.getMayTwoFloat(resultPrice)));
         } else {
+            isMaxOrderMoney = true;
             tvDiscounts.setText(String.format("优惠金额：%s¥", CommonUtil.getMayTwoFloat(totalPrice)));
             tvOrderPrice.setText(String.format("订单金额：%s¥", CommonUtil.getMayTwoFloat(0)));
         }

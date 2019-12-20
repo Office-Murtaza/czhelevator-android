@@ -52,4 +52,9 @@
     <string name="biometricprompt_finger_add">请先添加指纹</string>
     <string name="biometricprompt_finger_add_confirm">确认添加</string>
     <string name="biometricprompt_finger_hw_unavailable">指纹模块不可用</string>
+
+    <string name="all_media">相机胶卷</string>
+    <string name="all_photo">所有图片</string>
+    <string name="all_video">所有视频</string>
+    <string name="all_audio">所有音频</string>
 </resources>

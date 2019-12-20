@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="85dp">
+
+    <ImageView
+        android:id="@+id/folder_preview_img"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/suoyoutupian_tubioayi"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/folder_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/folder_preview_img"
+        android:text="我的广告"
+        android:textColor="#ff404040"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/my_advertisment_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/folder_name"
+        android:layout_toEndOf="@+id/folder_preview_img"
+        android:text="免流量上传"
+        android:textColor="#ff7f7f7f"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/image_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="17.5dp"
+        android:drawableEnd="@mipmap/suoyoutupian_xiangyouanniuyi"
+        android:drawablePadding="15dp"
+        android:text="0"
+        android:textColor="#ff7f7f7f"
+        android:textSize="15sp" />
+
+</RelativeLayout>

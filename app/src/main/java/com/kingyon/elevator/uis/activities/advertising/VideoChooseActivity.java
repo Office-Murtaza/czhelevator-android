@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.activities.advertising;
 
 import android.Manifest;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -9,14 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.MediaUtils;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
+import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -28,6 +35,10 @@ import com.qiniu.pili.droid.shortvideo.demo.activity.VideoEditActivity;
 import com.qiniu.pili.droid.shortvideo.demo.activity.VideoRecordActivity;
 import com.qiniu.pili.droid.shortvideo.demo.activity.VideoTrimActivity;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -69,6 +80,7 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
     @Override
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
+        EventBus.getDefault().register(this);
         tvRatioTip.setText(String.format("建议%s", getString(splitScreen ? R.string.ad_ratio_split_video : R.string.ad_ratio_full)).replaceAll("[\r|\n]", ""));
     }
 
@@ -164,6 +176,13 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
 //                });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventHandler(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoCropSuccessResult) {
+             returnResult((String) eventBusObjectEntity.getData());
+        }
+    }
+
     @OnClick({R.id.tv_create, R.id.tv_local, R.id.tv_memory})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -228,7 +247,22 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
                     if (localPathes != null && localPathes.size() > 0) {
                         String localPath = localPathes.get(0);
 //                        showLocalEditDialog(localPath);
-                        returnResult(localPath);
+                        LogUtils.d("当前视频的路径：",localPath);
+                       try {
+                           MediaPlayer mediaPlayer = new MediaPlayer();
+                           mediaPlayer.setDataSource(localPath);
+                           mediaPlayer.prepare();
+                           long time = mediaPlayer.getDuration();//获得了视频的时长（以毫秒为单位）
+                           LogUtils.d("当前视频的时长：",videoDuration,time);
+                           if(time>videoDuration){
+                               RuntimeUtils.selectVideoPath=localPath;
+                               startActivity(VideoEditorActivity.class);
+                           }else {
+                               returnResult(localPath);
+                           }
+                       }catch (Exception e){
+                           ToastUtils.showShort("视频选择失败，请重试");
+                       }
                     }
                 }
                 break;
@@ -243,6 +277,12 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void showLocalEditDialog(String localPath) {

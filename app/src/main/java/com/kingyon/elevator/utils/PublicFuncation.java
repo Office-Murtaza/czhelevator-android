@@ -1,5 +1,11 @@
 package com.kingyon.elevator.utils;
 
+import android.content.Context;
+import android.os.Environment;
+
+import com.blankj.utilcode.util.LogUtils;
+
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -80,4 +86,33 @@ public class PublicFuncation {
         return "";
     }
 
+
+    public static String getDiskCacheDir(Context context) {
+        String cachePath = "";
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+            LogUtils.e("执行外置内存卡的缓存");
+        } else {
+            cachePath = context.getCacheDir().getPath();
+            LogUtils.e("执行内置内存卡的缓存");
+        }
+        return cachePath;
+    }
+
+
+    /**
+     * 创建缓存目录
+     */
+    public static void creatCacheFolder(String path) {
+        try {
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();//创建缓存目录
+                LogUtils.e("目录", "创建成功");
+            }
+        } catch (Exception e) {
+            LogUtils.e("创建缓存目录", e.toString());
+        }
+    }
 }

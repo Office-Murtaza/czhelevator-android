@@ -36,6 +36,7 @@ public class BasePresenter<V extends BaseView> implements IPresenter {
 
     public void detachView() {
         this.mView = null;
+        this.mContext=null;
     }
 
     /**

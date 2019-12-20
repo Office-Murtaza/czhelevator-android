@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".uis.activities.PhotoPickerActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/action_bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/back_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/partner_ffanhuianniu" />
+
+        <TextView
+            android:id="@+id/tv_action_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxWidth="200dp"
+            android:singleLine="true"
+            android:text="所有图片"
+            android:textColor="#404040"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/selected_status"
+            android:layout_width="11dp"
+            android:layout_height="5.5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/tv_action_title"
+            android:src="@mipmap/suoyoutupian_xiangshanbganniu" />
+
+        <TextView
+            android:id="@+id/rule_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
+            android:gravity="center"
+            android:text="规格说明"
+            android:textColor="#ff7f7f7f"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/action_bar_container"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/video_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="视频"
+                android:textColor="#ff404040"
+                android:textSize="19sp" />
+
+            <View
+                android:id="@+id/video_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="28dp"
+                android:background="#EB7A12" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/image_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="图片"
+                android:textColor="#ff404040"
+                android:textSize="19sp" />
+
+            <View
+                android:id="@+id/image_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="28dp"
+                android:background="#EB7A12"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.kingyon.elevator.customview.NoScrollViewPager
+        android:id="@+id/view_pager_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_container" />
+
+
+    <ListView
+        android:id="@+id/folder_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/action_bar_container"
+        android:background="@color/white"
+        android:divider="#E5E5E5"
+        android:dividerHeight="1dp" />
+
+</RelativeLayout>

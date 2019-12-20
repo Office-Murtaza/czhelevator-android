@@ -343,10 +343,11 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         }
         if (bindAccountEntity.getCashType() == 1) {
             //银行卡
-            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null, bindAccountEntity.getCashName(), bindAccountEntity.getCashAccount(), bindAccountEntity.getOpeningBank());
+            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null,
+                    bindAccountEntity.getOpeningBank(), bindAccountEntity.getCashAccount(), bindAccountEntity.getCashName());
         } else {
             //支付宝
-            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.getCashAccount(), bindAccountEntity.getCashName(), null, null);
+            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.getCashAccount(), null, null, bindAccountEntity.getCashName());
         }
 
 

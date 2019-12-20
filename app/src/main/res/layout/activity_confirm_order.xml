@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".uis.activities.order.ConfirmOrderActivity">
+
+    <com.kingyon.elevator.customview.MyActionBar
+        android:id="@+id/my_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:title="确认订单" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_action_bar"
+        android:layout_marginBottom="75dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="80dp"
+                    android:background="@color/white"
+                    android:hint="请输入广告名称"
+                    android:maxLength="20"
+                    android:textColor="@color/default_text_color"
+                    android:textColorHint="#7F7F7F"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ad_img_preview"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_launcher" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp">
+
+        <TextView
+            android:id="@+id/tv_order_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="¥10元"
+            android:textColor="#ffeb7a12"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_order_money"
+            android:text="已优惠30元"
+            android:textColor="#ff404040"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/tv_ensure"
+            android:drawableEnd="@mipmap/suoyoushiping_xiangxiaanniu"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="明细"
+            android:textColor="#ff404040"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_ensure"
+            android:layout_width="94dp"
+            android:layout_height="42dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_six_btn"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="去支付"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/txt_big_content"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

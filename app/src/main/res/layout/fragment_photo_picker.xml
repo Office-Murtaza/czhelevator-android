@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".uis.fragments.PhotoPickerFragment">
+
+
+    <GridView
+        android:id="@+id/photo_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:horizontalSpacing="5dp"
+        android:listSelector="@color/transparent"
+        android:numColumns="4"
+        android:verticalSpacing="5dp" />
+
+    <TextView
+        android:id="@+id/no_data_tips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="该目录下无视频文件"
+        android:textColor="@color/default_text_color"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

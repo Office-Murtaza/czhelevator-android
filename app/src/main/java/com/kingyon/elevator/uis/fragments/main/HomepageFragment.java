@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -53,6 +55,7 @@ import com.kingyon.elevator.utils.DealScrollRecyclerView;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -111,6 +114,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     private float limitedY;
     private LocationEntity locationEntity;
     private AddCellToPlanPresenter addCellToPlanPresenter;
+    private int[] clickPosition = new int[2];
 
     @Override
     public int getContentViewId() {
@@ -373,6 +377,10 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
             public void onItemClick(View view, int position, CellItemEntity entity, BaseAdapterWithHF<CellItemEntity> baseAdaper) {
                 if (view.getId() == R.id.img_plan) {
                     if (addCellToPlanPresenter != null) {
+                        view.getLocationOnScreen(clickPosition);
+                        RuntimeUtils.clickPositionAnimation=clickPosition;
+                        RuntimeUtils.animationImagePath = entity.getCellLogo();
+                        LogUtils.d("当前点击的坐标：", GsonUtils.toJson(clickPosition));
                         addCellToPlanPresenter.showPlanPicker(entity.getObjctId());
                     }
                 } else {

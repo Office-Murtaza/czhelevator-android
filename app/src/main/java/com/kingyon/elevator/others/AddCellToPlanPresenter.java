@@ -4,14 +4,18 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NormalParamEntity;
+import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.dialogs.CellAdSuccessDialog;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -102,7 +106,8 @@ public class AddCellToPlanPresenter {
 
                     @Override
                     public void onNext(String s) {
-                        showSuccessDialog(type);
+                       // showSuccessDialog(type);
+                        EventBus.getDefault().post(new ToPlanTab(type));
                     }
                 });
     }
@@ -118,7 +123,8 @@ public class AddCellToPlanPresenter {
 
                     @Override
                     public void onNext(String s) {
-                        showSuccessDialog(type);
+                         showSuccessDialog(type);
+                        //EventBus.getDefault().post(new ToPlanTab(type));
                     }
                 });
     }
