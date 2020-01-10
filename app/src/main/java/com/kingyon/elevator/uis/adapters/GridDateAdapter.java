@@ -190,7 +190,9 @@ public class GridDateAdapter extends BaseAdapter {
                                 finalHolder.tv_date_day.setBackgroundResource(R.drawable.shape_select_start_date_bg);
                             } else {
                                 if (!isBeforeDate(dateGridEntity)) {
-                                    MyToastUtils.showShort("结束日期应大于开始日期");
+                                    horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+                                    finalHolder.tv_date_day.setBackgroundResource(R.drawable.shape_select_start_date_bg);
+                                    // MyToastUtils.showShort("结束日期应大于开始日期");
                                 }
                             }
                         } else {
@@ -198,8 +200,13 @@ public class GridDateAdapter extends BaseAdapter {
                                 //取消选中的结束时间---------
                                 horizontalSelectDateAdapter.endSelectDateEntity = null;
                             } else {
-                                horizontalSelectDateAdapter.endSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
-                                finalHolder.tv_date_day.setBackgroundResource(R.drawable.shape_select_start_date_bg);
+                                if (isBeforeStartDate(dateGridEntity)) {
+                                    horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+                                    finalHolder.tv_date_day.setBackgroundResource(R.drawable.shape_select_start_date_bg);
+                                }else {
+                                    horizontalSelectDateAdapter.endSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+                                    finalHolder.tv_date_day.setBackgroundResource(R.drawable.shape_select_start_date_bg);
+                                }
                             }
                         }
                     }
@@ -269,13 +276,30 @@ public class GridDateAdapter extends BaseAdapter {
 
 
     /**
-     * 是否在开始日期之前
+     * 是否在今日开始日期之前，如果在之前，则全部置灰，不可点击
      *
      * @return
      */
     private Boolean isBeforeDate(DateGridEntity dateGridEntity) {
         try {
             if (DateUtils.beforeCalendar(simpleDateFormat.parse(dateGridEntity.getDate()), currentDate)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 是否在选择开始日期之前
+     * @param dateGridEntity
+     * @return
+     */
+    private Boolean isBeforeStartDate(DateGridEntity dateGridEntity) {
+        try {
+            if (DateUtils.beforeCalendar(simpleDateFormat.parse(dateGridEntity.getDate()), simpleDateFormat.parse(horizontalSelectDateAdapter.startSelectDateEntity.getDate()))) {
                 return true;
             } else {
                 return false;

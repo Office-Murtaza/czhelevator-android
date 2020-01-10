@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CouponItemEntity;
@@ -153,10 +154,22 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
         String choosedCouponType = getChoosedCouponType();
         if (TextUtils.isEmpty(choosedCouponType) || TextUtils.equals(choosedCouponType, entity.getCoupontype())) {
             if (TextUtils.equals(Constants.CouponType.VOUCHER, choosedCouponType)) {
-                if (getChoosedVoucherCouponConditionPrice() + entity.getCouponCondition() <= totalPrice) {
-                    entity.setChoosed(true);
+                List<CouponItemEntity> choosedVoucherCoupons = getChoosedVoucherCoupons();
+                float voucherSum = 0;
+                for (CouponItemEntity item : choosedVoucherCoupons) {
+                    voucherSum += item.getMoney();
+                }
+                float beLeftMoney = totalPrice - getChoosedVoucherCouponConditionPrice();
+                LogUtils.d("剩余的金额：", beLeftMoney, totalPrice,
+                        getChoosedVoucherCouponConditionPrice(), entity.getCouponCondition());
+                if (beLeftMoney < entity.getCouponCondition()) {
+                    showToast("剩余金额没有达到使用门槛");
                 } else {
-                    showToast("总金额没有达到使用门槛");
+                    if (getChoosedVoucherCouponConditionPrice() + entity.getCouponCondition() <= totalPrice) {
+                        entity.setChoosed(true);
+                    } else {
+                        showToast("总金额没有达到使用门槛");
+                    }
                 }
             } else if (TextUtils.equals(Constants.CouponType.DISCOUNT, choosedCouponType)) {
                 showToast("只能使用一张折扣券");
@@ -180,12 +193,12 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
             for (CouponItemEntity item : choosedVoucherCoupons) {
                 voucherSum += item.getMoney();
             }
-            updatePriceUI(totalPrice, voucherSum,entity);
+            updatePriceUI(totalPrice, voucherSum, entity);
         } else if (TextUtils.equals(Constants.CouponType.DISCOUNT, choosedCouponType)) {
             CouponItemEntity choosedDiscountCoupon = getChoosedDiscountCoupon();
-            updatePriceUI(totalPrice, (1 - choosedDiscountCoupon.getDiscount() / 10) * totalPrice,entity);
+            updatePriceUI(totalPrice, (1 - choosedDiscountCoupon.getDiscount() / 10) * totalPrice, entity);
         } else {
-            updatePriceUI(totalPrice, 0,entity);
+            updatePriceUI(totalPrice, 0, entity);
         }
     }
 
@@ -261,7 +274,7 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
         return result;
     }
 
-    private void updatePriceUI(float totalPrice, float discount,CouponItemEntity entity) {
+    private void updatePriceUI(float totalPrice, float discount, CouponItemEntity entity) {
         tvTotalPrice.setText(String.format("总金额：¥%s", CommonUtil.getMayTwoFloat(totalPrice)));
         float resultPrice = totalPrice - discount;
         if (resultPrice > 0) {

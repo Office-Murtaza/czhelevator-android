@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -29,6 +30,8 @@ import com.kingyon.elevator.utils.DownloadUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.kingyon.elevator.utils.JumpUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -122,9 +125,12 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
         super.onItemClick(view, holder, item, position);
         if (item != null) {
             if (choose) {
-                Intent intent = new Intent();
-                intent.putExtra(CommonUtil.KEY_VALUE_1, item);
-                setResult(RESULT_OK, intent);
+//                Intent intent = new Intent();
+//                intent.putExtra(CommonUtil.KEY_VALUE_1, item);
+//                setResult(RESULT_OK, intent);
+//                finish();
+                RuntimeUtils.adEntity = item;
+                MyActivityUtils.goConfirmOrderActivity(MyAdActivity.this, Constants.FROM_TYPE.MYAD, item.getImageUrl(), "");
                 finish();
             } else {
                 JumpUtils.getInstance().jumpToAdPreview(this, item);

@@ -28,10 +28,13 @@ import android.widget.VideoView;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.VideoEditorPresenter;
+import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RuntimeUtils;
@@ -61,8 +64,8 @@ import butterknife.OnClick;
 public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> implements VideoEditorView {
 
     private static final String TAG = VideoEditorActivity.class.getSimpleName();
-    private static final long MIN_CUT_DURATION = 15 * 1000L;// 最小剪辑时间3s
-    private static final long MAX_CUT_DURATION = 15 * 1000L;//视频最多剪切多长时间
+    private long MIN_CUT_DURATION = 15 * 1000L;// 最小剪辑时间3s
+    private long MAX_CUT_DURATION = 15 * 1000L;//视频最多剪切多长时间
     private static final int MAX_COUNT_RANGE = 10;//seekBar的区域内一共有多少张图片
     @BindView(R.id.id_seekBarLayout)
     LinearLayout seekBarLayout;
@@ -80,6 +83,8 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     TextView cancel_crop;
     @BindView(R.id.start_crop)
     TextView start_crop;
+    @BindView(R.id.crop_video_time)
+    TextView crop_video_time;
     private VideoEditAdapter videoEditAdapter;
     private float averageMsPx;//每毫秒所占的px
     private float averagePxMs;//每px所占用的ms毫秒
@@ -95,6 +100,8 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     private String videoPath;
     private long startTime = 0;
     private long endTime = 0;
+    private int fromType = Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN;//来自于哪个界面
+    private String planType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +109,17 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
         setContentView(R.layout.activity_video_editor);
         MyStatusBarUtils.setStatusBarWhite(this, "#000000");
         ButterKnife.bind(this);
+        fromType = getIntent().getIntExtra("fromType", 1001);
+        planType = getIntent().getStringExtra("planType");
+        if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
+            MAX_CUT_DURATION = 15000;
+            MIN_CUT_DURATION = 15000;
+            crop_video_time.setText("裁剪时长15S");
+        } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
+            MAX_CUT_DURATION = 60000;
+            MIN_CUT_DURATION = 60000;
+            crop_video_time.setText("裁剪时长60S");
+        }
         initData();
         initView();
         initEditVideo();
@@ -317,7 +335,11 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
 
     @Override
     public void cropVideoSuccess(String path) {
-        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
+        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
+            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
+        } else {
+            MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
+        }
         finish();
     }
 

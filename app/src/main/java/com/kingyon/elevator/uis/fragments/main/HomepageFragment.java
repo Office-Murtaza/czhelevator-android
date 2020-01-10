@@ -378,10 +378,10 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                 if (view.getId() == R.id.img_plan) {
                     if (addCellToPlanPresenter != null) {
                         view.getLocationOnScreen(clickPosition);
-                        RuntimeUtils.clickPositionAnimation=clickPosition;
+                        RuntimeUtils.clickPositionAnimation = clickPosition;
                         RuntimeUtils.animationImagePath = entity.getCellLogo();
                         LogUtils.d("当前点击的坐标：", GsonUtils.toJson(clickPosition));
-                        addCellToPlanPresenter.showPlanPicker(entity.getObjctId());
+                        addCellToPlanPresenter.showHomeOagePicker(entity.getObjctId(), null);
                     }
                 } else {
                     Bundle bundle = new Bundle();

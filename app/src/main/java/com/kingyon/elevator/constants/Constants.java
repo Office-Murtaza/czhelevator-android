@@ -217,4 +217,15 @@ public interface Constants {
         String PayType = "2";
         String IncomeType = "1";
     }
+
+
+    interface FROM_TYPE {//MYAD:来自我的广告，MEDIADATA：来自多媒体选择。
+        int MYAD = 1001;
+        int MEDIADATA = 1002;
+    }
+
+    interface FROM_TYPE_TO_SELECT_MEDIA {//PLAN:来自于计划下单时选择图片和视频，MYADSELECT：来自于我的广告界面选择视频或图片。
+        int PLAN = 1001;
+        int MYADSELECT = 1002;
+    }
 }

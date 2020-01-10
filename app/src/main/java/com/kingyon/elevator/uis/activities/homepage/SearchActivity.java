@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.activities.homepage;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -7,30 +9,46 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.HomepageLocationHolder;
 import com.kingyon.elevator.entities.KeywordEntity;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
+import com.kingyon.elevator.entities.TabEntity;
+import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.uis.fragments.homepage.MapSearchFragment;
 import com.kingyon.elevator.uis.fragments.homepage.TextSearchFragment;
 import com.kingyon.elevator.uis.pops.CellTypeWindow;
 import com.kingyon.elevator.uis.pops.SearchAreaWindow;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.animationutils.AnimatorPath;
+import com.kingyon.elevator.utils.animationutils.PathEvaluator;
+import com.kingyon.elevator.utils.animationutils.PathPoint;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
+import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.utils.GlideUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +81,11 @@ public class SearchActivity extends BaseSwipeBackActivity {
     CheckedTextView ctvCellType;
     @BindView(R.id.v_line)
     View vLine;
+    @BindView(R.id.iv_home_logo)
+    ImageView iv_home_logo;
+    @BindView(R.id.iv_gouwuche)
+    ImageView iv_gouwuche;
+
 
     private String keyWord;
     private AMapCityEntity cityEntity;
@@ -79,6 +102,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     private CellTypeWindow cellTypeWindow;
     private SearchAreaWindow searchAreaWindow;
+    private AnimatorPath path;//声明动画集合
+    private String lastPlanType = "";
 
     @Override
     public int getContentViewId() {
@@ -99,6 +124,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         tvMapTitle.setText(mapMode ? "列表" : "地图");
         showFragment();
         tvSearchTitle.addTextChangedListener(new TextWatcher() {
@@ -177,7 +203,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
         super.onResume();
     }
 
-    @OnClick({R.id.ll_city_area, R.id.ll_cell_type, R.id.tv_location_title, R.id.tv_search_title, R.id.img_clear, R.id.tv_map_title})
+    @OnClick({R.id.ll_city_area, R.id.ll_cell_type, R.id.tv_location_title, R.id.tv_search_title, R.id.img_clear, R.id.tv_map_title
+            , R.id.iv_gouwuche})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_city_area:
@@ -205,6 +232,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 mapMode = !mapMode;
                 tvMapTitle.setText(mapMode ? "列表" : "地图");
                 updateFragment();
+                break;
+            case R.id.iv_gouwuche:
+                EventBus.getDefault().post(new ToPlanTab(lastPlanType));
                 break;
         }
     }
@@ -335,33 +365,6 @@ public class SearchActivity extends BaseSwipeBackActivity {
                         areaDatas.add(new NormalParamEntity(areaCity.getAdcode(), areaCity.getName()));
                     }
                 }
-//                /*------------------高德搜索区划信息------------------*/
-//                DistrictSearch search = new DistrictSearch(SearchActivity.this);
-//                DistrictSearchQuery query = new DistrictSearchQuery();
-//                query.setKeywords(cityEntity.getName());//传入关键字
-//                query.setShowBoundary(false);//是否返回边界值
-//                query.setShowChild(true);
-//                search.setQuery(query);
-//                try {
-//                    DistrictResult districtResult = search.searchDistrict();//开始搜索
-//                    ArrayList<DistrictItem> districts = districtResult.getDistrict();
-//                    if (districts != null && districts.size() > 0) {
-//                        DistrictItem cityItem = districts.get(0);
-//                        List<DistrictItem> areaDistrict = cityItem.getSubDistrict();
-//                        if (areaDistrict != null && districts.size() > 0) {
-//                            for (DistrictItem areaItem : areaDistrict) {
-//                                areaDatas.add(new NormalParamEntity(areaItem.getAdcode(), areaItem.getName()));
-//                            }
-//                        } else {
-//                            Logger.e("updateAreaData(AMapCityEntity entity) 出错1");
-//                        }
-//                    } else {
-//                        Logger.e("updateAreaData(AMapCityEntity entity) 出错2");
-//                    }
-//                } catch (AMapException e) {
-//                    e.printStackTrace();
-//                    Logger.e(String.format("updateAreaData(AMapCityEntity entity) 出错3\ncode:%s\nmessage:%s", e.getErrorCode(), e.getErrorMessage()));
-//                }
                 return areaDatas;
             }
         })
@@ -390,5 +393,73 @@ public class SearchActivity extends BaseSwipeBackActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void addToCartSuccess(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.AddToCartToPlanSuccess) {
+            LogUtils.d("添加到列表成功，开始动画---");
+            lastPlanType = (String) eventBusObjectEntity.getData();
+            startAddPlanAnimation();
+        }
+    }
+
+    /**
+     * 执行加入购物车的动画
+     */
+    public void startAddPlanAnimation() {
+        if (RuntimeUtils.mapOrListAddPositionAnimation != null) {
+            if (RuntimeUtils.animationImagePath != null) {
+                GlideUtils.loadImage(this, RuntimeUtils.animationImagePath, iv_home_logo);
+            }
+            iv_home_logo.setX(DensityUtil.dip2px(16));
+            iv_home_logo.setY(RuntimeUtils.mapOrListAddPositionAnimation[1] - DensityUtil.dip2px(50));
+            iv_home_logo.setVisibility(View.VISIBLE);
+            path = new AnimatorPath();
+            path.moveTo(DensityUtil.dip2px(16), RuntimeUtils.mapOrListAddPositionAnimation[1] - DensityUtil.dip2px(50));
+            path.secondBesselCurveTo(ScreenUtils.getScreenWidth() / 2, RuntimeUtils.mapOrListAddPositionAnimation[1] - 100,
+                    ScreenUtils.getScreenWidth() - DensityUtil.dip2px(55),
+                    ScreenUtils.getScreenHeight() - DensityUtil.dip2px(170));
+            ObjectAnimator anim = ObjectAnimator.ofObject(this, "addPlan", new PathEvaluator(), path.getPoints().toArray());
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.setDuration(1000);
+            anim.start();
+            iv_home_logo.animate().scaleX(0.1f).scaleY(0.1f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    iv_home_logo.setVisibility(View.GONE);
+                    iv_home_logo.setScaleX(1f);
+                    iv_home_logo.setScaleY(1f);
+                    iv_gouwuche.setImageResource(R.mipmap.gouwuche);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            }).start();
+            RuntimeUtils.mapOrListAddPositionAnimation = null;
+        }
+    }
+
+    public void setAddPlan(PathPoint newLoc) {
+        iv_home_logo.setTranslationX(newLoc.mX);
+        iv_home_logo.setTranslationY(newLoc.mY);
     }
 }

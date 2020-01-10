@@ -34,7 +34,6 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
                         @Override
                         public void cropSuccess() {
                             ToastUtils.showShort("视频裁剪完成");
-                            LogUtils.e("视频裁剪完成-----------------------");
                             if (isViewAttached()) {
                                 getView().hideProgressDailog();
                                 getView().cropVideoSuccess(videoPath);

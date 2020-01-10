@@ -9,7 +9,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <com.kingyon.elevator.uis.widgets.AdScreenProportionFrame
             android:layout_width="match_parent"
@@ -28,126 +29,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1">
 
-                    <com.pili.pldroid.player.widget.PLVideoTextureView
-                        android:id="@+id/video_texture_view"
+                    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+                        android:id="@+id/video_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:background="@color/black_normal" />
 
-                    <ImageView
-                        android:id="@+id/cover_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:background="@color/black_normal"
-                        android:scaleType="fitCenter" />
-
-                    <LinearLayout
-                        android:id="@+id/loading_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ProgressBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:theme="@style/AppThemeProgress" />
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/pause_view"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/img_video_play" />
-
-                        <com.kingyon.elevator.uis.widgets.video.MediaController
-                            android:id="@+id/media_controller"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:visibility="visible">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <ImageButton
-                                    android:id="@+id/controller_stop_play"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="@android:color/transparent" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:paddingLeft="@dimen/spacing_default"
-                                    android:paddingRight="@dimen/spacing_default"
-                                    android:paddingTop="10dp">
-
-                                    <!--<ImageView-->
-                                    <!--android:id="@+id/controller_stop_show_play"-->
-                                    <!--android:layout_width="16dp"-->
-                                    <!--android:layout_height="16dp"-->
-                                    <!--android:layout_marginRight="@dimen/spacing_twelve"-->
-                                    <!--android:background="@android:color/transparent"-->
-                                    <!--android:padding="@dimen/spacing_two"-->
-                                    <!--android:src="@drawable/player_play" />-->
-
-                                    <TextView
-                                        android:id="@+id/controller_current_time"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="00:00"
-                                        android:textColor="@color/white_normal"
-                                        android:textSize="@dimen/txt_tips" />
-
-                                    <SeekBar
-                                        android:id="@+id/controller_progress_bar"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:maxHeight="1dp"
-                                        android:minHeight="1dp"
-                                        android:paddingBottom="@dimen/spacing_twelve"
-                                        android:paddingTop="@dimen/spacing_twelve"
-                                        android:progress="0"
-                                        android:progressDrawable="@drawable/period_play_seekbar_bg"
-                                        android:secondaryProgress="0"
-                                        android:thumb="@drawable/ic_play_progress_indicator"
-                                        android:thumbOffset="0dp" />
-
-                                    <TextView
-                                        android:id="@+id/controller_end_time"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="00:20"
-                                        android:textColor="@color/white_normal"
-                                        android:textSize="@dimen/txt_tips" />
-
-                                    <ImageButton
-                                        android:id="@+id/full_screen_image"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_marginRight="5dp"
-                                        android:background="@android:color/transparent"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-                            </FrameLayout>
-                        </com.kingyon.elevator.uis.widgets.video.MediaController>
-                    </FrameLayout>
                 </FrameLayout>
 
                 <ImageView
@@ -159,4 +47,6 @@
             </LinearLayout>
         </com.kingyon.elevator.uis.widgets.AdScreenProportionFrame>
     </FrameLayout>
+
+
 </LinearLayout>

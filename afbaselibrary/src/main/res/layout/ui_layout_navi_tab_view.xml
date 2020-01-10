@@ -50,6 +50,20 @@
             android:textSize="@dimen/txt_small"
             android:visibility="gone"
             tools:text="8" />
+
+        <TextView
+            android:id="@+id/tv_msg_dot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignRight="@id/tab_icon"
+            android:layout_alignTop="@id/tab_icon"
+            android:layout_marginTop="-3dp"
+            android:layout_marginRight="-6dp"
+            android:background="@drawable/bg_red_msg_num"
+            android:gravity="center"
+            android:textColor="@color/white_normal"
+            android:textSize="@dimen/txt_small"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView

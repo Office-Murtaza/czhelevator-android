@@ -24,12 +24,10 @@ import com.kingyon.elevator.entities.ReceivedPushEntity;
 import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.UnreadNumberEntity;
 import com.kingyon.elevator.entities.UserEntity;
-import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
-import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
@@ -312,7 +310,7 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(MessageCenterActivity.class);
                 break;
             case R.id.img_setting:
-               startActivity(PhotoPickerActivity.class);
+               startActivity(SettingActivity.class);
                 break;
             case R.id.ll_info:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {

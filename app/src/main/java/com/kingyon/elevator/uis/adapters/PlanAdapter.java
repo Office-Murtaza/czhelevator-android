@@ -1,7 +1,12 @@
 package com.kingyon.elevator.uis.adapters;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,6 +19,7 @@ import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.entities.StateHolder;
 import com.kingyon.elevator.entities.TimeHolder;
 import com.kingyon.elevator.uis.widgets.EditCountViewInList;
+import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.leo.afbaselibrary.listeners.OnClickWithObjects;
 import com.leo.afbaselibrary.uis.adapters.ItemViewDelegate;
@@ -39,6 +45,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
     private boolean editMode;
     private OnOperateClickListener onOperateClickListener;
     private Boolean isSelectAll = false;//是否选中全部
+    StrikethroughSpan strikethroughSpan;
 
     public PlanAdapter(Context context, List<Object> mItems, OnOperateClickListener onOperateClickListener) {
         super(context, mItems);
@@ -96,7 +103,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         @Override
         public void convert(CommonHolder holder, Object o, int position) {
             CellItemEntity item = (CellItemEntity) o;
-           // holder.setSelected(R.id.item_root, item.getPlanPosition() % 2 == 1);
+            // holder.setSelected(R.id.item_root, item.getPlanPosition() % 2 == 1);
             holder.setImage(R.id.img_cover, item.getCellLogo());
             holder.setTextNotHide(R.id.tv_name, item.getCellName());
             List<PointItemEntity> points = item.getPoints();
@@ -109,7 +116,8 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
             holder.setVisible(R.id.img_choose, !editMode);
             holder.setVisible(R.id.img_choose_delete, editMode);
             holder.setVisible(R.id.v_delete, editMode);
-
+            holder.setTextNotHide(R.id.tv_price, FormatUtils.getInstance().getCellPrice(getTypePrice(item)));
+            holder.setTextNotHide(R.id.tv_origin_price, getCellOriginPrice(getTypeOriginPrice(item)));
             OnClickWithObjects onClickWithObjects = new OnClickWithObjects(item) {
                 @Override
                 public void onClick(View view, Object[] objects) {
@@ -185,6 +193,22 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         }
 
 
+        /**
+         * 获取原价
+         *
+         * @param price
+         * @return
+         */
+        public SpannableString getCellOriginPrice(double price) {
+            String priceStr = String.format("%s/天", CommonUtil.getMayTwoFloat(price));
+            SpannableString result = new SpannableString(priceStr);
+            if (strikethroughSpan==null) {
+                strikethroughSpan = new StrikethroughSpan();
+            }
+            result.setSpan(strikethroughSpan, 0, priceStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return result;
+        }
+
 
         private List<PointItemEntity> solution(List<PointItemEntity> entities, int length) {
             List<PointItemEntity> result;
@@ -211,6 +235,33 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
                     break;
                 case Constants.PLAN_TYPE.INFORMATION:
                     result = item.getInformationAdPrice();
+                    break;
+                default:
+                    result = 0;
+                    break;
+            }
+            return result;
+        }
+
+        /**
+         * 获取原价
+         * @param item
+         * @return
+         */
+        private double getTypeOriginPrice(CellItemEntity item) {
+            double result;
+            if (item.getPlanTypeCache() == null) {
+                item.setPlanTypeCache("");
+            }
+            switch (item.getPlanTypeCache()) {
+                case Constants.PLAN_TYPE.BUSINESS:
+                    result = item.getOriginalBusinessAdPrice();
+                    break;
+                case Constants.PLAN_TYPE.DIY:
+                    result = item.getOriginalDiyAdPrice();
+                    break;
+                case Constants.PLAN_TYPE.INFORMATION:
+                    result = item.getOriginalInformationAdPrice();
                     break;
                 default:
                     result = 0;

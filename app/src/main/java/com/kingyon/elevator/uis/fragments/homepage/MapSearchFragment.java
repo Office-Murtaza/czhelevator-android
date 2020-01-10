@@ -19,6 +19,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
@@ -33,8 +34,10 @@ import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.uis.adapters.SearchCellsAdapter;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -70,13 +73,13 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     private LinkedHashMap<Long, Marker> markersMap = new LinkedHashMap<>();
     private LinkedHashMap<Long, Marker> cityMarkersMap = new LinkedHashMap<>();
     private boolean showCityMarkers;
-
     //初始化地图控制器对象
     private AMap aMap;
     //定义一个UiSettings对象
     private UiSettings mUiSettings;
 
     private AddCellToPlanPresenter addCellToPlanPresenter;
+    private int[] clickPosition = new int[2];
 
     public static MapSearchFragment newInstance(AMapCityEntity entity) {
         Bundle args = new Bundle();
@@ -258,7 +261,11 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     public void onBannerClickListener(View view, int position, CellItemEntity item, List<CellItemEntity> datas) {
         if (view.getId() == R.id.tv_choose) {
             if (addCellToPlanPresenter != null) {
-                addCellToPlanPresenter.showPlanPicker(item.getObjctId());
+                clickPosition[0] = ScreenUtils.getScreenWidth() - DensityUtil.dip2px(16);
+                clickPosition[1] = ScreenUtils.getScreenHeight()- DensityUtil.dip2px(16);
+                RuntimeUtils.mapOrListAddPositionAnimation=clickPosition;
+                RuntimeUtils.animationImagePath = item.getCellLogo();
+                addCellToPlanPresenter.showPlanPicker(item.getObjctId(),false);
             }
         } else {
             Bundle bundle = new Bundle();

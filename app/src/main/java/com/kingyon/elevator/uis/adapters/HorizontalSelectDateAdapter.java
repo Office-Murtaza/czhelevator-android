@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.customview.MyGridView;
+import com.kingyon.elevator.date.CustomDatePickerView;
 import com.kingyon.elevator.entities.HorizontalSelectDateEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
@@ -72,11 +73,12 @@ public class HorizontalSelectDateAdapter extends RecyclerView.Adapter<Horizontal
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        HorizontalSelectDateEntity horizontalSelectDateEntity = horizontalSelectDateEntityList.get(position);
-        if (holder.date_grid_item_view.getTag() == null) {
-            LogUtils.d("设置数据执行-------------------------------");
-            holder.date_grid_item_view.setTag(position);
-            holder.date_grid_item_view.setAdapter(gridDateAdapterMap.get(position));
+        if (holder.custom_date_picker_view.getTag() == null) {
+            LogUtils.d("设置数据执行-------------------------------",position);
+            holder.custom_date_picker_view.setTag(position);
+            HorizontalSelectDateEntity horizontalSelectDateEntity = horizontalSelectDateEntityList.get(position);
+            holder.custom_date_picker_view.initData(this,horizontalSelectDateEntity.getYear(),
+                    horizontalSelectDateEntity.getMonth(),horizontalSelectDateEntity.getDayCount());
         }
     }
 
@@ -91,15 +93,12 @@ public class HorizontalSelectDateAdapter extends RecyclerView.Adapter<Horizontal
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout item_container;
-        MyGridView date_grid_item_view;
+        CustomDatePickerView custom_date_picker_view;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            item_container = itemView.findViewById(R.id.item_container);
-            date_grid_item_view = itemView.findViewById(R.id.date_grid_item_view);
-
+            custom_date_picker_view = itemView.findViewById(R.id.custom_date_picker_view);
         }
     }
 

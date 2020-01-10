@@ -24,18 +24,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.pili.pldroid.player.IMediaController;
+//import com.pili.pldroid.player.IMediaController;
 
 import java.util.Locale;
 
 /**
  * You can write a custom MediaController instead of this class
  * A MediaController widget must implement all the interface defined by com.pili.pldroid.player.IMediaController
+ * implements IMediaController
  */
-public class MediaController extends FrameLayout implements IMediaController {
+public class MediaController extends FrameLayout {
 
     private static final String TAG = "PLMediaController";
-    private IMediaController.MediaPlayerControl mPlayer;
+   // private IMediaController.MediaPlayerControl mPlayer;
     private Context mContext;
     private PopupWindow mWindow;
     private int mAnimStyle;
@@ -158,14 +159,14 @@ public class MediaController extends FrameLayout implements IMediaController {
     }
 
     private void initControllerView(View v) {
-        if (mFromXml) {
-            PAUSE_BUTTON_ID = R.id.controller_stop_play;
-            MEDIACONTROLLER_PROGRESS_ID = R.id.controller_progress_bar;
-            END_TIME_ID = R.id.controller_end_time;
-            CURRENT_TIME_ID = R.id.controller_current_time;
-            IC_MEDIA_PAUSE_ID = R.drawable.player_stop;
-            IC_MEDIA_PLAY_ID = R.drawable.player_play;
-        }
+//        if (mFromXml) {
+//            PAUSE_BUTTON_ID = R.id.controller_stop_play;
+//            MEDIACONTROLLER_PROGRESS_ID = R.id.controller_progress_bar;
+//            END_TIME_ID = R.id.controller_end_time;
+//            CURRENT_TIME_ID = R.id.controller_current_time;
+//            IC_MEDIA_PAUSE_ID = R.drawable.player_stop;
+//            IC_MEDIA_PLAY_ID = R.drawable.player_play;
+//        }
 
         // By default these are hidden.
         mPrevButton = (ImageButton) v.findViewById(PRV_BUTTON_ID);
@@ -176,44 +177,44 @@ public class MediaController extends FrameLayout implements IMediaController {
         if (mNextButton != null) {
             mNextButton.setVisibility(View.GONE);
         }
-
-        mFfwdButton = (ImageButton) v.findViewById(FFWD_BUTTON_ID);
-        if (mFfwdButton != null) {
-            mFfwdButton.setOnClickListener(mFfwdListener);
-            if (!mFromXml) {
-                mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
-            }
-        }
-
-        mRewButton = (ImageButton) v.findViewById(REW_BUTTON_ID);
-        if (mRewButton != null) {
-            mRewButton.setOnClickListener(mRewListener);
-            if (!mFromXml) {
-                mRewButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
-            }
-        }
-
-        mPauseShowView = (ImageView) v.findViewById(R.id.controller_stop_show_play);
-
-        mPauseButton = (ImageButton) v.findViewById(PAUSE_BUTTON_ID);
-        if (mPauseButton != null) {
-            mPauseButton.requestFocus();
-            mPauseButton.setOnClickListener(mPauseListener);
-        }
-
-        mProgress = (ProgressBar) v.findViewById(MEDIACONTROLLER_PROGRESS_ID);
-        if (mProgress != null) {
-            if (mProgress instanceof SeekBar) {
-                SeekBar seeker = (SeekBar) mProgress;
-                seeker.setOnSeekBarChangeListener(mSeekListener);
-                seeker.setThumbOffset(1);
-            }
-            mProgress.setMax(1000);
-            mProgress.setEnabled(!mDisableProgress);
-        }
-
-        mEndTime = (TextView) v.findViewById(END_TIME_ID);
-        mCurrentTime = (TextView) v.findViewById(CURRENT_TIME_ID);
+//
+//        mFfwdButton = (ImageButton) v.findViewById(FFWD_BUTTON_ID);
+//        if (mFfwdButton != null) {
+//            mFfwdButton.setOnClickListener(mFfwdListener);
+//            if (!mFromXml) {
+//                mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
+//            }
+//        }
+//
+//        mRewButton = (ImageButton) v.findViewById(REW_BUTTON_ID);
+//        if (mRewButton != null) {
+//            mRewButton.setOnClickListener(mRewListener);
+//            if (!mFromXml) {
+//                mRewButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
+//            }
+//        }
+//
+//        mPauseShowView = (ImageView) v.findViewById(R.id.controller_stop_show_play);
+//
+//        mPauseButton = (ImageButton) v.findViewById(PAUSE_BUTTON_ID);
+//        if (mPauseButton != null) {
+//            mPauseButton.requestFocus();
+//            mPauseButton.setOnClickListener(mPauseListener);
+//        }
+//
+//        mProgress = (ProgressBar) v.findViewById(MEDIACONTROLLER_PROGRESS_ID);
+//        if (mProgress != null) {
+//            if (mProgress instanceof SeekBar) {
+//                SeekBar seeker = (SeekBar) mProgress;
+//                seeker.setOnSeekBarChangeListener(mSeekListener);
+//                seeker.setThumbOffset(1);
+//            }
+//            mProgress.setMax(1000);
+//            mProgress.setEnabled(!mDisableProgress);
+//        }
+//
+//        mEndTime = (TextView) v.findViewById(END_TIME_ID);
+//        mCurrentTime = (TextView) v.findViewById(CURRENT_TIME_ID);
     }
 
     /**
@@ -226,13 +227,13 @@ public class MediaController extends FrameLayout implements IMediaController {
     }
 
     private void disableUnsupportedButtons() {
-        if (mPlayer != null) {
-            try {
-                if (mPauseButton != null && !mPlayer.canPause())
-                    mPauseButton.setEnabled(false);
-            } catch (IncompatibleClassChangeError ex) {
-            }
-        }
+//        if (mPlayer != null) {
+//            try {
+//                if (mPauseButton != null && !mPlayer.canPause())
+//                    mPauseButton.setEnabled(false);
+//            } catch (IncompatibleClassChangeError ex) {
+//            }
+//        }
     }
 
     /**
@@ -281,12 +282,12 @@ public class MediaController extends FrameLayout implements IMediaController {
             long pos;
             switch (msg.what) {
                 case FADE_OUT:
-                    hide();
+                    //hide();
                     break;
                 case SHOW_PROGRESS:
-                    if (mPlayer == null || !mPlayer.isPlaying()) {
-                        return;
-                    }
+//                    if (mPlayer == null || !mPlayer.isPlaying()) {
+//                        return;
+//                    }
                     pos = setProgress();
                     if (pos == -1) {
                         return;
@@ -302,29 +303,30 @@ public class MediaController extends FrameLayout implements IMediaController {
     };
 
     private long setProgress() {
-        if (mPlayer == null || mDragging) {
-            return 0;
-        }
+//        if (mPlayer == null || mDragging) {
+//            return 0;
+//        }
+//
+//        long position = mPlayer.getCurrentPosition();
+//        long duration = mPlayer.getDuration();
+//        if (mProgress != null) {
+//            if (duration > 0) {
+//                long pos = 1000L * position / duration;
+//                mProgress.setProgress((int) pos);
+//            }
+//            int percent = mPlayer.getBufferPercentage();
+//            mProgress.setSecondaryProgress(percent * 10);
+//        }
+//
+//        mDuration = duration;
+//
+//        if (mEndTime != null)
+//            mEndTime.setText(generateTime(mDuration));
+//        if (mCurrentTime != null)
+//            mCurrentTime.setText(generateTime(position));
 
-        long position = mPlayer.getCurrentPosition();
-        long duration = mPlayer.getDuration();
-        if (mProgress != null) {
-            if (duration > 0) {
-                long pos = 1000L * position / duration;
-                mProgress.setProgress((int) pos);
-            }
-            int percent = mPlayer.getBufferPercentage();
-            mProgress.setSecondaryProgress(percent * 10);
-        }
-
-        mDuration = duration;
-
-        if (mEndTime != null)
-            mEndTime.setText(generateTime(mDuration));
-        if (mCurrentTime != null)
-            mCurrentTime.setText(generateTime(position));
-
-        return position;
+        //return position;
+        return 0;
     }
 
     private static String generateTime(long position) {
@@ -345,13 +347,13 @@ public class MediaController extends FrameLayout implements IMediaController {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        show(sDefaultTimeout);
+        //show(sDefaultTimeout);
         return true;
     }
 
     @Override
     public boolean onTrackballEvent(MotionEvent ev) {
-        show(sDefaultTimeout);
+        //show(sDefaultTimeout);
         return false;
     }
 
@@ -362,22 +364,22 @@ public class MediaController extends FrameLayout implements IMediaController {
                 && (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
                 || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
             doPauseResume();
-            show(sDefaultTimeout);
+            //show(sDefaultTimeout);
             if (mPauseButton != null)
                 mPauseButton.requestFocus();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
-            if (mPlayer.isPlaying()) {
-                mPlayer.pause();
-                updatePausePlay();
-            }
+//            if (mPlayer.isPlaying()) {
+//                mPlayer.pause();
+//                updatePausePlay();
+//            }
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK
                 || keyCode == KeyEvent.KEYCODE_MENU) {
-            hide();
+            //hide();
             return true;
         } else {
-            show(sDefaultTimeout);
+            //show(sDefaultTimeout);
         }
         return super.dispatchKeyEvent(event);
     }
@@ -388,7 +390,7 @@ public class MediaController extends FrameLayout implements IMediaController {
                 mOnClickSpeedAdjustListener.onClickNormal();
             }
             doPauseResume();
-            show(sDefaultTimeout);
+           // show(sDefaultTimeout);
         }
     };
 
@@ -398,26 +400,26 @@ public class MediaController extends FrameLayout implements IMediaController {
     }
 
     private void updatePausePlay() {
-        if (mRoot == null || mPauseButton == null || mPlayer == null)
-            return;
-
-        if (mPlayer.isPlaying()) {
-            if (mPauseShowView != null)
-                mPauseShowView.setImageResource(media_pause_id == 0 ? IC_MEDIA_PAUSE_ID : media_pause_id);
-            else
-                mPauseButton.setImageResource(media_pause_id == 0 ? IC_MEDIA_PAUSE_ID : media_pause_id);
-            if (pauseView != null) {
-                pauseView.setVisibility(GONE);
-            }
-        } else {
-            if (mPauseShowView != null)
-                mPauseShowView.setImageResource(media_play_id == 0 ? IC_MEDIA_PLAY_ID : media_play_id);
-            else
-                mPauseButton.setImageResource(media_play_id == 0 ? IC_MEDIA_PLAY_ID : media_play_id);
-            if (pauseView != null) {
-                pauseView.setVisibility(VISIBLE);
-            }
-        }
+//        if (mRoot == null || mPauseButton == null || mPlayer == null)
+//            return;
+//
+//        if (mPlayer.isPlaying()) {
+//            if (mPauseShowView != null)
+//                mPauseShowView.setImageResource(media_pause_id == 0 ? IC_MEDIA_PAUSE_ID : media_pause_id);
+//            else
+//                mPauseButton.setImageResource(media_pause_id == 0 ? IC_MEDIA_PAUSE_ID : media_pause_id);
+//            if (pauseView != null) {
+//                pauseView.setVisibility(GONE);
+//            }
+//        } else {
+//            if (mPauseShowView != null)
+//                mPauseShowView.setImageResource(media_play_id == 0 ? IC_MEDIA_PLAY_ID : media_play_id);
+//            else
+//                mPauseButton.setImageResource(media_play_id == 0 ? IC_MEDIA_PLAY_ID : media_play_id);
+//            if (pauseView != null) {
+//                pauseView.setVisibility(VISIBLE);
+//            }
+//        }
     }
 
     private View pauseView;
@@ -435,78 +437,78 @@ public class MediaController extends FrameLayout implements IMediaController {
     }
 
     public void doPauseResume() {
-        if (mPlayer != null) {
-            if (mPlayer.isPlaying())
-                mPlayer.pause();
-            else
-                mPlayer.start();
-            updatePausePlay();
-        }
+//        if (mPlayer != null) {
+//            if (mPlayer.isPlaying())
+//                mPlayer.pause();
+//            else
+//                mPlayer.start();
+//            updatePausePlay();
+//        }
     }
 
-    private SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
-
-        public void onStartTrackingTouch(SeekBar bar) {
-            mDragging = true;
-            show(3600000);
-            mHandler.removeMessages(SHOW_PROGRESS);
-            if (mInstantSeeking)
-                mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
-        }
-
-        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
-            if (!fromuser) {
-                return;
-            }
-
-
-            final long newposition = (long) (mDuration * progress) / 1000;
-            String time = generateTime(newposition);
-            if (mInstantSeeking) {
-                mHandler.removeCallbacks(mLastSeekBarRunnable);
-                mLastSeekBarRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mPlayer != null) {
-                            mPlayer.seekTo(newposition);
-                        }
-                    }
-                };
-                mHandler.postDelayed(mLastSeekBarRunnable, SEEK_TO_POST_DELAY_MILLIS);
-            }
-            if (mCurrentTime != null)
-                mCurrentTime.setText(time);
-        }
-
-        public void onStopTrackingTouch(SeekBar bar) {
-            if (!mInstantSeeking)
-                mPlayer.seekTo(mDuration * bar.getProgress() / 1000);
-
-            show(sDefaultTimeout);
-            mHandler.removeMessages(SHOW_PROGRESS);
-            mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            mDragging = false;
-            mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
-        }
-    };
-
-    private OnClickListener mRewListener = new OnClickListener() {
-        public void onClick(View v) {
-            if (mOnClickSpeedAdjustListener != null) {
-                mOnClickSpeedAdjustListener.onClickSlower();
-            }
-            show(sDefaultTimeout);
-        }
-    };
-
-    private OnClickListener mFfwdListener = new OnClickListener() {
-        public void onClick(View v) {
-            if (mOnClickSpeedAdjustListener != null) {
-                mOnClickSpeedAdjustListener.onClickFaster();
-            }
-            show(sDefaultTimeout);
-        }
-    };
+//    private SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
+//
+//        public void onStartTrackingTouch(SeekBar bar) {
+//            mDragging = true;
+//            show(3600000);
+//            mHandler.removeMessages(SHOW_PROGRESS);
+//            if (mInstantSeeking)
+//                mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
+//        }
+//
+//        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
+//            if (!fromuser) {
+//                return;
+//            }
+//
+//
+//            final long newposition = (long) (mDuration * progress) / 1000;
+//            String time = generateTime(newposition);
+//            if (mInstantSeeking) {
+//                mHandler.removeCallbacks(mLastSeekBarRunnable);
+//                mLastSeekBarRunnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+////                        if (mPlayer != null) {
+////                            mPlayer.seekTo(newposition);
+////                        }
+//                    }
+//                };
+//                mHandler.postDelayed(mLastSeekBarRunnable, SEEK_TO_POST_DELAY_MILLIS);
+//            }
+//            if (mCurrentTime != null)
+//                mCurrentTime.setText(time);
+//        }
+//
+//        public void onStopTrackingTouch(SeekBar bar) {
+//            if (!mInstantSeeking)
+//               // mPlayer.seekTo(mDuration * bar.getProgress() / 1000);
+//
+//            show(sDefaultTimeout);
+//            mHandler.removeMessages(SHOW_PROGRESS);
+//            mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
+//            mDragging = false;
+//            mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
+//        }
+//    };
+//
+//    private OnClickListener mRewListener = new OnClickListener() {
+//        public void onClick(View v) {
+//            if (mOnClickSpeedAdjustListener != null) {
+//                mOnClickSpeedAdjustListener.onClickSlower();
+//            }
+//            show(sDefaultTimeout);
+//        }
+//    };
+//
+//    private OnClickListener mFfwdListener = new OnClickListener() {
+//        public void onClick(View v) {
+//            if (mOnClickSpeedAdjustListener != null) {
+//                mOnClickSpeedAdjustListener.onClickFaster();
+//            }
+//            show(sDefaultTimeout);
+//        }
+//    };
 
     /**
      * Set the view that acts as the anchor for the control view.
@@ -514,119 +516,119 @@ public class MediaController extends FrameLayout implements IMediaController {
      * - This can for example be a VideoView, or your Activity's main view.
      * - AudioPlayer has no anchor view, so the view parameter will be null.
      *
-     * @param view The view to which to anchor the controller when it is visible.
+     * @param
      */
-    @Override
-    public void setAnchorView(View view) {
-        mAnchor = view;
-        if (mAnchor == null) {
-            sDefaultTimeout = 0; // show forever
-        }
-        if (!mFromXml) {
-            removeAllViews();
-            mRoot = makeControllerView();
-            mWindow.setContentView(mRoot);
-            mWindow.setWidth(LayoutParams.MATCH_PARENT);
-            mWindow.setHeight(LayoutParams.WRAP_CONTENT);
-        }
-        initControllerView(mRoot);
-    }
+//    @Override
+//    public void setAnchorView(View view) {
+//        mAnchor = view;
+//        if (mAnchor == null) {
+//            sDefaultTimeout = 0; // show forever
+//        }
+//        if (!mFromXml) {
+//            removeAllViews();
+//            mRoot = makeControllerView();
+//            mWindow.setContentView(mRoot);
+//            mWindow.setWidth(LayoutParams.MATCH_PARENT);
+//            mWindow.setHeight(LayoutParams.WRAP_CONTENT);
+//        }
+//        initControllerView(mRoot);
+//    }
 
-    @Override
-    public void setMediaPlayer(MediaPlayerControl player) {
-        mPlayer = player;
-        updatePausePlay();
-    }
-
-    @Override
-    public void show() {
-        show(sDefaultTimeout);
-    }
-
-    /**
-     * Show the controller on screen. It will go away automatically after
-     * 'timeout' milliseconds of inactivity.
-     *
-     * @param timeout The timeout in milliseconds. Use 0 to show the controller until hide() is called.
-     */
-    @Override
-    public void show(int timeout) {
-        if (!mShowing) {
-            if (mAnchor != null && mAnchor.getWindowToken() != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    mAnchor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                }
-            }
-            if (mPauseButton != null)
-                mPauseButton.requestFocus();
-            disableUnsupportedButtons();
-
-            if (mFromXml) {
-                setVisibility(View.VISIBLE);
-            } else {
-                int[] location = new int[2];
-
-                if (mAnchor != null) {
-                    mAnchor.getLocationOnScreen(location);
-                    Rect anchorRect = new Rect(location[0], location[1],
-                            location[0] + mAnchor.getWidth(), location[1]
-                            + mAnchor.getHeight());
-
-                    mWindow.setAnimationStyle(mAnimStyle);
-                    mRoot.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-                    mWindow.showAsDropDown(mAnchor, 0, -mRoot.getMeasuredHeight());
-                } else {
-                    Rect anchorRect = new Rect(location[0], location[1],
-                            location[0] + mRoot.getWidth(), location[1]
-                            + mRoot.getHeight());
-
-                    mWindow.setAnimationStyle(mAnimStyle);
-                    mWindow.showAtLocation(mRoot, Gravity.BOTTOM,
-                            anchorRect.left, 0);
-                }
-            }
-            mShowing = true;
-            if (mShownListener != null)
-                mShownListener.onShown();
-        }
-        updatePausePlay();
-        mHandler.sendEmptyMessage(SHOW_PROGRESS);
-
-        if (timeout != 0) {
-            mHandler.removeMessages(FADE_OUT);
-            mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
-                    timeout);
-        }
-    }
-
-    @Override
-    public boolean isShowing() {
-        return mShowing;
-    }
-
-    @Override
-    public void hide() {
-        if (mShowing) {
-            if (mAnchor != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    //mAnchor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-                }
-            }
-            try {
-                mHandler.removeMessages(SHOW_PROGRESS);
-                if (mFromXml) {
-                    setVisibility(View.GONE);
-                } else {
-                    mWindow.dismiss();
-                }
-            } catch (IllegalArgumentException ex) {
-                Log.d(TAG, "MediaController already removed");
-            }
-            mShowing = false;
-            if (mHiddenListener != null)
-                mHiddenListener.onHidden();
-        }
-    }
+//    @Override
+//    public void setMediaPlayer(MediaPlayerControl player) {
+//        mPlayer = player;
+//        updatePausePlay();
+//    }
+//
+//    @Override
+//    public void show() {
+//        show(sDefaultTimeout);
+//    }
+//
+//    /**
+//     * Show the controller on screen. It will go away automatically after
+//     * 'timeout' milliseconds of inactivity.
+//     *
+//     * @param timeout The timeout in milliseconds. Use 0 to show the controller until hide() is called.
+//     */
+//    @Override
+//    public void show(int timeout) {
+//        if (!mShowing) {
+//            if (mAnchor != null && mAnchor.getWindowToken() != null) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                    mAnchor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+//                }
+//            }
+//            if (mPauseButton != null)
+//                mPauseButton.requestFocus();
+//            disableUnsupportedButtons();
+//
+//            if (mFromXml) {
+//                setVisibility(View.VISIBLE);
+//            } else {
+//                int[] location = new int[2];
+//
+//                if (mAnchor != null) {
+//                    mAnchor.getLocationOnScreen(location);
+//                    Rect anchorRect = new Rect(location[0], location[1],
+//                            location[0] + mAnchor.getWidth(), location[1]
+//                            + mAnchor.getHeight());
+//
+//                    mWindow.setAnimationStyle(mAnimStyle);
+//                    mRoot.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//                    mWindow.showAsDropDown(mAnchor, 0, -mRoot.getMeasuredHeight());
+//                } else {
+//                    Rect anchorRect = new Rect(location[0], location[1],
+//                            location[0] + mRoot.getWidth(), location[1]
+//                            + mRoot.getHeight());
+//
+//                    mWindow.setAnimationStyle(mAnimStyle);
+//                    mWindow.showAtLocation(mRoot, Gravity.BOTTOM,
+//                            anchorRect.left, 0);
+//                }
+//            }
+//            mShowing = true;
+//            if (mShownListener != null)
+//                mShownListener.onShown();
+//        }
+//        updatePausePlay();
+//        mHandler.sendEmptyMessage(SHOW_PROGRESS);
+//
+//        if (timeout != 0) {
+//            mHandler.removeMessages(FADE_OUT);
+//            mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
+//                    timeout);
+//        }
+//    }
+//
+//    @Override
+//    public boolean isShowing() {
+//        return mShowing;
+//    }
+//
+//    @Override
+//    public void hide() {
+//        if (mShowing) {
+//            if (mAnchor != null) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                    //mAnchor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//                }
+//            }
+//            try {
+//                mHandler.removeMessages(SHOW_PROGRESS);
+//                if (mFromXml) {
+//                    setVisibility(View.GONE);
+//                } else {
+//                    mWindow.dismiss();
+//                }
+//            } catch (IllegalArgumentException ex) {
+//                Log.d(TAG, "MediaController already removed");
+//            }
+//            mShowing = false;
+//            if (mHiddenListener != null)
+//                mHiddenListener.onHidden();
+//        }
+//    }
 
     @Override
     public void setEnabled(boolean enabled) {

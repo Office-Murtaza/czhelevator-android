@@ -11,9 +11,9 @@
 
     <ImageView
         android:id="@+id/img_choose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_default"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:padding="12dp"
         android:src="@drawable/ic_check_big" />
 
     <LinearLayout
@@ -70,8 +70,8 @@
                 android:id="@+id/tv_lift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_four"
                 android:layout_marginTop="@dimen/spacing_four"
+                android:layout_marginBottom="@dimen/spacing_four"
                 android:drawableLeft="@drawable/ic_lift_number"
                 android:drawablePadding="@dimen/spacing_four"
                 android:ellipsize="end"
@@ -103,17 +103,33 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="#EC7A12"
-                android:textSize="@dimen/txt_title"
-                android:textStyle="bold"
-                tools:text="￥333/天" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#EC7A12"
+                    android:textSize="@dimen/txt_title"
+                    android:textStyle="bold"
+                    tools:text="￥333/天" />
+
+                <TextView
+                    android:id="@+id/tv_origin_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0元/天"
+                    android:textColor="#ff7f7f7f"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -127,8 +143,8 @@
                 android:id="@+id/tv_assign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/spacing_six"
                 android:drawableRight="@drawable/ic_plan_time_right"
+                android:drawablePadding="@dimen/spacing_six"
                 android:paddingLeft="10dp"
                 android:paddingRight="@dimen/spacing_default"
                 android:text="单独指定"
@@ -144,8 +160,8 @@
                 android:id="@+id/ecv_count"
                 android:layout_width="66dp"
                 android:layout_height="20dp"
-                android:layout_marginBottom="@dimen/spacing_default"
-                android:layout_marginRight="@dimen/spacing_default" />
+                android:layout_marginRight="@dimen/spacing_default"
+                android:layout_marginBottom="@dimen/spacing_default" />
 
             <ImageView
                 android:id="@+id/img_choose_delete"

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.FreshOrderEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -346,6 +348,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                         bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.WX_PAY);
                         startActivity(PaySuccessActivity.class, bundle);
                     }
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList,null));
                     setPayEnable();
                     finish();
                 }
@@ -391,6 +394,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                         bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.ALI_PAY);
                         startActivity(PaySuccessActivity.class, bundle);
                     }
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList,null));
                     setPayEnable();
                     finish();
                 }

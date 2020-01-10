@@ -35,8 +35,6 @@ public class PictureSelectorUtil {
                         .count(maxCount)
                         .start(activity, requestCode);
             }
-
-
         }, "读取系统相册需要以下权限", perms);
     }
 

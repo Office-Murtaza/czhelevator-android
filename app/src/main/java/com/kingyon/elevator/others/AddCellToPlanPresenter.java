@@ -6,10 +6,13 @@ import android.view.View;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.uis.dialogs.CellAdSuccessDialog;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -44,11 +47,15 @@ public class AddCellToPlanPresenter {
         this.cellId = cellId;
     }
 
-    public void showPlanPicker(long cellId) {
-        showPlanPicker(cellId, null);
+    /**
+     * @param cellId          id
+     * @param isDirectSendMsg 是否直接发送消息关闭界面
+     */
+    public void showPlanPicker(long cellId, Boolean isDirectSendMsg) {
+        showPlanPicker(cellId, null, isDirectSendMsg);
     }
 
-    public void showPlanPicker(long cellId, String type) {
+    public void showPlanPicker(long cellId, String type, Boolean isDirectSendMsg) {
 //        PointPlanDialogFragment planDialogFragment = PointPlanDialogFragment.newInstance("", cellId);
 //        planDialogFragment.show(getChildFragmentManager(), "PointPlanDialogFragment");
         if (planPicker == null || planOptions == null) {
@@ -63,7 +70,7 @@ public class AddCellToPlanPresenter {
                         return;
                     }
                     NormalParamEntity entity = planOptions.get(options1);
-                    addCellToPlan(entity.getType());
+                    addCellToPlan(entity.getType(), isDirectSendMsg);
                 }
             }).setCyclic(false, false, false).build();
             planPicker.setPicker(planOptions);
@@ -95,7 +102,7 @@ public class AddCellToPlanPresenter {
         return result;
     }
 
-    public void addCellToPlan(final String type) {
+    public void addCellToPlan(final String type, Boolean isDirectSendMsg) {
         NetService.getInstance().plansAddCells(type, String.valueOf(cellId))
                 .compose(baseActivity.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -106,13 +113,45 @@ public class AddCellToPlanPresenter {
 
                     @Override
                     public void onNext(String s) {
-                       // showSuccessDialog(type);
-                        EventBus.getDefault().post(new ToPlanTab(type));
+                        if (isDirectSendMsg) {
+                            EventBus.getDefault().post(new ToPlanTab(type));
+                        } else {
+                            //showSuccessDialog(type);
+                            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.AddToCartToPlanSuccess, type));
+                        }
                     }
                 });
     }
 
-    public void addCellToPlan(long cellId, final String type) {
+
+    public void showHomeOagePicker(long cellId, String type) {
+        if (planPicker == null || planOptions == null) {
+            planOptions = new ArrayList<>();
+            planOptions.add(new NormalParamEntity(Constants.PLAN_TYPE.BUSINESS, "商业"));
+            planOptions.add(new NormalParamEntity(Constants.PLAN_TYPE.DIY, "DIY"));
+            planOptions.add(new NormalParamEntity(Constants.PLAN_TYPE.INFORMATION, "便民信息"));
+            planPicker = new OptionsPickerView.Builder(baseActivity, new OptionsPickerView.OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    if (planOptions == null || planOptions.size() <= options1) {
+                        return;
+                    }
+                    NormalParamEntity entity = planOptions.get(options1);
+                    addHomeCellToPlan(entity.getType());
+                }
+            }).setCyclic(false, false, false).build();
+            planPicker.setPicker(planOptions);
+        }
+        this.cellId = cellId;
+        KeyBoardUtils.closeKeybord(baseActivity);
+        int typeIndex = getTypeIndex(type);
+        if (typeIndex >= 0) {
+            planPicker.setSelectOptions(getTypeIndex(type));
+        }
+        planPicker.show();
+    }
+
+    public void addHomeCellToPlan(final String type) {
         NetService.getInstance().plansAddCells(type, String.valueOf(cellId))
                 .compose(baseActivity.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -123,8 +162,26 @@ public class AddCellToPlanPresenter {
 
                     @Override
                     public void onNext(String s) {
-                         showSuccessDialog(type);
-                        //EventBus.getDefault().post(new ToPlanTab(type));
+                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.AddHomeCellToPlanSuccess, type));
+                    }
+                });
+    }
+
+    public void addCellToPlan(long cellId, final String type, CellDetailsActivity cellDetailsActivity) {
+        cellDetailsActivity.showProgressDialog("计划添加中...");
+        NetService.getInstance().plansAddCells(type, String.valueOf(cellId))
+                .compose(baseActivity.<String>bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        cellDetailsActivity.hideProgress();
+                        baseActivity.showToast(ex.getDisplayMessage());
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        cellDetailsActivity.hideProgress();
+                        cellDetailsActivity.addToPlanSuccess(type);
                     }
                 });
     }

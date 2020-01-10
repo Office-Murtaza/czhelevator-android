@@ -586,7 +586,7 @@ public interface NetApi {
      */
     @POST("partner/getIncomePayDataDayList")
     @FormUrlEncoded
-    Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(@Field("start") String startPosition,@Field("size") String size, @Field("type") String type, @Field("date") String date);
+    Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(@Field("start") String startPosition, @Field("size") String size, @Field("type") String type, @Field("date") String date);
 
 
     /**
@@ -676,6 +676,7 @@ public interface NetApi {
 
     /**
      * 验证是否已经设置支付密码
+     *
      * @return
      */
     @POST("user/pay/vaildInit")
@@ -684,7 +685,8 @@ public interface NetApi {
 
     /**
      * 验证码的方式修改支付密码
-     * @param password  支付密码
+     *
+     * @param password 支付密码
      * @return
      */
     @POST("user/pay/vaildPassword")
@@ -692,4 +694,7 @@ public interface NetApi {
     Observable<String> vaildPasswordIsRight(@Field("password") String password);
 
 
+    @POST("order/getCouponsInfo")
+    @FormUrlEncoded
+    Observable<AutoCalculationDiscountEntity> getCouponsInfo(@Field("amount") double amount, @Field("type") String type, @Field("isManual") Boolean isManual, @Field("consIds") String consIds);
 }

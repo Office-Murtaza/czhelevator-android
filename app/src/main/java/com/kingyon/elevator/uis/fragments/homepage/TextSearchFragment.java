@@ -18,6 +18,7 @@ import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.listeners.OnClickWithObjects;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -40,6 +41,7 @@ public class TextSearchFragment extends BaseStateRefreshLoadingFragment<CellItem
     private String areaIds;
     private String cellType;
     private AddCellToPlanPresenter addCellToPlanPresenter;
+    private int[] clickPosition = new int[2];
 
     public static TextSearchFragment newInstance(String keyWord, AMapCityEntity cityEntity, String distance, String areaIds, String cellType) {
         Bundle args = new Bundle();
@@ -95,7 +97,10 @@ public class TextSearchFragment extends BaseStateRefreshLoadingFragment<CellItem
                     @Override
                     public void onClick(View view, Object[] objects) {
                         if (addCellToPlanPresenter != null) {
-                            addCellToPlanPresenter.showPlanPicker(((CellItemEntity) objects[0]).getObjctId());
+                            view.getLocationOnScreen(clickPosition);
+                            RuntimeUtils.mapOrListAddPositionAnimation = clickPosition;
+                            RuntimeUtils.animationImagePath = ((CellItemEntity) objects[0]).getCellLogo();
+                            addCellToPlanPresenter.showPlanPicker(((CellItemEntity) objects[0]).getObjctId(),false);
                         }
                     }
                 });

@@ -12,30 +12,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.blankj.utilcode.util.LogUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.AvInfoEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
+import com.kingyon.elevator.photopicker.MediaData;
+import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.uis.dialogs.ImageDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.MediaUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
+import com.leo.afbaselibrary.events.Event;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoEditActivity;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoRecordActivity;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoTrimActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -131,6 +139,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         adTypes = new View[]{flFullImage, flFullVideo, flVideoImage};
         adTypeSelects = new View[]{imgFullImage, imgFullVideo, imgVideoImage};
         if (!TextUtils.isEmpty(initType)) {
@@ -162,7 +171,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                         flVideo.setTag(entity.getVideoUrl());
                         GlideUtils.loadVideoFrame(this, entity.getVideoUrl(), imgVideo);
                         imgVideoClear.setVisibility(View.VISIBLE);
-                        tvVideoEdit.setVisibility(View.VISIBLE);
+                        tvVideoEdit.setVisibility(View.GONE);
 //                        tvVideoTip.setVisibility(View.VISIBLE);
                         break;
                     case Constants.AD_SCREEN_TYPE.VIDEO_IMAGE:
@@ -170,7 +179,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                         flVideo.setTag(entity.getVideoUrl());
                         GlideUtils.loadVideoFrame(this, entity.getVideoUrl(), imgVideo);
                         imgVideoClear.setVisibility(View.VISIBLE);
-                        tvVideoEdit.setVisibility(View.VISIBLE);
+                        tvVideoEdit.setVisibility(View.GONE);
 //                        tvVideoTip.setVisibility(View.VISIBLE);
                         flImage.setTag(entity.getImageUrl());
                         GlideUtils.loadImage(this, entity.getImageUrl(), imgImage);
@@ -181,6 +190,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                         break;
                 }
             }
+            tvVideoEdit.setVisibility(View.GONE);
         } else {
             onAdTypeClick(R.id.fl_full_image);
         }
@@ -256,9 +266,10 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     }
 
     private void jumpToImageChoose() {
-        Bundle imageBundle = new Bundle();
-        imageBundle.putBoolean(CommonUtil.KEY_VALUE_1, flVideoImage.isSelected());
-        startActivityForResult(ImageChooseActivity.class, CommonUtil.REQ_CODE_2, imageBundle);
+//        Bundle imageBundle = new Bundle();
+//        imageBundle.putBoolean(CommonUtil.KEY_VALUE_1, flVideoImage.isSelected());
+//        startActivityForResult(ImageChooseActivity.class, CommonUtil.REQ_CODE_2, imageBundle);
+        MyActivityUtils.goPhotoPickerActivity(this, Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT, (String) tvPlanType.getTag());
     }
 
     private void imageEdit() {
@@ -271,27 +282,6 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 if (localMateria != null && new File(localMateria.getPath()).exists()) {
                     jumpToImageEdit(localMateria.getPath());
                 } else {
-//                    GlideApp.with(this)
-//                            .asFile()
-//                            .load(imageLink)
-//                            .listener(new RequestListener<File>() {
-//                                @Override
-//                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<File> target, boolean isFirstResource) {
-//                                    jumpToImageChoose();
-//                                    return false;
-//                                }
-//
-//                                @Override
-//                                public boolean onResourceReady(File resource, Object model, Target<File> target, DataSource dataSource, boolean isFirstResource) {
-//                                    return false;
-//                                }
-//                            })
-//                            .into(new SimpleTarget<File>() {
-//                                @Override
-//                                public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
-//                                    jumpToImageEdit(resource.getAbsolutePath());
-//                                }
-//                            });
                     jumpToImageChoose();
                 }
             } else {
@@ -345,17 +335,17 @@ public class AdEditActivity extends BaseSwipeBackActivity {
 
     private void jumpToVideoEdit(String localPath) {
         Bundle bundle = new Bundle();
-        long videoDuration = getVideoDuration();
-        if (MediaUtils.getInstance().getVideoDuring(localPath) > videoDuration) {
-            bundle.putString(VideoTrimActivity.VIDEO_FILE_PATH, localPath);
-            bundle.putLong(VideoTrimActivity.VIDEO_TRIM_DURATION, videoDuration);
-            startActivityForResult(VideoTrimActivity.class, CommonUtil.REQ_CODE_5, bundle);
-        } else {
-            bundle.putString(VideoEditActivity.MP4_PATH, localPath);
-            bundle.putInt(VideoEditActivity.PREVIOUS_ORIENTATION, 1);
-            bundle.putInt(VideoRecordActivity.RECORD_REQUEST, VideoRecordActivity.RECORD_EDIT_REQUEST);
-            startActivityForResult(VideoEditActivity.class, VideoRecordActivity.RECORD_EDIT_REQUEST, bundle);
-        }
+//        long videoDuration = getVideoDuration();
+//        if (MediaUtils.getInstance().getVideoDuring(localPath) > videoDuration) {
+//            bundle.putString(VideoTrimActivity.VIDEO_FILE_PATH, localPath);
+//            bundle.putLong(VideoTrimActivity.VIDEO_TRIM_DURATION, videoDuration);
+//            startActivityForResult(VideoTrimActivity.class, CommonUtil.REQ_CODE_5, bundle);
+//        } else {
+//            bundle.putString(VideoEditActivity.MP4_PATH, localPath);
+//            bundle.putInt(VideoEditActivity.PREVIOUS_ORIENTATION, 1);
+//            bundle.putInt(VideoRecordActivity.RECORD_REQUEST, VideoRecordActivity.RECORD_EDIT_REQUEST);
+//            startActivityForResult(VideoEditActivity.class, VideoRecordActivity.RECORD_EDIT_REQUEST, bundle);
+//        }
     }
 
     private long getVideoDuration() {
@@ -363,10 +353,11 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     }
 
     private void jumpToVideoChoose() {
-        Bundle videoEditBundle = new Bundle();
-        videoEditBundle.putBoolean(CommonUtil.KEY_VALUE_1, flVideoImage.isSelected());
-        videoEditBundle.putString(CommonUtil.KEY_VALUE_2, (String) tvPlanType.getTag());
-        startActivityForResult(VideoChooseActivity.class, CommonUtil.REQ_CODE_1, videoEditBundle);
+//        Bundle videoEditBundle = new Bundle();
+//        videoEditBundle.putBoolean(CommonUtil.KEY_VALUE_1, flVideoImage.isSelected());
+//        videoEditBundle.putString(CommonUtil.KEY_VALUE_2, (String) tvPlanType.getTag());
+//        startActivityForResult(VideoChooseActivity.class, CommonUtil.REQ_CODE_1, videoEditBundle);
+        MyActivityUtils.goPhotoPickerActivity(this, Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT, (String) tvPlanType.getTag());
     }
 
     private void showPlanTypePicker() {
@@ -414,23 +405,18 @@ public class AdEditActivity extends BaseSwipeBackActivity {
             showToast("请输入广告名称");
             return;
         }
-
         if (TextUtils.isEmpty((String) tvPlanType.getTag())) {
             showToast("请选择广告类型");
             return;
         }
-
-        adScreenType = getAdType();
         if (TextUtils.isEmpty(adScreenType)) {
             showToast("请选择投放类型");
             return;
         }
-
         videoPath = flVideo.getTag() != null ? new String((String) flVideo.getTag()) : null;
         imagePath = flImage.getTag() != null ? new String((String) flImage.getTag()) : null;
         videoUrl = videoPath;
         imageUrl = imagePath;
-
         if (TextUtils.equals(Constants.AD_SCREEN_TYPE.FULL_IMAGE, adScreenType)) {
             if (TextUtils.isEmpty(imagePath)) {
                 showToast("请选择广告图片");
@@ -445,42 +431,42 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 showToast("请选择广告视频");
                 return;
             }
-            String planTypeTag = (String) tvPlanType.getTag();
-            if (MediaUtils.getInstance().getVideoDuring(videoPath) > getVideoDuration()) {
-                if (TextUtils.equals(Constants.PLAN_TYPE.BUSINESS, planTypeTag)) {
-                    showToast("视频时长大于15s，请编辑");
-                } else if (TextUtils.equals(Constants.PLAN_TYPE.DIY, planTypeTag)) {
-                    showToast("视频时长大于60s，请编辑");
-                } else {
-                    showToast("视频时长过长，请编辑");
-                }
-                return;
-            }
+//            String planTypeTag = (String) tvPlanType.getTag();
+//            if (MediaUtils.getInstance().getVideoDuring(videoPath) > getVideoDuration()) {
+//                if (TextUtils.equals(Constants.PLAN_TYPE.BUSINESS, planTypeTag)) {
+//                    showToast("视频时长大于15s，请编辑");
+//                } else if (TextUtils.equals(Constants.PLAN_TYPE.DIY, planTypeTag)) {
+//                    showToast("视频时长大于60s，请编辑");
+//                } else {
+//                    showToast("视频时长过长，请编辑");
+//                }
+//                return;
+//            }
             imagePath = null;
             imageUrl = null;
         }
 
-        if (TextUtils.equals(Constants.AD_SCREEN_TYPE.VIDEO_IMAGE, adScreenType)) {
-            if (TextUtils.isEmpty(videoPath)) {
-                showToast("请选择广告视频");
-                return;
-            }
-            String planTypeTag = (String) tvPlanType.getTag();
-            if (MediaUtils.getInstance().getVideoDuring(videoPath) > getVideoDuration()) {
-                if (TextUtils.equals(Constants.PLAN_TYPE.BUSINESS, planTypeTag)) {
-                    showToast("视频时长大于15s，请编辑");
-                } else if (TextUtils.equals(Constants.PLAN_TYPE.DIY, planTypeTag)) {
-                    showToast("视频时长大于60s，请编辑");
-                } else {
-                    showToast("视频时长过长，请编辑");
-                }
-                return;
-            }
-            if (TextUtils.isEmpty(imagePath)) {
-                showToast("请选择广告图片");
-                return;
-            }
-        }
+//        if (TextUtils.equals(Constants.AD_SCREEN_TYPE.VIDEO_IMAGE, adScreenType)) {
+//            if (TextUtils.isEmpty(videoPath)) {
+//                showToast("请选择广告视频");
+//                return;
+//            }
+//            String planTypeTag = (String) tvPlanType.getTag();
+//            if (MediaUtils.getInstance().getVideoDuring(videoPath) > getVideoDuration()) {
+//                if (TextUtils.equals(Constants.PLAN_TYPE.BUSINESS, planTypeTag)) {
+//                    showToast("视频时长大于15s，请编辑");
+//                } else if (TextUtils.equals(Constants.PLAN_TYPE.DIY, planTypeTag)) {
+//                    showToast("视频时长大于60s，请编辑");
+//                } else {
+//                    showToast("视频时长过长，请编辑");
+//                }
+//                return;
+//            }
+//            if (TextUtils.isEmpty(imagePath)) {
+//                showToast("请选择广告图片");
+//                return;
+//            }
+//        }
         tvPublish.setEnabled(false);
         showProgressDialog(getString(R.string.wait));
         publishVideo();
@@ -518,37 +504,6 @@ public class AdEditActivity extends BaseSwipeBackActivity {
 
     private void checkVideoCodecName() {
         publishImage();
-//        NetService.getInstance().getQiniuAvInfo(videoUrl)
-//                .compose(this.bindLifeCycle())
-//                .subscribe(new CustomApiCallback<AvInfoEntity>() {
-//                    @Override
-//                    public void onNext(AvInfoEntity avInfoEntity) {
-//                        if (avInfoEntity == null) {
-//                            throw new ResultException(9001, "返回参数异常");
-//                        }
-//                        List<AvInfoEntity.StreamsBean> streams = avInfoEntity.getStreams();
-//                        if (streams == null || streams.size() < 1) {
-//                            throw new ResultException(9001, "返回参数异常");
-//                        }
-//                        for (AvInfoEntity.StreamsBean stream : streams) {
-//                            if (TextUtils.equals("video", stream.getCodec_type()) && TextUtils.equals("hevc", stream.getCodec_name())) {
-//                                throw new ResultException(9002, "暂不支持 H.265 / HEVC");
-//                            }
-//                        }
-//                        publishImage();
-//                    }
-//
-//                    @Override
-//                    protected void onResultError(ApiException ex) {
-//                        hideProgress();
-//                        tvPublish.setEnabled(true);
-//                        if (ex.getCode() == 9002) {
-//                            showToast(ex.getDisplayMessage());
-//                        } else {
-//                            showToast("上传视频失败");
-//                        }
-//                    }
-//                });
     }
 
     private void publishImage() {
@@ -664,7 +619,6 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 imgImageClear.setVisibility(View.GONE);
                 tvImageEdit.setVisibility(View.GONE);
                 adLine.setVisibility(View.GONE);
-
                 showRatioTip(true);
                 break;
             case R.id.fl_full_video:
@@ -700,7 +654,6 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 tvVideoEdit.setVisibility(View.GONE);
 //                tvVideoTip.setVisibility(View.GONE);
                 adLine.setVisibility(View.VISIBLE);
-
                 showRatioTip(false);
                 break;
             default:
@@ -740,15 +693,89 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                         onImagePathResult(savedPath);
                     }
                     break;
-                case VideoRecordActivity.RECORD_EDIT_REQUEST:
-                case CommonUtil.REQ_CODE_5:
-                    String recordPath = data.getStringExtra(VideoRecordActivity.RECORD_RESULT);
-                    if (!TextUtils.isEmpty(recordPath)) {
-                        onVideoPathResult(recordPath);
-                    }
-                    break;
+//                case VideoRecordActivity.RECORD_EDIT_REQUEST:
+//                case CommonUtil.REQ_CODE_5:
+//                    String recordPath = data.getStringExtra(VideoRecordActivity.RECORD_RESULT);
+//                    if (!TextUtils.isEmpty(recordPath)) {
+//                        onVideoPathResult(recordPath);
+//                    }
+                //  break;
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventHandler(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoCropSuccessResult) {
+            //这里返回的是裁剪过后的视频 时长要么为15s要么为60s
+            selectIsVideoHandlerView();
+            String videoPath = (String) eventBusObjectEntity.getData();
+            flVideo.setTag(videoPath);
+            GlideUtils.loadLocalFrame(this, videoPath, imgVideo);
+            imgVideoClear.setVisibility(View.VISIBLE);
+            tvVideoEdit.setVisibility(View.GONE);
+            adScreenType = Constants.AD_SCREEN_TYPE.FULL_VIDEO;
+        }
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoOrImageSelectSuccess) {
+            LogUtils.d("视频或图片选择成功--------------");
+            if (eventBusObjectEntity.getData() != null) {
+                if (eventBusObjectEntity.getData() instanceof String) {
+                    //返回的是图片
+                    selectIsImage();
+                    String imgPath = (String) eventBusObjectEntity.getData();
+                    flImage.setTag(imgPath);
+                    GlideUtils.loadImage(this, imgPath, imgImage);
+                    imgImageClear.setVisibility(View.VISIBLE);
+                    tvImageEdit.setVisibility(View.VISIBLE);
+                    adScreenType = Constants.AD_SCREEN_TYPE.FULL_IMAGE;
+                }
+                if (eventBusObjectEntity.getData() instanceof MediaData) {
+                    //返回的是视频
+                    selectIsVideoHandlerView();
+                    adScreenType = Constants.AD_SCREEN_TYPE.FULL_VIDEO;
+                    MediaData mediaData = (MediaData) eventBusObjectEntity.getData();
+                    LogUtils.d("视频或图片选择成功--------------", mediaData.getOriginalPath());
+                    flVideo.setTag(mediaData.getOriginalPath());
+                    GlideUtils.loadLocalFrame(this, mediaData.getOriginalPath(), imgVideo);
+                    imgVideoClear.setVisibility(View.VISIBLE);
+                    tvVideoEdit.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    /**
+     * 选择的是视频时处理方式
+     */
+    private void selectIsVideoHandlerView() {
+        flVideo.setVisibility(View.VISIBLE);
+        flImage.setVisibility(View.GONE);
+
+        flVideo.setBackgroundResource(R.drawable.bg_ad_full);
+        flVideo.setTag(null);
+        imgVideo.setImageDrawable(null);
+
+        imgVideoClear.setVisibility(View.GONE);
+        tvVideoEdit.setVisibility(View.GONE);
+        adLine.setVisibility(View.GONE);
+        showRatioTip(true);
+    }
+
+    /**
+     * 选择的是图片时界面的处理
+     */
+    private void selectIsImage() {
+        flImage.setVisibility(View.VISIBLE);
+        flVideo.setVisibility(View.GONE);
+
+        flImage.setBackgroundResource(R.drawable.bg_ad_full);
+        flImage.setTag(null);
+        imgImage.setImageDrawable(null);
+
+        imgImageClear.setVisibility(View.GONE);
+        tvImageEdit.setVisibility(View.GONE);
+        adLine.setVisibility(View.GONE);
+        showRatioTip(true);
     }
 
     private void onImagePathResult(String imagePath) {
@@ -772,5 +799,12 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         imgVideoClear.setVisibility(View.VISIBLE);
         tvVideoEdit.setVisibility(View.VISIBLE);
 //        tvVideoTip.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

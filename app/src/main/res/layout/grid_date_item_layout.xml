@@ -54,7 +54,7 @@
     <View
         android:id="@+id/end_split_line"
         android:layout_width="1dp"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:background="#FF8003"
         android:visibility="gone" />

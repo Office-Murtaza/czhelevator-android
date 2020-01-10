@@ -1,60 +1,65 @@
 <resources>
-    <string name="app_name">屏多多</string>
-    <string name="app_slogan">屏多多_广告精准投放平台</string>
-    <string name="wait">请稍候&#8230;</string>
-    <string name="operate_success">操作成功</string>
-    <string name="pay_Success">支付成功</string>
-    <string name="pay_failed">支付失败</string>
-    <string name="pay_canceled">支付取消</string>
-    <string name="pay_on_ensure">支付结果正在确认</string>
-    <string name="agreementTip">首次注册将自动登录，注册代表您同意《屏多多用户协议》、《屏多多使用须知》。</string>
-    <string name="notice_space">&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;</string>
-    <string name="number_max">99+</string>
-    <string name="service_phone">400-651-9299</string>
-    <string name="cooperation_withdraw_tip">每月16-20日为可提现时间，若未在此时间内提现，则自动顺延至下月。申请提现后请耐心等待工作人员处理，超过一个工作日未通过请联系客服。</string>
-    <string name="cooperation_withdraw_success">您的提现申请已经提交，工作人员将在1-3个工作日内（节假日顺延）处理您的申请。</string>
-    <string name="wechat_official_account">梯联网股份</string>
-    <string name="hbgc_package_name">com.meitu.poster</string>
-    <string name="hbgc_class_name">com.meitu.poster.startup.SplashActivity</string>
-    <string name="hbgc_download">http://xiuxiu.android.dl.meitu.com/hb/hbgc.apk</string>
-    <string name="hbgc_official_website">http://www.posterlabs.com/android/</string>
-    <string name="homepage_classify_jialiyaozhuang">http://jiali.gzzhkjw.com/app/index.php?i=6&amp;c=entry&amp;m=ewei_shopv2&amp;do=mobile&amp;mid=7953</string>
-    <string name="ad_ratio_full">长高比例\n16:10</string>
-    <string name="ad_ratio_split_video">长高比例\n5:4</string>
-    <string name="ad_ratio_split_image">长高比例\n3:4</string>
+    <string name="app_name" translatable="false">屏多多</string>
+    <string name="app_slogan" translatable="false">屏多多_广告精准投放平台</string>
+    <string name="wait" translatable="false">请稍候&#8230;</string>
+    <string name="operate_success" translatable="false">操作成功</string>
+    <string name="pay_Success" translatable="false">支付成功</string>
+    <string name="pay_failed" translatable="false">支付失败</string>
+    <string name="pay_canceled" translatable="false">支付取消</string>
+    <string name="pay_on_ensure" translatable="false">支付结果正在确认</string>
+    <string name="agreementTip" translatable="false">首次注册将自动登录，注册代表您同意《屏多多用户协议》、《屏多多使用须知》。</string>
+    <string name="notice_space" translatable="false">&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8194;</string>
+    <string name="number_max" translatable="false">99+</string>
+    <string name="service_phone" translatable="false">400-651-9299</string>
+    <string name="cooperation_withdraw_tip" translatable="false">每月16-20日为可提现时间，若未在此时间内提现，则自动顺延至下月。申请提现后请耐心等待工作人员处理，超过一个工作日未通过请联系客服。</string>
+    <string name="cooperation_withdraw_success" translatable="false">您的提现申请已经提交，工作人员将在1-3个工作日内（节假日顺延）处理您的申请。</string>
+    <string name="wechat_official_account" translatable="false">梯联网股份</string>
+    <string name="hbgc_package_name" translatable="false">com.meitu.poster</string>
+    <string name="hbgc_class_name" translatable="false">com.meitu.poster.startup.SplashActivity</string>
+    <string name="hbgc_download" translatable="false">http://xiuxiu.android.dl.meitu.com/hb/hbgc.apk</string>
+    <string name="hbgc_official_website" translatable="false">http://www.posterlabs.com/android/</string>
+    <string name="homepage_classify_jialiyaozhuang" translatable="false">http://jiali.gzzhkjw.com/app/index.php?i=6&amp;c=entry&amp;m=ewei_shopv2&amp;do=mobile&amp;mid=7953</string>
+    <string name="ad_ratio_full" translatable="false">长高比例\n16:10</string>
+    <string name="ad_ratio_split_video" translatable="false">长高比例\n5:4</string>
+    <string name="ad_ratio_split_image" translatable="false">长高比例\n3:4</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
-    <string name="ketixian">可提现</string>
-    <string name="yitixian">已提现</string>
-    <string name="zuorishouyi">昨日收益</string>
-    <string name="shouyijilu">收益记录</string>
-    <string name="no_pramater">无对应参数</string>
-    <string name="input_old_pwd">请输入旧支付密码</string>
-    <string name="input_pwd">请输入新支付密码</string>
-    <string name="again_input_pwd">请再次输入新支付密码</string>
+    <string name="ketixian" translatable="false">可提现</string>
+    <string name="yitixian" translatable="false">已提现</string>
+    <string name="zuorishouyi" translatable="false">昨日收益</string>
+    <string name="shouyijilu" translatable="false">收益记录</string>
+    <string name="no_pramater" translatable="false">无对应参数</string>
+    <string name="input_old_pwd" translatable="false">请输入旧支付密码</string>
+    <string name="input_pwd" translatable="false">请输入新支付密码</string>
+    <string name="again_input_pwd" translatable="false">请再次输入新支付密码</string>
 
-    <string name="bind_card_tips">温馨提示：请仔细核实账户信息填写是否正确，如若有误将影响您的账户提现</string>
-    <string name="edit_pay_check_tips">为了您的账户安全，\n请完成一下安全验证哟！</string>
-    <string name="biometricprompt_tip">提&#160;示</string>
-    <string name="biometricprompt_fingerprint_verification">指纹验证</string>
-    <string name="biometricprompt_verify_fingerprint">请验证您的指纹</string>
-    <string name="biometricprompt_verify_usepwd">密码验证</string>
-    <string name="biometricprompt_verify_success">验证成功</string>
-    <string name="biometricprompt_verify_failed">验证失败</string>
-    <string name="biometricprompt_verify_error_no_hardware">此设备不支持指纹识别</string>
-    <string name="biometricprompt_cancel">取&#160;消</string>
+    <string name="bind_card_tips" translatable="false">温馨提示：请仔细核实账户信息填写是否正确，如若有误将影响您的账户提现</string>
+    <string name="edit_pay_check_tips" translatable="false">为了您的账户安全，\n请完成一下安全验证哟！</string>
+    <string name="biometricprompt_tip" translatable="false">提&#160;示</string>
+    <string name="biometricprompt_fingerprint_verification" translatable="false">指纹验证</string>
+    <string name="biometricprompt_verify_fingerprint" translatable="false">请验证您的指纹</string>
+    <string name="biometricprompt_verify_usepwd" translatable="false">密码验证</string>
+    <string name="biometricprompt_verify_success" translatable="false">验证成功</string>
+    <string name="biometricprompt_verify_failed" translatable="false">验证失败</string>
+    <string name="biometricprompt_verify_error_no_hardware" translatable="false">此设备不支持指纹识别</string>
+    <string name="biometricprompt_cancel" translatable="false">取&#160;消</string>
 
-    <string name="fingerprint_recognition">指纹识别</string>
-    <string name="fingerprint_cancel">取消指纹识别</string>
-    <string name="fingerprint_usepwd">密码验证</string>
-    <string name="biometricprompt_finger_add">请先添加指纹</string>
-    <string name="biometricprompt_finger_add_confirm">确认添加</string>
-    <string name="biometricprompt_finger_hw_unavailable">指纹模块不可用</string>
+    <string name="fingerprint_recognition" translatable="false">指纹识别</string>
+    <string name="fingerprint_cancel" translatable="false">取消指纹识别</string>
+    <string name="fingerprint_usepwd" translatable="false">密码验证</string>
+    <string name="biometricprompt_finger_add" translatable="false">请先添加指纹</string>
+    <string name="biometricprompt_finger_add_confirm" translatable="false">确认添加</string>
+    <string name="biometricprompt_finger_hw_unavailable" translatable="false">指纹模块不可用</string>
 
-    <string name="all_media">相机胶卷</string>
-    <string name="all_photo">所有图片</string>
-    <string name="all_video">所有视频</string>
-    <string name="all_audio">所有音频</string>
+    <string name="all_media" translatable="false">相机胶卷</string>
+    <string name="all_photo" translatable="false">所有图片</string>
+    <string name="all_video" translatable="false">所有视频</string>
+    <string name="all_audio" translatable="false">所有音频</string>
+
+    <string name="toufang_shuoming" translatable="false">订单内容需要审核通过后才生效，请保证内容符合《广告法》规定。订单生效后进入投放流程。</string>
+    <string name="tuikuan_shuoming" translatable="false">根据投放政策，用户不能单方面取消订单。如遇系统及设备故障，可联系客服退款。\n由于投放内容不符合《广告法》规定、自己申请下播的均不能申请退款</string>
+
+
 </resources>

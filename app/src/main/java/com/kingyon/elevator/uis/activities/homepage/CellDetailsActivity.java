@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.activities.homepage;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -9,17 +11,20 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.gerry.scaledelete.ScanleImageUrl;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.entities.ImageScan;
+import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
@@ -27,13 +32,21 @@ import com.kingyon.elevator.uis.adapters.BannerAdaper;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.uis.widgets.viewpager.AutoScrollViewPager;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.animationutils.AnimatorPath;
+import com.kingyon.elevator.utils.animationutils.PathEvaluator;
+import com.kingyon.elevator.utils.animationutils.PathPoint;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +110,11 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
     TextView tvPrice;
     @BindView(R.id.tv_add)
     TextView tvAdd;
+    @BindView(R.id.iv_gouwuche)
+    ImageView iv_gouwuche;
+    @BindView(R.id.iv_home_logo)
+    ImageView iv_home_logo;
+    private AnimatorPath path;//声明动画集合
 
     private long cellId;
 
@@ -104,6 +122,8 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
     private BannerAdaper<String> bannerAdaper;
     private TextView[] adTypes;
     private AddCellToPlanPresenter addCellToPlanPresenter;
+    private int[] animationStartPoint = new int[]{50, 50};
+    private Boolean isCanBack = true;
 
     @Override
     protected String getTitleText() {
@@ -168,6 +188,7 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
         preVRight.setSelected(entity.isCollect());
         tvName.setText(entity.getCellName());
         tvAddress.setText(entity.getAddress());
+        iv_gouwuche.setVisibility(View.VISIBLE);
         Double cellDistance = FormatUtils.getInstance().getCellDistanceNum(entity.getLongitude(), entity.getLatitude(), entity.getDistance());
         if (cellDistance != null) {
             if (cellDistance >= 1000) {
@@ -184,6 +205,7 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
         tvCellType.setText(FormatUtils.getInstance().getCellType(entity.getCellType()));
         tvLift.setText(FormatUtils.getInstance().getCellLift(entity.getLiftNum()));
         tvUnit.setText(FormatUtils.getInstance().getCellUnit(entity.getUnitNum()));
+        GlideUtils.loadImage(this, entity.getCellLogo(), iv_home_logo);
     }
 
     private void updateBanner(List<String> banners) {
@@ -221,7 +243,7 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
         tvIndicator.setText(spannableString);
     }
 
-    @OnClick({R.id.pre_v_right, R.id.tv_business, R.id.tv_diy, R.id.tv_info, R.id.tv_add})
+    @OnClick({R.id.pre_v_right, R.id.tv_business, R.id.tv_diy, R.id.tv_info, R.id.tv_add, R.id.iv_gouwuche})
     public void onViewClicked(View view) {
         if (details == null) {
             return;
@@ -241,14 +263,68 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
                     showToast("请选择广告类型");
                 } else {
                     if (addCellToPlanPresenter != null) {
-//                    addCellToPlanPresenter.setCellId(cellId);
-//                    addCellToPlanPresenter.addCellToPlan(getPlanType());
-                        addCellToPlanPresenter.addCellToPlan(cellId, planType);
-//                    addCellToPlanPresenter.showPlanPicker(cellId, getPlanType());
+                        addCellToPlanPresenter.addCellToPlan(cellId, planType, this);
                     }
                 }
                 break;
+            case R.id.iv_gouwuche:
+                EventBus.getDefault().post(new ToPlanTab(getPlanType()));
+                break;
         }
+    }
+
+    public void addToPlanSuccess(String planType) {
+        //加入成功，开始执行动画
+        startAddPlanAnimation();
+    }
+
+    /**
+     * 执行加入购物车的动画
+     */
+    public void startAddPlanAnimation() {
+        isCanBack = false;
+        iv_home_logo.setX(100);
+        iv_home_logo.setY(200);
+        iv_home_logo.setVisibility(View.VISIBLE);
+        path = new AnimatorPath();
+        path.moveTo(100, 100);
+        path.secondBesselCurveTo(ScreenUtils.getScreenWidth() / 2, 250,
+                ScreenUtils.getScreenWidth() - DensityUtil.dip2px(55),
+                ScreenUtils.getScreenHeight() - DensityUtil.dip2px(170));
+        ObjectAnimator anim = ObjectAnimator.ofObject(this, "addPlan", new PathEvaluator(), path.getPoints().toArray());
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(1200);
+        anim.start();
+        iv_home_logo.animate().scaleX(0.1f).scaleY(0.1f).setDuration(1200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                iv_home_logo.setVisibility(View.GONE);
+                iv_home_logo.setScaleX(1f);
+                iv_home_logo.setScaleY(1f);
+                iv_gouwuche.setImageResource(R.mipmap.gouwuche);
+                isCanBack = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
+    }
+
+    public void setAddPlan(PathPoint newLoc) {
+        iv_home_logo.setTranslationX(newLoc.mX);
+        iv_home_logo.setTranslationY(newLoc.mY);
     }
 
     private String getPlanType() {
@@ -424,5 +500,13 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
             addCellToPlanPresenter = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isCanBack) {
+            return;
+        }
+        super.onBackPressed();
     }
 }

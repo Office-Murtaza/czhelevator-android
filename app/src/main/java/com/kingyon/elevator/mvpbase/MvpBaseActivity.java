@@ -20,7 +20,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBackActivity implements BaseView {
     protected P presenter;
-    StateLayout stateLayout;
+    public StateLayout stateLayout;
     protected ProgressDialog progressDialog;
 
     @Override
@@ -29,7 +29,7 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
         MyStatusBarUtils.setStatusBar(this, "#ffffff");
         ActivityUtil.addActivity(this);
         setSwipeBackEnable(true);
-        ToastUtils.setGravity(Gravity.CENTER,0,0);
+        ToastUtils.setGravity(Gravity.CENTER, 0, 0);
         ToastUtils.setMsgTextSize(20);
         presenter = initPresenter();
         presenter.attachView(this);
@@ -105,7 +105,7 @@ public abstract class MvpBaseActivity<P extends BasePresenter> extends SwipeBack
 
     @Override
     public void showShortToast(String tipsContent) {
-       ToastUtils.showShort(tipsContent);
+        ToastUtils.showShort(tipsContent);
     }
 
     @Override

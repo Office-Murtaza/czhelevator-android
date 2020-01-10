@@ -29,11 +29,12 @@ public class HorizontalRecyclerView extends RecyclerView {
 
     private void init() {
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        llm.setInitialPrefetchItemCount(24);
         this.setLayoutManager(llm);
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(this);//居中显示RecyclerView
-        this.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.HORIZONTAL));
+        this.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
         setHasFixedSize(true);
         setItemViewCacheSize(24);
         this.addOnScrollListener(new OnScrollListener() {

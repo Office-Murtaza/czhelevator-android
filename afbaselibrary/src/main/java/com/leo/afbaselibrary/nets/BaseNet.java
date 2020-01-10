@@ -10,6 +10,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.leo.afbaselibrary.nets.converters.GsonConverterFactory;
 import com.leo.afbaselibrary.nets.exceptions.NoNetworkException;
 import com.leo.afbaselibrary.utils.CertificateUtil;
+import com.leo.afbaselibrary.utils.HTTPSCerUtils;
 import com.leo.afbaselibrary.utils.HttpUtils;
 import com.orhanobut.logger.BuildConfig;
 import com.orhanobut.logger.Logger;
@@ -183,6 +184,7 @@ public abstract class BaseNet<T> {
                 builder.connectTimeout(60, TimeUnit.SECONDS);
                 builder.readTimeout(60, TimeUnit.SECONDS);
                 builder.writeTimeout(60, TimeUnit.SECONDS);
+               // HTTPSCerUtils.setTrustAllCertificate(builder);
                 okHttpClient = builder.build();
             }
         } catch (Exception e) {

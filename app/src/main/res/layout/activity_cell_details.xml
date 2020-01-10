@@ -514,4 +514,21 @@
             </LinearLayout>
         </com.kingyon.elevator.uis.widgets.CustomSwipeRefreshLayout>
     </com.leo.afbaselibrary.widgets.StateLayout>
+
+    <ImageView
+        android:id="@+id/iv_gouwuche"
+        android:layout_width="47dp"
+        android:layout_height="37.5dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginEnd="15.5dp"
+        android:layout_marginBottom="110dp"
+        android:visibility="gone"
+        android:src="@mipmap/gouwucheer" />
+
+    <ImageView
+        android:id="@+id/iv_home_logo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
 </FrameLayout>

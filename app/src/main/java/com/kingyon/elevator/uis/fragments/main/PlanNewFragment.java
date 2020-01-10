@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.customview.PlanSelectDateNewDialog;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.TabPagerEntity;
@@ -90,7 +91,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
         StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
-        selectedIndex = 1;
+        selectedIndex = 0;
         updateMode();
         initDateView();
     }
@@ -120,8 +121,8 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         mItems.add(new TabPagerEntity("便民信息", "便民信息", Constants.PLAN_TYPE.INFORMATION));
         mPager.setOffscreenPageLimit(Integer.MAX_VALUE);
         initPager();
-        selectedIndex = 1;
-        mPager.setCurrentItem(1, false);
+        selectedIndex = 0;
+        mPager.setCurrentItem(0, false);
     }
 
 
@@ -164,7 +165,28 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                     LogUtils.d("快速点击了-------------------");
                     return;
                 }
-                showDateDialog();
+                PlanSelectDateNewDialog planSelectDateNewDialog = new PlanSelectDateNewDialog();
+                planSelectDateNewDialog.setPlanSelectDateLinsener(new PlanSelectDateLinsener() {
+                    @Override
+                    public void confirmSelectDate(SelectDateEntity startTime, SelectDateEntity endTime) {
+                        if (startTime != null && endTime != null) {
+                            tv_start_date.setText(String.format("%d月%d日", startTime.getMonth(), startTime.getDay()));
+                            tv_end_date.setText(String.format("%d月%d日", endTime.getMonth(), endTime.getDay()));
+                            tv_total_day.setText(String.format("共%d天", getDiffDay(startTime.getDate(), endTime.getDate())));
+                            for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                                if (fragment instanceof PlanListFragment) {
+                                    ((PlanListFragment) fragment).updateTime(startTime.getDate(), endTime.getDate());
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void dialogShowSuccess() {
+
+                    }
+                });
+                planSelectDateNewDialog.show(getChildFragmentManager(),"1");
                 break;
         }
     }
@@ -235,7 +257,6 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         if (TextUtils.isEmpty(planType)) {
             return;
         }
-        LogUtils.d("添加新的计划到列表里：执行刷新-----------",planType);
         int targetItem = getTypeItem(planType);
         if (mPager.getCurrentItem() != targetItem) {
             mPager.setCurrentItem(targetItem, false);

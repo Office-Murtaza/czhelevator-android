@@ -17,12 +17,16 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.entities.ADEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.photopicker.MimeType;
 import com.kingyon.elevator.presenter.PhotoPickerPresenter;
+import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
+import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.uis.adapters.PhotoPickerAdapter;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
@@ -31,6 +35,8 @@ import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.kingyon.elevator.view.PhotoPickerView;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.yalantis.ucrop.UCrop;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,6 +66,8 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
     private float cropProperty = 1;
     private boolean splitScreen;
     private long videoTime = 15000;
+    private int fromType = Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN;//来自于哪个界面
+    private String planType = "";
 
     @Override
     public PhotoPickerPresenter initPresenter() {
@@ -71,33 +79,33 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
         ButterKnife.bind(this, getContentView());
         mediaDirectory = RuntimeUtils.currentMediaDirectory;
         showType = getArguments().getInt("showType");
-        if (RuntimeUtils.goPlaceAnOrderEntity != null) {
-            if (RuntimeUtils.goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.BUSINESS)) {
-                videoTime = 15000;
-            } else if (RuntimeUtils.goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.DIY)) {
-                videoTime = 60000;
-            }
+        fromType = getArguments().getInt("fromType");
+        planType = getArguments().getString("planType");
+        if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
+            videoTime = 15000;
+        } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
+            videoTime = 60000;
         }
         mediaDataArrayList = new ArrayList<>();
         if (executorService == null) {
             executorService = Executors.newFixedThreadPool(1);
         }
-        photo_grid_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MediaData mediaData = mediaDataArrayList.get(position);
-                if (showType == 1) {
-                    MyToastUtils.showShort("点击了第：" + (position + 1) + "个视频");
-                    if (mediaData.getDuration() > videoTime) {
-                        RuntimeUtils.selectVideoPath = mediaData.getOriginalPath();
-                        MyActivityUtils.goActivity(getActivity(), VideoEditorActivity.class);
-                    } else {
-                        //returnResult(localPath);
-                    }
+        photo_grid_view.setOnItemClickListener((parent, view, position, id) -> {
+            MediaData mediaData = mediaDataArrayList.get(position);
+            if (showType == 1) {
+                if (mediaData.getDuration() > videoTime) {
+                    RuntimeUtils.selectVideoPath = mediaData.getOriginalPath();
+                    MyActivityUtils.goVideoEditorActivity(getActivity(), fromType, planType);
                 } else {
-                    MyToastUtils.showShort("点击了第：" + (position + 1) + "张图片");
-                    openCrop(mediaDataArrayList.get(position).getOriginalPath());
+                    if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+                        MyActivityUtils.goPreviewVideoActivity(getActivity(), PreviewVideoActivity.class, mediaData.getOriginalPath(), mediaData.getDuration());
+                    } else {
+                        //来自于我的广告，发送通知 告诉选择成功
+                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, mediaData));
+                    }
                 }
+            } else {
+                openCrop(mediaDataArrayList.get(position).getOriginalPath());
             }
         });
         if (mediaDirectory != null) {
@@ -188,9 +196,11 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
         return R.layout.fragment_photo_picker;
     }
 
-    public static PhotoPickerFragment newInstance(int showType) {
+    public static PhotoPickerFragment newInstance(int showType, int fromType, String planType) {
         Bundle args = new Bundle();
         args.putInt("showType", showType);
+        args.putInt("fromType", fromType);
+        args.putString("planType", planType);
         PhotoPickerFragment fragment = new PhotoPickerFragment();
         fragment.setArguments(args);
         return fragment;

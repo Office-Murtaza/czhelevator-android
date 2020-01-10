@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.ColorRes;
 
+import com.kingyon.elevator.customview.OrderDetailedTipsDialog;
+import com.kingyon.elevator.customview.PreviewVideoBackTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
@@ -13,6 +15,7 @@ import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
 import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.SelectDateDialog;
+import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.interfaces.FingerCheckListener;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.interfaces.OnItemClick;
@@ -40,6 +43,8 @@ public class DialogUtils {
     private EditSuccessTipsDialog editSuccessTipsDialog;
     private PlanSelectDateDialog planSelectDateDialog;
     private RuleDescTipsDialog ruleDescTipsDialog;
+    private PreviewVideoBackTipsDialog previewVideoBackTipsDialog;
+    private OrderDetailedTipsDialog orderDetailedTipsDialog;
 
     private DialogUtils() {
 
@@ -113,6 +118,36 @@ public class DialogUtils {
             if (ruleDescTipsDialog != null) {
                 ruleDescTipsDialog.dismiss();
                 ruleDescTipsDialog = null;
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
+     * 显示订单明细数据对话框
+     *
+     * @param context
+     */
+    public void showOrderDetailedTipsDialog(Context context, GoPlaceAnOrderEntity goPlaceAnOrderEntity, double allPrice, double realMoney, double zhekouPrice, double couponsPrice) {
+        try {
+            if (orderDetailedTipsDialog != null && orderDetailedTipsDialog.isShowing()) {
+                orderDetailedTipsDialog.dismiss();
+                orderDetailedTipsDialog = null;
+            }
+            orderDetailedTipsDialog = new OrderDetailedTipsDialog(context, goPlaceAnOrderEntity, allPrice, realMoney, zhekouPrice, couponsPrice);
+            orderDetailedTipsDialog.setCancelable(true);
+            orderDetailedTipsDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideOrderDetailedTipsDialog() {
+        try {
+            if (orderDetailedTipsDialog != null) {
+                orderDetailedTipsDialog.dismiss();
+                orderDetailedTipsDialog = null;
             }
         } catch (Exception e) {
 
@@ -291,4 +326,34 @@ public class DialogUtils {
         }
     }
 
+
+    /**
+     * 显示视频预览界面返回提示对话框
+     *
+     * @param context
+     */
+    public void showBackTipsDialog(Context context, OnItemClick onItemClick) {
+        try {
+            if (previewVideoBackTipsDialog != null && previewVideoBackTipsDialog.isShowing()) {
+                previewVideoBackTipsDialog.dismiss();
+                previewVideoBackTipsDialog = null;
+            }
+            previewVideoBackTipsDialog = new PreviewVideoBackTipsDialog(context, onItemClick);
+            previewVideoBackTipsDialog.setCancelable(true);
+            previewVideoBackTipsDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideBackTipsDialog() {
+        try {
+            if (previewVideoBackTipsDialog != null) {
+                previewVideoBackTipsDialog.dismiss();
+                previewVideoBackTipsDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

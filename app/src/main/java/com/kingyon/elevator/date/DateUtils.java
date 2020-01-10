@@ -86,6 +86,21 @@ public class DateUtils {
         return w;
     }
 
+
+    /**
+     * 获得当月1号零时零分零秒
+     * @return
+     */
+    public static Date initDateByMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
     public static Date getDateBuyString(String date) {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

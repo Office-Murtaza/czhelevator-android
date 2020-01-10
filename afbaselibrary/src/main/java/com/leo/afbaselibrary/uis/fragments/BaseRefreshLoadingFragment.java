@@ -96,7 +96,7 @@ public abstract class BaseRefreshLoadingFragment<T> extends BaseFragment impleme
     protected RecyclerView.Adapter dealAnimationAdapter(RecyclerView.Adapter recyclerAdapterWithHF) {
         AnimationAdapter adapter = new ScaleInAnimationAdapter(recyclerAdapterWithHF);
         adapter.setFirstOnly(true);
-        adapter.setDuration(500);
+        adapter.setDuration(300);
         adapter.setInterpolator(new OvershootInterpolator(.5f));
         return adapter;
     }

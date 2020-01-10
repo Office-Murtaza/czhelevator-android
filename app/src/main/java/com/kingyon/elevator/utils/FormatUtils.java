@@ -345,6 +345,7 @@ public class FormatUtils {
 
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.setTimeInMillis(startTime);
+
         Calendar endCalendar = Calendar.getInstance();
         endCalendar.setTimeInMillis(endTime);
         int betweenDays = (int) ((endTime - startTime) / (1000 * 60 * 60 * 24));//先算出两时间的毫秒数之差大于一天的天数

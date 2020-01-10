@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.DateGridEntity;
@@ -42,21 +43,28 @@ public class FolderListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     Context context;
     private MediaDirectory myAdMediaDirectory;
+    private int fromType;
 
-    public FolderListAdapter(Context context, List<MediaDirectory> folderEntityList) {
+    public FolderListAdapter(Context context, int fromType, List<MediaDirectory> folderEntityList) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.folderEntityList = folderEntityList;
-        addAllFolderAndMyAd();
-        if (myAdMediaDirectory != null) {
-            folderEntityList.add(0, myAdMediaDirectory);
+        this.fromType = fromType;
+        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+            addAllFolderAndMyAd();
+            if (myAdMediaDirectory != null) {
+                folderEntityList.add(0, myAdMediaDirectory);
+            }
         }
+
     }
 
     public void reflashData(List<MediaDirectory> folderEntityList) {
         this.folderEntityList = folderEntityList;
-        if (myAdMediaDirectory != null) {
-            this.folderEntityList.add(0, myAdMediaDirectory);
+        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+            if (myAdMediaDirectory != null) {
+                this.folderEntityList.add(0, myAdMediaDirectory);
+            }
         }
         notifyDataSetChanged();
     }

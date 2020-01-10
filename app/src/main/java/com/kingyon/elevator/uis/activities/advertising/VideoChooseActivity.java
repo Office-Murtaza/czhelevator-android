@@ -20,10 +20,7 @@ import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DBUtils;
-import com.kingyon.elevator.utils.MediaUtils;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
-import com.kingyon.elevator.utils.RuntimeUtils;
-import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -31,17 +28,11 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoEditActivity;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoRecordActivity;
-import com.qiniu.pili.droid.shortvideo.demo.activity.VideoTrimActivity;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
@@ -178,9 +169,7 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventHandler(EventBusObjectEntity eventBusObjectEntity) {
-        if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoCropSuccessResult) {
-             returnResult((String) eventBusObjectEntity.getData());
-        }
+
     }
 
     @OnClick({R.id.tv_create, R.id.tv_local, R.id.tv_memory})
@@ -215,14 +204,14 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
 
     private void jumpToGallery() {
         Bundle bundle = new Bundle();
-        bundle.putInt(VideoRecordActivity.PREVIEW_SIZE_RATIO, 1);
-        bundle.putInt(VideoRecordActivity.PREVIEW_SIZE_LEVEL, 5);
-        bundle.putInt(VideoRecordActivity.ENCODING_MODE, 0);
-        bundle.putInt(VideoRecordActivity.ENCODING_SIZE_LEVEL, 14);
-        bundle.putInt(VideoRecordActivity.ENCODING_BITRATE_LEVEL, 4);
-        bundle.putInt(VideoRecordActivity.AUDIO_CHANNEL_NUM, 0);
-        bundle.putLong(VideoRecordActivity.RECORD_MAX_DURATION, videoDuration);
-        startActivityForResult(VideoRecordActivity.class, CommonUtil.REQ_CODE_4, bundle);
+//        bundle.putInt(VideoRecordActivity.PREVIEW_SIZE_RATIO, 1);
+//        bundle.putInt(VideoRecordActivity.PREVIEW_SIZE_LEVEL, 5);
+//        bundle.putInt(VideoRecordActivity.ENCODING_MODE, 0);
+//        bundle.putInt(VideoRecordActivity.ENCODING_SIZE_LEVEL, 14);
+//        bundle.putInt(VideoRecordActivity.ENCODING_BITRATE_LEVEL, 4);
+//        bundle.putInt(VideoRecordActivity.AUDIO_CHANNEL_NUM, 0);
+//        bundle.putLong(VideoRecordActivity.RECORD_MAX_DURATION, videoDuration);
+//        startActivityForResult(VideoRecordActivity.class, CommonUtil.REQ_CODE_4, bundle);
     }
 
     @Override
@@ -247,35 +236,21 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
                     if (localPathes != null && localPathes.size() > 0) {
                         String localPath = localPathes.get(0);
 //                        showLocalEditDialog(localPath);
-                        LogUtils.d("当前视频的路径：",localPath);
-                       try {
-                           MediaPlayer mediaPlayer = new MediaPlayer();
-                           mediaPlayer.setDataSource(localPath);
-                           mediaPlayer.prepare();
-                           long time = mediaPlayer.getDuration();//获得了视频的时长（以毫秒为单位）
-                           LogUtils.d("当前视频的时长：",videoDuration,time);
-                           if(time>videoDuration){
-                               RuntimeUtils.selectVideoPath=localPath;
-                               startActivity(VideoEditorActivity.class);
-                           }else {
-                               returnResult(localPath);
-                           }
-                       }catch (Exception e){
-                           ToastUtils.showShort("视频选择失败，请重试");
-                       }
+                        LogUtils.d("当前视频的路径：", localPath);
+                        returnResult(localPath);
                     }
                 }
                 break;
-            case VideoRecordActivity.RECORD_EDIT_REQUEST:
-            case CommonUtil.REQ_CODE_5:
-            case CommonUtil.REQ_CODE_4:
-                if (RESULT_OK == resultCode && data != null) {
-                    String recordPath = data.getStringExtra(VideoRecordActivity.RECORD_RESULT);
-                    if (!TextUtils.isEmpty(recordPath)) {
-                        returnResult(recordPath);
-                    }
-                }
-                break;
+//            case VideoRecordActivity.RECORD_EDIT_REQUEST:
+//            case CommonUtil.REQ_CODE_5:
+//            case CommonUtil.REQ_CODE_4:
+//                if (RESULT_OK == resultCode && data != null) {
+//                    String recordPath = data.getStringExtra(VideoRecordActivity.RECORD_RESULT);
+//                    if (!TextUtils.isEmpty(recordPath)) {
+//                        returnResult(recordPath);
+//                    }
+//                }
+//                break;
         }
     }
 
@@ -287,15 +262,15 @@ public class VideoChooseActivity extends BaseStateRefreshingLoadingActivity<Loca
 
     private void showLocalEditDialog(String localPath) {
         Bundle bundle = new Bundle();
-        if (MediaUtils.getInstance().getVideoDuring(localPath) > videoDuration) {
-            bundle.putString(VideoTrimActivity.VIDEO_FILE_PATH, localPath);
-            bundle.putLong(VideoTrimActivity.VIDEO_TRIM_DURATION, videoDuration);
-            startActivityForResult(VideoTrimActivity.class, CommonUtil.REQ_CODE_5, bundle);
-        } else {
-            bundle.putString(VideoEditActivity.MP4_PATH, localPath);
-            bundle.putInt(VideoEditActivity.PREVIOUS_ORIENTATION, 1);
-            bundle.putInt(VideoRecordActivity.RECORD_REQUEST, VideoRecordActivity.RECORD_EDIT_REQUEST);
-            startActivityForResult(VideoEditActivity.class, VideoRecordActivity.RECORD_EDIT_REQUEST, bundle);
-        }
+//        if (MediaUtils.getInstance().getVideoDuring(localPath) > videoDuration) {
+//            bundle.putString(VideoTrimActivity.VIDEO_FILE_PATH, localPath);
+//            bundle.putLong(VideoTrimActivity.VIDEO_TRIM_DURATION, videoDuration);
+//            startActivityForResult(VideoTrimActivity.class, CommonUtil.REQ_CODE_5, bundle);
+//        } else {
+//            bundle.putString(VideoEditActivity.MP4_PATH, localPath);
+//            bundle.putInt(VideoEditActivity.PREVIOUS_ORIENTATION, 1);
+//            bundle.putInt(VideoRecordActivity.RECORD_REQUEST, VideoRecordActivity.RECORD_EDIT_REQUEST);
+//            startActivityForResult(VideoEditActivity.class, VideoRecordActivity.RECORD_EDIT_REQUEST, bundle);
+//        }
     }
 }

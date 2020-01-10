@@ -26,7 +26,7 @@ public abstract class BaseTabFragment<T extends ITabPager> extends BaseFragment 
     protected ViewPager mPager;
     protected List<T> mItems = new ArrayList<>();
     protected PagerAdapter mAdapter;
-    protected int selectedIndex = -1;
+    protected int selectedIndex = 0;
 
     @Override
     public void init(Bundle savedInstanceState) {

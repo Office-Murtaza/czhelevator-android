@@ -1,5 +1,6 @@
 package com.kingyon.elevator.nets;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.kingyon.elevator.application.App;
@@ -71,6 +72,48 @@ public class NetUpload {
         uploadFiles(baseActivity, files, onUploadCompletedListener, needComptess);
     }
 
+    void uploadFileNoActivity(Context context, File file, OnUploadCompletedListener onUploadCompletedListener, boolean needComptess) {
+        List<File> files = new ArrayList<>();
+        files.add(file);
+        uploadFilesNoActivity(context, files, onUploadCompletedListener, needComptess);
+    }
+
+    void uploadFilesNoActivity(Context context, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener, final boolean needCompress) {
+        Logger.d("开始上传 --> " + files);
+        netApi.getUploadToken()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CustomApiCallback<UploadParamsEnitty>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        uploadCallbackNoActivity(onUploadCompletedListener, null, ex);
+                    }
+
+                    @Override
+                    public void onNext(UploadParamsEnitty enitty) {
+                        if (files == null || files.size() < 1) {
+                            throw new ResultException(205, "LuBanUtils compress image error");
+                        }
+                        if (needCompress) {
+                            try {
+                                List<File> dstFiles = new ArrayList<>();
+                                for (File srcfile : files) {
+                                    if (srcfile == null || !srcfile.exists() || srcfile.isDirectory() || srcfile.length() <= 0) {
+                                        throw new ResultException(205, "LuBanUtils compress image error");
+                                    }
+                                    File dstFile = Luban.with(context).load(srcfile).get();
+                                    dstFiles.add(dstFile);
+                                }
+                                uploadByQiNiuNoActivity(enitty.getToken(), enitty.getDomain(), dstFiles, onUploadCompletedListener);
+                            } catch (IOException e) {
+                                throw new ResultException(205, "LuBanUtils compress image error");
+                            }
+                        } else {
+                            uploadByQiNiuNoActivity(enitty.getToken(), enitty.getDomain(), files, onUploadCompletedListener);
+                        }
+                    }
+                });
+    }
+
     void uploadFiles(final BaseActivity baseActivity, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener, final boolean needCompress) {
         Logger.d("开始上传 --> " + files);
         netApi.getUploadToken()
@@ -106,6 +149,24 @@ public class NetUpload {
                         }
                     }
                 });
+    }
+
+
+    private void uploadCallbackNoActivity(final OnUploadCompletedListener onUploadCompletedListener, final List<String> images, final ApiException ex) {
+        if (onUploadCompletedListener != null) {
+            try {
+                if (images != null && images.size() > 0) {
+                    Collections.sort(images);
+                    Logger.d("结束上传(成功) --> " + images);
+                    onUploadCompletedListener.uploadSuccess(images);
+                } else {
+                    Logger.d("结束上传(失败) --> " + ex.getDisplayMessage());
+                    onUploadCompletedListener.uploadFailed(ex);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void uploadCallback(BaseActivity baseActivity, final OnUploadCompletedListener onUploadCompletedListener, final List<String> images, final ApiException ex) {
@@ -209,6 +270,39 @@ public class NetUpload {
                     } else {
                         Throwable throwable = new Throwable(info.error);
                         uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse, new ApiException(throwable, 9001, info.error));
+                    }
+                }
+            }, null);
+        }
+    }
+
+
+    private void uploadByQiNiuNoActivity(String token, final String domain, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener) {
+        final List<String> uploadResponse = new ArrayList<>();
+        String uuid = String.valueOf(UUID.randomUUID());
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            String key = getUploadFileName(uuid, i, file.getName());
+//            if (file.getAbsolutePath().endsWith(".mov") && App.getInstance().isDebug()) {
+//                Auth auth = Auth.create("poJCBSlskPagOYICmTWfeiuLCZb0RvVWdVw1x_Q7_test", "WopBDRH0E6wjnHGgT6Qb-534eRcx2eL-cN3qY7yV_test");
+//                token = auth.uploadToken("adver", null, 3600, new StringMap()
+//                        .putNotEmpty("persistentOps", "avthumb/mp4/vcodec/libx264"), true);
+//            }
+            uploadManager.put(file, null, token, new UpCompletionHandler() {
+                @Override
+                public void complete(String key, ResponseInfo info, JSONObject response) {
+                    if (info.isOK()) {
+                        try {
+                            uploadResponse.add(getDomain(domain) + response.getString("key"));
+                            if (uploadResponse.size() == files.size()) {
+                                uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, null);
+                            }
+                        } catch (JSONException e) {
+                            uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, new ApiException(e, 9001, "数据解析错误"));
+                        }
+                    } else {
+                        Throwable throwable = new Throwable(info.error);
+                        uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, new ApiException(throwable, 9001, info.error));
                     }
                 }
             }, null);

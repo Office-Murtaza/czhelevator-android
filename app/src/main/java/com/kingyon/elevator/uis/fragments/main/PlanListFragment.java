@@ -14,15 +14,20 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
+import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.StateHolder;
 import com.kingyon.elevator.entities.TimeHolder;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
+import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignNewActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderEditActivity;
@@ -32,17 +37,24 @@ import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
+import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
+import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshLoadingFragment;
+import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.widgets.emptyprovider.FadeViewAnimProvider;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -101,6 +113,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     private DatePickerDialog endDialog;
     private Long startTimeCache;
     SimpleDateFormat simpleDateFormat;
+    SelectDateEntity selectDateEntity;
 
 
     public static PlanListFragment newInstance(String planType) {
@@ -118,18 +131,26 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
 
     @Override
     public void init(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             planType = getArguments().getString(CommonUtil.KEY_VALUE_1);
         }
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        selectDateEntity = DateUtils.getLastSelectDateDay();
         super.init(savedInstanceState);
+        String startDate = selectDateEntity.getDate() + " 00:00:00.000";
+        String endDate = selectDateEntity.getDate() + " 23:59:59.999";
         long curTime = System.currentTimeMillis();
-        startTime = TimeUtil.getDayStartTimeMilliseconds(curTime);
-//        startTime = curTime;
-        endTime = TimeUtil.getDayEndTimeMilliseconds(curTime);
-        //updateTimeUI();
-        tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(0)));
-        updateMode();
+        try {
+            startTime = simpleDateFormat.parse(startDate).getTime();
+            //TimeUtil.getDayStartTimeMilliseconds(curTime);
+            endTime = simpleDateFormat.parse(endDate).getTime();
+            //TimeUtil.getDayEndTimeMilliseconds(curTime);
+            tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(0)));
+            updateMode();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -179,6 +200,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                 mItems.clear();
 //                                mItems.add(new TimeHolder(startTime, endTime));
                             }
+
                             if (cellItemEntities != null && cellItemEntities.size() > 0) {
                                 for (CellItemEntity item : cellItemEntities) {
                                     item.setPlanTypeCache(planType);
@@ -187,8 +209,22 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                     item.setChoosedScreenNum(1);
                                 }
                                 mItems.addAll(cellItemEntities);
+                                if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
+                                    RuntimeUtils.businessPlanCount = mItems.size();
+                                } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
+                                    RuntimeUtils.diyPlanCount = mItems.size();
+                                } else if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
+                                    RuntimeUtils.infomationPlanCount = mItems.size();
+                                }
                             } else {
                                 mItems.add(new StateHolder(STATE_EMPTY, ScreenUtil.getScreenHeight(getContext()) - ScreenUtil.getStatusBarHeight() - ScreenUtil.dp2px(49) - ScreenUtil.dp2px(48) - ScreenUtil.dp2px(46) - ScreenUtil.dp2px(60) - ScreenUtil.dp2px(43) - ScreenUtil.dp2px(6)));
+                                if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
+                                    RuntimeUtils.businessPlanCount = 0;
+                                } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
+                                    RuntimeUtils.diyPlanCount = 0;
+                                } else if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
+                                    RuntimeUtils.infomationPlanCount = 0;
+                                }
                             }
                             int planPosition = 0;
                             for (Object obj : mItems) {
@@ -204,13 +240,18 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             updateBarVisiable();
                             updatePriceUI();
                             updateEditUI();
+                            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanCount, null));
                         }
                     });
         } else {
             mCurrPage = FIRST_PAGE;
             mItems.clear();
+            RuntimeUtils.businessPlanCount = 0;
+            RuntimeUtils.diyPlanCount = 0;
+            RuntimeUtils.infomationPlanCount = 0;
             loadingComplete(true, 1);
             updateBarVisiable();
+            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanCount, null));
         }
     }
 
@@ -299,17 +340,21 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     }
 
     public void updateMode() {
-        if (llDelete != null) {
-            llDelete.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        }
-        if (planAdapter != null) {
-            planAdapter.setEditMode(editMode);
-        }
-        mAdapter.notifyDataSetChanged();
-        if (editMode) {
-            updateEditUI();
-        } else {
-            updatePriceUI();
+        try {
+            if (llDelete != null) {
+                llDelete.setVisibility(editMode ? View.VISIBLE : View.GONE);
+            }
+            if (planAdapter != null) {
+                planAdapter.setEditMode(editMode);
+            }
+            mAdapter.notifyDataSetChanged();
+            if (editMode) {
+                updateEditUI();
+            } else {
+                updatePriceUI();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -421,17 +466,19 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             showToast("至少需要一个小区一面屏");
             return;
         }
-       // if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(CommonUtil.KEY_VALUE_1, planType);
-            bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
-            bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
-            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
-            startActivityForResult(OrderEditActivity.class, 8101, bundle);
-//        }else {
-//            RuntimeUtils.goPlaceAnOrderEntity = new GoPlaceAnOrderEntity(orderCells,startTime,endTime,planType);
-//            MyActivityUtils.goActivity(getActivity(), PhotoPickerActivity.class);
-//        }
+        RuntimeUtils.goPlaceAnOrderEntity = new GoPlaceAnOrderEntity(orderCells, startTime, endTime, planType);
+        RuntimeUtils.goPlaceAnOrderEntity.setTotalDayCount(FormatUtils.getInstance().getTimeDays(startTime, endTime));
+        if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString(CommonUtil.KEY_VALUE_1, planType);
+//            bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
+//            bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
+//            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
+//            startActivityForResult(OrderEditActivity.class, 8101, bundle);
+            MyActivityUtils.goActivity(getActivity(), ConfirmOrderActivity.class);
+        } else {
+            MyActivityUtils.goPhotoPickerActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+        }
     }
 
     private ArrayList<CellItemEntity> getOrderCells() {
@@ -453,7 +500,11 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     private void setSelectAllStatus(Boolean isSelectAll) {
         for (Object obj : mItems) {
             if (obj instanceof CellItemEntity) {
-                ((CellItemEntity) obj).setChoosed(isSelectAll);
+                if (((CellItemEntity) obj).getTargetScreenNum() > 0) {
+                    ((CellItemEntity) obj).setChoosed(isSelectAll);
+                } else {
+                    ((CellItemEntity) obj).setChoosed(false);
+                }
             }
         }
         mAdapter.notifyDataSetChanged();
@@ -649,6 +700,14 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPaySuccess(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.ReflashPlanList) {
+             LogUtils.d("支付成功刷新计划单列表-------------");
+            autoRefresh();
+        }
+    }
+
     @Override
     protected boolean isShowDivider() {
         return false;
@@ -657,5 +716,11 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     @Override
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

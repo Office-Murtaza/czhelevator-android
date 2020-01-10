@@ -106,7 +106,7 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
         holder.fragmentClass = frameLayoutClass;
         holder.tag = tabParam.title;
         holder.pageParam = tabParam;
-
+        holder.tv_msg_dot = view.findViewById(R.id.tv_msg_dot);
         holder.tabIcon = (ImageView) view.findViewById(R.id.tab_icon);
         holder.tabTitle = ((TextView) view.findViewById(R.id.tab_title));
         holder.tabUnread = ((TextView) view.findViewById(R.id.tv_msg_num));
@@ -364,6 +364,7 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
         public TextView tabUnread;
         public Class fragmentClass;
         public int tabIndex;
+        public TextView tv_msg_dot;
     }
 
 
@@ -438,6 +439,20 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
                 holder.tabUnread.setVisibility(View.VISIBLE);
                 holder.tabUnread.setText("99+");
             }
+        }
+    }
+
+    public void showRedDot(int index) {
+        if (index >= 0 && index < mViewHolderList.size()) {
+            ViewHolder holder = mViewHolderList.get(index);
+            holder.tv_msg_dot.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideRedDot(int index) {
+        if (index >= 0 && index < mViewHolderList.size()) {
+            ViewHolder holder = mViewHolderList.get(index);
+            holder.tv_msg_dot.setVisibility(View.GONE);
         }
     }
 

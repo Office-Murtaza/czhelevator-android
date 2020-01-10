@@ -21,6 +21,7 @@ import com.kingyon.elevator.entities.AdDetectingEntity;
 import com.kingyon.elevator.entities.AdTempletEntity;
 import com.kingyon.elevator.entities.AdvertisionEntity;
 import com.kingyon.elevator.entities.AnnouncementEntity;
+import com.kingyon.elevator.entities.AutoCalculationDiscountEntity;
 import com.kingyon.elevator.entities.AvInfoEntity;
 import com.kingyon.elevator.entities.BannerEntity;
 import com.kingyon.elevator.entities.BindAccountEntity;
@@ -166,6 +167,11 @@ public class NetService {
     public void uploadFile(BaseActivity baseActivity, File file, NetUpload.OnUploadCompletedListener onUploadCompletedListener, boolean needComptess) {
         Logger.i("upload File size:%s", FileUtil.convertFileSize(file.length()));
         netUpload.uploadFile(baseActivity, file, onUploadCompletedListener, needComptess);
+    }
+
+    public void uploadFileNoActivity(Context context, File file, NetUpload.OnUploadCompletedListener onUploadCompletedListener, boolean needComptess) {
+        Logger.i("upload File size:%s", FileUtil.convertFileSize(file.length()));
+        netUpload.uploadFileNoActivity(context, file, onUploadCompletedListener, needComptess);
     }
 
     public void uploadFiles(final BaseActivity baseActivity, final List<File> files, final NetUpload.OnUploadCompletedListener onUploadCompletedListener) {
@@ -1233,10 +1239,9 @@ public class NetService {
      *
      * @return
      */
-    public Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(String startPosition, String size,String type, String date) {
-        return addSchedulers(getApi().getIncomePayDataDayList(startPosition, size,type, date));
+    public Observable<List<IncomeDetailsEntity>> getIncomePayDataDayList(String startPosition, String size, String type, String date) {
+        return addSchedulers(getApi().getIncomePayDataDayList(startPosition, size, type, date));
     }
-
 
 
     /**
@@ -1323,6 +1328,16 @@ public class NetService {
      */
     public Observable<String> vaildPasswordIsRight(String pwd) {
         return addSchedulers(getApi().vaildPasswordIsRight(pwd));
+    }
+
+
+    /**
+     * 获取自动计算的优惠信息
+     *
+     * @return
+     */
+    public Observable<AutoCalculationDiscountEntity> getCouponsInfo(double amount, String type, Boolean isManual, String consIds) {
+        return addSchedulers(getApi().getCouponsInfo(amount, type, isManual, consIds));
     }
 }
 

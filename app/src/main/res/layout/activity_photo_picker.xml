@@ -30,7 +30,7 @@
             android:gravity="center"
             android:maxWidth="200dp"
             android:singleLine="true"
-            android:text="所有图片"
+            android:text="所有内容"
             android:textColor="#404040"
             android:textSize="18sp"
             android:textStyle="bold" />

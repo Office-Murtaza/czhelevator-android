@@ -18,7 +18,9 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.OrderFailedNumberEntity;
@@ -205,9 +207,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             finish();
         } else {
             if (tabBar != null) {
-
+                tabBar.setCurrentSelectedTab(tabEntity.getPos());
                 if (tabEntity.getPos() == 2 && tabEntity.getOrderType() != null) {
-                    tabBar.setCurrentSelectedTab(tabEntity.getPos());
                     String tagByPos = tabBar.getTagByPos(2);
                     if (tabBar.isExist(tagByPos)) {
                         BaseFragment curFragment = tabBar.getCurrentFragment(tagByPos);
@@ -232,8 +233,31 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChangeTab(ToPlanTab toPlanTab) {
         ActivityUtil.finishAllNotMain();
-        startAddPlanAnimation();
         onChangeTab(new TabEntity(1, toPlanTab.getType()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHomeAddSuccess(EventBusObjectEntity eventBusObjectEntity) {
+        if (eventBusObjectEntity.getEventCode() == EventBusConstants.AddHomeCellToPlanSuccess) {
+            ActivityUtil.finishAllNotMain();
+            startAddPlanAnimation();
+            if (!TextUtils.isEmpty((String) eventBusObjectEntity.getData())) {
+                String tagByPos = tabBar.getTagByPos(1);
+                if (tabBar.isExist(tagByPos)) {
+                    BaseFragment curFragment = tabBar.findFragmentByTag(tagByPos);
+                    if (curFragment != null && curFragment instanceof PlanNewFragment) {
+                        ((PlanNewFragment) curFragment).onTypeModify((String) eventBusObjectEntity.getData());
+                    }
+                }
+            }
+        } else if (eventBusObjectEntity.getEventCode() == EventBusConstants.ReflashPlanCount) {
+            int allCount = RuntimeUtils.infomationPlanCount + RuntimeUtils.diyPlanCount + RuntimeUtils.businessPlanCount;
+            if (allCount > 0) {
+                tabBar.showRedDot(1);
+            } else {
+                tabBar.hideRedDot(1);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -279,8 +303,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
      */
     public void startAddPlanAnimation() {
         if (RuntimeUtils.clickPositionAnimation != null) {
-            if (RuntimeUtils.animationImagePath!=null) {
-                GlideUtils.loadImage(this,RuntimeUtils.animationImagePath,iv_add_plan_animation_view);
+            if (RuntimeUtils.animationImagePath != null) {
+                GlideUtils.loadImage(this, RuntimeUtils.animationImagePath, iv_add_plan_animation_view);
             }
             iv_add_plan_animation_view.setX(20);
             iv_add_plan_animation_view.setY(RuntimeUtils.clickPositionAnimation[1] - 150);
@@ -303,6 +327,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                     iv_add_plan_animation_view.setVisibility(View.GONE);
                     iv_add_plan_animation_view.setScaleX(1f);
                     iv_add_plan_animation_view.setScaleY(1f);
+                    tabBar.showRedDot(1);
                 }
 
                 @Override

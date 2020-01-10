@@ -58,6 +58,10 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
     private float diyAdPrice;
     private float informationAdPrice;
     private String cellLogo;
+    private double originalBusinessAdPrice;
+    private double originalDiyAdPrice;
+    private double originalInformationAdPrice;
+
 
     public String getRegionName() {
         return regionName;
@@ -267,6 +271,30 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
         this.cellLogo = cellLogo;
     }
 
+    public double getOriginalBusinessAdPrice() {
+        return originalBusinessAdPrice;
+    }
+
+    public void setOriginalBusinessAdPrice(double originalBusinessAdPrice) {
+        this.originalBusinessAdPrice = originalBusinessAdPrice;
+    }
+
+    public double getOriginalDiyAdPrice() {
+        return originalDiyAdPrice;
+    }
+
+    public void setOriginalDiyAdPrice(double originalDiyAdPrice) {
+        this.originalDiyAdPrice = originalDiyAdPrice;
+    }
+
+    public double getOriginalInformationAdPrice() {
+        return originalInformationAdPrice;
+    }
+
+    public void setOriginalInformationAdPrice(double originalInformationAdPrice) {
+        this.originalInformationAdPrice = originalInformationAdPrice;
+    }
+
     @Override
     public String getStringName() {
         return cellName;
@@ -307,6 +335,9 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
         dest.writeFloat(this.diyAdPrice);
         dest.writeFloat(this.informationAdPrice);
         dest.writeString(this.cellLogo);
+        dest.writeDouble(this.originalBusinessAdPrice);
+        dest.writeDouble(this.originalDiyAdPrice);
+        dest.writeDouble(this.originalInformationAdPrice);
     }
 
     protected CellItemEntity(Parcel in) {
@@ -335,6 +366,9 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
         this.diyAdPrice = in.readFloat();
         this.informationAdPrice = in.readFloat();
         this.cellLogo = in.readString();
+        this.originalBusinessAdPrice = in.readDouble();
+        this.originalDiyAdPrice = in.readDouble();
+        this.originalInformationAdPrice = in.readDouble();
     }
 
     public static final Creator<CellItemEntity> CREATOR = new Creator<CellItemEntity>() {

@@ -45,6 +45,7 @@
             android:layout_marginLeft="@dimen/spacing_default"
             android:layout_marginRight="@dimen/spacing_default"
             android:layout_marginTop="@dimen/spacing_twelve"
+            android:visibility="gone"
             android:alpha="0.8"
             app:proporty="3.70968">
 

@@ -52,7 +52,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme,android:name">
-        <activity android:name=".uis.activities.order.ConfirmOrderActivity"></activity>
+        <activity android:name=".uis.activities.advertising.PreviewVideoActivity"></activity>
+        <activity
+            android:name=".uis.activities.order.ConfirmOrderActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".uis.activities.PhotoPickerActivity" />
         <activity
             android:name=".uis.activities.cooperation.AddNewBankCardActivity"

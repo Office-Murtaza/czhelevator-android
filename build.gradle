@@ -45,7 +45,7 @@ ext {
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: "28.0.3",
-            minSdkVersion    : 18,
+            minSdkVersion    : 19,
             targetSdkVersion : 26,
             versionCode      : 40,
             versionName      : "1.5.1"]//修改合伙人页面布局，高度自适应"

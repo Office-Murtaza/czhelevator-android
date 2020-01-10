@@ -5,15 +5,9 @@
     android:layout_height="300dp"
     android:orientation="vertical">
 
-    <com.kingyon.elevator.customview.MyGridView
-        android:id="@+id/date_grid_item_view"
+    <com.kingyon.elevator.date.CustomDatePickerView
+        android:id="@+id/custom_date_picker_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:horizontalSpacing="0dp"
-        android:listSelector="@color/transparent"
-        android:numColumns="7"
-        android:scrollbars="none"
-        android:verticalSpacing="0dp"
-        android:visibility="visible" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
