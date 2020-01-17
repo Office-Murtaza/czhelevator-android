@@ -51,6 +51,7 @@ public class PlanPointChildrenAdapter extends BaseAdapterWithHF<PointItemEntity>
         PointItemEntity item = getItemData(position);
         holder.tvName.setText(String.format("%s%s", item.getUnit(), item.getLift()));
         holder.tvName.setSelected(item.isChoosed());
+        holder.tv_device_no.setText("编号：" + item.getCellId());
         switch (item.getDevice()) {
             case Constants.DEVICE_PLACE.LEFT:
                 holder.tvScreen.setText("左屏");
@@ -78,6 +79,8 @@ public class PlanPointChildrenAdapter extends BaseAdapterWithHF<PointItemEntity>
         ImageView imgScreen;
         @BindView(R.id.tv_screen)
         TextView tvScreen;
+        @BindView(R.id.tv_device_no)
+        TextView tv_device_no;
 
         ViewHolder(View view) {
             super(view);

@@ -44,6 +44,7 @@ import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.ConfirmOrderView;
 import com.leo.afbaselibrary.utils.GlideUtils;
@@ -171,10 +172,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        int textLength =s.toString().trim().length();
-                        if (textLength>0) {
-                            input_count_tips.setText(textLength+"/60");
-                        }else {
+                        int textLength = s.toString().trim().length();
+                        if (textLength > 0) {
+                            input_count_tips.setText(textLength + "/60");
+                        } else {
                             input_count_tips.setText("最多输入60字/符");
                         }
                     }
@@ -287,6 +288,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
     @OnClick({R.id.tv_cat_order_detailed, R.id.tv_youhuiquan, R.id.ad_img_preview, R.id.tv_go_pay})
     public void OnClick(View view) {
+        if (QuickClickUtils.isFastClick()) {
+            LogUtils.d("快速点击了-------------------");
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_cat_order_detailed:
                 DialogUtils.getInstance().showOrderDetailedTipsDialog(this, goPlaceAnOrderEntity, getAllMoney(),
@@ -313,13 +318,11 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                 new AlertDialog.Builder(this)
                                         .setTitle("提示")
                                         .setMessage("您当前还有可使用的优惠券，是否继续支付？")
-                                        .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                            }
-                                        })
+                                        .setPositiveButton("继续支付", (dialog, which) -> {
+                                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                }
+                                        )
                                         .setNegativeButton("取消", null)
                                         .show();
                             } else {
@@ -331,14 +334,12 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                 //提示优惠券金额大于总价
                                 new AlertDialog.Builder(this)
                                         .setTitle("提示")
-                                        .setMessage("您当前使用的优惠券金额大于需总金额，是否继续支付？")
-                                        .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                            }
-                                        })
+                                        .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
+                                        .setPositiveButton("继续支付", (dialog, which) -> {
+                                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                }
+                                        )
                                         .setNegativeButton("取消", null)
                                         .show();
                             } else {
@@ -383,7 +384,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                     //提示优惠券金额大于总价
                                     new AlertDialog.Builder(this)
                                             .setTitle("提示")
-                                            .setMessage("您当前使用的优惠券金额大于需总金额，是否继续支付？")
+                                            .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
                                             .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -503,10 +504,36 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             bundle.putParcelable(CommonUtil.KEY_VALUE_1, detailsEntity);
             bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.FREE);
             MyActivityUtils.goActivity(this, PaySuccessActivity.class, bundle);
-            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList,null));
+            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
         }
         EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.AdPublishSuccess, null));
         finish();
+    }
+
+    @Override
+    public void showManualSelectCouponsInfo(AutoCalculationDiscountEntity autoCalculationDiscountEntity) {
+        this.autoCalculationDiscountEntity = autoCalculationDiscountEntity;
+        cuxiao_manjian.setText(getLiJianPrice());
+        String couponsText = "";
+        if (autoCalculationDiscountEntity.getCons().size() == 0) {
+            couponsText = "未选择优惠券";
+        } else {
+            couponsText = listToString(autoCalculationDiscountEntity.getConsCount(), ',');
+        }
+        realPayPrice = autoCalculationDiscountEntity.getActualAmount();
+        zheKouPrice = autoCalculationDiscountEntity.getDiscountRate();
+        couponsAllPrice = zheKouPrice + couponsPrice;
+        tv_youhuiquan.setText(couponsText);
+        tv_discount_money.setText("已优惠" + (autoCalculationDiscountEntity.getConcessionalRate() +
+                autoCalculationDiscountEntity.getDiscountRate()) + "元");
+        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+        coupons = new ArrayList<>();
+        for (Integer id : autoCalculationDiscountEntity.getCons()) {
+            CouponItemEntity couponItemEntity = new CouponItemEntity();
+            couponItemEntity.setObjctId(id);
+            coupons.add(couponItemEntity);
+        }
+        tv_go_pay.setEnabled(true);
     }
 
     private String getLiJianPrice() {
@@ -589,67 +616,55 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     }
 
     private void couponsUpdate() {
-//        float couponsSum = 0;
-//        float totalPrice = (float) getAllMoney();
-//        if (coupons != null && coupons.size() > 0) {
-//            //tvCoupons.setText(String.format("已选%s张", coupons.size()));
-//            String choosedCouponType = coupons.get(0).getCoupontype();
-//            if (TextUtils.equals(Constants.CouponType.VOUCHER, choosedCouponType)) {
-//                consCountBeanList = new ArrayList<>();
-//                Map<String, String> couponsMap = new HashMap<>();
-//                for (CouponItemEntity item : coupons) {
-//                    couponsSum += item.getMoney();
-//                    couponsMap.put(CommonUtil.getMayTwoFloat(item.getMoney()), "");
-//                }
-//                for (String key : couponsMap.keySet()) {
-//                    AutoCalculationDiscountEntity.ConsCountBean consCountBean = new AutoCalculationDiscountEntity.ConsCountBean();
-//                    consCountBean.setName("满0减" + key);
-//                    consCountBean.setCount(coupons.size());
-//                    consCountBeanList.add(consCountBean);
-//                }
-//                tv_youhuiquan.setText(listToString(consCountBeanList, ','));
-//                couponsPrice = couponsSum;
-//
-//
-//            } else if (TextUtils.equals(Constants.CouponType.DISCOUNT, choosedCouponType)) {
-//                couponsSum = totalPrice * (1 - coupons.get(0).getDiscount() / 10);
-//                zheKouPrice = couponsSum;
-//                autoCalculationDiscountEntity.setHasMore(false);
-//                tv_youhuiquan.setText("折扣券 * 1");
-//            }
-//            float resultPrice = totalPrice - couponsSum;
-//            if (resultPrice > 0) {
-//                tv_discount_money.setText("已优惠" + couponsSum + "元");
-//                tv_order_money.setText("¥" + resultPrice + "元");
-//                realPayPrice = resultPrice;
-//                couponsAllPrice = zheKouPrice + couponsPrice;
-//            } else {
-//                tv_discount_money.setText("已优惠" + totalPrice + "元");
-//                tv_order_money.setText("¥ 0.0元");
-//                realPayPrice = 0;
-//                couponsAllPrice = zheKouPrice + couponsPrice;
-//            }
-//
-//        } else {
-//            //tvCoupons.setText("");
-//            tv_youhuiquan.setText("未选择优惠券");
-//            float resultPrice = totalPrice - couponsSum;
-//            tv_discount_money.setText("已优惠" + couponsSum + "元");
-//            tv_order_money.setText("¥" + resultPrice + "元");
-//            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
-//                autoCalculationDiscountEntity.setHasMore(true);
-//            } else {
-//                autoCalculationDiscountEntity.setHasMore(false);
-//            }
-//            couponsPrice = 0;
-//            zheKouPrice = 0;
-//            realPayPrice = resultPrice;
-//            couponsAllPrice = zheKouPrice + couponsPrice;
-//        }
+        tv_go_pay.setEnabled(false);
+        float couponsSum = 0;
+        float totalPrice = (float) getAllMoney();
+        if (coupons != null && coupons.size() > 0) {
+            //tvCoupons.setText(String.format("已选%s张", coupons.size()));
+            String choosedCouponType = coupons.get(0).getCoupontype();
+            if (TextUtils.equals(Constants.CouponType.VOUCHER, choosedCouponType)) {
+                for (CouponItemEntity item : coupons) {
+                    couponsSum += item.getMoney();
+                }
+                couponsPrice = couponsSum;
+            } else if (TextUtils.equals(Constants.CouponType.DISCOUNT, choosedCouponType)) {
+                couponsSum = totalPrice * (1 - coupons.get(0).getDiscount() / 10);
+                zheKouPrice = couponsSum;
+                autoCalculationDiscountEntity.setHasMore(false);
+                tv_youhuiquan.setText("折扣券 * 1");
+            }
+            float resultPrice = totalPrice - couponsSum;
+            if (resultPrice > 0) {
+                tv_discount_money.setText("已优惠" + couponsSum + "元");
+                tv_order_money.setText("¥" + resultPrice + "元");
+                realPayPrice = resultPrice;
+                couponsAllPrice = zheKouPrice + couponsPrice;
+            } else {
+                tv_discount_money.setText("已优惠" + totalPrice + "元");
+                tv_order_money.setText("¥ 0.0元");
+                realPayPrice = 0;
+                couponsAllPrice = zheKouPrice + couponsPrice;
+            }
+
+        } else {
+            //tvCoupons.setText("");
+            tv_youhuiquan.setText("未选择优惠券");
+            float resultPrice = totalPrice - couponsSum;
+            tv_discount_money.setText("已优惠" + couponsSum + "元");
+            tv_order_money.setText("¥" + resultPrice + "元");
+            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
+                autoCalculationDiscountEntity.setHasMore(true);
+            } else {
+                autoCalculationDiscountEntity.setHasMore(false);
+            }
+            couponsPrice = 0;
+            zheKouPrice = 0;
+            realPayPrice = resultPrice;
+            couponsAllPrice = zheKouPrice + couponsPrice;
+        }
         if (coupons == null) {
             coupons = new ArrayList<>();
         }
         presenter.loadCouponsNewInfo(getAllMoney(), goPlaceAnOrderEntity.getPlanType(), coupons);
-
     }
 }

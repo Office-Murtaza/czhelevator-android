@@ -310,7 +310,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     @Override
                     public void onNext(AutoCalculationDiscountEntity autoCalculationDiscountEntity) {
                         if (isViewAttached()) {
-                            getView().showCouponsInfo(autoCalculationDiscountEntity);
+                            getView().showManualSelectCouponsInfo(autoCalculationDiscountEntity);
                             getView().hideProgressDailog();
                         }
                     }

@@ -31,18 +31,11 @@
             android:maxWidth="200dp"
             android:singleLine="true"
             android:text="所有内容"
+            android:drawablePadding="4dp"
+            android:drawableEnd="@mipmap/suoyoutupian_xiangshanbganniu"
             android:textColor="#404040"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/selected_status"
-            android:layout_width="11dp"
-            android:layout_height="5.5dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="4dp"
-            android:layout_toEndOf="@+id/tv_action_title"
-            android:src="@mipmap/suoyoutupian_xiangshanbganniu" />
 
         <TextView
             android:id="@+id/rule_desc"

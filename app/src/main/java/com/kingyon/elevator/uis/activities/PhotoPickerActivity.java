@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -87,8 +88,6 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
     ImageView back_close;
     @BindView(R.id.tv_action_title)
     TextView tv_action_title;
-    @BindView(R.id.selected_status)
-    ImageView selected_status;
     @BindView(R.id.rule_desc)
     TextView rule_desc;
     @BindView(R.id.video_bottom_line)
@@ -104,7 +103,8 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
     protected static final int RC_PERM = 123;
     private int fromType = Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN;//来自于哪个界面
     private String planType = "";
-
+    Drawable openFolderDrawable;
+    Drawable closeFolderDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +114,10 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
         EventBus.getDefault().register(this);
         fromType = getIntent().getIntExtra("fromType", 1001);
         planType = getIntent().getStringExtra("planType");
+        openFolderDrawable = getResources().getDrawable(R.mipmap.suoyoutupian_xiangshanbganniu);
+        closeFolderDrawable = getResources().getDrawable(R.mipmap.suoyoushiping_xiangxiaanniu);
+        openFolderDrawable.setBounds(0, 0, openFolderDrawable.getMinimumWidth(), openFolderDrawable.getMinimumHeight());
+        closeFolderDrawable.setBounds(0, 0, openFolderDrawable.getMinimumWidth(), openFolderDrawable.getMinimumHeight());
         initView();
     }
 
@@ -165,6 +169,11 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
         } else {
             EasyPermissions.requestPermissions(this, "读取系统相册需要以下权限",
                     RC_PERM, permsPhoto);
+        }
+        if (folder_list.getVisibility() == View.VISIBLE) {
+            tv_action_title.setCompoundDrawables(null, null, openFolderDrawable, null);
+        } else {
+            tv_action_title.setCompoundDrawables(null, null, closeFolderDrawable, null);
         }
     }
 
@@ -230,8 +239,10 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
             case R.id.tv_action_title:
                 if (folder_list.getVisibility() == View.GONE) {
                     folder_list.setVisibility(View.VISIBLE);
+                    tv_action_title.setCompoundDrawables(null, null, openFolderDrawable, null);
                 } else {
                     folder_list.setVisibility(View.GONE);
+                    tv_action_title.setCompoundDrawables(null, null, closeFolderDrawable, null);
                 }
                 break;
             case R.id.video_container:

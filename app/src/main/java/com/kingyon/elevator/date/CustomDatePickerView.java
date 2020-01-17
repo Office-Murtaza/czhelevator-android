@@ -174,7 +174,6 @@ public class CustomDatePickerView extends View {
      */
     private void drawDayText(Canvas canvas) {
         int firstDayPosition = DateUtils.getWeekOfDatePosition(numberOneDate);
-        LogUtils.d("当前一号的position：", firstDayPosition, monthOfDayCount);
         // 写入文字
         for (int i = 0; i < dateGridEntities.size(); i++) {
             DateGridEntity dateGridEntity = dateGridEntities.get(i);

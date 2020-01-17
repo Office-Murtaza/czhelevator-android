@@ -22,6 +22,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.MyWalletActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.paylibrary.PayListener;
 import com.kingyon.paylibrary.alipay.AliPayUtils;
 import com.kingyon.paylibrary.entitys.PayWay;
@@ -348,7 +349,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                         bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.WX_PAY);
                         startActivity(PaySuccessActivity.class, bundle);
                     }
-                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList,null));
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
                     setPayEnable();
                     finish();
                 }
@@ -394,7 +395,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                         bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.ALI_PAY);
                         startActivity(PaySuccessActivity.class, bundle);
                     }
-                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList,null));
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
                     setPayEnable();
                     finish();
                 }
@@ -447,6 +448,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        RuntimeUtils.goPlaceAnOrderEntity = null;
         super.onDestroy();
     }
 }

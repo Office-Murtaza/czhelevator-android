@@ -96,41 +96,37 @@ public class PlanSelectDateNewDialog extends DialogFragment {
     }
 
     private void initData() {
-        new Thread(() -> {
-            horizontalSelectDateEntityList = new ArrayList<>();
-            for (int i = DateUtils.getCurrentMonth(); i <= 12; i++) {
-                try {
-                    if (i < 10) {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-0" + i + "-01")));
-                    } else {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-" + i + "-01")));
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        horizontalSelectDateEntityList = new ArrayList<>();
+        for (int i = DateUtils.getCurrentMonth(); i <= 12; i++) {
+            try {
+                if (i < 10) {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-0" + i + "-01")));
+                } else {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-" + i + "-01")));
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            for (int i = 1; i < 13; i++) {
-                try {
-                    if (i < 10) {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-0" + i + "-01")));
-                    } else {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-" + i + "-01")));
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        }
+        for (int i = 1; i < 13; i++) {
+            try {
+                if (i < 10) {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-0" + i + "-01")));
+                } else {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-" + i + "-01")));
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            horizontalSelectDateAdapter = new HorizontalSelectDateAdapter(mContext, horizontalSelectDateEntityList);
-            date_grid_view.post(() -> {
-                tv_current_date.setText(DateUtils.getCurrentYear() + "年" + DateUtils.getCurrentMonth() + "月");
-                date_grid_view.setAdapter(horizontalSelectDateAdapter);
-                date_grid_view.setOnPagerChageListener(position -> {
-                    tv_current_date.setText(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
-                });
-                date_grid_view.setOnPagerPosition(0);
-                planSelectDateLinsener.dialogShowSuccess();
-            });
-        }).start();
+        }
+        horizontalSelectDateAdapter = new HorizontalSelectDateAdapter(mContext, horizontalSelectDateEntityList);
+        tv_current_date.setText(DateUtils.getCurrentYear() + "年" + DateUtils.getCurrentMonth() + "月");
+        date_grid_view.setAdapter(horizontalSelectDateAdapter);
+        date_grid_view.setOnPagerChageListener(position -> {
+            tv_current_date.setText(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
+        });
+        date_grid_view.setOnPagerPosition(0);
+        planSelectDateLinsener.dialogShowSuccess();
     }
 
     @OnClick({R.id.cancel_date, R.id.confirm_date})
@@ -180,11 +176,11 @@ public class PlanSelectDateNewDialog extends DialogFragment {
     @Override
     public void dismiss() {
         super.dismiss();
-        try{
+        try {
             date_grid_view.removeAllViews();
-            horizontalSelectDateAdapter=null;
+            horizontalSelectDateAdapter = null;
             date_grid_view = null;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

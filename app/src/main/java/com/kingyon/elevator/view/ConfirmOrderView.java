@@ -25,4 +25,6 @@ public interface ConfirmOrderView extends BaseView {
     void adUploadSuccess(ADEntity adEntity);
 
     void orderCommitSuccess(CommitOrderEntiy commitOrderEntiy);
+
+    void showManualSelectCouponsInfo(AutoCalculationDiscountEntity autoCalculationDiscountEntity);
 }

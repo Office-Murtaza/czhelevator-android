@@ -19,28 +19,28 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="70dp"
-        android:layout_marginBottom="41dp" />
+        android:layout_marginBottom="54dp" />
 
     <ImageView
         android:id="@+id/iv_preview_video_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
         android:layout_below="@+id/my_action_bar"
         android:layout_marginBottom="42dp"
-        android:scaleType="center" />
+        android:scaleType="center"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/play_video"
         android:layout_width="87dp"
         android:layout_height="83dp"
         android:layout_centerInParent="true"
-        android:visibility="visible"
-        android:src="@mipmap/jiancaishiping_yulananniu" />
+        android:src="@mipmap/jiancaishiping_yulananniu"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="41.5dp"
+        android:layout_height="54dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
 
@@ -52,18 +52,22 @@
             android:gravity="center"
             android:text="视频时长15s"
             android:textColor="#ff404040"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
-        <ImageView
+
+        <TextView
             android:id="@+id/go_place_an_order"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="87dp"
+            android:layout_height="35.9dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="32dp"
-            android:background="@drawable/shape_crop_video_down_bg"
-            android:padding="7dp"
-            android:src="@mipmap/jiancaishiping_xiayibuanniu" />
+            android:background="@drawable/bg_six_btn"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

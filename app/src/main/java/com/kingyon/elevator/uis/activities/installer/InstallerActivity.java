@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
+import com.blankj.utilcode.util.LogUtils;
 import com.gerry.scaledelete.ScreenUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.PointItemEntity;
@@ -161,6 +162,7 @@ public class InstallerActivity extends BaseStateRefreshingLoadingActivity<PointI
                 case CommonUtil.REQ_CODE_1:
                     if (data != null) {
                         String deviceStr = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
+                        LogUtils.d("返回的设备字符串："+deviceStr);
                         String deviceNo = FormatUtils.getInstance().getDeviceNo(deviceStr);
                         if (!TextUtils.isEmpty(deviceNo)) {
                             Bundle bundle = new Bundle();

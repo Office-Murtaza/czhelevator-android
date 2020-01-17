@@ -158,7 +158,7 @@
                     <TextView
                         android:id="@+id/tv_ensure"
                         android:layout_width="88dp"
-                        android:layout_height="30dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="28dp"

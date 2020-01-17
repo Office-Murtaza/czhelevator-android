@@ -10,6 +10,7 @@ import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
@@ -94,5 +95,11 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
                 EventBus.getDefault().post(new TabEntity(0));
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RuntimeUtils.goPlaceAnOrderEntity = null;
     }
 }

@@ -50,7 +50,7 @@ public class AssignChildrenAdapter extends BaseAdapterWithHF<PointItemEntity> {
         PointItemEntity item = getItemData(position);
         holder.tvName.setText(String.format("%s%s", item.getUnit(), item.getLift()));
         holder.tvName.setSelected(item.isChoosed());
-        holder.tv_device_no.setText(item.getObjectId()+"");
+        holder.tv_device_no.setText("编号："+item.getObjectId());
         switch (item.getDevice()) {
             case Constants.DEVICE_PLACE.LEFT:
                 holder.tvScreen.setText("左屏");

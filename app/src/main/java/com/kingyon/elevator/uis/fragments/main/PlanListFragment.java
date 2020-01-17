@@ -167,6 +167,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
      */
     public void updateTime(String startDate, String endDate) {
         try {
+            if (simpleDateFormat==null) {
+                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            }
             startTime = simpleDateFormat.parse(startDate).getTime();
             endTime = simpleDateFormat.parse(endDate).getTime();
             LogUtils.d("刷新选择的时间-------------", startDate, endDate);

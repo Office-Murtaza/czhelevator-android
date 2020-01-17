@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_normal"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="10dp"
     android:paddingLeft="@dimen/spacing_default"
+    android:paddingTop="10dp"
     android:paddingRight="@dimen/spacing_default"
-    android:paddingTop="10dp">
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:drawableLeft="@drawable/ic_check_big"
         android:drawablePadding="10dp"
-        android:singleLine="true"
         android:ellipsize="end"
         android:gravity="center_vertical"
+        android:singleLine="true"
         android:textColor="#ff808080"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
@@ -30,9 +29,9 @@
         android:id="@+id/tv_device_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_small"
-        android:layout_marginRight="@dimen/spacing_two"
-        android:text="100000"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginStart="35dp"
+        android:text="编号：100000"
         android:textColor="#7F7F7F"
         android:textSize="@dimen/txt_normal_content" />
 
@@ -42,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_small"
         android:layout_marginRight="@dimen/spacing_two"
+        android:layout_toStartOf="@+id/img_screen"
         android:text="维修中"
         android:textColor="#ffec7a12"
         android:textSize="@dimen/txt_normal_content"
@@ -53,14 +53,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_six"
         android:layout_marginRight="@dimen/spacing_six"
+        android:layout_toStartOf="@+id/tv_screen"
         android:src="@drawable/ic_screen_center" />
 
     <TextView
         android:id="@+id/tv_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:textColor="#ffababab"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
         tools:text="中屏" />
-</LinearLayout>
+</RelativeLayout>

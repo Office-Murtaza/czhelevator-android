@@ -51,8 +51,9 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:configChanges="fontScale|orientation"
         tools:replace="android:icon,android:theme,android:name">
-        <activity android:name=".uis.activities.advertising.PreviewVideoActivity"></activity>
+        <activity android:name=".uis.activities.advertising.PreviewVideoActivity"/>
         <activity
             android:name=".uis.activities.order.ConfirmOrderActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -97,16 +98,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.InputActivity"
+            android:configChanges="fontScale|orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.IncomeRecordsActivity"
+            android:configChanges="fontScale|orientation"
             android:screenOrientation="portrait" /> <!-- 登录注册 -->
         <activity
             android:name=".uis.activities.password.LoginActivity"
             android:launchMode="singleTask"
+            android:configChanges="fontScale|orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.password.RegisterActivity"
+            android:configChanges="fontScale|orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.password.ResetPasswordActivity"

@@ -118,12 +118,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 , R.drawable.ic_mine_nor, R.drawable.ic_mine_sec, "我的"));
         tabBar.onRestoreInstanceState(savedInstanceState);
         tabBar.setTabSelectListener(this);
-        tabBar.post(new Runnable() {
-            @Override
-            public void run() {
-                tabBar.createFragmentByTag(OrderFragment.newInstance(null), "订单");
-                tabBar.createFragmentByTag(PlanNewFragment.newInstance(), "计划");
-            }
+        tabBar.post(() -> {
+            tabBar.createFragmentByTag(OrderFragment.newInstance(null), "订单");
+            tabBar.createFragmentByTag(PlanNewFragment.newInstance(), "计划");
         });
     }
 

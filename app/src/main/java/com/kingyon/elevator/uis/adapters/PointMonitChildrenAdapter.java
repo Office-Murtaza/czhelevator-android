@@ -51,6 +51,7 @@ public class PointMonitChildrenAdapter extends BaseAdapterWithHF<PointItemEntity
         PointItemEntity item = getItemData(position);
         holder.tvName.setText(String.format("%s%s·%s", item.getBuild(), item.getUnit(), item.getLift()));
         holder.tvName.setSelected(item.isChoosed());
+        holder.tv_device_no.setText("编号：" + item.getCellId());
         switch (item.getDevice()) {
             case Constants.DEVICE_PLACE.LEFT:
                 holder.tvScreen.setText("左屏");
@@ -88,6 +89,8 @@ public class PointMonitChildrenAdapter extends BaseAdapterWithHF<PointItemEntity
         TextView tvScreen;
         @BindView(R.id.tv_monit)
         TextView tvMonit;
+        @BindView(R.id.tv_device_no)
+        TextView tv_device_no;
 
         ViewHolder(View view) {
             super(view);

@@ -21,10 +21,10 @@ import rx.Observable;
  * email: lc824767150@163.com
  */
 public interface NetApi {
-    String socketDomainName = "ws://219.151.9.234:8282";
+    String socketDomainName = "wss://gate.tlwgz.com:8282";
 
     //    String domainName = "http://rap2api.taobao.org/app/mock/121571/";
-    //String domainName = "http://api.pddtv.cn/";//外网正式服地址
+    //String domainName = "https://api.pddtv.cn/";//外网正式服地址
     //String domainName = "http://pddapi.scjiazhidao.com/";//外网测试服地址
     String domainName = "http://192.168.1.16:1510/";  //公司测试服
     //    String domainName = "http://192.168.0.50:1510/";

@@ -74,6 +74,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     TextView tv_end_date_desc;
     SimpleDateFormat simpleDateFormat;
     private boolean editMode;
+    PlanSelectDateNewDialog planSelectDateNewDialog;
 
     public static PlanNewFragment newInstance() {
         Bundle args = new Bundle();
@@ -165,43 +166,13 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                     LogUtils.d("快速点击了-------------------");
                     return;
                 }
-                PlanSelectDateNewDialog planSelectDateNewDialog = new PlanSelectDateNewDialog();
-                planSelectDateNewDialog.setPlanSelectDateLinsener(new PlanSelectDateLinsener() {
-                    @Override
-                    public void confirmSelectDate(SelectDateEntity startTime, SelectDateEntity endTime) {
-                        if (startTime != null && endTime != null) {
-                            tv_start_date.setText(String.format("%d月%d日", startTime.getMonth(), startTime.getDay()));
-                            tv_end_date.setText(String.format("%d月%d日", endTime.getMonth(), endTime.getDay()));
-                            tv_total_day.setText(String.format("共%d天", getDiffDay(startTime.getDate(), endTime.getDate())));
-                            for (Fragment fragment : getChildFragmentManager().getFragments()) {
-                                if (fragment instanceof PlanListFragment) {
-                                    ((PlanListFragment) fragment).updateTime(startTime.getDate(), endTime.getDate());
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void dialogShowSuccess() {
-
-                    }
-                });
-                planSelectDateNewDialog.show(getChildFragmentManager(),"1");
+                showDateDialog();
                 break;
         }
     }
 
     private void showDateDialog() {
-        DialogUtils.getInstance().showPlanSelectDateDialog(getActivity(), new ShowPlanDateDailogLisenter() {
-            @Override
-            public void startShow() {
-                showProgressDialog("加载中...");
-            }
-
-            @Override
-            public void showSuccess() {
-            }
-        }, new PlanSelectDateLinsener() {
+        DialogUtils.getInstance().showPlanSelectDateDialog(getActivity(), new PlanSelectDateLinsener() {
             @Override
             public void confirmSelectDate(SelectDateEntity startTime, SelectDateEntity endTime) {
                 if (startTime != null && endTime != null) {
@@ -354,5 +325,11 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     @Override
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DialogUtils.getInstance().hidePlanSelectDateDialog();
     }
 }

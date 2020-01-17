@@ -42,8 +42,6 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
     HorizontalRecyclerView date_grid_view;
     @BindView(R.id.tv_current_date)
     TextView tv_current_date;
-
-    GridDateAdapter gridDateAdapter;
     Context mContext;
     private Date initTodayDate;//初始时选中今天的日期
     private SimpleDateFormat simpleDateFormat;
@@ -57,10 +55,6 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
     public PlanSelectDateDialog(@NonNull Context context, PlanSelectDateLinsener planSelectDateLinsener) {
         super(context);
         mContext = context;
-        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        initTodayDate = new Date();
-        todayYear = DateUtils.getCurrentYear();
-        lastYear = todayYear + 1;
         this.planSelectDateLinsener = planSelectDateLinsener;
     }
 
@@ -69,53 +63,47 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plan_select_date_dialog_layout);
         ButterKnife.bind(this);
+        mContext = getContext();
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        initTodayDate = new Date();
+        todayYear = DateUtils.getCurrentYear();
+        lastYear = todayYear + 1;
         initData();
     }
 
 
     private void initData() {
-        new Thread(() -> {
-            horizontalSelectDateEntityList = new ArrayList<>();
-            for (int i = DateUtils.getCurrentMonth(); i <= 12; i++) {
-                try {
-                    if (i < 10) {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-0" + i + "-01")));
-                    } else {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-" + i + "-01")));
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        horizontalSelectDateEntityList = new ArrayList<>();
+        for (int i = DateUtils.getCurrentMonth(); i <= 12; i++) {
+            try {
+                if (i < 10) {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-0" + i + "-01")));
+                } else {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(DateUtils.getCurrentYear(), i, simpleDateFormat.parse(todayYear + "-" + i + "-01")));
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            for (int i = 1; i < 13; i++) {
-                try {
-                    if (i < 10) {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-0" + i + "-01")));
-                    } else {
-                        horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-" + i + "-01")));
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        }
+        for (int i = 1; i < 13; i++) {
+            try {
+                if (i < 10) {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-0" + i + "-01")));
+                } else {
+                    horizontalSelectDateEntityList.add(new HorizontalSelectDateEntity(lastYear, i, simpleDateFormat.parse(lastYear + "-" + i + "-01")));
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            horizontalSelectDateAdapter = new HorizontalSelectDateAdapter(mContext, horizontalSelectDateEntityList);
-            date_grid_view.post(new Runnable() {
-                @Override
-                public void run() {
-                    tv_current_date.setText(DateUtils.getCurrentYear() + "年" + DateUtils.getCurrentMonth() + "月");
-                    date_grid_view.setAdapter(horizontalSelectDateAdapter);
-                    date_grid_view.setOnPagerChageListener(position -> {
-                        LogUtils.d("当前选中了第几页：", position);
-                        tv_current_date.setText(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
-                        if (horizontalSelectDateAdapter.startSelectDateEntity != null && horizontalSelectDateAdapter.endSelectDateEntity != null) {
-                            horizontalSelectDateAdapter.reflashGridData(position);
-                        }
-                    });
-                    date_grid_view.setOnPagerPosition(0);
-                    planSelectDateLinsener.dialogShowSuccess();
-                }
-            });
-        }).start();
+        }
+        horizontalSelectDateAdapter = new HorizontalSelectDateAdapter(mContext, horizontalSelectDateEntityList);
+        tv_current_date.setText(DateUtils.getCurrentYear() + "年" + DateUtils.getCurrentMonth() + "月");
+        date_grid_view.setAdapter(horizontalSelectDateAdapter);
+        date_grid_view.setOnPagerChageListener(position -> {
+            tv_current_date.setText(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
+        });
+        date_grid_view.setOnPagerPosition(0);
+        planSelectDateLinsener.dialogShowSuccess();
     }
 
     @OnClick({R.id.cancel_date, R.id.confirm_date})
@@ -132,7 +120,7 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
                 if (horizontalSelectDateAdapter.endSelectDateEntity == null) {
                     SelectDateEntity endSelectDateEntity = new SelectDateEntity(horizontalSelectDateAdapter.startSelectDateEntity.getYear(),
                             horizontalSelectDateAdapter.startSelectDateEntity.getMonth(), horizontalSelectDateAdapter.startSelectDateEntity.getDay());
-                    endSelectDateEntity.setDate(horizontalSelectDateAdapter.startSelectDateEntity.getDate()+" 23:59:59.999");
+                    endSelectDateEntity.setDate(horizontalSelectDateAdapter.startSelectDateEntity.getDate() + " 23:59:59.999");
                     horizontalSelectDateAdapter.startSelectDateEntity.setDate(horizontalSelectDateAdapter.startSelectDateEntity.getDate() + " 00:00:00.000");
                     planSelectDateLinsener.confirmSelectDate(horizontalSelectDateAdapter.startSelectDateEntity,
                             endSelectDateEntity);
@@ -147,4 +135,15 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
         }
     }
 
+    @Override
+    public void dismiss() {
+        try {
+            date_grid_view.removeAllViews();
+            horizontalSelectDateAdapter = null;
+            date_grid_view = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.dismiss();
+    }
 }

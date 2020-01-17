@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:background="@color/white_normal"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="10dp"
     android:paddingLeft="@dimen/spacing_default"
-    android:paddingRight="@dimen/spacing_default"
-    android:paddingTop="10dp">
+    android:paddingRight="@dimen/spacing_default">
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:textColor="#ff808080"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
         tools:text="一号梯" />
 
+    <TextView
+        android:id="@+id/tv_device_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:text="编号：100000"
+        android:textColor="#7F7F7F"
+        android:textSize="@dimen/txt_tips" />
+
     <ImageView
         android:id="@+id/img_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/spacing_six"
         android:layout_marginRight="@dimen/spacing_six"
+        android:layout_toStartOf="@+id/tv_screen"
         android:src="@drawable/ic_screen_center" />
 
     <TextView
         android:id="@+id/tv_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/spacing_default"
+        android:layout_toStartOf="@+id/tv_monit"
         android:textColor="#ffababab"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
@@ -44,12 +55,14 @@
         android:id="@+id/tv_monit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:background="@drawable/bg_six_btn"
-        android:paddingBottom="@dimen/spacing_four"
         android:paddingLeft="@dimen/spacing_default"
-        android:paddingRight="@dimen/spacing_default"
         android:paddingTop="@dimen/spacing_four"
+        android:paddingRight="@dimen/spacing_default"
+        android:paddingBottom="@dimen/spacing_four"
         android:text="查看监控"
         android:textColor="#ffffffff"
         android:textSize="15sp" />
-</LinearLayout>
+</RelativeLayout>

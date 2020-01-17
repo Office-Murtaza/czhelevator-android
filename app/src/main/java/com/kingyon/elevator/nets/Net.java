@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.AppUtils;
 import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.leo.afbaselibrary.nets.BaseNet;
@@ -133,7 +134,7 @@ public class Net extends BaseNet<NetApi> {
 
     @Override
     protected boolean isNeedHttps() {
-        return false;
+        return AppUtils.isAppDebug()?false:true;
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -90,6 +91,10 @@ public class PreviewVideoActivity extends AppCompatActivity {
 
     @OnClick({R.id.play_video, R.id.go_place_an_order})
     public void onClick(View view) {
+        if (QuickClickUtils.isFastClick()) {
+            LogUtils.d("快速点击了-------------------");
+            return;
+        }
         switch (view.getId()) {
             case R.id.play_video:
                 isClickPlay = true;

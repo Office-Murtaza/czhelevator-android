@@ -607,7 +607,7 @@ public class FormatUtils {
     public String getDeviceNo(String deviceStr) {
         String result;
         if (!TextUtils.isEmpty(deviceStr)) {
-            if (deviceStr.startsWith("http://pdd.tlwgz.com/api/v1/check/") && !deviceStr.endsWith("check/")) {
+            if ((deviceStr.startsWith("http://pdd.tlwgz.com/api/v1/check/") || deviceStr.startsWith("https://portal.tlwgz.com/api/v1/check/")) && !deviceStr.endsWith("check/")) {
                 result = deviceStr.substring(deviceStr.lastIndexOf("check/") + 6);
             } else {
                 result = "";

@@ -39,6 +39,8 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
     TextView tvDiscounts;
     @BindView(R.id.tv_order_price)
     TextView tvOrderPrice;
+    @BindView(R.id.confirm_coupons)
+    TextView confirm_coupons;
 
     private float totalPrice;
     private String type;
@@ -63,6 +65,12 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
+        confirm_coupons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         updatePriceUI(totalPrice, 0);
     }
 

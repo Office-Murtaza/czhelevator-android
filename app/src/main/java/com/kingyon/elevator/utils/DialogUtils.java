@@ -304,8 +304,7 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showPlanSelectDateDialog(Context context, ShowPlanDateDailogLisenter showPlanDateDailogLisenter, PlanSelectDateLinsener planSelectDateLinsener) {
-        showPlanDateDailogLisenter.startShow();
+    public void showPlanSelectDateDialog(Context context,PlanSelectDateLinsener planSelectDateLinsener) {
         if (planSelectDateDialog != null && planSelectDateDialog.isShowing()) {
             planSelectDateDialog.dismiss();
             planSelectDateDialog = null;

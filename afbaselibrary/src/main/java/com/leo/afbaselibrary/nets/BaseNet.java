@@ -148,43 +148,11 @@ public abstract class BaseNet<T> {
                     }
                 });
                 if (isNeedHttps()) {
-//                    try {
-//                        builder.sslSocketFactory(CertificateUtil.setCertificates(getContext(), getCertificateNames()))
-//                                .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-                    InputStream inputStream = null;
-                    try {
-                        //  trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
-                        HttpsCerUtils httpUtils = new HttpsCerUtils();
-                        inputStream = getContext().getAssets().open("net.cer");
-                        SSLContext sslContext = httpUtils.trustManagerForCertificates(inputStream, "2608075"); //SSLContext.getInstance("TLS");
-                        builder.sslSocketFactory(sslContext.getSocketFactory())
-                                .hostnameVerifier(new HostnameVerifier() {
-                                    @Override
-                                    public boolean verify(String hostname, SSLSession session) {
-                                        return true;
-                                    }
-                                });
-                    } catch (GeneralSecurityException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (inputStream != null) {
-                                inputStream.close();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    HTTPSCerUtils.setTrustAllCertificate(builder);
                 }
                 builder.connectTimeout(60, TimeUnit.SECONDS);
                 builder.readTimeout(60, TimeUnit.SECONDS);
                 builder.writeTimeout(60, TimeUnit.SECONDS);
-               // HTTPSCerUtils.setTrustAllCertificate(builder);
                 okHttpClient = builder.build();
             }
         } catch (Exception e) {

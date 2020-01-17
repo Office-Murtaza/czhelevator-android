@@ -310,7 +310,7 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(MessageCenterActivity.class);
                 break;
             case R.id.img_setting:
-               startActivity(SettingActivity.class);
+                startActivity(SettingActivity.class);
                 break;
             case R.id.ll_info:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
@@ -360,7 +360,6 @@ public class UserFragment extends BaseStateRefreshFragment {
                 break;
             case R.id.tv_cooperation:
                 startActivity(CooperationActivity.class);
-                //MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.SetPasswordFragment);
                 break;
             case R.id.tv_property:
                 startActivity(PropertyActivity.class);
