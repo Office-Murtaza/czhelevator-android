@@ -59,7 +59,7 @@ public class MyWalletAdapter extends MultiItemTypeAdapter<Object> {
                     break;
             }
             String payWay = FormatUtils.getInstance().getPayWay(item.getPayType());
-            holder.setTextNotHide(R.id.tv_pay_way, String.format("%s%s", payWay, TextUtils.isEmpty(payWay) ? "" : "支付"));
+            holder.setTextNotHide(R.id.tv_pay_way, String.format("%s", TextUtils.isEmpty(payWay) ? "未知支付方式" : payWay));
             holder.setVisible(R.id.v_line, position != mItems.size() - 1);
         }
     }

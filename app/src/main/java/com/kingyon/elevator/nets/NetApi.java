@@ -1,5 +1,6 @@
 package com.kingyon.elevator.nets;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.kingyon.elevator.entities.*;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
@@ -22,15 +23,9 @@ import rx.Observable;
  */
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
-
-    //    String domainName = "http://rap2api.taobao.org/app/mock/121571/";
-    //String domainName = "https://api.pddtv.cn/";//外网正式服地址
-    //String domainName = "http://pddapi.scjiazhidao.com/";//外网测试服地址
-    String domainName = "http://192.168.1.16:1510/";  //公司测试服
-    //    String domainName = "http://192.168.0.50:1510/";
-//    String domainName = "http://192.168.0.86:1510/"; //白小川
-    //    String domainName = "http://192.168.0.104:2510/";//代国伟
-    String baseUrl = domainName;
+    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
+    String domainDebugName = "http://192.168.1.16:1510/";  //公司测试服
+    String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";
     String rapUrl = "http://rap2api.taobao.org/app/mock/121571/";
 
