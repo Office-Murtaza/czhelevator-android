@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
@@ -54,7 +55,7 @@ public class LoadingActivity extends BaseActivity {
     @BindView(R.id.tv_right)
     TextView tvRight;
     @BindView(R.id.root_container)
-    LinearLayout root_container;
+    RelativeLayout root_container;
 
     private boolean isFinishedByUser = false;
     private Subscription subscribe;
@@ -181,7 +182,7 @@ public class LoadingActivity extends BaseActivity {
     private void startCountDown() {
         closeCountDown();
         if (!isFinishedByUser) {
-            countDownTime = 2000L;
+            countDownTime = 4000L;
             subscribe = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
                     .compose(this.<Long>bindLifeCycle())
                     .subscribeOn(Schedulers.newThread())

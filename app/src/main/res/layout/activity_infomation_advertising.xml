@@ -39,7 +39,7 @@
             android:gravity="top|left"
             android:hint="*请输入需要发布的内容"
             android:inputType="textMultiLine"
-            android:maxLength="100"
+            android:maxLength="60"
             android:paddingBottom="10dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
@@ -54,7 +54,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="0/100"
+            android:text="0/60"
             android:textColor="#ff999999"
             android:textSize="@dimen/txt_tips" />
     </LinearLayout>

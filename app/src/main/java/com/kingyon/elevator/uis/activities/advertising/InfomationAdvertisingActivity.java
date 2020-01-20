@@ -59,7 +59,7 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvLength.setText(String.format("%s/100", s.length()));
+                tvLength.setText(String.format("%s/60", s.length()));
             }
         });
         etContent.setText((adEntity != null && adEntity.getTitle() != null) ? adEntity.getTitle() : "");
