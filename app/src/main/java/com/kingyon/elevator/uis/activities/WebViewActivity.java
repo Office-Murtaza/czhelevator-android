@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.widgets.ProgressWebView;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -17,19 +18,16 @@ public class WebViewActivity extends AppCompatActivity {
 
 
     @BindView(R.id.webview)
-    WebView webview;
+    ProgressWebView webview;
     private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyStatusBarUtils.setStatusBar(this, "#ffffff");
-        ActivityUtil.addActivity(this);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
         url = getIntent().getStringExtra("value1");
-        webview.setWebChromeClient(new WebChromeClient());
-        webview.setWebViewClient(new WebViewClient());
         if (url!=null) {
             webview.loadUrl(url);
         }
@@ -37,10 +35,17 @@ public class WebViewActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (webview != null) {
+            //加载null内容
+            webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            //清除历史记录
+            webview.clearHistory();
+            //销毁VebView
+            webview.destroy();
+            //WebView置为null
+            webview = null;
+        }
         super.onDestroy();
-        webview.clearCache(true);
-        webview.destroy();
-        webview=null;
     }
 
 

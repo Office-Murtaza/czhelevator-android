@@ -25,8 +25,6 @@ import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
-import com.kingyon.elevator.interfaces.ShowPlanDateDailogLisenter;
-import com.squareup.haha.perflib.Main;
 
 /**
  * Date:2019/11/21
