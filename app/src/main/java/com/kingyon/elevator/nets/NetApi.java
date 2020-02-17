@@ -24,7 +24,7 @@ import rx.Observable;
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
     String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
-    String domainDebugName = "http://192.168.1.16:1510/";  //公司测试服
+    String domainDebugName = "http://111.85.152.201:1510/";  //公司测试服
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";
     String rapUrl = "http://rap2api.taobao.org/app/mock/121571/";
@@ -692,4 +692,12 @@ public interface NetApi {
     @POST("order/getCouponsInfo")
     @FormUrlEncoded
     Observable<AutoCalculationDiscountEntity> getCouponsInfo(@Field("amount") double amount, @Field("type") String type, @Field("isManual") Boolean isManual, @Field("consIds") String consIds);
+
+    /**
+     * 获取弹窗广告数据或者固定位置通知
+     * @return
+     */
+    @GET("common/getTipsList")
+    Observable<List<AdNoticeWindowEntity>> getTipsList(@Query("position") String position,@Query("showWay") int showWay);
+
 }

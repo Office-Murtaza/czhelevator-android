@@ -18,6 +18,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationInfoFragment;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -143,5 +144,6 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        DialogUtils.getInstance().hideCashTipsDialog();
     }
 }

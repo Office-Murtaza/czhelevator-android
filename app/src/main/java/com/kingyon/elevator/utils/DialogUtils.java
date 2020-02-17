@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.ColorRes;
 
+import com.kingyon.elevator.customview.CashTipsDialog;
+import com.kingyon.elevator.customview.MainWindowNoticeDialog;
 import com.kingyon.elevator.customview.OrderDetailedTipsDialog;
 import com.kingyon.elevator.customview.PreviewVideoBackTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
@@ -15,6 +17,7 @@ import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;
 import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.SelectDateDialog;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.interfaces.FingerCheckListener;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
@@ -23,6 +26,7 @@ import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.interfaces.ShowPlanDateDailogLisenter;
+import com.squareup.haha.perflib.Main;
 
 /**
  * Date:2019/11/21
@@ -45,6 +49,8 @@ public class DialogUtils {
     private RuleDescTipsDialog ruleDescTipsDialog;
     private PreviewVideoBackTipsDialog previewVideoBackTipsDialog;
     private OrderDetailedTipsDialog orderDetailedTipsDialog;
+    private CashTipsDialog cashTipsDialog;
+    private MainWindowNoticeDialog mainWindowNoticeDialog;
 
     private DialogUtils() {
 
@@ -304,7 +310,7 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showPlanSelectDateDialog(Context context,PlanSelectDateLinsener planSelectDateLinsener) {
+    public void showPlanSelectDateDialog(Context context, PlanSelectDateLinsener planSelectDateLinsener) {
         if (planSelectDateDialog != null && planSelectDateDialog.isShowing()) {
             planSelectDateDialog.dismiss();
             planSelectDateDialog = null;
@@ -350,6 +356,67 @@ public class DialogUtils {
             if (previewVideoBackTipsDialog != null) {
                 previewVideoBackTipsDialog.dismiss();
                 previewVideoBackTipsDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 显示合伙人信息提示框
+     *
+     * @param context
+     */
+    public void showCashTipsDialog(Context context, String content, boolean isLink, OnItemClick onItemClick) {
+        try {
+            if (cashTipsDialog != null && cashTipsDialog.isShowing()) {
+                cashTipsDialog.dismiss();
+                cashTipsDialog = null;
+            }
+            cashTipsDialog = new CashTipsDialog(context, content, isLink, onItemClick);
+            cashTipsDialog.setCancelable(true);
+            cashTipsDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideCashTipsDialog() {
+        try {
+            if (cashTipsDialog != null) {
+                cashTipsDialog.dismiss();
+                cashTipsDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 显示合伙人信息提示框
+     *
+     * @param context
+     */
+    public void showMainWindowNoticeDialog(Context context, AdNoticeWindowEntity adNoticeWindowEntity) {
+        try {
+            if (mainWindowNoticeDialog != null && mainWindowNoticeDialog.isShowing()) {
+                mainWindowNoticeDialog.dismiss();
+                mainWindowNoticeDialog = null;
+            }
+            mainWindowNoticeDialog = new MainWindowNoticeDialog(context, adNoticeWindowEntity);
+            mainWindowNoticeDialog.setCancelable(true);
+            mainWindowNoticeDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideMainWindowNoticeDialog() {
+        try {
+            if (mainWindowNoticeDialog != null) {
+                mainWindowNoticeDialog.dismiss();
+                mainWindowNoticeDialog = null;
             }
         } catch (Exception e) {
             e.printStackTrace();

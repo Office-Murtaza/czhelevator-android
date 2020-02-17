@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
@@ -20,6 +21,7 @@ import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
@@ -37,6 +39,7 @@ import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
 import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
+import com.kingyon.elevator.uis.fragments.main.MessageFragment;
 import com.kingyon.elevator.uis.fragments.main.OrderFragment;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
@@ -46,6 +49,7 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
 import com.kingyon.elevator.utils.OCRUtil;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RichTextUtil;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
@@ -84,6 +88,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     private BaseFragment currentFragment;
     private long logTime;
     private AnimatorPath path;//声明动画集合
+    private Boolean isFirstInit = true;
 
     @Override
     public int getContentViewId() {
@@ -162,19 +167,21 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         requestAdPubFailNumber();
         super.onResume();
         if (currentFragment == null) {
-            tabBar.getCurrentFragment(currentTag);
+            currentFragment = tabBar.getCurrentFragment(currentTag);
         }
         if (currentFragment != null) {
             currentFragment.setUserVisibleHint(true);
         }
+        if (PublicFuncation.isIntervalSixMin()) {
+            loadWindowAd();
+        }
     }
-
 
     @Override
     protected void onPause() {
         super.onPause();
         if (currentFragment == null) {
-            tabBar.getCurrentFragment(currentTag);
+            currentFragment = tabBar.getCurrentFragment(currentTag);
         }
     }
 
@@ -518,4 +525,31 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         }
     }
 
+
+    /**
+     * 加载弹窗通知
+     */
+    private void loadWindowAd() {
+        NetService.getInstance().getTipsList("HOME", 2)
+                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.d("弹窗广告加载失败：" + GsonUtils.toJson(ex));
+                    }
+
+                    @Override
+                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
+                        if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
+                            LogUtils.d("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities));
+                            AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
+                            if (adNoticeWindowEntity != null) {
+                                if (adNoticeWindowEntity.getShowType() == 2) {
+                                    //展示弹窗广告
+                                    DialogUtils.getInstance().showMainWindowNoticeDialog(MainActivity.this, adNoticeWindowEntity);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
 }

@@ -41,14 +41,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    signingConfigs {
-        kingyon_sign {
-            keyAlias 'kingyon.keystore'
-            keyPassword 'kingyon123'
-            storeFile file('../kingyon.keystore')
-            storePassword 'kingyon123'
-        }
-    }
+//    signingConfigs {
+//        kingyon_sign {
+//            keyAlias 'kingyon.keystore'
+//            keyPassword 'kingyon123'
+//            storeFile file('../kingyon.keystore')
+//            storePassword 'kingyon123'
+//        }
+//    }
 
     buildTypes {
         release {
@@ -79,7 +79,7 @@ android {
                     }
                 }
             }
-            signingConfig signingConfigs.kingyon_sign
+            //signingConfig signingConfigs.kingyon_sign
         }
         debug {
             configurations.all { config ->
@@ -91,7 +91,7 @@ android {
                     }
                 }
             }
-            signingConfig signingConfigs.kingyon_sign
+            // signingConfig signingConfigs.kingyon_sign
         }
     }
 

@@ -14,14 +14,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.customview.MyActionBar;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.interfaces.OnItemClick;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
+import com.kingyon.elevator.uis.activities.WebViewActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationEarningsActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationIncomeActivity;
@@ -33,13 +40,17 @@ import com.kingyon.elevator.uis.activities.devices.CellChooseActivity;
 import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.widgets.StateLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -114,6 +125,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         StatusBarUtil.setHeadViewPadding(getActivity(), container_view);
         preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         updateUI(entity);
+        loadCashTips();
     }
 
     @Override
@@ -133,6 +145,39 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         SpannableString spannableString = new SpannableString(twoFloat);
         spannableString.setSpan(new AbsoluteSizeSpan(20, true), twoFloat.indexOf(".") + 1, twoFloat.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannableString;
+    }
+
+
+    /**
+     * 加载提现的提示
+     */
+    private void loadCashTips(){
+        NetService.getInstance().getTipsList("PARTNER",2)
+                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.d("弹窗提现提示加载失败："+ GsonUtils.toJson(ex));
+                    }
+
+                    @Override
+                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
+                        if (adNoticeWindowEntities!=null&&adNoticeWindowEntities.size()>0) {
+                            AdNoticeWindowEntity adNoticeWindowEntity = adNoticeWindowEntities.get(0);
+                            LogUtils.d("弹窗提现提示数据："+ GsonUtils.toJson(adNoticeWindowEntity));
+                            if (adNoticeWindowEntity.getShowType()==1) {
+                                //展示弹窗提示
+                                DialogUtils.getInstance().showCashTipsDialog(getContext(), adNoticeWindowEntity.getShowContent(),adNoticeWindowEntity.isLink(), new OnItemClick() {
+                                    @Override
+                                    public void onItemClick(int position) {
+                                        if (adNoticeWindowEntity.isLink()) {
+                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class,adNoticeWindowEntity.getLinkUrl());
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
     }
 
     @OnClick({R.id.pre_v_back, R.id.btn_apply_crash, R.id.ll_income_today, R.id.ll_income_month,

@@ -18,11 +18,14 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.customview.SelfAdaptionImageView;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AMapCityEntity;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.AnnouncementEntity;
 import com.kingyon.elevator.entities.BannerEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
@@ -36,6 +39,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
 import com.kingyon.elevator.uis.activities.MainActivity;
+import com.kingyon.elevator.uis.activities.WebViewActivity;
 import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
 import com.kingyon.elevator.uis.activities.homepage.RecommendListActivity;
@@ -52,15 +56,19 @@ import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.uis.widgets.viewpager.AutoScrollViewPager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
+import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshFragment;
 import com.leo.afbaselibrary.utils.AFUtil;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -107,6 +115,8 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     TextView tvMapTitle;
     @BindView(R.id.ll_title)
     LinearLayout llTitle;
+    @BindView(R.id.main_notice_img)
+    SelfAdaptionImageView main_notice_img;
 
     private BannerAdaper<BannerEntity> bannerAdaper;
     private ClassifyAdapter classifyAdapter;
@@ -186,6 +196,61 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                         }, 200);
                     }
                 });
+        loadAbsolutelyAd();
+    }
+
+
+    /**
+     * 加载首页固定位置的通知
+     */
+    private void loadAbsolutelyAd() {
+        NetService.getInstance().getTipsList("HOME", 1)
+                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.d("广告加载失败：" + GsonUtils.toJson(ex));
+                        main_notice_img.setVisibility(View.GONE);
+                        main_notice_img.setOnClickListener(null);
+                    }
+
+                    @Override
+                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
+                        if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
+                            AdNoticeWindowEntity adNoticeWindowEntity = adNoticeWindowEntities.get(0);
+                            LogUtils.d("广告数据：" + GsonUtils.toJson(adNoticeWindowEntity));
+                            if (adNoticeWindowEntity.getShowType() == 2) {
+                                GlideUtils.loadImage(getContext(), adNoticeWindowEntity.getShowContent(), main_notice_img);
+                                main_notice_img.setVisibility(View.VISIBLE);
+                                if (adNoticeWindowEntity.isLink()) {
+                                    main_notice_img.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.getLinkUrl());
+                                            LogUtils.d("点击跳转连接：" + adNoticeWindowEntity.getLinkUrl());
+                                        }
+                                    });
+                                } else {
+
+                                    main_notice_img.setOnClickListener(null);
+                                }
+                            } else {
+                                main_notice_img.setVisibility(View.GONE);
+                                main_notice_img.setOnClickListener(null);
+                            }
+                        } else {
+                            main_notice_img.setVisibility(View.GONE);
+                            main_notice_img.setOnClickListener(null);
+                        }
+                    }
+                });
+    }
+
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void updateLocationUi(LocationEntity entity) {
@@ -502,4 +567,6 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

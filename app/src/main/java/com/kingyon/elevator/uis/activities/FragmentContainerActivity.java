@@ -15,6 +15,9 @@ import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.FragmentContainerPresenter;
+import com.kingyon.elevator.uis.fragments.message.CommentListFragment;
+import com.kingyon.elevator.uis.fragments.message.DianZanListFragment;
+import com.kingyon.elevator.uis.fragments.message.NoticeOrHelperFragment;
 import com.kingyon.elevator.uis.fragments.user.CashMethodSettingFragment;
 import com.kingyon.elevator.uis.fragments.user.CheckPayVerCodeFragment;
 import com.kingyon.elevator.uis.fragments.user.EditLoginPasswordFragment;
@@ -168,6 +171,26 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
             case FragmentConstants.CheckPayVerCodeFragment:
                 my_action_bar.setTitle("密码设置");
                 fragmentTransaction.replace(R.id.fragment_container, CheckPayVerCodeFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.NoticeListFragment:
+                my_action_bar.setTitle("通知");
+                fragmentTransaction.replace(R.id.fragment_container, NoticeOrHelperFragment.newInstance(1));
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.HelperListFragment:
+                my_action_bar.setTitle("小助手");
+                fragmentTransaction.replace(R.id.fragment_container, NoticeOrHelperFragment.newInstance(2));
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.DianZanListFragment:
+                my_action_bar.setTitle("点赞");
+                fragmentTransaction.replace(R.id.fragment_container, DianZanListFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.CommentListFragment:
+                my_action_bar.setTitle("评论");
+                fragmentTransaction.replace(R.id.fragment_container, CommentListFragment.newInstance());
                 fragmentTransaction.commit();
                 break;
             default:

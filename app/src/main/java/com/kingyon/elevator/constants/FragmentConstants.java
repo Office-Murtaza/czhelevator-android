@@ -47,5 +47,13 @@ public class FragmentConstants {
     //获取验证码校验用于设置支付密码
     public static final String CheckPayVerCodeFragment = "CheckPayVerCodeFragment";
 
+    //通知列表详情页
+    public static final String NoticeListFragment = "NoticeListFragment";
+    //小助手列表页
+    public static final String HelperListFragment = "HelperListFragment";
+    //点赞列表详情页
+    public static final String DianZanListFragment = "DianZanListFragment";
+    //评论列表页
+    public static final String CommentListFragment = "CommentListFragment";
 
 }

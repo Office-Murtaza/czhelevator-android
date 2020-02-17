@@ -54,7 +54,7 @@ public class App extends LitePalApplication {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.white,R.color.black);//全局设置主题颜色
+                layout.setPrimaryColorsId(R.color.white, R.color.black);//全局设置主题颜色
                 return new ClassicsHeader(context);
             }
         });
@@ -90,7 +90,7 @@ public class App extends LitePalApplication {
         });
         if (AppUtils.isAppDebug()) {
             LogUtils.getConfig().setLogSwitch(true);
-        }else {
+        } else {
             LogUtils.getConfig().setLogSwitch(false);
         }
     }
@@ -101,6 +101,7 @@ public class App extends LitePalApplication {
 
     private void init() {
         DensityUtil.init(this);
+        LogUtils.d("token:" + DataSharedPreferences.getToken());
         Net.getInstance().setToken(DataSharedPreferences.getToken());
     }
 

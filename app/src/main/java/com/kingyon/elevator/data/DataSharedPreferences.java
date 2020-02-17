@@ -28,6 +28,10 @@ public class DataSharedPreferences {
     private static final String LATLON_CACHE = "LATLON_CACHE";
     private static final String LOADING_ADVERTISING = "LOADING_ADVERTISING";
 
+    public static final String LAST_AD_TIME = "LAST_AD_TIME";//上一次展示的时间
+    public static final String LAST_AD_ID = "LAST_AD_ID";//上一次展示广告的id
+
+
     //是否已经显示过用户隐私政策对话框
     public static final String IS_SHOW_ALREADY_PRIVACY_DIALOG = "IS_SHOW_ALREADY_PRIVACY_DIALOG";
 
@@ -165,5 +169,22 @@ public class DataSharedPreferences {
     public static LatLonCache getLatLon() {
         String string = getPreferences().getString(LATLON_CACHE, "");
         return new Gson().fromJson(string, LatLonCache.class);
+    }
+
+
+    public static void saveLong(String key, long value) {
+        getPreferences().edit().putLong(key, value).apply();
+    }
+
+    public static long getLong(String key) {
+        return getPreferences().getLong(key,0l);
+    }
+
+    public static void saveInt(String key, int value) {
+        getPreferences().edit().putInt(key, value).apply();
+    }
+
+    public static int getInt(String key) {
+        return getPreferences().getInt(key,-1);
     }
 }

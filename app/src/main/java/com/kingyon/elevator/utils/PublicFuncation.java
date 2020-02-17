@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +61,7 @@ public class PublicFuncation {
 
     /**
      * md5加密
+     *
      * @param s
      * @return
      */
@@ -113,6 +117,59 @@ public class PublicFuncation {
             }
         } catch (Exception e) {
             LogUtils.e("创建缓存目录", e.toString());
+        }
+    }
+
+
+    /**
+     * 判断上一次广告到当前的时间是否大于60分钟
+     *
+     * @return
+     */
+    public static boolean isIntervalSixMin() {
+        long currentTime = System.currentTimeMillis();
+        long lastTime = DataSharedPreferences.getLong(DataSharedPreferences.LAST_AD_TIME);
+        if (lastTime > 0) {
+            long diff = (currentTime - lastTime) / 1000 / 60;
+            LogUtils.d("当前时间差：" + diff + "分");
+            if (diff >= 60) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+
+    /**
+     * 获取下一条需要展示广告
+     * @param adNoticeWindowEntityList
+     * @return
+     */
+    public static AdNoticeWindowEntity getLastAdItem(List<AdNoticeWindowEntity> adNoticeWindowEntityList) {
+        int lastId = DataSharedPreferences.getInt(DataSharedPreferences.LAST_AD_ID);
+        if (adNoticeWindowEntityList != null && adNoticeWindowEntityList.size() > 0) {
+            if (lastId >= 0) {
+                int currentPosition = 0;
+                for (int i = 0; i < adNoticeWindowEntityList.size(); i++) {
+                    if (lastId == adNoticeWindowEntityList.get(i).getId()) {
+                        currentPosition = i;
+                        break;
+                    }
+                }
+                if (currentPosition + 1 <= adNoticeWindowEntityList.size() - 1) {
+                    currentPosition++;
+                    return adNoticeWindowEntityList.get(currentPosition);
+                } else {
+                    return adNoticeWindowEntityList.get(0);
+                }
+            } else {
+                return adNoticeWindowEntityList.get(0);
+            }
+        } else {
+            return null;
         }
     }
 }

@@ -46,14 +46,15 @@
     <application
         android:name=".application.App"
         android:allowBackup="true"
+        android:configChanges="fontScale|orientation"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:configChanges="fontScale|orientation"
         tools:replace="android:icon,android:theme,android:name">
-        <activity android:name=".uis.activities.advertising.PreviewVideoActivity"/>
+        <activity android:name=".uis.activities.WebViewActivity"></activity>
+        <activity android:name=".uis.activities.advertising.PreviewVideoActivity" />
         <activity
             android:name=".uis.activities.order.ConfirmOrderActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -106,8 +107,8 @@
             android:screenOrientation="portrait" /> <!-- 登录注册 -->
         <activity
             android:name=".uis.activities.password.LoginActivity"
-            android:launchMode="singleTask"
             android:configChanges="fontScale|orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.password.RegisterActivity"

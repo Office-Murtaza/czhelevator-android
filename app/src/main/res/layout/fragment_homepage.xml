@@ -50,8 +50,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
                             android:layout_marginTop="-40dp"
+                            android:layout_marginRight="6dp"
                             app:cardBackgroundColor="@color/white_normal"
                             app:cardCornerRadius="@dimen/spacing_six"
                             app:cardElevation="10dp"
@@ -76,8 +76,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:paddingBottom="@dimen/spacing_three"
-                                android:paddingTop="@dimen/spacing_three">
+                                android:paddingTop="@dimen/spacing_three"
+                                android:paddingBottom="@dimen/spacing_three">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -108,10 +108,10 @@
                                         android:id="@+id/img_current_location"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:paddingBottom="@dimen/spacing_twelve"
                                         android:paddingLeft="@dimen/spacing_twelve"
-                                        android:paddingRight="@dimen/spacing_twelve"
                                         android:paddingTop="@dimen/spacing_twelve"
+                                        android:paddingRight="@dimen/spacing_twelve"
+                                        android:paddingBottom="@dimen/spacing_twelve"
                                         android:src="@drawable/ic_current_location" />
                                 </LinearLayout>
 
@@ -150,10 +150,10 @@
                                         android:id="@+id/img_search"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:paddingBottom="@dimen/spacing_twelve"
                                         android:paddingLeft="@dimen/spacing_twelve"
-                                        android:paddingRight="@dimen/spacing_default"
                                         android:paddingTop="@dimen/spacing_twelve"
+                                        android:paddingRight="@dimen/spacing_default"
+                                        android:paddingBottom="@dimen/spacing_twelve"
                                         android:src="@drawable/ic_homepage_right" />
                                 </LinearLayout>
 
@@ -198,14 +198,30 @@
                             android:focusableInTouchMode="true"
                             android:gravity="center_vertical"
                             android:marqueeRepeatLimit="marquee_forever"
-                            android:paddingBottom="@dimen/spacing_small"
                             android:paddingLeft="@dimen/spacing_default"
-                            android:paddingRight="@dimen/spacing_default"
                             android:paddingTop="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_default"
+                            android:paddingBottom="@dimen/spacing_small"
                             android:singleLine="true"
                             android:textColor="#808080"
                             android:textStyle="bold"
+                            android:visibility="gone"
                             tools:text="打卡需要在当天完成，连续五次未打卡将判定习惯养成失败连续五次未打卡将判定习惯养成失败。" />
+
+
+                        <com.kingyon.elevator.customview.SelfAdaptionImageView
+                            android:id="@+id/main_notice_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="6dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginStart="6dp"
+                            android:visibility="gone"
+                            android:layout_marginBottom="5dp"
+                            app:HeightRatio="130"
+                            app:WidthRatio="357" />
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -328,17 +344,17 @@
                                 android:id="@+id/tv_location_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:drawablePadding="@dimen/spacing_four"
                                 android:drawableRight="@drawable/ic_location_bottom"
+                                android:drawablePadding="@dimen/spacing_four"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
                                 android:hint="未知"
                                 android:maxLength="5"
                                 android:maxLines="1"
-                                android:paddingBottom="4dp"
                                 android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
                                 android:paddingTop="4dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="4dp"
                                 android:singleLine="true"
                                 android:textColor="#ff333333"
                                 android:textColorHint="#ABABAB"

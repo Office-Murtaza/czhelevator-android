@@ -131,4 +131,13 @@
         <attr name="indicatorTextSize" />
         <attr name="indicatorTextColor" />
     </declare-styleable>
+
+    <declare-styleable name="MessageTabView">
+        <attr name="tabType" format="enum">
+            <enum name="notice" value="0" />
+            <enum name="helper" value="1" />
+            <enum name="dianzan" value="2" />
+            <enum name="comment" value="3" />
+        </attr>
+    </declare-styleable>
 </resources>

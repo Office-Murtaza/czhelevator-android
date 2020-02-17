@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/tongzhi" />
+
+    <TextView
+        android:id="@+id/tv_msg_num"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@id/tab_icon"
+        android:layout_alignRight="@id/tab_icon"
+        android:layout_marginTop="-3dp"
+        android:layout_marginRight="-6dp"
+        android:background="@drawable/bg_red_msg_num"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="9"
+        android:textColor="@color/white_normal"
+        android:textSize="@dimen/txt_small"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/tab_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tab_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="通知"
+        android:textColor="#959595"
+        android:textSize="15sp" />
+
+</RelativeLayout>

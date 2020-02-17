@@ -18,6 +18,7 @@ import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.AdDetectingEntity;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.AdTempletEntity;
 import com.kingyon.elevator.entities.AdvertisionEntity;
 import com.kingyon.elevator.entities.AnnouncementEntity;
@@ -1338,6 +1339,16 @@ public class NetService {
      */
     public Observable<AutoCalculationDiscountEntity> getCouponsInfo(double amount, String type, Boolean isManual, String consIds) {
         return addSchedulers(getApi().getCouponsInfo(amount, type, isManual, consIds));
+    }
+
+
+    /**
+     * 获取弹窗通知以及固定位置通知等
+     *
+     * @return
+     */
+    public Observable<List<AdNoticeWindowEntity>> getTipsList(String position, int showType) {
+        return addSchedulers(getApi().getTipsList(position,showType));
     }
 }
 
