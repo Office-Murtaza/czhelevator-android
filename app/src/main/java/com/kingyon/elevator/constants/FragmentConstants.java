@@ -55,5 +55,12 @@ public class FragmentConstants {
     public static final String DianZanListFragment = "DianZanListFragment";
     //评论列表页
     public static final String CommentListFragment = "CommentListFragment";
+    //评论详情页
+    public static final String CommentDetailsFragment = "CommentDetailsFragment";
+    //更多新闻列表页
+    public static final String NewsRecommendationFragment = "NewsRecommendationFragment";
+
+    //更多新闻列表页
+    public static final String OrderFragment = "OrderFragment";
 
 }

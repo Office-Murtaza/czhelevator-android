@@ -31,6 +31,7 @@ import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.entities.CellDeviceNumberEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.CityCellEntity;
+import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
@@ -40,6 +41,7 @@ import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.DeviceDetailsInfo;
 import com.kingyon.elevator.entities.DeviceNumberEntity;
 import com.kingyon.elevator.entities.DeviceNumberInfo;
+import com.kingyon.elevator.entities.DianZanEntity;
 import com.kingyon.elevator.entities.FeedBackCache;
 import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.FeedBackMessageEntity;
@@ -58,7 +60,12 @@ import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.LoginResultEntity;
 import com.kingyon.elevator.entities.MateriaEntity;
 import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
+import com.kingyon.elevator.entities.MsgCommentEntity;
+import com.kingyon.elevator.entities.MsgNoticeEntity;
+import com.kingyon.elevator.entities.MsgUnreadCountEntity;
 import com.kingyon.elevator.entities.MyWalletInfo;
+import com.kingyon.elevator.entities.NewsDetailsEntity;
+import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.entities.NormalMessageEntity;
 import com.kingyon.elevator.entities.NormalOptionEntity;
@@ -113,6 +120,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.Field;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -1348,7 +1356,157 @@ public class NetService {
      * @return
      */
     public Observable<List<AdNoticeWindowEntity>> getTipsList(String position, int showType) {
-        return addSchedulers(getApi().getTipsList(position,showType));
+        return addSchedulers(getApi().getTipsList(position, showType));
+    }
+
+    /**
+     * 获取新闻列表
+     *
+     * @return
+     */
+    public Observable<List<NewsEntity>> getNewsList(int start, int size, Integer category, String keywords) {
+        return addSchedulers(getApi().getNewsList(start, size, category, keywords));
+    }
+
+    /**
+     * 获取新闻详情
+     *
+     * @return
+     */
+    public Observable<NewsDetailsEntity> getNewsInfo(int id) {
+        return addSchedulers(getApi().getNewDetailInfo(id));
+    }
+
+    /**
+     * 取消点赞或点赞
+     *
+     * @return
+     */
+    public Observable<String> setLike(int id) {
+        return addSchedulers(getApi().setLike(id));
+    }
+
+    /**
+     * 获取品论列表
+     *
+     * @return
+     */
+    public Observable<List<CommentEntity>> getCommentList(int id, int start, int size, int sort) {
+        return addSchedulers(getApi().getListComment(id, start, size, sort));
+    }
+
+    /**
+     * 获取子评论的列表
+     *
+     * @return
+     */
+    public Observable<List<CommentEntity>> getChildListComment(int id, int start, int size) {
+        return addSchedulers(getApi().getChildListComment(id, start, size));
+    }
+
+
+    /**
+     * 增加一条评论
+     *
+     * @return
+     */
+    public Observable<String> addComment(Long newsId, Long parentId, Long replyId, int level, String comment) {
+        return addSchedulers(getApi().addComment(newsId, parentId, replyId, level, comment));
+    }
+
+
+    /**
+     * 点赞或取消点赞评论
+     *
+     * @return
+     */
+    public Observable<String> addLikeComment(Long commentId) {
+        return addSchedulers(getApi().addLikeComment(commentId));
+    }
+
+    /**
+     * 获取消息未读数
+     *
+     * @return
+     */
+    public Observable<MsgUnreadCountEntity> getUnreadCount() {
+        return addSchedulers(getApi().getUnreadCount());
+    }
+
+
+    /**
+     * 获取点赞消息
+     *
+     * @return
+     */
+    public Observable<List<DianZanEntity>> getUserLikeList(int start, int size) {
+        return addSchedulers(getApi().getUserLikeList(start, size));
+    }
+
+
+    /**
+     * 获取通知消息
+     *
+     * @return
+     */
+    public Observable<List<MsgNoticeEntity>> getNoticeList(int start, int size) {
+        return addSchedulers(getApi().getNoticeList(start, size));
+    }
+
+
+    /**
+     * 获取小助手消息
+     *
+     * @return
+     */
+    public Observable<List<MsgNoticeEntity>> getReviewList(int start, int size) {
+        return addSchedulers(getApi().getReviewList(start, size));
+    }
+
+
+    /**
+     * 获取消息首页数据列表
+     *
+     * @return
+     */
+    public Observable<List<MsgNoticeEntity>> getIndexList(int start, int size) {
+        return addSchedulers(getApi().getIndexList(start, size));
+    }
+
+    /**
+     * 获取评论消息列表
+     *
+     * @return
+     */
+    public Observable<List<MsgCommentEntity>> getUserCommentList(int start, int size) {
+        return addSchedulers(getApi().getUserCommentList(start, size));
+    }
+
+    /**
+     * 设置消息已读
+     *
+     * @return
+     */
+    public Observable<String> setMsgRead(int id) {
+        return addSchedulers(getApi().setMsgRead(id));
+    }
+
+    /**
+     * 删除某条消息
+     *
+     * @return
+     */
+    public Observable<String> deleteMsg(int id) {
+        return addSchedulers(getApi().deleteMsg(id));
+    }
+
+    /**
+     * 设置全部已读
+     *
+     * @return
+     */
+    public Observable<String> setAllIsRead() {
+        return addSchedulers(getApi().setAllIsRead());
     }
 }
 

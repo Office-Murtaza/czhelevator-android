@@ -156,6 +156,7 @@ dependencies {
     // 使用
     implementation 'com.shuyu:GSYVideoPlayer:6.0.2'
     implementation files('libs/pldroid-player-2.1.9.jar')
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 MobSDK {

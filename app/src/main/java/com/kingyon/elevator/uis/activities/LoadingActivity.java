@@ -182,7 +182,7 @@ public class LoadingActivity extends BaseActivity {
     private void startCountDown() {
         closeCountDown();
         if (!isFinishedByUser) {
-            countDownTime = 4000L;
+            countDownTime = 5000L;
             subscribe = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
                     .compose(this.<Long>bindLifeCycle())
                     .subscribeOn(Schedulers.newThread())

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_head"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_toEndOf="@+id/user_head"
+            android:text="会飞的马尔扎哈"
+            android:textColor="#444144"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/user_head"
+            android:text="23分钟前"
+            android:textColor="#444144"
+            android:textSize="8sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_dianzan"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:src="@mipmap/details_shoucangtubiaosan" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/reply_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:text="：我是回复内容我是回复内我是回复内容我是回复内我是回复内容我是回复内我是回复内容我是回复内"
+        android:textColor="#464347"
+        android:textSize="10sp" />
+
+</LinearLayout>

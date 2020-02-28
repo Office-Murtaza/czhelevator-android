@@ -1,13 +1,17 @@
 package com.kingyon.elevator.utils;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.BannerEntity;
+import com.kingyon.elevator.entities.MsgNoticeEntity;
 import com.kingyon.elevator.entities.NormalMessageEntity;
 import com.kingyon.elevator.entities.NormalOptionEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
@@ -129,8 +133,9 @@ public class JumpUtils {
         Bundle bundle = new Bundle();
         switch (messageType) {
             case "ORDER_LIST"://订单
-                EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity("", "全部订单")));
-                ActivityUtil.finishAllNotMain();
+//                EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity("", "全部订单")));
+//                ActivityUtil.finishAllNotMain();
+                MyActivityUtils.goOrderCOntainerActivity(baseActivity, new NormalParamEntity("", "全部订单"));
                 break;
             case "ORDER"://订单
                 bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getExtraId());
@@ -202,5 +207,85 @@ public class JumpUtils {
 //        PROPERTY_FAILED 物业认证失败
 //        ORDER 订单
 //        FEEDBACK 意见反馈
+    }
+
+
+    public void jumpToMessagePage(Context context, MsgNoticeEntity msgNoticeEntity) {
+        if (msgNoticeEntity == null) {
+            return;
+        }
+        NormalMessageEntity entity = new NormalMessageEntity();
+        entity.setContent(msgNoticeEntity.getContent());
+        entity.setObjectId(msgNoticeEntity.getId());
+        entity.setTitle(msgNoticeEntity.getTitle() == null ? "" : msgNoticeEntity.getTitle());
+        entity.setTime(msgNoticeEntity.getCreateTime());
+        entity.setImage(msgNoticeEntity.getImage());
+        entity.setLink(msgNoticeEntity.getLink());
+        entity.setExtraId(msgNoticeEntity.getExtraId());
+        entity.setType(msgNoticeEntity.getTypeChild());
+        entity.setUnRead(msgNoticeEntity.isIsRead());
+        String messageType = entity.getType() != null ? entity.getType() : "";
+        Bundle bundle = new Bundle();
+        switch (messageType) {
+            case "ORDER_LIST"://订单
+                //EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity("", "全部订单")));
+                MyActivityUtils.goOrderCOntainerActivity(context, new NormalParamEntity("", "全部订单"));
+                break;
+            case "ORDER"://订单
+                bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getExtraId());
+                MyActivityUtils.goActivity(context, OrderDetailsActivity.class, bundle);
+                break;
+            case "ACQUIRE_COUPONS"://获得优惠券
+                MyActivityUtils.goActivity(context, MyCouponsActivty.class);
+                break;
+            case "AD_SUCCED"://广告审核成功
+                MyActivityUtils.goActivity(context, MyAdActivity.class);
+                break;
+            case "AD_FAILED"://广告审核失败
+                LogUtils.d("广告审核失败跳转-------------------------");
+                MyActivityUtils.goActivity(context, MyAdActivity.class);
+                break;
+            case "PROMOTE_SUCCED"://推广已完成
+                MyActivityUtils.goActivity(context, InviteActivity.class);
+                break;
+            case "PROMOTE_AWARD"://推广获得奖励
+                MyActivityUtils.goActivity(context, InviteListActivity.class);
+                break;
+            case "FEEDBACK"://反馈收到平台回复
+                bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getExtraId());
+                MyActivityUtils.goActivity(context, FeedBackDetailsActivity.class);
+                break;
+            case "PERSON_SUCCED"://个人认证成功
+                MyActivityUtils.goActivity(context, IdentitySuccessActivity.class);
+                break;
+            case "PERSON_FAILED"://个人认证失败
+                MyActivityUtils.goActivity(context, IdentityPersonActivity.class);
+                break;
+            case "COMPANY_SUCCED"://企业认证成功
+                MyActivityUtils.goActivity(context, IdentitySuccessActivity.class);
+                break;
+            case "COMPANY_FAILED"://企业认证失败
+                MyActivityUtils.goActivity(context, IdentityCompanyActivity.class);
+                break;
+            case "PARTNER_SUCCED"://合伙人认证成功
+                MyActivityUtils.goActivity(context, CooperationActivity.class);
+                break;
+            case "PARTNER_FAILED"://合伙人认证失败
+                MyActivityUtils.goActivity(context, CooperationActivity.class);
+                break;
+            case "PROPERTY_SUCCED"://物业认证成功
+                MyActivityUtils.goActivity(context, PropertyActivity.class);
+                break;
+            case "PROPERTY_FAILED"://物业认证失败
+                MyActivityUtils.goActivity(context, PropertyActivity.class);
+                break;
+            case "INVOICE"://发票
+                MyActivityUtils.goActivity(context, MyInvoiceActivity.class);
+                break;
+            default:
+                bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+                MyActivityUtils.goActivity(context, MessageDetailsActivity.class,bundle);
+                break;
+        }
     }
 }

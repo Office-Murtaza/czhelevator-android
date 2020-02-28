@@ -5,6 +5,7 @@ import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
+import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 
 /**
@@ -54,5 +55,6 @@ public class RuntimeUtils {
     public static int businessPlanCount = 0;
     public static int diyPlanCount = 0;
     public static int infomationPlanCount = 0;
+    public static NewsEntity newsEntity;//当前点击的新闻
 
 }

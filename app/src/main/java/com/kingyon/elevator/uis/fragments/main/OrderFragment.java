@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
@@ -67,6 +68,9 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
     @BindView(R.id.fl_title)
     FrameLayout flTitle;
 
+    @BindView(R.id.back_close)
+    ImageView back_close;
+
     private String status;
     private Subscription countDownSubscribe;
     private OrderStatusWindow orderStatusWindow;
@@ -98,7 +102,7 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
         }
         status = entity == null ? "" : entity.getType();
         preTvTitle.setText(entity == null ? "全部订单" : entity.getName());
-        StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
+        //StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
         RxTextView.textChanges(preTvTitle)
                 .debounce(600, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -112,6 +116,12 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
                         autoRefresh();
                     }
                 });
+        back_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
     }
 
     protected void setupRefreshAndLoadMore() {

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_input_keyword"
+        android:layout_width="300dp"
+        android:layout_height="30.5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_news_serach_bg"
+        android:drawableStart="@mipmap/recommend_fangdajing"
+        android:drawablePadding="15dp"
+        android:gravity="center_vertical"
+        android:hint="搜索"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/tab_tuiguang"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="推广"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#EB7A12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_hangye"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="行业"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#EB7A12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_zhishi"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="知识"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#EB7A12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_news"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="新闻"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#EB7A12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
+
+        <ListView
+            android:id="@+id/news_recommend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:divider="@color/transparent"
+            android:dividerHeight="5dp"
+            android:scrollbars="none" />
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

@@ -45,5 +45,5 @@ captures/
 *.iml
 
 # Keystore files
-*.keystore
+# *.keystore
 .idea/

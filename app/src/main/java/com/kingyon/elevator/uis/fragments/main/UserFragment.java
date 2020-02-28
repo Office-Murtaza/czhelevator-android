@@ -323,13 +323,16 @@ public class UserFragment extends BaseStateRefreshFragment {
                 jumpToIdentity();
                 break;
             case R.id.tv_order_all:
-                EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity("", "全部订单")));
+                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity("", "全部订单"));
+                // EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity("", "全部订单")));
                 break;
             case R.id.tv_order_deal:
-                EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity(Constants.OrderStatus.RELEASEING, "发布中")));
+                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity(Constants.OrderStatus.RELEASEING, "发布中"));
+                //EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity(Constants.OrderStatus.RELEASEING, "发布中")));
                 break;
             case R.id.tv_order_completed:
-                EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity(Constants.OrderStatus.COMPLETE, "已完成")));
+                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity(Constants.OrderStatus.COMPLETE, "已完成"));
+                //EventBus.getDefault().post(new TabEntity(2, new NormalParamEntity(Constants.OrderStatus.COMPLETE, "已完成")));
                 break;
             case R.id.tv_ad:
                 startActivity(MyAdActivity.class);

@@ -25,6 +25,8 @@ import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
@@ -37,9 +39,8 @@ import butterknife.OnClick;
 public class PreviewVideoActivity extends AppCompatActivity {
     private String videoPath = "";
     private long videoTime = 0;
-    VideoView video_view;
-    @BindView(R.id.play_video)
-    ImageView play_video;
+    @BindView(R.id.video_view)
+    StandardGSYVideoPlayer gsyVideoView;
     @BindView(R.id.my_action_bar)
     MyActionBar my_action_bar;
     @BindView(R.id.iv_preview_video_img)
@@ -56,11 +57,6 @@ public class PreviewVideoActivity extends AppCompatActivity {
         MyStatusBarUtils.setStatusBar(this, "#ffffff");
         setContentView(R.layout.activity_preview_video);
         ButterKnife.bind(this);
-        video_view = new VideoView(App.getContext());
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        video_view.setLayoutParams(layoutParams);
-        video_view_container.addView(video_view);
         my_action_bar.setLeftIconClick(new OnItemClick() {
             @Override
             public void onItemClick(int position) {
@@ -79,39 +75,26 @@ public class PreviewVideoActivity extends AppCompatActivity {
             finish();
             return;
         }
-        video_view.setVideoPath(videoPath);
-        video_view.setOnCompletionListener(mp -> {
-            mp.seekTo(0);
-            mp.start();
-        });
         tv_video_time.setText("视频时长" + videoTime / 1000 + "s");
         GlideUtils.loadLocalFrame(this, videoPath, iv_preview_video_img);
+        gsyVideoView.setUp(videoPath, true, "");
+        gsyVideoView.getBackButton().setVisibility(View.GONE);
+        gsyVideoView.getFullscreenButton().setVisibility(View.GONE);
+        gsyVideoView.startPlayLogic();
         // video_view.start();
     }
 
-    @OnClick({R.id.play_video, R.id.go_place_an_order})
+    @OnClick({R.id.go_place_an_order})
     public void onClick(View view) {
         if (QuickClickUtils.isFastClick()) {
             LogUtils.d("快速点击了-------------------");
             return;
         }
         switch (view.getId()) {
-            case R.id.play_video:
-                isClickPlay = true;
-                iv_preview_video_img.setVisibility(View.GONE);
-                play_video.setVisibility(View.GONE);
-                video_view.start();
-                break;
             case R.id.go_place_an_order:
-                if (video_view.isPlaying()) {
-                    video_view.pause();
-                }
-                video_view.postDelayed(() ->
-                {
-                    MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
-                            Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
-                    finish();
-                }, 300);
+                MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
+                        Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
+                finish();
                 break;
         }
     }
@@ -121,34 +104,20 @@ public class PreviewVideoActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-        if (video_view.isPlaying()) {
-            video_view.pause();
-        }
+        GSYVideoManager.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        if (isClickPlay) {
-            if (!video_view.isPlaying()) {
-                video_view.postDelayed(() -> {
-                    iv_preview_video_img.setVisibility(View.GONE);
-                    play_video.setVisibility(View.GONE);
-                    video_view.start();
-                }, 200);
-            }
-        }
+        GSYVideoManager.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        video_view_container.removeAllViews();
-        video_view.stopPlayback();
-        video_view.setOnCompletionListener(null);
-        video_view.setOnPreparedListener(null);
-        video_view = null;
         super.onDestroy();
+        GSYVideoManager.releaseAllVideos();
     }
 
     @Override
@@ -156,9 +125,6 @@ public class PreviewVideoActivity extends AppCompatActivity {
         DialogUtils.getInstance().showBackTipsDialog(PreviewVideoActivity.this, new OnItemClick() {
             @Override
             public void onItemClick(int position) {
-                if (video_view.isPlaying()) {
-                    video_view.pause();
-                }
                 finish();
             }
         });

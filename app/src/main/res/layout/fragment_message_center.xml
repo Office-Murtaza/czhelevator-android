@@ -37,69 +37,70 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/pre_refresh"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-
-                <LinearLayout
+                <com.kingyon.elevator.customview.MessageTabView
+                    android:id="@+id/tab_notice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    app:tabType="notice" />
 
-                    <com.kingyon.elevator.customview.MessageTabView
-                        android:id="@+id/tab_notice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:tabType="notice" />
+                <com.kingyon.elevator.customview.MessageTabView
+                    android:id="@+id/tab_helper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:tabType="helper" />
 
-                    <com.kingyon.elevator.customview.MessageTabView
-                        android:id="@+id/tab_helper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:tabType="helper" />
+                <com.kingyon.elevator.customview.MessageTabView
+                    android:id="@+id/tab_dianzan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:tabType="dianzan" />
 
-                    <com.kingyon.elevator.customview.MessageTabView
-                        android:id="@+id/tab_dianzan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:tabType="dianzan" />
+                <com.kingyon.elevator.customview.MessageTabView
+                    android:id="@+id/tab_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:tabType="comment" />
 
-                    <com.kingyon.elevator.customview.MessageTabView
-                        android:id="@+id/tab_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:tabType="comment" />
-
-                </LinearLayout>
+            </LinearLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="全部标记为已读"
-                    android:textColor="#ffeb7a12"
-                    android:textSize="15sp" />
+            <TextView
+                android:id="@+id/set_all_read"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="全部标记为已读"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/smart_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/message_list_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp" />
-            </LinearLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </LinearLayout>
+
     </com.leo.afbaselibrary.widgets.StateLayout>
 </LinearLayout>

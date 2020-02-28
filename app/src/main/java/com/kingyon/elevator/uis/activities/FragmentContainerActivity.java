@@ -13,8 +13,12 @@ import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.FragmentContainerPresenter;
+import com.kingyon.elevator.uis.fragments.homepage.CommentDetailsFragment;
+import com.kingyon.elevator.uis.fragments.homepage.NewsRecommendationFragment;
+import com.kingyon.elevator.uis.fragments.main.OrderFragment;
 import com.kingyon.elevator.uis.fragments.message.CommentListFragment;
 import com.kingyon.elevator.uis.fragments.message.DianZanListFragment;
 import com.kingyon.elevator.uis.fragments.message.NoticeOrHelperFragment;
@@ -193,6 +197,21 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
                 fragmentTransaction.replace(R.id.fragment_container, CommentListFragment.newInstance());
                 fragmentTransaction.commit();
                 break;
+            case FragmentConstants.CommentDetailsFragment:
+                my_action_bar.setTitle("评论详情");
+                fragmentTransaction.replace(R.id.fragment_container, CommentDetailsFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.NewsRecommendationFragment:
+                my_action_bar.setTitle("更多推荐");
+                fragmentTransaction.replace(R.id.fragment_container, NewsRecommendationFragment.newInstance());
+                fragmentTransaction.commit();
+                break;
+            case FragmentConstants.OrderFragment:
+                my_action_bar.setTitle("我的订单");
+                fragmentTransaction.replace(R.id.fragment_container, OrderFragment.newInstance(new NormalParamEntity("", "全部订单")));
+                fragmentTransaction.commit();
+                break;
             default:
                 showShortToast(getString(R.string.no_pramater));
                 finish();
@@ -246,7 +265,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        fragmentManager=null;
-        fragmentTransaction=null;
+        fragmentManager = null;
+        fragmentTransaction = null;
     }
 }

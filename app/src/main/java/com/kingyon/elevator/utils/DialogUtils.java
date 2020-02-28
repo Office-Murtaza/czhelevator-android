@@ -1,5 +1,6 @@
 package com.kingyon.elevator.utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import androidx.annotation.ColorRes;
@@ -418,6 +419,27 @@ public class DialogUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    protected ProgressDialog progressDialog;
+
+    public void showProgressDialogView(Context context, String message, Boolean isCancel) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(isCancel);
+        }
+        progressDialog.setMessage(message != null ? message : "");
+        if (!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialogView() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
     }
 }

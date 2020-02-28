@@ -117,14 +117,14 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 , R.drawable.ic_homepage_nor, R.drawable.ic_homepage_sec, "首页"));
         tabBar.addTab(PlanNewFragment.class, new TabStripView.TabParam(R.color.colorPrimary
                 , R.drawable.ic_plan_nor, R.drawable.ic_plan_sec, "计划"));
-        tabBar.addTab(OrderFragment.class, new TabStripView.TabParam(R.color.colorPrimary
-                , R.drawable.ic_order_nor, R.drawable.ic_order_sec, "订单"));
+        tabBar.addTab(MessageFragment.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_order_nor, R.drawable.ic_order_sec, "消息"));
         tabBar.addTab(UserFragment.class, new TabStripView.TabParam(R.color.colorPrimary
                 , R.drawable.ic_mine_nor, R.drawable.ic_mine_sec, "我的"));
         tabBar.onRestoreInstanceState(savedInstanceState);
         tabBar.setTabSelectListener(this);
         tabBar.post(() -> {
-            tabBar.createFragmentByTag(OrderFragment.newInstance(null), "订单");
+            tabBar.createFragmentByTag(MessageFragment.newInstance(), "消息");
             tabBar.createFragmentByTag(PlanNewFragment.newInstance(), "计划");
         });
     }

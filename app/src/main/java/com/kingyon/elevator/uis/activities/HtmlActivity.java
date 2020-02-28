@@ -1,8 +1,10 @@
 package com.kingyon.elevator.uis.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.activities.BaseHtmlActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
@@ -14,11 +16,12 @@ import com.leo.afbaselibrary.utils.AFUtil;
 
 public class HtmlActivity extends BaseHtmlActivity {
 
-    public static void start(BaseActivity activity, String title, String url) {
+    public static void start(Activity activity, String title, String url) {
         Bundle bundle = new Bundle();
         bundle.putString(BaseHtmlActivity.TITLE, "    ");
         bundle.putString(BaseHtmlActivity.URL, url);
-        activity.startActivity(HtmlActivity.class, bundle);
+        MyActivityUtils.goActivity(activity,HtmlActivity.class,bundle);
+        //activity.startActivity(HtmlActivity.class, bundle);
     }
 
     @Override

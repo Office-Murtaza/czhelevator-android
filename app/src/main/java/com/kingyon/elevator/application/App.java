@@ -51,20 +51,14 @@ public class App extends LitePalApplication {
 
     static {
         //设置全局的Header构建器
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.white, R.color.black);//全局设置主题颜色
-                return new ClassicsHeader(context);
-            }
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
+            layout.setPrimaryColorsId(R.color.white, R.color.black);//全局设置主题颜色
+            return new ClassicsHeader(context);
         });
         //设置全局的Footer构建器
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @Override
-            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                //指定为经典Footer，默认是 BallPulseFooter
-                return new ClassicsFooter(context).setDrawableSize(20);
-            }
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
+            //指定为经典Footer，默认是 BallPulseFooter
+            return new ClassicsFooter(context).setDrawableSize(20);
         });
     }
 

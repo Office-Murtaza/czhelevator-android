@@ -695,9 +695,151 @@ public interface NetApi {
 
     /**
      * 获取弹窗广告数据或者固定位置通知
+     *
      * @return
      */
     @GET("common/getTipsList")
-    Observable<List<AdNoticeWindowEntity>> getTipsList(@Query("position") String position,@Query("showWay") int showWay);
+    Observable<List<AdNoticeWindowEntity>> getTipsList(@Query("position") String position, @Query("showWay") int showWay);
 
+
+    /**
+     * 加载首页新闻数据列表
+     *
+     * @return
+     */
+    @GET("promotion/news/list")
+    Observable<List<NewsEntity>> getNewsList(@Query("start") int start, @Query("size") int size, @Query("category") Integer category, @Query("keywords") String keywords);
+
+    /**
+     * 获取新闻链接和是否点赞
+     *
+     * @return
+     */
+    @GET("promotion/news/getById")
+    Observable<NewsDetailsEntity> getNewDetailInfo(@Query("id") int newsId);
+
+    /**
+     * 点赞或取消点赞接口
+     *
+     * @return
+     */
+    @POST("promotion/news/like")
+    @FormUrlEncoded
+    Observable<String> setLike(@Field("id") int newsId);
+
+
+    /**
+     * 获取新闻评论列表
+     *
+     * @return
+     */
+    @GET("user/comment/list")
+    Observable<List<CommentEntity>> getListComment(@Query("id") int newsId, @Query("start") int start, @Query("size") int size, @Query("sort") int sort);
+
+
+    /**
+     * 获取新闻子评论列表
+     *
+     * @return
+     */
+    @GET("user/comment/childrenList")
+    Observable<List<CommentEntity>> getChildListComment(@Query("id") int newsId, @Query("start") int start, @Query("size") int size);
+
+
+    /**
+     * 添加一条评论
+     *
+     * @return
+     */
+    @POST("user/comment/add")
+    @FormUrlEncoded
+    Observable<String> addComment(@Field("newsId") Long newsId,@Field("parentId") Long parentId,@Field("replyId") Long replyId,@Field("level") int level,@Field("comment") String comment);
+
+    /**
+     * 给评论点赞
+     *
+     * @return
+     */
+    @POST("user/comment/like")
+    @FormUrlEncoded
+    Observable<String> addLikeComment(@Field("id") Long commentId);
+
+
+    /**
+     * 获取各类消息的未读数
+     *
+     * @return
+     */
+    @GET("user/msg/unReadCount")
+    Observable<MsgUnreadCountEntity> getUnreadCount();
+
+
+    /**
+     * 获取点赞消息列表
+     *
+     * @return
+     */
+    @GET("user/msg/getUserLikeList")
+    Observable<List<DianZanEntity>> getUserLikeList(@Query("start") int start, @Query("size") int size);
+
+    /**
+     * 获取通知列表
+     *
+     * @return
+     */
+    @GET("user/msg/getNoticeList")
+    Observable<List<MsgNoticeEntity>> getNoticeList(@Query("start") int start, @Query("size") int size);
+
+
+    /**
+     * 获取小助手列表
+     *
+     * @return
+     */
+    @GET("user/msg/getReviewList")
+    Observable<List<MsgNoticeEntity>> getReviewList(@Query("start") int start, @Query("size") int size);
+
+
+    /**
+     * 获取消息首页列表
+     *
+     * @return
+     */
+    @GET("user/msg/getIndexList")
+    Observable<List<MsgNoticeEntity>> getIndexList(@Query("start") int start, @Query("size") int size);
+
+
+    /**
+     * 获取评论消息列表
+     *
+     * @return
+     */
+    @GET("user/msg/getUserCommentList")
+    Observable<List<MsgCommentEntity>> getUserCommentList(@Query("start") int start, @Query("size") int size);
+
+    /**
+     * 获取评论消息列表
+     *
+     * @return
+     */
+    @POST("user/msg/read")
+    @FormUrlEncoded
+    Observable<String> setMsgRead(@Field("id") int msgId);
+
+    /**
+     * 删除某一条评论
+     *
+     * @return
+     */
+    @POST("user/msg/delete")
+    @FormUrlEncoded
+    Observable<String> deleteMsg(@Field("id") int msgId);
+
+    /**
+     * 设置全部已读
+     *
+     * @return
+     */
+    @POST("user/msg/readAll")
+    Observable<String> setAllIsRead();
 }

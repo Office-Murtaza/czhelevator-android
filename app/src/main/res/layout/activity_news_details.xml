@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".uis.activities.NewsDetailsActivity">
+
+
+    <com.kingyon.elevator.customview.MyActionBar
+        android:id="@+id/my_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:righticon="@mipmap/details_dingbufenxianganniu"
+        app:title="新闻" />
+
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_action_bar"
+        android:layout_marginBottom="40dp"
+        app:srlEnableAutoLoadMore="false"
+        app:srlEnableRefresh="false">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:progressDrawable="@drawable/progeress_bar_style" />
+
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="WebViewLayout" />
+
+                <LinearLayout
+                    android:id="@+id/comment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="33dp"
+                    android:layout_marginEnd="37dp"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp">
+
+                        <TextView
+                            android:id="@+id/comment_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="全部评论(0)"
+                            android:textColor="#ff353432"
+                            android:textSize="19sp" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:drawableStart="@mipmap/details_paixutupiao"
+                            android:text="按热度排序"
+                            android:textColor="#ACA9AC"
+                            android:textSize="8sp" />
+
+                    </FrameLayout>
+
+                    <com.kingyon.elevator.customview.NonScrollableListView
+                        android:id="@+id/comment_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/transparent"
+                        android:dividerHeight="10dp"
+                        android:listSelector="@color/transparent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#EB7A12"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <LinearLayout
+                android:id="@+id/input_comment_container"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@+id/iv_dianzan"
+                android:background="@drawable/shape_comment_input_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="说两句"
+                    android:maxLength="100"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="发送"
+                    android:textColor="#ffeb7a12"
+                    android:textSize="21sp" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_dianzan"
+                android:layout_width="24dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="21dp"
+                android:layout_toStartOf="@+id/iv_share_news"
+                android:src="@mipmap/details_shoucanganniu" />
+
+            <ImageView
+                android:id="@+id/iv_share_news"
+                android:layout_width="24dp"
+                android:layout_height="22dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="14dp"
+                android:src="@mipmap/details_fengxainganniu2" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

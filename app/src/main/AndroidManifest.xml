@@ -53,7 +53,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme,android:name">
-        <activity android:name=".uis.activities.WebViewActivity"></activity>
+        <activity android:name=".uis.activities.OrderContainerActivity"></activity>
+        <activity
+            android:name=".uis.activities.inputcomment.InputCommentActivity"
+            android:theme="@style/NoTitleDialogTheme"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".uis.activities.NewsDetailsActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".uis.activities.WebViewActivity" />
         <activity android:name=".uis.activities.advertising.PreviewVideoActivity" />
         <activity
             android:name=".uis.activities.order.ConfirmOrderActivity"

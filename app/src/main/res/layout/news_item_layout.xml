@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/shape_news_item_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/news_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_toStartOf="@+id/news_img"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:minHeight="50dp"
+            android:text="华为回应美国第三次延期90天许可"
+            android:textColor="#ff000000"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/news_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/news_title"
+            android:layout_marginEnd="15dp"
+            android:layout_toStartOf="@+id/news_img"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="1月18日，美国商务部发布公告，宣布发布90天延期许可，允许美国企业继续与华为进行业务往来。"
+            android:textColor="#424242"
+            android:textSize="13sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/news_img"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher" />
+
+
+        <TextView
+            android:id="@+id/type_name"
+            android:layout_width="31dp"
+            android:layout_height="16dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_news_item_type_name_bg"
+            android:gravity="center"
+            android:text="新闻"
+            android:textColor="#ffeb7a12"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/type_name"
+            android:gravity="center"
+            android:text="2019/11/19"
+            android:textColor="#404040"
+            android:textSize="10sp" />
+
+
+        <TextView
+            android:id="@+id/read_count"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@id/news_img"
+            android:gravity="center"
+            android:text="阅读量：5.6k"
+            android:textColor="#444444"
+            android:textSize="10sp" />
+    </RelativeLayout>
+</RelativeLayout>

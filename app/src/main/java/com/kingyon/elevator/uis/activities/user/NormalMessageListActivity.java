@@ -6,6 +6,8 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NormalMessageEntity;
@@ -51,6 +53,7 @@ public class NormalMessageListActivity extends BaseStateRefreshingLoadingActivit
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
         NormalMessageEntity messageEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
+        LogUtils.d("当前消息："+ GsonUtils.toJson(messageEntity));
         JumpUtils.getInstance().jumpToMessagePage(this, messageEntity);
     }
 

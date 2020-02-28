@@ -11,14 +11,21 @@
         android:layout_height="wrap_content"
         android:background="@color/white_normal">
 
+        <ImageView
+            android:id="@+id/back_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/partner_ffanhuianniu" />
+
         <TextView
             android:id="@+id/pre_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/spacing_tab_bar"
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
-            android:drawablePadding="@dimen/spacing_six"
             android:drawableRight="@drawable/ic_order_drop"
+            android:drawablePadding="@dimen/spacing_six"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/spacing_default"
             android:paddingRight="@dimen/spacing_default"
@@ -44,8 +51,8 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp" />
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </com.leo.afbaselibrary.widgets.StateLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.NormalMessageEntity;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -48,6 +49,8 @@ public class MessageDetailsActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         tvName.setText(messageEntity.getTitle());
+        LogUtils.d("这是内容："+messageEntity.getContent());
+
         tvDetails.setText(messageEntity.getContent());
         tvTime.setText(TimeUtil.getAllTimeNoSecond(messageEntity.getTime()));
     }

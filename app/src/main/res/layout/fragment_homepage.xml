@@ -213,15 +213,14 @@
                             android:id="@+id/main_notice_img"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="6dp"
-                            android:scaleType="centerCrop"
-                            android:layout_marginStart="6dp"
-                            android:visibility="gone"
                             android:layout_marginBottom="5dp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone"
                             app:HeightRatio="130"
                             app:WidthRatio="357" />
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -268,6 +267,39 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/spacing_default" />
+
+                        <FrameLayout
+                            android:id="@+id/news_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="134dp"
+                            android:visibility="gone"
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:text="推荐"
+                                android:textColor="#ff0c0c0c"
+                                android:textSize="21sp" />
+
+                            <TextView
+                                android:id="@+id/cat_more_news"
+                                android:layout_width="50dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="right"
+                                android:gravity="center"
+                                android:text="更多"
+                                android:textColor="#ff7f7f7f"
+                                android:textSize="15sp" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/news_list_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="104dp"
+                                android:layout_gravity="bottom" />
+                        </FrameLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"

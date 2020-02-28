@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".uis.activities.inputcomment.InputCommentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#EB7A12"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_comment_input_bg"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/input_comment"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="说两句"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/btn_send"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="发送"
+                android:textColor="#ffeb7a12"
+                android:textSize="21sp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_dianzan"
+            android:layout_width="24dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="14dp"
+            android:visibility="gone"
+            android:src="@mipmap/details_shoucanganniu" />
+
+        <ImageView
+            android:id="@+id/iv_share_news"
+            android:layout_width="24dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="14dp"
+            android:src="@mipmap/details_fengxainganniu2"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -6,7 +6,11 @@ import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.kingyon.elevator.entities.NormalMessageEntity;
+import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
+import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
+import com.kingyon.elevator.uis.activities.OrderContainerActivity;
 import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.videocrop.VideoEditorActivity;
@@ -230,6 +234,40 @@ public class MyActivityUtils {
             Intent intent = new Intent(context, VideoEditorActivity.class);
             intent.putExtra("fromType", fromType);
             intent.putExtra("planType", planType);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            ToastUtils.showShort("跳转失败，请重试");
+            LogUtils.e("跳转失败：" + e.toString());
+        }
+    }
+
+
+    /**
+     * 跳转到订单详情
+     *
+     * @param context
+     */
+    public static void goOrderCOntainerActivity(Context context, NormalParamEntity normalParamEntity) {
+        try {
+            Intent intent = new Intent(context, OrderContainerActivity.class);
+            intent.putExtra("normalEntity", normalParamEntity);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            ToastUtils.showShort("跳转失败，请重试");
+            LogUtils.e("跳转失败：" + e.toString());
+        }
+    }
+
+
+    /**
+     * 跳转新闻详情界面
+     *
+     * @param context
+     */
+    public static void goNewsDetailsActivity(Context context,int newsId) {
+        try {
+            Intent intent = new Intent(context, NewsDetailsActivity.class);
+            intent.putExtra("newsId", newsId);
             context.startActivity(intent);
         } catch (Exception e) {
             ToastUtils.showShort("跳转失败，请重试");
