@@ -75,8 +75,10 @@
 
 
                         <TextView
+                            android:id="@+id/sort_list"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
                             android:layout_gravity="right|center_vertical"
                             android:drawableStart="@mipmap/details_paixutupiao"
                             android:text="按热度排序"

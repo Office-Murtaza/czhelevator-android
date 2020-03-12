@@ -163,8 +163,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
 
     @Override
     protected void onResume() {
-        requestUnreadNumber();
-        requestAdPubFailNumber();
+//        requestUnreadNumber();
+//        requestAdPubFailNumber();
         super.onResume();
         if (currentFragment == null) {
             currentFragment = tabBar.getCurrentFragment(currentTag);
@@ -271,7 +271,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceivedPush(ReceivedPushEntity entity) {
-        requestUnreadNumber();
+        //requestUnreadNumber();
     }
 
     @Override
@@ -551,5 +551,10 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                         }
                     }
                 });
+    }
+
+
+    public void showMessageUnreadCount(int count) {
+        tabBar.setTabUnread(2, count);
     }
 }

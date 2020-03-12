@@ -595,6 +595,7 @@
 
                         <RelativeLayout
                             android:id="@+id/rl_message"
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true">
@@ -628,10 +629,10 @@
                         </RelativeLayout>
 
                         <ImageView
+                            android:layout_alignParentRight="true"
                             android:id="@+id/img_setting"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_toLeftOf="@id/rl_message"
                             android:paddingLeft="@dimen/spacing_twelve"
                             android:paddingRight="@dimen/spacing_twelve"
                             android:src="@drawable/ic_user_setting" />

@@ -20,7 +20,9 @@ import com.kingyon.elevator.uis.adapters.DianZanAdapter;
 import com.kingyon.elevator.uis.adapters.MessageDetailsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.view.NoticeOrHelperView;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -44,7 +46,8 @@ public class DianZanListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
     private LinearLayoutManager layoutManager;
     MessageItemDecornation messageItemDecornation;
     private DianZanAdapter dianZanAdapter;
-
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     @Override
     public NoticeOrHelperPresenter initPresenter() {
@@ -64,6 +67,9 @@ public class DianZanListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
         dianZanAdapter.setBaseOnItemClick(new BaseOnItemClick<DianZanEntity>() {
             @Override
             public void onItemClick(DianZanEntity data, int position) {
+                if (QuickClickUtils.isFastClick()) {
+                    return;
+                }
                 presenter.setMsgRead(data.getId(), position);
                 MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
             }
@@ -129,6 +135,12 @@ public class DianZanListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
     public void showDianZanListData(List<DianZanEntity> dianZanEntities) {
         if (dianZanAdapter != null) {
             dianZanAdapter.reflashData(dianZanEntities);
+        }
+        if (dianZanEntities.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.setEmptyViewTip("  ");
+            stateLayout.showEmptyView("暂无数据");
         }
     }
 

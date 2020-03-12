@@ -18,7 +18,9 @@ import com.kingyon.elevator.presenter.NoticeOrHelperPresenter;
 import com.kingyon.elevator.uis.adapters.CommentsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.view.NoticeOrHelperView;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -39,6 +41,9 @@ public class CommentListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
     SmartRefreshLayout smart_refresh_layout;
     @BindView(R.id.message_list_container)
     RecyclerView message_list_container;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
+
     private List<MsgCommentEntity> messageList;
     private LinearLayoutManager layoutManager;
     MessageItemDecornation messageItemDecornation;
@@ -62,6 +67,9 @@ public class CommentListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
         commentsAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgCommentEntity>() {
             @Override
             public void onItemClick(MsgCommentEntity data, int position) {
+                if (QuickClickUtils.isFastClick()) {
+                    return;
+                }
                 presenter.setMsgRead(data.getId(), position);
                 MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
             }
@@ -148,6 +156,12 @@ public class CommentListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
     public void showCommentListData(List<MsgCommentEntity> msgNoticeEntityList) {
         if (commentsAdapter != null) {
             commentsAdapter.reflashData(msgNoticeEntityList);
+        }
+        if (msgNoticeEntityList.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.setEmptyViewTip("  ");
+            stateLayout.showEmptyView("暂无数据");
         }
     }
 

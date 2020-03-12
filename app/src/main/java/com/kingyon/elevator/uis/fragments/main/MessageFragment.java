@@ -37,6 +37,7 @@ import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
+import com.kingyon.elevator.uis.activities.MainActivity;
 import com.kingyon.elevator.uis.adapters.MessageAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -122,6 +123,9 @@ public class MessageFragment extends BaseStateLoadingFragment {
         messageAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgNoticeEntity>() {
             @Override
             public void onItemClick(MsgNoticeEntity data, int position) {
+                if (QuickClickUtils.isFastClick()) {
+                    return;
+                }
                 setMsgRead(data.getId(), position);
                 if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
                     HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
@@ -189,6 +193,9 @@ public class MessageFragment extends BaseStateLoadingFragment {
 
     @OnClick({R.id.tab_comment, R.id.tab_notice, R.id.tab_helper, R.id.tab_dianzan, R.id.set_all_read})
     public void OnClick(View view) {
+        if (QuickClickUtils.isFastClick()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.tab_comment:
                 MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.CommentListFragment);
@@ -234,6 +241,12 @@ public class MessageFragment extends BaseStateLoadingFragment {
             tab_helper.showUnReadCount(msgUnreadCountEntity.getReview());
             tab_dianzan.showUnReadCount(msgUnreadCountEntity.getUserLike());
             tab_comment.showUnReadCount(msgUnreadCountEntity.getUserComment());
+            int allCount=msgUnreadCountEntity.getNotice()+
+                    msgUnreadCountEntity.getReview()+
+                    msgUnreadCountEntity.getUserComment()+msgUnreadCountEntity.getUserLike();
+            ((MainActivity)getActivity()).showMessageUnreadCount(allCount);
+        }else {
+            ((MainActivity)getActivity()).showMessageUnreadCount(0);
         }
     }
 

@@ -93,6 +93,10 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     SmartRefreshLayout smart_refresh_layout;
     @BindView(R.id.comment_count)
     TextView comment_count;
+    @BindView(R.id.sort_list)
+    TextView sort_list;
+    private int currentSortType=1;
+
     CommentDetailBottomSheetDialog commentDetailBottomSheetDialog;
 
     private int webviewHeight = 0;//webview的高度
@@ -166,7 +170,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
             smart_refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                    presenter.loadCommentList(ReflashConstants.LoadMore, newsId, 1);
+                    presenter.loadCommentList(ReflashConstants.LoadMore, newsId, currentSortType);
                 }
             });
         } else {
@@ -233,7 +237,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     }
 
 
-    @OnClick({R.id.input_comment_container, R.id.iv_share_news, R.id.iv_dianzan})
+    @OnClick({R.id.input_comment_container, R.id.iv_share_news, R.id.iv_dianzan,R.id.sort_list})
     public void OnClick(View view) {
         if (QuickClickUtils.isFastClick()) {
             return;
@@ -265,6 +269,17 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
                 break;
             case R.id.iv_dianzan:
                 setLikeOrDislike();
+                break;
+            case R.id.sort_list:
+                if (currentSortType==1) {
+                    currentSortType=2;
+                    sort_list.setText("按时间排序");
+                }else {
+                    currentSortType=1;
+                    sort_list.setText("按热度排序");
+                }
+                showProgressDialog("加载中",true);
+                presenter.loadCommentList(ReflashConstants.Refalshing, newsId, currentSortType);
                 break;
         }
 
@@ -371,6 +386,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     @Override
     public void hideProgressDailog() {
         super.hideProgressDailog();
+        smart_refresh_layout.finishRefresh();
         smart_refresh_layout.finishLoadMore();
     }
 
@@ -391,7 +407,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     public void commentAddSuccess() {
         smart_refresh_layout.setEnableLoadMore(true);
         //smart_refresh_layout.autoLoadMore();
-        presenter.loadCommentList(ReflashConstants.LoadMore,newsId, 1);
+        presenter.loadCommentList(ReflashConstants.LoadMore, newsId, 1);
     }
 
     @Override

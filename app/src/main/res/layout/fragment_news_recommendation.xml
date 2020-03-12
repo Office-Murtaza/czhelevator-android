@@ -16,7 +16,7 @@
         android:drawableStart="@mipmap/recommend_fangdajing"
         android:drawablePadding="15dp"
         android:gravity="center_vertical"
-        android:hint="搜索"
+        android:hint="输入文章标题搜索"
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:textSize="14sp" />
@@ -119,17 +119,24 @@
         android:layout_height="match_parent"
         android:layout_marginTop="30dp">
 
-        <ListView
-            android:id="@+id/news_recommend_list"
+        <com.leo.afbaselibrary.widgets.StateLayout
+            android:id="@+id/stateLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="7dp"
-            android:divider="@color/transparent"
-            android:dividerHeight="5dp"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
 
 
+            <ListView
+                android:id="@+id/news_recommend_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:divider="@color/transparent"
+                android:dividerHeight="5dp"
+                android:scrollbars="none" />
+
+
+        </com.leo.afbaselibrary.widgets.StateLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

@@ -85,7 +85,6 @@ public class NewsRecommendAdapter extends BaseAdapter {
             holder.news_content.setText(newsEntity.getSummary());
             holder.news_title.setText(newsEntity.getTitle());
             holder.news_time.setText(newsEntity.getCreateTime());
-            newsEntity.setReadCount(2550.0);
             if (newsEntity.getReadCount() >= 1000) {
                 holder.read_count.setText("阅读量：" + CommonUtil.getMayOneFloat(newsEntity.getReadCount() / 1000)+"k");
             } else {

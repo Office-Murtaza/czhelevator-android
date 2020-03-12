@@ -26,6 +26,7 @@ import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.NewsRecommendationView;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -49,6 +50,8 @@ public class NewsRecommendationFragment extends MvpBaseFragment<NewsRecommendati
     SmartRefreshLayout smart_refresh_layout;
     @BindView(R.id.et_input_keyword)
     EditText et_input_keyword;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
 
     NewsRecommendAdapter newsRecommendAdapter;
@@ -151,6 +154,12 @@ public class NewsRecommendationFragment extends MvpBaseFragment<NewsRecommendati
     public void showListData(List<NewsEntity> incomeDetailsEntities) {
         if (newsRecommendAdapter != null) {
             newsRecommendAdapter.reflashData(incomeDetailsEntities);
+        }
+        if (incomeDetailsEntities.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.setEmptyViewTip("  ");
+            stateLayout.showEmptyView("暂无数据");
         }
     }
 

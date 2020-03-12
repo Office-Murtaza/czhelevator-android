@@ -21,7 +21,9 @@ import com.kingyon.elevator.uis.adapters.MessageAdapter;
 import com.kingyon.elevator.uis.adapters.MessageDetailsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.JumpUtils;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.view.NoticeOrHelperView;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -39,6 +41,8 @@ public class NoticeOrHelperFragment extends MvpBaseFragment<NoticeOrHelperPresen
     SmartRefreshLayout smart_refresh_layout;
     @BindView(R.id.message_list_container)
     RecyclerView message_list_container;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private LinearLayoutManager layoutManager;
     MessageItemDecornation messageItemDecornation;
     private MessageDetailsAdapter messageAdapter;
@@ -65,6 +69,9 @@ public class NoticeOrHelperFragment extends MvpBaseFragment<NoticeOrHelperPresen
             messageAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgNoticeEntity>() {
                 @Override
                 public void onItemClick(MsgNoticeEntity data, int position) {
+                    if (QuickClickUtils.isFastClick()) {
+                        return;
+                    }
                     presenter.setMsgRead(data.getId(), position);
                     if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
                         HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
@@ -161,12 +168,24 @@ public class NoticeOrHelperFragment extends MvpBaseFragment<NoticeOrHelperPresen
         if (messageAdapter != null) {
             messageAdapter.reflashData(msgNoticeEntityList);
         }
+        if (msgNoticeEntityList.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.setEmptyViewTip("  ");
+            stateLayout.showEmptyView("暂无数据");
+        }
     }
 
     @Override
     public void showXiaoZhuShouListData(List<MsgNoticeEntity> msgNoticeEntityList) {
         if (messageAdapter != null) {
             messageAdapter.reflashData(msgNoticeEntityList);
+        }
+        if (msgNoticeEntityList.size()>0) {
+            stateLayout.showContentView();
+        }else {
+            stateLayout.setEmptyViewTip("  ");
+            stateLayout.showEmptyView("暂无数据");
         }
     }
 
