@@ -260,7 +260,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                             LogUtils.d("广告数据：" + GsonUtils.toJson(adNoticeWindowEntity));
                             if (adNoticeWindowEntity.getShowType() == 2) {
                                 GlideUtils.loadImage(getContext(), adNoticeWindowEntity.getShowContent(), main_notice_img);
-                                main_notice_img.setVisibility(View.VISIBLE);
+//                                main_notice_img.setVisibility(View.VISIBLE);
                                 if (adNoticeWindowEntity.isLink()) {
                                     main_notice_img.setOnClickListener(new View.OnClickListener() {
                                         @Override
