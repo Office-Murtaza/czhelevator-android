@@ -1,5 +1,6 @@
 package com.kingyon.elevator.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Looper;
 
@@ -21,13 +22,13 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
         super(mContext);
     }
 
-    public void startCropVideo(String videoPath, long startTime, long endTime) {
+    public void startCropVideo(Activity context, String videoPath, long startTime, long endTime) {
         try {
             LogUtils.e("裁剪参数：", RuntimeUtils.selectVideoPath, videoPath, startTime, endTime);
             if (isViewAttached()) {
                 getView().showProgressDialog("视频裁剪中...", false);
             }
-            VideoClipUtils.clip(RuntimeUtils.selectVideoPath, videoPath,
+            VideoClipUtils.clip(context,RuntimeUtils.selectVideoPath, videoPath,
                     startTime,
                     endTime,
                     new VideoCropListener() {
@@ -37,6 +38,7 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
                             if (isViewAttached()) {
                                 getView().hideProgressDailog();
                                 getView().cropVideoSuccess(videoPath);
+                                LogUtils.d(videoPath);
                             }
                         }
 

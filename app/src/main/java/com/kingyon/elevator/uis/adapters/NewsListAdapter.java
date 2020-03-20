@@ -64,6 +64,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
                 }
             });
             holder.news_title.setText(newsEntity.getTitle());
+            holder.type_name.setText(newsEntity.getCategory());
             GlideUtils.loadImage(context,newsEntity.getCoverUrl(),holder.news_img);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,6 +80,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
         ImageView news_img;
         TextView news_title;
+        TextView type_name;
         CardView item_container;
 
         public ViewHolder(View itemView) {
@@ -86,6 +88,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             news_title = itemView.findViewById(R.id.news_title);
             news_img = itemView.findViewById(R.id.news_img);
             item_container = itemView.findViewById(R.id.item_container);
+            type_name = itemView.findViewById(R.id.type_name);
         }
     }
 

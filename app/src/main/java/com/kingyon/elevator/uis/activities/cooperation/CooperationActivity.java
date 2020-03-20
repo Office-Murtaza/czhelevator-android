@@ -7,13 +7,13 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
@@ -53,6 +53,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                 .subscribe(new CustomApiCallback<CooperationEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.d(ex.getDisplayMessage()+"=======");
                         showToast(ex.getDisplayMessage());
                         loadingComplete(STATE_ERROR);
                     }

@@ -231,9 +231,11 @@ public class MyActivityUtils {
      */
     public static void goVideoEditorActivity(Context context, int fromType, String planType) {
         try {
+//            Intent intent = new Intent(context, EditVideoActivity.class);
             Intent intent = new Intent(context, VideoEditorActivity.class);
             intent.putExtra("fromType", fromType);
             intent.putExtra("planType", planType);
+//            intent.putExtra("path",RuntimeUtils.selectVideoPath);
             context.startActivity(intent);
         } catch (Exception e) {
             ToastUtils.showShort("跳转失败，请重试");

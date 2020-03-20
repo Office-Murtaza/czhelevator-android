@@ -27,6 +27,27 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="18dp"
         android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/tab_all"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="#ffeb7a12"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#EB7A12" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/tab_tuiguang"

@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.EventBusConstants;
+
 import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.AddNewBankCardPresenter;
@@ -26,6 +26,7 @@ import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.TextChangedListener;
 import com.kingyon.elevator.view.AddNewBankCardView;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 
 import org.greenrobot.eventbus.EventBus;
 

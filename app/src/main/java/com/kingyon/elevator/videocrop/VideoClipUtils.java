@@ -1,11 +1,15 @@
 package com.kingyon.elevator.videocrop;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.coremedia.iso.boxes.Container;
 import com.googlecode.mp4parser.authoring.Movie;
@@ -38,7 +42,8 @@ public class VideoClipUtils {
      * @param startTimeMs 裁剪的起始时间
      * @param endTimeMs   裁剪的结束时间
      */
-    public static void clip(String srcPath, String outPath, double startTimeMs, double endTimeMs, VideoCropListener videoCropListener) {
+    public static void clip(Activity context, String srcPath, String outPath, double startTimeMs, double endTimeMs, VideoCropListener videoCropListener) {
+        LogUtils.d("srcPath="+srcPath+"\noutPath="+outPath+"\nstartTimeMs="+startTimeMs+"\nendTimeMs="+endTimeMs);
         if (TextUtils.isEmpty(srcPath) || TextUtils.isEmpty(outPath)) {
             ToastUtils.showShort("视频路径为空");
             return;
@@ -52,11 +57,18 @@ public class VideoClipUtils {
             return;
         }
         Looper looper = Looper.getMainLooper();
+//        context.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     startCrop(looper, srcPath, outPath, startTimeMs, endTimeMs, videoCropListener);
+
                 } catch (IOException e) {
                     Looper.prepare();
                     videoCropListener.cropError();
@@ -79,10 +91,12 @@ public class VideoClipUtils {
         double endTime = endTimeMs / 1000;
         Log.d(TAG, "--->>>>startTimeMs = " + startTimeMs + "\n endTimeMs = " + endTimeMs + "\n tracks.size = " + tracks.size());
         //计算剪切时间，视频的采样间隔大，以视频为准
+        LogUtils.d(startTime+"==="+endTime);
         for (Track track : tracks) {
             if (track.getSyncSamples() != null && track.getSyncSamples().length > 0) {
                 startTime = correctTimeToSyncSample(track, startTime, false);
                 endTime = correctTimeToSyncSample(track, endTime, true);
+                LogUtils.d("--->>>>startTime = " + startTime + "\n endTime = " + endTime+"\nstartTime="+startTime+"\nendTime="+endTime);
                 if (track.getHandler().equals("vide")) {
                     break;
                 }
@@ -144,17 +158,21 @@ public class VideoClipUtils {
      * @param next
      * @return
      */
-    public static double correctTimeToSyncSample(Track track, double cutHere, boolean next) {
+    private static double correctTimeToSyncSample(Track track, double cutHere,
+                                                  boolean next) {
         double[] timeOfSyncSamples = new double[track.getSyncSamples().length];
         long currentSample = 0;
         double currentTime = 0;
         for (int i = 0; i < track.getSampleDurations().length; i++) {
             long delta = track.getSampleDurations()[i];
-            int index = Arrays.binarySearch(track.getSyncSamples(), currentSample + 1);
-            if (index >= 0) {
-                timeOfSyncSamples[index] = currentTime;
+            if (Arrays.binarySearch(track.getSyncSamples(), currentSample + 1) >= 0) {
+                // samples always start with 1 but we start with zero therefore
+                // +1
+                timeOfSyncSamples[Arrays.binarySearch(track.getSyncSamples(),
+                        currentSample + 1)] = currentTime;
             }
-            currentTime += ((double) delta / (double) track.getTrackMetaData().getTimescale());
+            currentTime += (double) delta
+                    / (double) track.getTrackMetaData().getTimescale();
             currentSample++;
         }
         double previous = 0;

@@ -76,6 +76,7 @@ public class LoadingActivity extends BaseActivity {
                 .subscribe(new AbsAPICallback<AdvertisionEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        Logger.i(ex.getDisplayMessage());
                         onAdvertisionSuccess(DataSharedPreferences.getAdvertision());
                     }
 

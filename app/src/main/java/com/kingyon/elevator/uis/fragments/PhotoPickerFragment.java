@@ -17,9 +17,8 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.entities.ADEntity;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.photopicker.MediaDirectory;
@@ -31,10 +30,10 @@ import com.kingyon.elevator.uis.adapters.PhotoPickerAdapter;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
-import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.kingyon.elevator.view.PhotoPickerView;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.yalantis.ucrop.UCrop;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,8 +95,10 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
                 if (mediaData.getDuration() > videoTime) {
                     RuntimeUtils.selectVideoPath = mediaData.getOriginalPath();
                     MyActivityUtils.goVideoEditorActivity(getActivity(), fromType, planType);
+                    getActivity().finish();
                 } else {
                     if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+                        LogUtils.d("+++++++++++++++++++++++");
                         MyActivityUtils.goPreviewVideoActivity(getActivity(), PreviewVideoActivity.class, mediaData.getOriginalPath(), mediaData.getDuration());
                     } else {
                         //来自于我的广告，发送通知 告诉选择成功

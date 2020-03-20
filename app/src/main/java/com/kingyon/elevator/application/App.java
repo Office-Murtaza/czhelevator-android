@@ -3,11 +3,9 @@ package com.kingyon.elevator.application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -18,11 +16,6 @@ import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.squareup.leakcanary.LeakCanary;
@@ -73,6 +66,7 @@ public class App extends LitePalApplication {
         initLeakCanary();
         initDownLoader();
         initShareSdk();
+
     }
 
     private void initLogger() {

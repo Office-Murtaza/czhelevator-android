@@ -12,10 +12,9 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.EventBusConstants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditPayPasswordFragmentPresenter;
@@ -24,6 +23,7 @@ import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.EditPayPasswordFragmentView;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -115,7 +115,7 @@ public class NewsRecommendationFragment extends MvpBaseFragment<NewsRecommendati
     }
 
 
-    @OnClick({R.id.tab_tuiguang, R.id.tab_hangye, R.id.tab_zhishi, R.id.tab_news})
+    @OnClick({R.id.tab_tuiguang, R.id.tab_hangye, R.id.tab_zhishi, R.id.tab_news,R.id.tab_all})
     public void OnClick(View view) {
         if (isReflashing) {
             return;
@@ -135,6 +135,10 @@ public class NewsRecommendationFragment extends MvpBaseFragment<NewsRecommendati
                 break;
             case R.id.tab_news:
                 currentType = 4;
+                smart_refresh_layout.autoRefresh();
+                break;
+            case R.id.tab_all:
+                currentType = null;
                 smart_refresh_layout.autoRefresh();
                 break;
 

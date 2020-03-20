@@ -10,10 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.customview.PayPasswordEditView;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.interfaces.PayPasswordListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;

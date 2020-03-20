@@ -75,6 +75,7 @@ public class NewsRecommendAdapter extends BaseAdapter {
             holder.news_time = convertView.findViewById(R.id.news_time);
             holder.news_img = convertView.findViewById(R.id.news_img);
             holder.read_count = convertView.findViewById(R.id.read_count);
+            holder.type_name = convertView.findViewById(R.id.type_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -85,6 +86,7 @@ public class NewsRecommendAdapter extends BaseAdapter {
             holder.news_content.setText(newsEntity.getSummary());
             holder.news_title.setText(newsEntity.getTitle());
             holder.news_time.setText(newsEntity.getCreateTime());
+            holder.type_name.setText(newsEntity.getCategory());
             if (newsEntity.getReadCount() >= 1000) {
                 holder.read_count.setText("阅读量：" + CommonUtil.getMayOneFloat(newsEntity.getReadCount() / 1000)+"k");
             } else {
@@ -102,6 +104,7 @@ public class NewsRecommendAdapter extends BaseAdapter {
         TextView news_content;
         TextView news_time;
         TextView read_count;
+        TextView type_name;
     }
 
 }

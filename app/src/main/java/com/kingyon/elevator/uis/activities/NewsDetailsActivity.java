@@ -56,9 +56,11 @@ import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.widgets.ProgressWebView;
+import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,7 +172,14 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
             smart_refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    LogUtils.d("onLoadMore-----------------");
                     presenter.loadCommentList(ReflashConstants.LoadMore, newsId, currentSortType);
+                }
+            });
+            smart_refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                    LogUtils.d("onRefresh-----------------");
                 }
             });
         } else {
@@ -400,7 +409,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     @Override
     public void loadMoreIsComplete() {
         LogUtils.d("全部加载完成了-----------------");
-        smart_refresh_layout.setEnableLoadMore(false);
+        smart_refresh_layout.setEnableLoadMore(true);
     }
 
     @Override

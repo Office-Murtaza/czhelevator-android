@@ -19,10 +19,10 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.OrderFailedNumberEntity;
@@ -67,6 +67,7 @@ import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.download.DownloadApkUtil;
 import com.leo.afbaselibrary.widgets.TabStripView;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -166,6 +167,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
 //        requestUnreadNumber();
 //        requestAdPubFailNumber();
         super.onResume();
+        MobclickAgent.onResume(this);
         if (currentFragment == null) {
             currentFragment = tabBar.getCurrentFragment(currentTag);
         }
@@ -557,4 +559,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     public void showMessageUnreadCount(int count) {
         tabBar.setTabUnread(2, count);
     }
+
+
+
 }

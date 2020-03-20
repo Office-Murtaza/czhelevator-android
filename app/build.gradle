@@ -123,6 +123,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.3'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     implementation 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     //    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
     implementation 'cn.jiguang.sdk:jpush:3.1.6'
@@ -157,6 +158,9 @@ dependencies {
     implementation 'com.shuyu:GSYVideoPlayer:6.0.2'
     implementation files('libs/pldroid-player-2.1.9.jar')
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
+
+    implementation project(path: ':voide')
 }
 
 MobSDK {

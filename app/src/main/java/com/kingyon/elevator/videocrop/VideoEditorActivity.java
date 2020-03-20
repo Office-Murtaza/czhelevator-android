@@ -1,14 +1,11 @@
 package com.kingyon.elevator.videocrop;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,13 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.EventBusConstants;
-import com.kingyon.elevator.entities.EventBusObjectEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.VideoEditorPresenter;
 import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
@@ -47,12 +42,13 @@ import com.kingyon.elevator.videocrop.video.UIUtil;
 import com.kingyon.elevator.videocrop.video.VideoEditAdapter;
 import com.kingyon.elevator.videocrop.video.VideoEditInfo;
 import com.kingyon.elevator.view.VideoEditorView;
+import com.zhaoss.weixinrecorded.activity.EditVideoActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.URISyntaxException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,7 +130,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
                 String name = System.currentTimeMillis() + ".mp4";
                 videoPath = RuntimeUtils.videoPath + File.separator + name;
                 RuntimeUtils.cropVideoPath = videoPath;
-                presenter.startCropVideo(videoPath, startTime, startTime + MIN_CUT_DURATION > duration ? duration : startTime + MIN_CUT_DURATION);
+                presenter.startCropVideo(this,videoPath, startTime, startTime + MIN_CUT_DURATION > duration ? duration : startTime + MIN_CUT_DURATION);
                 break;
             case R.id.cancel_crop:
                 finish();
@@ -336,8 +332,22 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     @Override
     public void cropVideoSuccess(String path) {
         if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
-            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
+//            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
+//            剪切完成百编辑
+            Intent intent = new Intent(this, EditVideoActivity.class);
+            intent.putExtra("path",path);
+            startActivity(intent);
+//            try {
+//                String newVideoPath = SiliCompressor.with(this).compressVideo(path,
+//                        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), TAG).getPath(),
+//                        768, 1220, 1000000);
+//                LogUtils.e("======"+newVideoPath);
+//
+//            } catch (URISyntaxException e) {
+//                e.printStackTrace();
+//            }
         } else {
+//            剪切完成预览
             MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
         }
         finish();
