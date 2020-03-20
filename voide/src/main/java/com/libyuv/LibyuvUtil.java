@@ -9,7 +9,7 @@ public class LibyuvUtil {
     }
 
     /**
-     * 将 YUV420 转 I420bvnb
+     * 将 YUV420 转 I420bvnb21
      */
     public static native void convertYUV420ToI420(byte[] srcY, byte[] srcU, byte[] srcV, byte[] dst, int pixelStride, int width, int height);
 
