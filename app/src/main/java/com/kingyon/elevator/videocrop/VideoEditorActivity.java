@@ -351,6 +351,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
             MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
         }
         finish();
+
     }
 
     private static class MainHandler extends Handler {
