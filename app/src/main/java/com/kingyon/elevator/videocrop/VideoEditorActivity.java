@@ -363,6 +363,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
 
         @Override
         public void handleMessage(Message msg) {
+
             VideoEditorActivity activity = mActivity.get();
             if (activity != null) {
                 if (msg.what == ExtractFrameWorkThread.MSG_SAVE_SUCCESS) {
