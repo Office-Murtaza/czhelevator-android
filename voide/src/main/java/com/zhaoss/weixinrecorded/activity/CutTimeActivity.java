@@ -305,4 +305,14 @@ public class CutTimeActivity extends BaseActivity{
             }
         });
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        if(mMediaPlayer!=null){
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+        }
+    }
 }

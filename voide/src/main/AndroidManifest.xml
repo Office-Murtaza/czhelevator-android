@@ -9,6 +9,7 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
+        android:name=".App"
         >
 
         <activity android:name=".activity.RecordedActivity"/>

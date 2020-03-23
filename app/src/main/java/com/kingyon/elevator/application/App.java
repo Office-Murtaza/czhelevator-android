@@ -37,7 +37,7 @@ import cn.jpush.android.api.JPushInterface;
 public class App extends LitePalApplication {
     private static App sInstance;
     private static RefWatcher refWatcher;
-
+    public static Context sApplication;
     public static RefWatcher getRefWatcher() {
         return App.refWatcher;
     }
@@ -66,7 +66,7 @@ public class App extends LitePalApplication {
         initLeakCanary();
         initDownLoader();
         initShareSdk();
-
+        sApplication = getApplicationContext();
     }
 
     private void initLogger() {

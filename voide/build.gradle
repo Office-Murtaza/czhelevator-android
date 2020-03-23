@@ -35,5 +35,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/lansongcommon_hx.jar')
+//    implementation project(path: ':video-record')
+//    implementation project(path: ':video-compressor')
+    implementation project(path: ':video-effect')
 }

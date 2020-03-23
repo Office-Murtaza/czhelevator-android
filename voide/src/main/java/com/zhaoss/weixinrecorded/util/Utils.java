@@ -1,11 +1,17 @@
 package com.zhaoss.weixinrecorded.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.Environment;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Utils {
 
@@ -104,4 +110,31 @@ public class Utils {
             e.printStackTrace();
         }
     }
+    /**
+     * 裁剪视频本地路径
+     * @param context
+     * @param dirName
+     * @param fileNamePrefix
+     * @return
+     */
+    public static String getTrimmedVideoPath(Context context, String dirName, String fileNamePrefix) {
+        String finalPath = "";
+        String dirPath = "";
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            dirPath = context.getExternalCacheDir() + File.separator + dirName; // /mnt/sdcard/Android/data/<package name>/files/...
+        } else {
+            dirPath = context.getCacheDir() + File.separator + dirName; // /data/data/<package name>/files/...
+        }
+        File file = new File(dirPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        finalPath = file.getAbsolutePath();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+                .format(new Date());
+        String outputName = fileNamePrefix + timeStamp + ".mp4";
+        finalPath = finalPath + "/" + outputName;
+        return finalPath;
+    }
+
 }

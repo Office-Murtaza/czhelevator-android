@@ -23,7 +23,7 @@ import android.widget.VideoView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.iceteck.silicompressorr.SiliCompressor;
+//import com.iceteck.silicompressorr.SiliCompressor;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
@@ -337,6 +337,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
             Intent intent = new Intent(this, EditVideoActivity.class);
             intent.putExtra("path",path);
             startActivity(intent);
+
 //            try {
 //                String newVideoPath = SiliCompressor.with(this).compressVideo(path,
 //                        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), TAG).getPath(),
