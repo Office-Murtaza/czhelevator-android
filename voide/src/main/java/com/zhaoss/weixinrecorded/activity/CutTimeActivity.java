@@ -269,6 +269,7 @@ public class CutTimeActivity extends BaseActivity{
             @Override
             public void onError(Throwable e) {
                 parsingFrame = false;
+
             }
         });
 
