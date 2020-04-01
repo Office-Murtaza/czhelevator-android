@@ -107,6 +107,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
+
+        <activity
+            android:name=".uis.activities.HomeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+
 <!--        -->
         <activity
             android:name=".uis.activities.AdvertisionActivity"
@@ -541,10 +548,17 @@
         <activity
             android:name=".uis.activities.devices.CameraBrandActivity"
             android:screenOrientation="portrait" />
-        <!--视频编辑界面-->
+        <!--视频剪切-->
         <activity
             android:name=".videocrop.VideoEditorActivity"
             android:screenOrientation="portrait" />
+
+        <!--视频编辑界面-->
+        <activity
+            android:name=".videocrop.EditVideoActivity"
+            android:screenOrientation="portrait" />
+
+
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

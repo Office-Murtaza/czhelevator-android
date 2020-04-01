@@ -24,10 +24,15 @@ import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.umeng.analytics.MobclickAgent;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +55,7 @@ public class PreviewVideoActivity extends AppCompatActivity {
     @BindView(R.id.video_view_container)
     RelativeLayout video_view_container;
     private Boolean isClickPlay = false;//是否点击了播放
+    private int fromType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,7 @@ public class PreviewVideoActivity extends AppCompatActivity {
         });
         videoPath = getIntent().getStringExtra("videoPath");
         videoTime = getIntent().getLongExtra("videoTime", 0);
+        fromType = getIntent().getIntExtra("fromType", 0);
         if (videoPath.equals("")) {
             MyToastUtils.showShort("视频路径为空");
             finish();
@@ -92,9 +99,20 @@ public class PreviewVideoActivity extends AppCompatActivity {
         }
         switch (view.getId()) {
             case R.id.go_place_an_order:
-                MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
-                        Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
-                finish();
+//                MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
+//                        Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
+//                finish();
+                EditVideoActivity.editVideoActivity.finish();
+                if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, videoPath));
+                    finish();
+                }else {
+                    MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
+                            Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
+                    finish();
+                }
+
+
                 break;
         }
     }

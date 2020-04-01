@@ -18,7 +18,7 @@ import java.util.List;
  * Created By Admin  on 2020/3/20
  * Email : 1531603384@qq.com
  */
-class MyfilterAdapter extends RecyclerView.Adapter<MyfilterAdapter.ViewHolder> {
+public class MyfilterAdapter extends RecyclerView.Adapter<MyfilterAdapter.ViewHolder> {
     Context context;
     List<Integer> integers;
     private int mposition = -1;

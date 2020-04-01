@@ -1,10 +1,19 @@
 package com.zhaoss.weixinrecorded.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.zhaoss.weixinrecorded.R;
+
+import me.kareluo.imaging.core.IMGImage;
 
 /**
  * Created by zhaoshuang on 16/6/17.
@@ -30,6 +39,8 @@ public class TouchView extends View {
     private int maxWidth;
     private int minHeight;
     private int maxHeight;
+
+    private IMGImage mImage = new IMGImage();
 
     public TouchView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -103,6 +114,7 @@ public class TouchView extends View {
     private float coreX;
     private float coreY;
     private boolean doubleMove = false;
+
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -224,11 +236,13 @@ public class TouchView extends View {
                 float upY = event.getRawY();
                 if (Math.abs(upX - firstX) < 10 && Math.abs(upY - firstY) < 10 && clickable) {
                     if (listener != null) listener.onClick(this);//单击事件
+//                    saveBitmap();
                 }
                 break;
         }
         return true;
     }
+
 
     /**
      * 获取手指间的旋转角度
@@ -248,5 +262,75 @@ public class TouchView extends View {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
         return (float) Math.sqrt(x * x + y * y);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        onDrawImages(canvas);
+    }
+
+
+    private void onDrawImages(Canvas canvas) {
+        canvas.save();
+
+        // clip 中心旋转
+        RectF clipFrame = mImage.getClipFrame();
+        canvas.rotate(mImage.getRotate(), clipFrame.centerX(), clipFrame.centerY());
+
+        // 图片
+        mImage.onDrawImage(canvas);
+
+        // TODO
+        if (mImage.isFreezing()) {
+            // 文字贴片
+            mImage.onDrawStickers(canvas);
+        }
+
+        mImage.onDrawShade(canvas);
+
+        canvas.restore();
+
+        // TODO
+        if (!mImage.isFreezing()) {
+            // 文字贴片
+            mImage.onDrawStickerClip(canvas);
+            mImage.onDrawStickers(canvas);
+        }
+
+    }
+
+    public Bitmap saveBitmap() {
+        mImage.stickAll();
+
+        float scale = 1f / mImage.getScale();
+
+        RectF frame = new RectF(mImage.getClipFrame());
+
+        // 旋转基画布
+        Matrix m = new Matrix();
+        m.setRotate(mImage.getRotate(), frame.centerX(), frame.centerY());
+        m.mapRect(frame);
+
+        // 缩放基画布
+        m.setScale(scale, scale, frame.left, frame.top);
+        m.mapRect(frame);
+
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(frame.width()),
+                Math.round(frame.height()), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+
+        // 平移到基画布原点&缩放到原尺寸
+        canvas.translate(-frame.left, -frame.top);
+        canvas.scale(scale, scale, frame.left, frame.top);
+
+        onDrawImages(canvas);
+
+        return bitmap;
+    }
+
+    public void setImageBitmap(Bitmap image) {
+        mImage.setBitmap(image);
+        invalidate();
     }
 }

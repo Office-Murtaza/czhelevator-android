@@ -91,6 +91,9 @@ public class App extends LitePalApplication {
         DensityUtil.init(this);
         LogUtils.d("token:" + DataSharedPreferences.getToken());
         Net.getInstance().setToken(DataSharedPreferences.getToken());
+
+        String fileName = Environment.getExternalStorageDirectory() + File.separator + "PDD";
+        new File(fileName).mkdirs();
     }
 
     private void initDownLoader() {

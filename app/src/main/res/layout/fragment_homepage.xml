@@ -9,6 +9,8 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
+
+
     <com.leo.afbaselibrary.widgets.StateLayout
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"
@@ -428,6 +430,11 @@
                     <include layout="@layout/ui_layout_divider" />
                 </LinearLayout>
             </FrameLayout>
+
         </android.support.v4.widget.SwipeRefreshLayout>
+
+
     </com.leo.afbaselibrary.widgets.StateLayout>
+
+
 </FrameLayout>

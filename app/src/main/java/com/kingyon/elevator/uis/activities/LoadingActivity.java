@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,13 +58,15 @@ public class LoadingActivity extends BaseActivity {
     @BindView(R.id.root_container)
     RelativeLayout root_container;
 
+    private Handler handler = new Handler();
     private boolean isFinishedByUser = false;
     private Subscription subscribe;
     private long countDownTime;
 
     @Override
     public int getContentViewId() {
-        StatusBarUtil.setTransparent(this, false);
+        StatusBarUtil.setTransparent(LoadingActivity.this, false);
+
         return R.layout.activity_loading;
     }
 
@@ -231,9 +234,8 @@ public class LoadingActivity extends BaseActivity {
 //                startActivity(TransitionActivity.class);
 //            } else {
 //            String myUserRole = AppContent.getInstance().getMyUserRole();
-//            if (TextUtils.isEmpty(myUserRole) || TextUtils.isEmpty(DataSharedPreferences.getToken())) {
-//                startActivity(LoginActivity.class);
-//            } else {
+//            if (TextUtils.isEmpty(
+
             JumpUtils.getInstance().jumpToRoleMain(this, AppContent.getInstance().getMyUserRole());
 //            }
 //            }

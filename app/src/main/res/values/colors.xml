@@ -16,6 +16,7 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="testcolor">#000000</color>
 
     <color name="btn_start_crop_color">#00ff00</color>
 

@@ -22,7 +22,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
 //import com.iceteck.silicompressorr.SiliCompressor;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -42,14 +41,13 @@ import com.kingyon.elevator.videocrop.video.UIUtil;
 import com.kingyon.elevator.videocrop.video.VideoEditAdapter;
 import com.kingyon.elevator.videocrop.video.VideoEditInfo;
 import com.kingyon.elevator.view.VideoEditorView;
-import com.zhaoss.weixinrecorded.activity.EditVideoActivity;
-
-import org.greenrobot.eventbus.EventBus;
+import com.lansosdk.NoFree.LSOVideoScale;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.net.URISyntaxException;
 
+import VideoHandle.EpEditor;
+import VideoHandle.OnEditorListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -98,6 +96,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     private long endTime = 0;
     private int fromType = Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN;//来自于哪个界面
     private String planType = "";
+    private LSOVideoScale videoCompress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,25 +332,86 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     public void cropVideoSuccess(String path) {
         if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
 //            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
-//            剪切完成百编辑
-            Intent intent = new Intent(this, EditVideoActivity.class);
+//            剪切完成
+            Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
             intent.putExtra("path",path);
+            intent.putExtra("fromType",fromType);
             startActivity(intent);
-
-//            try {
-//                String newVideoPath = SiliCompressor.with(this).compressVideo(path,
-//                        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), TAG).getPath(),
-//                        768, 1220, 1000000);
-//                LogUtils.e("======"+newVideoPath);
-//
-//            } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
+//            startCompress(path);
         } else {
 //            剪切完成预览
-            MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
+//            MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
+            Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
+            intent.putExtra("path",path);
+            intent.putExtra("fromType",fromType);
+            startActivity(intent);
+
         }
         finish();
+
+    }
+
+
+    private void voideEditor(String path) {
+        String audioPath = Environment.getExternalStorageDirectory() + File.separator + "/PDD/audio"+System.currentTimeMillis()+".mp3";
+        EpEditor.demuxer(path, audioPath,EpEditor.Format.MP3, new OnEditorListener() {
+            @Override
+            public void onSuccess() {
+                LogUtils.e(audioPath);
+
+
+//            分离完成
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+////                            开始压缩
+//                            String newVideoPath = SiliCompressor.with(VideoEditorActivity.this).compressVideo(path,
+//                                    new File(Environment.getExternalStoragePublicDirectory("PDD"), "").getPath(),
+//                                    768, 1220, 1200000);
+//                            String outfilePath = Environment.getExternalStorageDirectory() + File.separator + "/PDD/voide"+System.currentTimeMillis()+".mp4";
+//                            LogUtils.e(newVideoPath+"===="+audioPath+"==="+outfilePath);
+////                           添加音频
+//                            hideProgressDailog();
+//
+//                            EpEditor.music(videoPath, audioPath, outfilePath, 1, 0.7f, new OnEditorListener() {
+//                                @Override
+//                                public void onSuccess() {
+//                                    LogUtils.e(videoPath, audioPath, outfilePath);
+//                                }
+//
+//                                @Override
+//                                public void onFailure() {
+//                                    LogUtils.e("onFailure");
+//                                }
+//
+//                                @Override
+//                                public void onProgress(float progress) {
+//                                    //这里获取处理进度
+//                                    LogUtils.e("onProgress"+progress);
+//                                }
+//                            });
+////                            LogUtils.e(VideoClipUtils.muxVideoAudio(newVideoPath,audioPath,outfilePath));
+//
+//                        } catch (URISyntaxException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
+            }
+
+            @Override
+            public void onFailure() {
+                LogUtils.d("onFailure====");
+            }
+
+            @Override
+            public void onProgress(float progress) {
+                //这里获取处理进度
+                LogUtils.d("onProgress===="+progress);
+            }
+        });
+
 
     }
 

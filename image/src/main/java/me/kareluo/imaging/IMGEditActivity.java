@@ -19,6 +19,7 @@ import java.io.IOException;
 
 /**
  * Created by felix on 2017/11/14 下午2:26.
+ * 图片编辑
  */
 
 public class IMGEditActivity extends IMGEditBaseActivity {

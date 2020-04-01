@@ -41,4 +41,5 @@ dependencies {
 //    implementation project(path: ':video-record')
 //    implementation project(path: ':video-compressor')
     implementation project(path: ':video-effect')
+    implementation project(path: ':image')
 }

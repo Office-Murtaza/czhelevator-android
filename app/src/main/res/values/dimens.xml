@@ -11,4 +11,7 @@
     <dimen name="WheelMargins">8dp</dimen>
     <dimen name="WheelItemHeightSpace">16dp</dimen>
     <dimen name="WheelItemWidthSpace">32dp</dimen>
+    <dimen name="home_img">25dp</dimen>
+    <dimen name="size_home_text">12dp</dimen>
+
 </resources>

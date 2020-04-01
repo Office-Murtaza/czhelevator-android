@@ -170,11 +170,12 @@ public class MyActivityUtils {
      * @param context
      * @param classes
      */
-    public static void goPreviewVideoActivity(Context context, Class classes, String videoPath, long videoTime) {
+    public static void goPreviewVideoActivity(Context context, Class classes, String videoPath, long videoTime,int fromType) {
         try {
             Intent intent = new Intent(context, classes);
             intent.putExtra("videoPath", videoPath);
             intent.putExtra("videoTime", videoTime);
+            intent.putExtra("fromType", fromType);
             context.startActivity(intent);
         } catch (Exception e) {
             ToastUtils.showShort("跳转失败，请重试");

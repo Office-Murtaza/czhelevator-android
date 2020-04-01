@@ -15,7 +15,7 @@ import java.util.List;
  * Created By Admin  on 2020/3/20
  * Email : 1531603384@qq.com
  */
-class MyiconAdapter extends BaseAdapter {
+public class MyiconAdapter extends BaseAdapter {
     Context context;
     List<Integer> integers;
 

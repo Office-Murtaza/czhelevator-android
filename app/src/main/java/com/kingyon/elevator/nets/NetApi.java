@@ -24,7 +24,6 @@ import rx.Observable;
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
     String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
-//    String domainDebugName = "https://api.pddtv.cn/";//外网正式服地址
     String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";

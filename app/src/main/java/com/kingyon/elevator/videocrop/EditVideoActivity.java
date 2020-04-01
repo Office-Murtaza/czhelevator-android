@@ -1,4 +1,4 @@
-package com.zhaoss.weixinrecorded.activity;
+package com.kingyon.elevator.videocrop;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,24 +6,31 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -41,6 +48,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
+import com.blankj.utilcode.util.LogUtils;
+import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.lansosdk.videoeditor.LanSoEditor;
 import com.lansosdk.videoeditor.LanSongFileUtil;
 import com.lansosdk.videoeditor.MediaInfo;
@@ -55,12 +68,19 @@ import com.marvhong.videoeffect.helper.MagicFilterFactory;
 import com.marvhong.videoeffect.helper.MagicFilterType;
 import com.marvhong.videoeffect.utils.ConfigUtils;
 import com.zhaoss.weixinrecorded.R;
+import com.zhaoss.weixinrecorded.activity.BaseActivity;
+import com.zhaoss.weixinrecorded.activity.CutTimeActivity;
+import com.zhaoss.weixinrecorded.activity.MyfilterAdapter;
+import com.zhaoss.weixinrecorded.activity.MyiconAdapter;
+import com.zhaoss.weixinrecorded.activity.RecordedActivity;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.zhaoss.weixinrecorded.util.FilterModel;
 import com.zhaoss.weixinrecorded.util.MyVideoEditor;
 import com.zhaoss.weixinrecorded.util.RxJavaUtil;
+import com.zhaoss.weixinrecorded.util.TimeUtils;
 import com.zhaoss.weixinrecorded.util.Utils;
+import com.zhaoss.weixinrecorded.view.ThumbnailView;
 import com.zhaoss.weixinrecorded.view.TouchView;
 import com.zhaoss.weixinrecorded.view.TuyaView;
 
@@ -69,12 +89,16 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import VideoHandle.EpEditor;
 import VideoHandle.EpVideo;
-import VideoHandle.OnEditorListener;
+import io.reactivex.disposables.Disposable;
+
+import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
+import static com.zhaoss.weixinrecorded.activity.CutTimeActivity.dateToStamp;
 
 /**
  * Created by zhaoshuang on 17/2/21.
@@ -85,15 +109,14 @@ public class EditVideoActivity extends BaseActivity {
 
     private int[] drawableBg = new int[]{R.drawable.color1, R.drawable.color2, R.drawable.color3, R.drawable.color4, R.drawable.color5};
     private int[] colors = new int[]{R.color.color1, R.color.color2, R.color.color3, R.color.color4, R.color.color5};
-//    private int[] expressions = new int[]{R.mipmap.expression1, R.mipmap.expression2, R.mipmap.expression3, R.mipmap.expression4,
-//            R.mipmap.expression5, R.mipmap.expression6, R.mipmap.expression7, R.mipmap.expression8,R.mipmap.expression1, R.mipmap.expression2, R.mipmap.expression3, R.mipmap.expression4,
-//            R.mipmap.expression5, R.mipmap.expression6, R.mipmap.expression7, R.mipmap.expression8};
     private List<Integer> integers = new ArrayList<>();
+    public static EditVideoActivity editVideoActivity =null;
 
-
-//    private TextureView textureView;
-    private LinearLayout ll_color;
-    private RelativeLayout rl_tuya;
+    private LinearLayout ll_color,ll_bottom;
+    private RelativeLayout rl_tuya,rl_jq;
+    private LinearLayout ll_thumbnail;
+    private ThumbnailView thumbnailView;
+    private boolean parsingFrame;//正在解析缩略图
     private RelativeLayout rl_close;
     private RelativeLayout rl_title;
     private RelativeLayout rl_bottom;
@@ -103,22 +126,18 @@ public class EditVideoActivity extends BaseActivity {
     private RelativeLayout rl_edit_text;
 
     private TuyaView tv_video;
-    private ImageView iv_pen;
-    private ImageView iv_icon;
     private EditText et_tag;
     private TextView tv_tag;
-    private ImageView iv_speed;
     private LinearLayout ll_progress;
     private SeekBar sb_speed;
     private TextView tv_speed;
-    private SurfaceTexture surfaceTexture;
     private RelativeLayout rl_cut_size;
     private RelativeLayout rl_cut_time;
     private RelativeLayout rl_back;
     private RelativeLayout rl_speed;
     private TextView tv_finish_video;
     private TextView tv_finish;
-    private TextView tv_close;
+    private TextView tv_close,tv_time;
     private RelativeLayout rl_pen;
     private RelativeLayout rl_icon;
     private RelativeLayout rl_text;
@@ -126,7 +145,7 @@ public class EditVideoActivity extends BaseActivity {
     private int currentColorPosition;
     private InputMethodManager manager;
     private String path;
-    EpVideo epVideo ;
+    private int fromType;
     private int dp100;
     private float videoSpeed = 1;
     private MediaInfo mMediaInfo;
@@ -134,11 +153,10 @@ public class EditVideoActivity extends BaseActivity {
     private TextView editorTextView;
     private int windowWidth;
     private int windowHeight;
-    private LinearLayout ll_effect_container;
-//    private RelativeLayout hsv_effect;
     private int executeCount;//总编译次数
     private float executeProgress;//编译进度
     private MediaPlayer mMediaPlayer;
+
 
     private List<FilterModel> mVideoEffects = new ArrayList<>(); //视频滤镜效果
     private MagicFilterType[] mMagicFilterTypes;
@@ -149,34 +167,52 @@ public class EditVideoActivity extends BaseActivity {
     private SurfaceTexture mSurfaceTexture;
     private Mp4Composer mMp4Composer;
     GlVideoView mSurfaceView;
-    private SurfaceHolder surfaceHolder = null ;
+
+    private String frameDir;
+    private Disposable frameSubscribe;
+    private float INITNEW = 0;
+    int jisuna = 0;
+    private int voideTime;
+    private int startTime;
+    private int endTime;
+    private TextView tvStratText,tvEndText,tvCenterText;
+    private ImageView img_qx,img_wc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit_video);
-
+        editVideoActivity = this;
         manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         LanSoEditor.initSDK(this, null);
         LibyuvUtil.loadLibrary();
         dp100 = (int) getResources().getDimension(R.dimen.dp100);
         windowWidth = Utils.getWindowWidth(mContext);
         windowHeight = Utils.getWindowHeight(mContext);
-
+        frameDir = LanSongFileUtil.getCreateFileDir(String.valueOf(System.currentTimeMillis()));
         initUI();
         initData();
         initVideoSize();
     }
 
     private void initUI() {
-
-//        textureView = findViewById(R.id.textureView);
         mSurfaceView  = findViewById(R.id.glsurfaceview);
 
+        ll_thumbnail = findViewById(R.id.ll_thumbnail);
+        thumbnailView = findViewById(R.id.thumbnailView);
+        tvEndText = findViewById(R.id.tv_end_text);
+        tvStratText = findViewById(R.id.tv_start_text);
+        tvCenterText = findViewById(R.id.tv_center_text);
+        img_qx = findViewById(R.id.img_qx);
+        img_wc = findViewById(R.id.img_wc);
+
         rl_pen = findViewById(R.id.rl_pen);
+        tv_time = findViewById(R.id.tv_time);
         rl_icon = findViewById(R.id.rl_icon);
         rl_text = findViewById(R.id.rl_text);
         ll_color = findViewById(R.id.ll_color);
+        ll_bottom = findViewById(R.id.ll_bottom);
+        rl_jq = findViewById(R.id.rl_jq);
         tv_video = findViewById(R.id.tv_video);
         rl_expression = findViewById(R.id.rl_expression);
         rl_touch_view = findViewById(R.id.rl_touch_view);
@@ -187,9 +223,6 @@ public class EditVideoActivity extends BaseActivity {
         et_tag = findViewById(R.id.et_tag);
         tv_tag = findViewById(R.id.tv_tag);
         tv_finish_video = findViewById(R.id.tv_finish_video);
-        iv_pen = findViewById(R.id.iv_pen);
-        iv_icon = findViewById(R.id.iv_icon);
-        iv_speed = findViewById(R.id.iv_speed);
         rl_tuya = findViewById(R.id.rl_tuya);
         rl_close = findViewById(R.id.rl_close);
         rl_title = findViewById(R.id.rl_title);
@@ -206,36 +239,21 @@ public class EditVideoActivity extends BaseActivity {
         mLlEffectContainer = findViewById(R.id.ll_effect_container);
         mHsvEffect = findViewById(R.id.hsv_effect);
 
-//        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-//            @Override
-//            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-//                surfaceTexture = surface;
-//                initMediaPlay(surface,path);
-//            }
-//            @Override
-//            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-//
-//            }
-//            @Override
-//            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-//                return false;
-//            }
-//            @Override
-//            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-//
-//            }
-//        });
-//        mSurfaceView.init(surfaceTexture -> {
-//            mSurfaceTexture = surfaceTexture;
-//            initMediaPlayer(surfaceTexture);
-//            Log.e("TAG","=======");
-//        });
-
         mSurfaceView.init(new IVideoSurface() {
             @Override
             public void onCreated(SurfaceTexture surfaceTexture) {
                 mSurfaceTexture = surfaceTexture;
-                initMediaPlayer(surfaceTexture);
+                initMediaPlay(surfaceTexture,path);
+            }
+        });
+        mSurfaceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ll_color.setVisibility(View.GONE);
+                rl_expression.setVisibility(View.GONE);
+                rl_edit_text.setVisibility(View.GONE);
+                ll_progress.setVisibility(View.GONE);
+                mHsvEffect.setVisibility(View.GONE);
             }
         });
 
@@ -343,19 +361,74 @@ public class EditVideoActivity extends BaseActivity {
         rl_cut_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediaPlayer != null) {
-                    mMediaPlayer.release();
-                }
-                Intent intent = new Intent(mContext, CutTimeActivity.class);
-                intent.putExtra(RecordedActivity.INTENT_PATH, path);
-                startActivityForResult(intent, 2);
+//                if (mMediaPlayer != null) {
+//                    mMediaPlayer.release();
+//                }
+//                Intent intent = new Intent(mContext, CutTimeActivity.class);
+//                intent.putExtra(RecordedActivity.INTENT_PATH, path);
+//                startActivityForResult(intent, 2);
+                changeIconState(false);
+                changePenState(false);
+                changeTextState(false);
+                changeSpeedState(false);
+                changeFiler(false);
+                rl_title.setVisibility(View.GONE);
+                ll_bottom.setVisibility(View.GONE);
+                rl_jq.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        img_qx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_title.setVisibility(View.VISIBLE);
+                ll_bottom.setVisibility(View.VISIBLE);
+                rl_jq.setVisibility(View.INVISIBLE);
+//                mMediaPlayer.seekTo(0);
+            }
+        });
+
+        img_wc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_title.setVisibility(View.VISIBLE);
+                ll_bottom.setVisibility(View.VISIBLE);
+                rl_jq.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        thumbnailView.setOnScrollBorderListener(new ThumbnailView.OnScrollBorderListener() {
+            @Override
+            public void OnScrollBorder(final float start, final float end) {
+                Log.e("TAG",start+"========"+end);
+                jisuna = 960 / voideTime;
+                INITNEW = end;
+                final float shuju = ((end/(jisuna))-(start/(jisuna)));
+                changeTime();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            tvStratText.setText(TimeUtils.secondToTime((long) (start / jisuna)) + "");
+                            tvEndText.setText(TimeUtils.secondToTime((long) (end/(jisuna)))+"");
+                            tvCenterText.setText(TimeUtils.secondToTime(((Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (end / jisuna))))
+                                    -Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (start / jisuna)))))/1000)) + "");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+            @Override
+            public void onScrollStateChange() {
+                changeVideoPlay();
             }
         });
 
         initColors();
         initExpression();
-        /*初始化滤镜*/
-//        initFilter();
         initSpeed();
 
         et_tag.addTextChangedListener(new TextWatcher() {
@@ -375,120 +448,28 @@ public class EditVideoActivity extends BaseActivity {
 
     }
 
-
-    /**
-     * 初始化MediaPlayer
-     */
-    private void initMediaPlayer(SurfaceTexture surfaceTexture) {
-        mMediaPlayer = new MediaPlayer();
-        try {
-            mMediaPlayer.setDataSource(path);
-            Surface surface = new Surface(surfaceTexture);
-            mMediaPlayer.setSurface(surface);
-            surface.release();
-            mMediaPlayer.setLooping(true);
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    ViewGroup.LayoutParams lp = mSurfaceView.getLayoutParams();
-                    int videoWidth = mp.getVideoWidth();
-                    int videoHeight = mp.getVideoHeight();
-                    float videoProportion = (float) videoWidth / (float) videoHeight;
-                    int screenWidth = rl_touch_view.getWidth();
-                    int screenHeight = rl_touch_view.getHeight();
-                    float screenProportion = (float) screenWidth / (float) screenHeight;
-                    if (videoProportion > screenProportion) {
-                        lp.width = screenWidth;
-                        lp.height = (int) ((float) screenWidth / videoProportion);
-                    } else {
-                        lp.width = (int) (videoProportion * (float) screenHeight);
-                        lp.height = screenHeight;
-                    }
-                    mSurfaceView.setLayoutParams(lp);
-
-//                    mOriginalWidth = videoWidth;
-//                    mOriginalHeight = videoHeight;
-                    Log.e("videoView", "videoWidth:" + videoWidth + ", videoHeight:" + videoHeight);
-
-                    //设置MediaPlayer的OnSeekComplete监听
-                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                        @Override
-                        public void onSeekComplete(MediaPlayer mp) {
-//                            Log.d(TAG, "------ok----real---start-----");
-//                            Log.d(TAG, "------isSeeking-----" + isSeeking);
-//                            if (!isSeeking) {
-                                videoStart();
-//                            }
-                        }
-                    });
-                }
-            });
-            mMediaPlayer.prepare();
-            videoStart();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void changeVideoPlay(){
+        if(mMediaPlayer != null) {
+            mMediaPlayer.seekTo(startTime);
         }
     }
-    private void videoStart() {
-//        Log.d(TAG, "----videoStart----->>>>>>>");
-        mMediaPlayer.start();
-//        mIvPosition.clearAnimation();
-//        if (animator != null && animator.isRunning()) {
-//            animator.cancel();
-//        }
-//        anim();
-//        handler.removeCallbacks(run);
-//        handler.post(run);
-    }
-    private void initFilter() {
-//        textureView.setFilterTouchesWhenObscured(true);
-        int dp10 = (int) getResources().getDimension(R.dimen.dp10);
-        RecyclerView recyclerView = new RecyclerView(this);
-        recyclerView.setPadding(dp10, dp10, dp10, dp10);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        MyfilterAdapter listAdapter = new MyfilterAdapter(this,integers);
-        recyclerView.setAdapter(listAdapter);
-        listAdapter.setOnItemClickLitener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               Toast.makeText(EditVideoActivity.this,"滤镜=="+position,Toast.LENGTH_LONG).show();
-//                String filter = "lutyuv=y=maxval+minval-val:u=maxval+minval-val:v=maxval+minval-val";
-//                //自定义滤镜方式
-//                final String outPath =  path;
-//                EpVideo epVideo = new EpVideo(path);
-////                epVideo.clip(1,14);
-//                epVideo.addFilter(filter);
-//                EpEditor.exec(epVideo, new EpEditor.OutputOption(outPath), new OnEditorListener() {
-//                    @Override
-//                    public void onSuccess() {
-//                        Log.e("TAG","========="+outPath);
-//                        path = outPath;
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-////                                initMediaPlay(surfaceTexture,outPath);
-//                                initVideoSize();
-//                            }
-//                        });
-//
-//                    }
-//
-//
-//                    @Override
-//                    public void onFailure() {
-//                        Toast.makeText(EditVideoActivity.this, "编辑失败", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onProgress(float v) {
-//                       Log.e("TAG",v+"++++");
-//                    }
-//                });
 
-            }
-        });
-//        hsv_effect.addView(recyclerView);
+    /**
+     * 更改选择的裁剪区间的时间
+     */
+    private void changeTime(){
+
+        float left = thumbnailView.getLeftInterval();
+        float pro1 = left/ll_thumbnail.getWidth();
+
+        startTime = (int) (mMediaInfo.vDuration*1000*pro1);
+
+        float right = thumbnailView.getRightInterval();
+        float pro2 = right/ll_thumbnail.getWidth();
+        endTime = (int) (mMediaInfo.vDuration*1000*pro2);
     }
+
+
 
     private void changeFiler(boolean flag) {
         if (flag) {
@@ -503,7 +484,12 @@ public class EditVideoActivity extends BaseActivity {
 
         Intent intent = getIntent();
         path = intent.getStringExtra(RecordedActivity.INTENT_PATH);
-        Log.e("TAG",path+"=====");
+        fromType = intent.getIntExtra(RecordedActivity.INTENT_FROMTYPE,0);
+        voideTime = (int) (getVideoDuration(path)/1000);
+        tvEndText.setText(TimeUtils.secondToTime(voideTime));
+        tvCenterText.setText(TimeUtils.secondToTime(voideTime));
+        LogUtils.e(path);
+        tv_time.setText("视频时长"+TimeUtils.secondToTime((getVideoDuration(path)/1000)));
         //当进行涂鸦操作时, 隐藏标题栏和底部工具栏
         tv_video.setOnTouchListener(new TuyaView.OnTouchListener() {
             @Override
@@ -523,60 +509,52 @@ public class EditVideoActivity extends BaseActivity {
 
                 float stepPro = 100f/executeCount;
                 int temp = (int) (percent/100f*stepPro);
-                editorTextView.setText("视频编辑中"+(int)(executeProgress+temp)+"%");
+                if (editorTextView!=null) {
+                    editorTextView.setText("视频编辑中" + (int) (executeProgress + temp) + "%");
+                }
+
                 if(percent==100){
                     executeProgress += stepPro;
                 }
             }
         });
 
-//        for (int i = 0;i<100;i++){
-            integers.add(R.mipmap.expression1);
-            integers.add(R.mipmap.expression2);
-            integers.add(R.mipmap.expression3);
-            integers.add(R.mipmap.expression4);
-            integers.add(R.mipmap.expression5);
-            integers.add(R.mipmap.expression6);
-            integers.add(R.mipmap.expression7);
-            integers.add(R.mipmap.expression8);
-            integers.add(R.mipmap.expression7);
-            integers.add(R.mipmap.expression6);
-            integers.add(R.mipmap.expression5);
-            integers.add(R.mipmap.expression4);
-            integers.add(R.mipmap.expression3);
-            integers.add(R.mipmap.expression2);
-            integers.add(R.mipmap.expression1);
-//        }
-        strlist.add("原图");strlist.add("胶片");strlist.add("怀旧");
-        strlist.add("黑白");strlist.add("色温");strlist.add("重叠");
-        strlist.add("模糊");strlist.add("噪点");strlist.add("对比度");
-        strlist.add("伽马线");strlist.add("色度");strlist.add("交叉");
-        strlist.add("灰度");strlist.add("染料");
-        //滤镜效果集合
-        mMagicFilterTypes = new MagicFilterType[]{
-                MagicFilterType.NONE, MagicFilterType.INVERT,
-                MagicFilterType.SEPIA, MagicFilterType.BLACKANDWHITE,
-                MagicFilterType.TEMPERATURE, MagicFilterType.OVERLAY,
-                MagicFilterType.BARRELBLUR, MagicFilterType.POSTERIZE,
-                MagicFilterType.CONTRAST, MagicFilterType.GAMMA,
-                MagicFilterType.HUE, MagicFilterType.CROSSPROCESS,
-                MagicFilterType.GRAYSCALE, MagicFilterType.CGACOLORSPACE,
-        };
+            integers.add(R.mipmap.expression1);integers.add(R.mipmap.expression2);
+            integers.add(R.mipmap.expression3);integers.add(R.mipmap.expression4);
+            integers.add(R.mipmap.expression5);integers.add(R.mipmap.expression6);
+            integers.add(R.mipmap.expression7);integers.add(R.mipmap.expression8);
+            integers.add(R.mipmap.expression9);integers.add(R.mipmap.expression10);
+            integers.add(R.mipmap.expression11);integers.add(R.mipmap.expression12);
+            integers.add(R.mipmap.expression13);integers.add(R.mipmap.expression14);
+            integers.add(R.mipmap.s1);integers.add(R.mipmap.s2);integers.add(R.mipmap.s3);
+            integers.add(R.mipmap.s4);integers.add(R.mipmap.s5);integers.add(R.mipmap.s6);
+            integers.add(R.mipmap.s11);integers.add(R.mipmap.s7);integers.add(R.mipmap.s8);
+            integers.add(R.mipmap.s9);integers.add(R.mipmap.s10);
 
-//        for (int i = 0; i < mMagicFilterTypes.length; i++) {
-//            FilterModel model = new FilterModel();
-//            model.setName(String.valueOf(MagicFilterFactory.filterType2Name(mMagicFilterTypes[i])));
-//            mVideoEffects.add(model);
-//        }
-        for (int i = 0; i < strlist.size(); i++) {
-            FilterModel model = new FilterModel();
-            model.setName(strlist.get(i));
-            mVideoEffects.add(model);
+            strlist.add("原图");strlist.add("胶片");strlist.add("怀旧");
+            strlist.add("黑白");strlist.add("色温");strlist.add("重叠");
+            strlist.add("模糊");strlist.add("噪点");strlist.add("对比度");
+            strlist.add("伽马线");strlist.add("色度");strlist.add("交叉");
+            strlist.add("灰度");strlist.add("染料");
+            //滤镜效果集合
+            mMagicFilterTypes = new MagicFilterType[]{
+                    MagicFilterType.NONE, MagicFilterType.INVERT,
+                    MagicFilterType.SEPIA, MagicFilterType.BLACKANDWHITE,
+                    MagicFilterType.TEMPERATURE, MagicFilterType.OVERLAY,
+                    MagicFilterType.BARRELBLUR, MagicFilterType.POSTERIZE,
+                    MagicFilterType.CONTRAST, MagicFilterType.GAMMA,
+                    MagicFilterType.HUE, MagicFilterType.CROSSPROCESS,
+                    MagicFilterType.GRAYSCALE, MagicFilterType.CGACOLORSPACE,
+            };
+
+            for (int i = 0; i < strlist.size(); i++) {
+                FilterModel model = new FilterModel();
+                model.setName(strlist.get(i));
+                mVideoEffects.add(model);
+            }
+            addEffectView();
+
         }
-        addEffectView();
-
-
-    }
 
     private void addEffectView() {
 
@@ -588,7 +566,6 @@ public class EditVideoActivity extends BaseActivity {
             ImageView iv = itemView.findViewById(R.id.iv);
             FilterModel model = mVideoEffects.get(i);
             int thumbId = MagicFilterFactory.filterType2Thumb(mMagicFilterTypes[i]);
-            Log.e("TAG",thumbId+"----");
             iv.setImageResource(thumbId);
             tv.setText(model.getName());
             final int index = i;
@@ -602,7 +579,6 @@ public class EditVideoActivity extends BaseActivity {
                         if (j == index) {
                             //选中的滤镜效果
                             if (!tempModel.isChecked()) {
-                                Log.e("TAG",tempModel.getName()+"111");
                                 openEffectAnimation(tempTv, tempModel, true);
                             }
                             ConfigUtils.getInstance().setMagicFilterType(mMagicFilterTypes[j]);
@@ -643,10 +619,11 @@ public class EditVideoActivity extends BaseActivity {
         mEffectAnimator.start();
     }
     private void initMediaPlay(SurfaceTexture surface,String path){
-
+        Log.e("TAG","====111"+path);
         try {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setDataSource(path);
+            mMediaPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             mMediaPlayer.setSurface(new Surface(surface));
             mMediaPlayer.setLooping(true);
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -655,11 +632,19 @@ public class EditVideoActivity extends BaseActivity {
                     mMediaPlayer.start();
                 }
             });
+
             mMediaPlayer.prepareAsync();
         }catch (Exception e){
+            Log.e("TAG","===="+e.toString());
             e.printStackTrace();
         }
+        initVideoSize();
+        initThumbs();
     }
+
+    /**
+     * 初始化MediaPlayer
+     */
 
     private void initVideoSize(){
 
@@ -667,15 +652,92 @@ public class EditVideoActivity extends BaseActivity {
         mMediaInfo.prepare();
 
         float ra = mMediaInfo.getWidth() * 1f / mMediaInfo.getHeight();
-//        ViewGroup.LayoutParams layoutParams = textureView.getLayoutParams();
-//        layoutParams.width = windowWidth;
-//        layoutParams.height = (int) (layoutParams.width / ra);
-//        textureView.setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams layoutParams = mSurfaceView.getLayoutParams();
+        layoutParams.width = windowWidth;
+        layoutParams.height = (int) (layoutParams.width / ra);
+        mSurfaceView.setLayoutParams(layoutParams);
 
-//        ViewGroup.LayoutParams layoutParams1 = rl_tuya.getLayoutParams();
-//        layoutParams1.width = layoutParams.width;
-//        layoutParams1.height = layoutParams.height;
-//        rl_tuya.setLayoutParams(layoutParams1);
+        ViewGroup.LayoutParams layoutParams1 = rl_tuya.getLayoutParams();
+        layoutParams1.width = layoutParams.width;
+        layoutParams1.height = layoutParams.height;
+        rl_tuya.setLayoutParams(layoutParams1);
+    }
+
+    /**
+     * 初始化缩略图
+     */
+    private void initThumbs(){
+
+        int frameCount = 10;
+        final float interval = frameCount/mMediaInfo.vDuration;//提取帧的间隔
+        LogUtils.e(interval);
+        int thumbnailWidth = ll_thumbnail.getWidth()/frameCount;
+        for (int x=0; x<frameCount; x++){
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(thumbnailWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+            imageView.setBackgroundColor(Color.parseColor("#666666"));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ll_thumbnail.addView(imageView);
+        }
+
+        RxJavaUtil.run(new RxJavaUtil.OnRxAndroidListener<String>() {
+            @Override
+            public String doInBackground() throws Throwable {
+                parsingFrame = true;
+
+                float ratio = mMediaInfo.getWidth()*1f/mMediaInfo.getHeight();
+                boolean succ = myVideoEditor.executeExtractFrame(path, interval, 100, (int) (100/ratio),  frameDir+"/frame_%05d.jpeg");
+                if(succ){
+                    return frameDir;
+                }else {
+                    return "";
+                }
+            }
+            @Override
+            public void onFinish(String result) {
+                parsingFrame = false;
+            }
+            @Override
+            public void onError(Throwable e) {
+                parsingFrame = false;
+
+            }
+        });
+
+        frameSubscribe = RxJavaUtil.loop(300, new RxJavaUtil.OnRxLoopListener() {
+            @Override
+            public Boolean takeWhile() throws Exception {
+                return true;
+            }
+            @Override
+            public void onExecute() {
+                File[] files = new File(frameDir).listFiles();
+                if(files != null){
+                    for (int x = 0; x < files.length; x++) {
+                        String framePath = files[x].getAbsolutePath();
+                        if (x < ll_thumbnail.getChildCount()) {
+                            ImageView imageView = (ImageView) ll_thumbnail.getChildAt(x);
+                            if(imageView.getTag() == null){
+                                imageView.setTag(framePath);
+//                                imageView.setImageURI(Uri.fromFile(new File(framePath)));
+                                imageView.setImageBitmap(BitmapFactory.decodeFile(framePath));
+                                LogUtils.e("================="+framePath);
+                            }
+                        }else{
+                            frameSubscribe.dispose();
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFinish() {
+
+            }
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 
     private void initSpeed() {
@@ -683,6 +745,7 @@ public class EditVideoActivity extends BaseActivity {
         sb_speed.setMax(200);
         sb_speed.setProgress(100);
         sb_speed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (progress < 50) {
@@ -691,6 +754,10 @@ public class EditVideoActivity extends BaseActivity {
                 }
                 videoSpeed = progress / 100f;
                 tv_speed.setText(videoSpeed + "");
+                if (mMediaPlayer!=null) {
+                    mMediaPlayer.setPlaybackParams(mMediaPlayer.getPlaybackParams().setSpeed(videoSpeed));
+                }
+
             }
 
             @Override
@@ -728,6 +795,12 @@ public class EditVideoActivity extends BaseActivity {
                 if (isSpeed) {
                     videoPath = myVideoEditor.executeAdjustVideoSpeed2(path, videoSpeed);
                 }
+                if (thumbnailView.getLeftInterval()!=0||thumbnailView.getRightInterval()!=960){
+                    float startS = Utils.formatFloat(startTime/1000f);
+                    float durationS = Utils.formatFloat((endTime-startTime)/1000f);
+                    LogUtils.e(startS,durationS,path);
+                    videoPath =  myVideoEditor.executeCutVideoExact(path, startS, durationS);
+                }
                 return videoPath;
             }
             @Override
@@ -738,7 +811,6 @@ public class EditVideoActivity extends BaseActivity {
 
 //                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, result));
 //                    finish();
-
                     startMediaCodec(result);
                 } else {
                     Toast.makeText(getApplicationContext(), "视频编辑失败", Toast.LENGTH_SHORT).show();
@@ -781,7 +853,7 @@ public class EditVideoActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 rl_expression.setVisibility(View.GONE);
-                iv_icon.setImageResource(R.mipmap.icon);
+//                iv_icon.setImageResource(R.mipmap.icon);
                 addExpressionToWindow(integers.get(position));
             }
         });
@@ -792,7 +864,6 @@ public class EditVideoActivity extends BaseActivity {
      * 添加表情到界面上
      */
     private void addExpressionToWindow(int result) {
-
         TouchView touchView = new TouchView(this);
         touchView.setBackgroundResource(result);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp100, dp100);
@@ -816,6 +887,7 @@ public class EditVideoActivity extends BaseActivity {
             @Override
             public void onDown(TouchView view, MotionEvent event) {
                 tv_hint_delete.setVisibility(View.VISIBLE);
+                Log.e("TAG",event.toString());
                 changeMode(false);
             }
 
@@ -841,15 +913,16 @@ public class EditVideoActivity extends BaseActivity {
      * 添加文字到界面上
      */
     private void addTextToWindow() {
-
         TouchView touchView = new TouchView(getApplicationContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tv_tag.getWidth(), tv_tag.getHeight());
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         touchView.setLayoutParams(layoutParams);
         Bitmap bitmap = Bitmap.createBitmap(tv_tag.getWidth(), tv_tag.getHeight(), Bitmap.Config.ARGB_8888);
         tv_tag.draw(new Canvas(bitmap));
+//        touchView.setImageBitmap(bitmap);
         touchView.setBackground(new BitmapDrawable(bitmap));
-
+//        touchView.setBackgroundResource(R.mipmap.color_click);
+        touchView.setPadding(10,10,10,10);
         touchView.setLimitsX(0, windowWidth);
         touchView.setLimitsY(0, windowHeight - dp100 / 2);
         touchView.setOnLimitsListener(new TouchView.OnLimitsListener() {
@@ -988,12 +1061,12 @@ public class EditVideoActivity extends BaseActivity {
         if (flag) {
             tv_video.setDrawMode(flag);
             tv_video.setNewPaintColor(getResources().getColor(colors[currentColorPosition]));
-            iv_pen.setImageResource(R.mipmap.pen_click);
+//            iv_pen.setImageResource(R.mipmap.pen_click);
             ll_color.setVisibility(View.VISIBLE);
         } else {
             tv_video.setDrawMode(flag);
             ll_color.setVisibility(View.GONE);
-            iv_pen.setImageResource(R.mipmap.pen);
+//            iv_pen.setImageResource(R.mipmap.pen);
         }
     }
 
@@ -1003,11 +1076,11 @@ public class EditVideoActivity extends BaseActivity {
     private void changeIconState(boolean flag) {
 
         if (flag) {
-            iv_icon.setImageResource(R.mipmap.icon_click);
+//            iv_icon.setImageResource(R.mipmap.icon_click);
             rl_expression.setVisibility(View.VISIBLE);
         } else {
             rl_expression.setVisibility(View.GONE);
-            iv_icon.setImageResource(R.mipmap.icon);
+//            iv_icon.setImageResource(R.mipmap.icon);
         }
     }
 
@@ -1039,10 +1112,10 @@ public class EditVideoActivity extends BaseActivity {
 
         if (flag) {
             ll_progress.setVisibility(View.VISIBLE);
-            iv_speed.setImageResource(R.mipmap.speed_click);
+//            iv_speed.setImageResource(R.mipmap.speed_click);
         } else {
             ll_progress.setVisibility(View.GONE);
-            iv_speed.setImageResource(R.mipmap.speed);
+//            iv_speed.setImageResource(R.mipmap.speed);
         }
     }
 
@@ -1089,18 +1162,21 @@ public class EditVideoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("TAG","返回mMediaPlayer");
         if(mMediaPlayer != null){
-//            initMediaPlay(surfaceTexture,path);
-            initMediaPlayer(surfaceTexture);
+            Log.e("TAG","返回");
+            initMediaPlay(mSurfaceTexture,path);
+//            mSurfaceView.setVideoPath(path);
             initVideoSize();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        Log.e("TAG","onActivityResult 返回");
         if (resultCode == RESULT_OK) {
             path = data.getStringExtra(RecordedActivity.INTENT_PATH);
+            tv_time.setText("视频时长"+TimeUtils.secondToTime((getVideoDuration(path)/1000)));
         }
     }
 
@@ -1110,10 +1186,10 @@ public class EditVideoActivity extends BaseActivity {
     private void startMediaCodec(String srcPath) {
         final String outputPath = Utils.getTrimmedVideoPath(this, "small_video/trimmedVideo",
                 "filterVideo_");
-
-        mMp4Composer = new Mp4Composer(srcPath, outputPath)
+            mMp4Composer = new Mp4Composer(srcPath, outputPath)
                 // .rotation(Rotation.ROTATION_270)
-                //.size(720, 1280)
+                .size(768, 1220)
+                .videoBitrate(2200000)
                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
                 .filter(MagicFilterFactory.getFilter())
                 .mute(false)
@@ -1138,8 +1214,15 @@ public class EditVideoActivity extends BaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, outputPath));
-                                finish();
+                            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath),fromType);
+//                                if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
+//                                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, outputPath));
+//                                    finish();
+//                                }else {
+//                                    MyActivityUtils.goConfirmOrderActivity(EditVideoActivity.this,
+//                                            Constants.FROM_TYPE.MEDIADATA, outputPath, Constants.Materia_Type.VIDEO);
+//                                    finish();
+//                                }
                             }
                         });
                     }
@@ -1158,4 +1241,5 @@ public class EditVideoActivity extends BaseActivity {
                 })
                 .start();
     }
+
 }

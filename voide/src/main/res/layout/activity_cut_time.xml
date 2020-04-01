@@ -11,39 +11,43 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#dd2B2B2B">
+
         <RelativeLayout
             android:id="@+id/rl_close"
             android:layout_width="50dp"
             android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/back"/>
+                android:src="@mipmap/back" />
         </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:textSize="18sp"
             android:layout_centerInParent="true"
-            android:text="剪切时长"/>
+            android:text="剪切时长"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/tv_finish_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingLeft="13dp"
-            android:paddingRight="13dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="14sp"
-            android:textColor="#fff"
-            android:background="@drawable/yuanjiao"
             android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="完成"/>
+            android:background="@drawable/yuanjiao"
+            android:paddingLeft="13dp"
+            android:paddingTop="5dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="5dp"
+            android:text="完成"
+            android:textColor="#fff"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,16 +69,48 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="100dp"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingEnd="@dimen/dp20"
+        >
+        <TextView
+            android:id="@+id/tv_start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="00:00"/>
+
+        <TextView
+            android:id="@+id/tv_end_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:text="00:00"/>
+
+        <TextView
+            android:id="@+id/tv_center_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="00:00"/>
+
         <LinearLayout
             android:id="@+id/ll_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:orientation="horizontal"/>
         <com.zhaoss.weixinrecorded.view.ThumbnailView
             android:id="@+id/thumbnailView"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
 </LinearLayout>

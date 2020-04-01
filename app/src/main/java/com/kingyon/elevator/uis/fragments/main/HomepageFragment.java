@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.main;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.NestedScrollView;
@@ -13,15 +14,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.andview.refreshview.XRefreshView;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -45,7 +48,6 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
 import com.kingyon.elevator.uis.activities.MainActivity;
-import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
 import com.kingyon.elevator.uis.activities.WebViewActivity;
 import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
@@ -65,12 +67,10 @@ import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.uis.widgets.viewpager.AutoScrollViewPager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -79,7 +79,6 @@ import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshFragment;
 import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,14 +88,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by GongLi on 2018/12/24.
  * Email：lc824767150@163.com
  */
 
-public class HomepageFragment extends BaseStateRefreshFragment implements BannerAdaper.OnPagerClickListener<BannerEntity> {
+public class HomepageFragment extends BaseStateRefreshFragment implements BannerAdaper.OnPagerClickListener<BannerEntity>{
     @BindView(R.id.vp_banner)
     AutoScrollViewPager vpBanner;
     @BindView(R.id.pfl_banner)
@@ -133,6 +134,13 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     TextView cat_more_news;
     @BindView(R.id.news_list_container)
     RecyclerView news_list_container;
+    Unbinder unbinder;
+    @BindView(R.id.img_knowledges)
+    ImageView imgKnowledges;
+    @BindView(R.id.img_examples)
+    ImageView imgExamples;
+//    @BindView(R.id.custom_view)
+//    XRefreshView customView;
     private LinearLayoutManager linearLayoutManager;
     private List<NewsEntity> newsEntityList;
     private NewsListAdapter newsListAdapter;
@@ -144,6 +152,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     private LocationEntity locationEntity;
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private int[] clickPosition = new int[2];
+    int prage = 1;
 
     @Override
     public int getContentViewId() {
@@ -182,6 +191,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                 imgSearch.setImageResource(TextUtils.isEmpty(s) ? R.drawable.ic_homepage_right : R.drawable.ic_homepage_clear);
             }
         });
+
     }
 
     /**
@@ -202,6 +212,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
         news_list_container.addItemDecoration(new NewsItemDecornation());
         news_list_container.setAdapter(newsListAdapter);
     }
+
 
     @Override
     public void onRefresh() {
@@ -230,7 +241,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                         updateClassifies();
                         updateNotice(homepageDataEntity.getAnnouncements());
                         tvNotice.postDelayed(() -> {
-                            //优化首页卡顿，只加载15条数据
+                            //优化首页卡顿，只加载15条数据下拉刷新
                             cellsAdaper.refreshDatas(homepageDataEntity.getCells().subList(0, 15));
                         }, 200);
                     }
@@ -638,4 +649,17 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
     }
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

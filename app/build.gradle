@@ -158,9 +158,15 @@ dependencies {
     implementation 'com.shuyu:GSYVideoPlayer:6.0.2'
     implementation files('libs/pldroid-player-2.1.9.jar')
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+//    视频压缩
     implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
+//    编辑视频
+    implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
+//    加载库
+    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
 
     implementation project(path: ':voide')
+    implementation project(path: ':video-effect')
 }
 
 MobSDK {

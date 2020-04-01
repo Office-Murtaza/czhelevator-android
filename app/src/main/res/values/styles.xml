@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:windowSoftInputMode">adjustResize|stateAlwaysHidden</item>
+        <item name="android:windowAnimationStyle">@style/fade</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
@@ -112,4 +113,12 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+
+    <!-- 自定义动画样式 -->
+    <style name='fade' parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/act_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/act_fade_stay</item>
+        <item name="android:activityCloseEnterAnimation">@anim/act_fade_stay</item>
+        <item name="android:activityCloseExitAnimation">@anim/act_fade_out</item>
+    </style>
 </resources>

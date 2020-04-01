@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +31,14 @@ import com.lansosdk.videoeditor.onVideoEditorProgressListener;
 import com.zhaoss.weixinrecorded.R;
 import com.zhaoss.weixinrecorded.util.MyVideoEditor;
 import com.zhaoss.weixinrecorded.util.RxJavaUtil;
+import com.zhaoss.weixinrecorded.util.TimeUtils;
 import com.zhaoss.weixinrecorded.util.Utils;
 import com.zhaoss.weixinrecorded.view.ThumbnailView;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.reactivex.disposables.Disposable;
 
@@ -44,17 +53,22 @@ public class CutTimeActivity extends BaseActivity{
     private TextView tv_finish_video;
     private LinearLayout ll_thumbnail;
     private ThumbnailView thumbnailView;
+    private float INITNEW = 0;
+    private int NEW = 0;
+    int jisuna = 0;
 
     private String path;
     private int startTime;
     private int endTime;
     private MediaInfo mMediaInfo;
     private TextView editorTextView;
+    private TextView tvStratText,tvEndText,tvCenterText;
     private MediaPlayer mMediaPlayer;
     private MyVideoEditor myVideoEditor = new MyVideoEditor();
     private boolean parsingFrame;//正在解析缩略图
     private String frameDir;
     private Disposable frameSubscribe;
+    private int voideTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +79,9 @@ public class CutTimeActivity extends BaseActivity{
         frameDir = LanSongFileUtil.getCreateFileDir(String.valueOf(System.currentTimeMillis()));
 
         Intent intent = getIntent();
-        path = intent.getStringExtra(RecordedActivity.INTENT_PATH);
+        path = intent.getStringExtra("path");
 
+        voideTime = (getVideoDuration(path)/1000);
         mMediaInfo = new MediaInfo(path);
         mMediaInfo.prepare();
 
@@ -80,7 +95,9 @@ public class CutTimeActivity extends BaseActivity{
         textureView = findViewById(R.id.textureView);
         ll_thumbnail = findViewById(R.id.ll_thumbnail);
         thumbnailView = findViewById(R.id.thumbnailView);
-
+        tvEndText = findViewById(R.id.tv_end_text);
+        tvStratText = findViewById(R.id.tv_start_text);
+        tvCenterText = findViewById(R.id.tv_center_text);
         rl_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,9 +105,17 @@ public class CutTimeActivity extends BaseActivity{
             }
         });
         tv_finish_video.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                cutVideo();
+                Log.e("TAG==",thumbnailView.getTransitionName()
+                        +"\ngetLeftInterval==="+thumbnailView.getLeftInterval()+"\ngetRightInterval==="+thumbnailView.getRightInterval());
+                if (thumbnailView.getLeftInterval()==0&&INITNEW==0){
+                    finish();
+                }else {
+                    cutVideo();
+                }
+
             }
         });
 
@@ -112,12 +137,33 @@ public class CutTimeActivity extends BaseActivity{
 
             }
         });
-
+        tvEndText.setText(TimeUtils.secondToTime(voideTime));
+        tvCenterText.setText(TimeUtils.secondToTime(voideTime));
+//        Log.e("TAG",thumbnailView.getRightInterval()+"====");
         //监听裁剪器滑动
         thumbnailView.setOnScrollBorderListener(new ThumbnailView.OnScrollBorderListener() {
             @Override
-            public void OnScrollBorder(float start, float end) {
+            public void OnScrollBorder(final float start, final float end) {
+                Log.e("TAG",start+"========"+end);
+                jisuna = 960 / voideTime;
+                INITNEW = end;
+                final float shuju = ((end/(jisuna))-(start/(jisuna)));
                 changeTime();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                        tvStratText.setText(TimeUtils.secondToTime((long) (start / jisuna)) + "");
+                        tvEndText.setText(TimeUtils.secondToTime((long) (end/(jisuna)))+"");
+                        tvCenterText.setText(TimeUtils.secondToTime(((Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (end / jisuna))))
+                                -Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (start / jisuna)))))/1000)) + "");
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
 
             @Override
@@ -141,6 +187,7 @@ public class CutTimeActivity extends BaseActivity{
         try {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setDataSource(path);
+
             mMediaPlayer.setSurface(new Surface(surface));
             mMediaPlayer.setLooping(true);
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -178,6 +225,7 @@ public class CutTimeActivity extends BaseActivity{
     private void cutVideo() {
 
         editorTextView = showProgressDialog();
+
         RxJavaUtil.run(new RxJavaUtil.OnRxAndroidListener<String>() {
             @Override
             public String doInBackground() throws Throwable {
@@ -315,5 +363,23 @@ public class CutTimeActivity extends BaseActivity{
             mMediaPlayer.stop();
             mMediaPlayer.release();
         }
+    }
+private MediaMetadataRetriever media;
+    //获取视频总时长
+    private int getVideoDuration(String path){
+        media = new MediaMetadataRetriever();
+        media.setDataSource(path);
+        String duration = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION); //
+        return Integer.parseInt(duration);
+    }
+
+
+    public static String dateToStamp(String s) throws ParseException {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
     }
 }

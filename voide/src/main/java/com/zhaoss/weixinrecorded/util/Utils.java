@@ -2,6 +2,7 @@ package com.zhaoss.weixinrecorded.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 
 import java.io.File;
@@ -136,5 +137,4 @@ public class Utils {
         finalPath = finalPath + "/" + outputName;
         return finalPath;
     }
-
 }

@@ -1,41 +1,29 @@
 package com.kingyon.elevator.uis.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.entities.ADEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.photopicker.MimeType;
 import com.kingyon.elevator.presenter.PhotoPickerPresenter;
 import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
-import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.uis.adapters.PhotoPickerAdapter;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.kingyon.elevator.view.PhotoPickerView;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.yalantis.ucrop.UCrop;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +33,6 @@ import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  * 图片选择界面
@@ -98,11 +85,22 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
                     getActivity().finish();
                 } else {
                     if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
-                        LogUtils.d("+++++++++++++++++++++++");
-                        MyActivityUtils.goPreviewVideoActivity(getActivity(), PreviewVideoActivity.class, mediaData.getOriginalPath(), mediaData.getDuration());
+                        LogUtils.d("+++++++++++++++++++++++",mediaData.getOriginalPath(),mediaData.getDuration());
+//                        MyActivityUtils.goPreviewVideoActivity(getActivity(), PreviewVideoActivity.class, mediaData.getOriginalPath(), mediaData.getDuration());
+                        Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+                        intent.putExtra("path",mediaData.getOriginalPath());
+                        intent.putExtra("fromType",fromType);
+                        startActivity(intent);
+                        getActivity().finish();
                     } else {
                         //来自于我的广告，发送通知 告诉选择成功
-                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, mediaData));
+//                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, mediaData));
+                        Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+                        intent.putExtra("path",mediaData.getOriginalPath());
+                        intent.putExtra("fromType",fromType);
+                        startActivity(intent);
+                        getActivity().finish();
+
                     }
                 }
             } else {

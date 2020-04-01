@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RecordedActivity extends BaseActivity {
 
     public static final String INTENT_PATH = "path";
+    public static final String INTENT_FROMTYPE = "fromType";
     public static final String INTENT_DATA_TYPE = "result_data_type";
 
     public static final int RESULT_TYPE_VIDEO = 1;
@@ -316,9 +317,9 @@ public class RecordedActivity extends BaseActivity {
             @Override
             public void onFinish(String result) {
                 closeProgressDialog();
-                Intent intent = new Intent(mContext, EditVideoActivity.class);
-                intent.putExtra(INTENT_PATH, result);
-                startActivityForResult(intent, REQUEST_CODE_KEY);
+//                Intent intent = new Intent(mContext, EditVideoActivity.class);
+//                intent.putExtra(INTENT_PATH, result);
+//                startActivityForResult(intent, REQUEST_CODE_KEY);
             }
             @Override
             public void onError(Throwable e) {

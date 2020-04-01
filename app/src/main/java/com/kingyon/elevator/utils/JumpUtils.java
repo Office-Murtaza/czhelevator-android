@@ -17,6 +17,7 @@ import com.kingyon.elevator.entities.NormalOptionEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.uis.activities.HomeActivity;
 import com.kingyon.elevator.uis.activities.advertising.AdPreviewActivity;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
 import com.kingyon.elevator.uis.activities.MainActivity;

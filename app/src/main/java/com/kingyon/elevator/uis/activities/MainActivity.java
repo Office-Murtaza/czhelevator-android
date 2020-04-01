@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;

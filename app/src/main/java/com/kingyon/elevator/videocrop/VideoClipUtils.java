@@ -3,6 +3,10 @@ package com.kingyon.elevator.videocrop;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaCodec;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
+import android.media.MediaMuxer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,6 +25,7 @@ import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -187,5 +192,78 @@ public class VideoClipUtils {
             previous = timeOfSyncSample;
         }
         return timeOfSyncSamples[timeOfSyncSamples.length - 1];
+    }
+
+
+    public static String muxVideoAudio(String videoFilePath, String audioFilePath, String outputFile) {
+        try {
+            MediaExtractor videoExtractor = new MediaExtractor();
+            videoExtractor.setDataSource(videoFilePath);
+            MediaExtractor audioExtractor = new MediaExtractor();
+            audioExtractor.setDataSource(audioFilePath);
+            MediaMuxer muxer = new MediaMuxer(outputFile, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+            videoExtractor.selectTrack(0);
+            MediaFormat videoFormat = videoExtractor.getTrackFormat(0);
+            int videoTrack = muxer.addTrack(videoFormat);
+            audioExtractor.selectTrack(0);
+            MediaFormat audioFormat = audioExtractor.getTrackFormat(0);
+            int audioTrack = muxer.addTrack(audioFormat);
+            LogUtils.d(TAG, "Video Format " + videoFormat.toString());
+            LogUtils.d(TAG, "Audio Format " + audioFormat.toString());
+            boolean sawEOS = false;
+            int frameCount = 0;
+            int offset = 100;
+            int sampleSize = 256 * 1024;
+            ByteBuffer videoBuf = ByteBuffer.allocate(sampleSize);
+            ByteBuffer audioBuf = ByteBuffer.allocate(sampleSize);
+            MediaCodec.BufferInfo videoBufferInfo = new MediaCodec.BufferInfo();
+            MediaCodec.BufferInfo audioBufferInfo = new MediaCodec.BufferInfo();
+            videoExtractor.seekTo(0, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
+            audioExtractor.seekTo(0, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
+            muxer.start();
+            while (!sawEOS) {
+                videoBufferInfo.offset = offset;
+                videoBufferInfo.size = videoExtractor.readSampleData(videoBuf, offset);
+                if (videoBufferInfo.size < 0 || audioBufferInfo.size < 0) {
+                    sawEOS = true;
+                    videoBufferInfo.size = 0;
+                } else {
+                    videoBufferInfo.presentationTimeUs = videoExtractor.getSampleTime();
+                    //noinspection WrongConstant
+                    videoBufferInfo.flags = videoExtractor.getSampleFlags();
+                    muxer.writeSampleData(videoTrack, videoBuf, videoBufferInfo);
+                    videoExtractor.advance();
+                    frameCount++;
+                }
+            }
+
+            boolean sawEOS2 = false;
+            int frameCount2 = 0;
+            while (!sawEOS2) {
+                frameCount2++;
+                audioBufferInfo.offset = offset;
+                audioBufferInfo.size = audioExtractor.readSampleData(audioBuf, offset);
+                if (videoBufferInfo.size < 0 || audioBufferInfo.size < 0) {
+                    sawEOS2 = true;
+                    audioBufferInfo.size = 0;
+                } else {
+                    audioBufferInfo.presentationTimeUs = audioExtractor.getSampleTime();
+                    //noinspection WrongConstant
+                    audioBufferInfo.flags = audioExtractor.getSampleFlags();
+                    muxer.writeSampleData(audioTrack, audioBuf, audioBufferInfo);
+                    audioExtractor.advance();
+                }
+            }
+            muxer.stop();
+            muxer.release();
+            LogUtils.d(TAG,"Output: "+outputFile);
+
+            return outputFile;
+        } catch (IOException e) {
+            LogUtils.d(TAG, "Mixer Error 1 " + e.getMessage());
+        } catch (Exception e) {
+            LogUtils.d(TAG, "Mixer Error 2 " + e.getMessage());
+        }
+        return "";
     }
 }
