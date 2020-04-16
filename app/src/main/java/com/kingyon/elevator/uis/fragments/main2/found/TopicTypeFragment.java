@@ -26,11 +26,9 @@ import butterknife.Unbinder;
  * Created By Admin  on 2020/4/15
  * Email : 163235610@qq.com
  * Author:Mrczh
- * Instructions:
+ * Instructions: 话题类别
  */
 public class TopicTypeFragment extends LazyloadFragment {
-
-
     @BindView(R.id.rc_view)
     RecyclerView rcView;
     Unbinder unbinder;
