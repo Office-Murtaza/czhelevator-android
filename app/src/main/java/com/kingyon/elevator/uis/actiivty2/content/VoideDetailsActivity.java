@@ -26,7 +26,7 @@ import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
  * Created By Admin  on 2020/4/16
  * Email : 163235610@qq.com
  * Author:Mrczh
- * Instructions:
+ * Instructions:视频详情
  */
 @Route(path = ACTIVITY_MAIN2_VIDEO_DRTAILS)
 public class VoideDetailsActivity extends BaseActivity {
