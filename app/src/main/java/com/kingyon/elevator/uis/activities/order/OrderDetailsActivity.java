@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
@@ -212,6 +213,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     @Override
     public void onRefresh() {
+        LogUtils.e(orderId);
         NetService.getInstance().orderDetatils(orderId)
                 .compose(this.<OrderDetailsEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<OrderDetailsEntity>() {
@@ -223,6 +225,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
                     @Override
                     public void onNext(OrderDetailsEntity order) {
+                        LogUtils.e(order.toString());
+
                         if (order == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -473,6 +477,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             return;
         }
         Bundle bundle = new Bundle();
+        LogUtils.e(advertising.toString());
         switch (advertising.getPlanType()) {
             case Constants.PLAN_TYPE.BUSINESS:
                 bundle.putBoolean(CommonUtil.KEY_VALUE_1, true);

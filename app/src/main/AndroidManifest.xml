@@ -60,6 +60,11 @@
             android:name=".uis.activities.inputcomment.InputCommentActivity"
             android:theme="@style/NoTitleDialogTheme"
             android:windowSoftInputMode="stateAlwaysVisible" />
+<!--         发布-->
+        <activity
+            android:name=".uis.activities.inputcomment.InCommunityActivity"
+            android:theme="@style/NoTitleDialogTheme"
+            android:windowSoftInputMode="stateAlwaysVisible" />
 <!--        新闻-->
         <activity
             android:name=".uis.activities.NewsDetailsActivity"
@@ -101,6 +106,15 @@
                     android:scheme="elevator" />
             </intent-filter>
         </activity>
+        <activity android:name=".uis.actiivty2.CodeActivity">
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
 <!--        主Activity-->
         <activity
             android:name=".uis.activities.MainActivity"
@@ -558,7 +572,25 @@
             android:name=".videocrop.EditVideoActivity"
             android:screenOrientation="portrait" />
 
-
+        <!--2.0搜索-->
+        <activity android:name=".uis.actiivty2.main.SearchActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0社区发布-->
+        <activity
+            android:name=".uis.actiivty2.main.CommunityReleasetyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NextTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
+<!--        内容详情图文-->
+        <activity android:name=".uis.actiivty2.content.ContentDetailsActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+        <!--        内容详情视频-->
+        <activity android:name=".uis.actiivty2.content.VoideDetailsActivity"
+            android:screenOrientation="portrait"
+            ></activity>
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

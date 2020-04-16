@@ -24,12 +24,15 @@ public class ThumbnailView extends View {
     private int mWidth;
     private int mHeight;
     private Paint mPaint;
-    private RectF rectF;
-    private RectF rectF2;
+    private RectF rectF = new RectF();
+    private RectF rectF2 = new RectF();
+    private RectF rectF3;
+    private RectF rectF4;
     private int rectWidth;
     private Bitmap bitmap;
     private OnScrollBorderListener onScrollBorderListener;
     private int minPx;
+    Canvas canvas;
 
     public ThumbnailView(Context context) {
         super(context);
@@ -78,6 +81,16 @@ public class ThumbnailView extends View {
     public float getLeftInterval(){
         return rectF.left;
     }
+
+    public void setLeftInterval(float left){
+        this.rectF.left = left;
+
+    }
+
+    public void setRightInterval(float right){
+        this.rectF2.right = right;
+    }
+
 
     public float getRightInterval(){
         return rectF2.right;
@@ -188,7 +201,7 @@ public class ThumbnailView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
+        this.canvas = canvas;
         mPaint.setColor(Color.WHITE);
 
         Rect rect = new Rect();
@@ -196,14 +209,14 @@ public class ThumbnailView extends View {
         rect.top = (int) rectF.top;
         rect.right = (int) rectF.right;
         rect.bottom = (int) rectF.bottom;
-        canvas.drawBitmap(bitmap, null, rectF, mPaint);
+        canvas.drawBitmap(bitmap, rect, rectF, mPaint);
 
         Rect rect2 = new Rect();
         rect2.left = (int) rectF2.left;
         rect2.top = (int) rectF2.top;
         rect2.right = (int) rectF2.right;
         rect2.bottom = (int) rectF2.bottom;
-        canvas.drawBitmap(bitmap, null, rectF2, mPaint);
+        canvas.drawBitmap(bitmap, rect2, rectF2, mPaint);
 
 
 

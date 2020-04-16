@@ -32,6 +32,7 @@ import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
 import com.kingyon.elevator.uis.fragments.main.MessageFragment;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
+import com.kingyon.elevator.uis.fragments.main2.FoundFragment;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
@@ -154,8 +155,8 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace( R.id.frame_content, userFragment );
         fragmentTransaction.commit();
-        tvHomeMy.setTextColor( Color.parseColor( "#EC7A12" ) );
-        imgHomeMy.setImageResource( R.drawable.ic_account );
+        tvHomeMy.setTextColor( Color.parseColor( "#000000" ) );
+        imgHomeMy.setImageResource( R.drawable.ic_nav_private_on );
         tvHomeFound.setSelected( false );
         imgHomeFound.setSelected( false );
         tvHomeSquare.setSelected( false );
@@ -171,8 +172,8 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace( R.id.frame_content, messageFragment );
         fragmentTransaction.commit();
-        tvHomeMessage.setTextColor( Color.parseColor( "#EC7A12" ) );
-        imgHomeMessage.setImageResource( R.drawable.ic_order_sec );
+        tvHomeMessage.setTextColor( Color.parseColor( "#000000" ) );
+        imgHomeMessage.setImageResource( R.drawable.ic_nav_message_on );
         tvHomeFound.setSelected( false );
         imgHomeFound.setSelected( false );
         tvHomeSquare.setSelected( false );
@@ -188,8 +189,8 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace( R.id.frame_content, planNewFragment );
         fragmentTransaction.commit();
-        tvHomeSquare.setTextColor( Color.parseColor( "#EC7A12" ) );
-        imgHomeSquare.setImageResource( R.drawable.ic_plan_sec );
+        tvHomeSquare.setTextColor( Color.parseColor( "#000000" ) );
+        imgHomeSquare.setImageResource( R.drawable.ic_nav_square_on );
         tvHomeFound.setSelected( false );
         imgHomeFound.setSelected( false );
         tvHomeSquare.setSelected( true );
@@ -202,12 +203,12 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
 
     }
     private void found() {
-        HomepageFragment homepageFragment = new HomepageFragment();
+        FoundFragment homepageFragment = new FoundFragment();
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace( R.id.frame_content, homepageFragment );
         fragmentTransaction.commit();
-        tvHomeFound.setTextColor( Color.parseColor( "#EC7A12" ) );
-        imgHomeFound.setImageResource( R.drawable.ic_homepage_sec );
+        tvHomeFound.setTextColor( Color.parseColor( "#000000" ) );
+        imgHomeFound.setImageResource( R.drawable.ic_nav_find_on );
         tvHomeFound.setSelected( true );
         imgHomeFound.setSelected( true );
         tvHomeSquare.setSelected( false );
@@ -222,10 +223,10 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         tvHomeMessage.setTextColor( Color.parseColor( "#666666" ) );
         tvHomeMy.setTextColor( Color.parseColor( "#666666" ) );
         tvHomeSquare.setTextColor( Color.parseColor( "#666666" ) );
-        imgHomeFound.setImageResource( R.drawable.ic_homepage_nor );
-        imgHomeSquare.setImageResource( R.drawable.ic_plan_nor );//ic_plan_nor
-        imgHomeMessage.setImageResource( R.drawable.ic_order_nor );//ic_order_nor
-        imgHomeMy.setImageResource( R.drawable.ic_mine_nor );
+        imgHomeFound.setImageResource( R.drawable.ic_nav_find_off);
+        imgHomeSquare.setImageResource( R.drawable.ic_nav_square_off );//ic_plan_nor
+        imgHomeMessage.setImageResource( R.drawable.ic_nav_message_off );//ic_order_nor
+        imgHomeMy.setImageResource( R.drawable.ic_nav_private_off );
 
     }
 

@@ -36,6 +36,24 @@ public class ADEntity implements Parcelable {
     private String adIndustry;
     private long adIndustryId;
 
+    @Override
+    public String toString() {
+        return "ADEntity{" +
+                "onlyInfo=" + onlyInfo +
+                ", objctId=" + objctId +
+                ", planType='" + planType + '\'' +
+                ", screenType='" + screenType + '\'' +
+                ", adStatus='" + adStatus + '\'' +
+                ", videoUrl='" + videoUrl + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", bgMusic='" + bgMusic + '\'' +
+                ", faildReason='" + faildReason + '\'' +
+                ", title='" + title + '\'' +
+                ", adIndustry='" + adIndustry + '\'' +
+                ", adIndustryId=" + adIndustryId +
+                '}';
+    }
+
     public boolean isOnlyInfo() {
         return onlyInfo;
     }

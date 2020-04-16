@@ -138,6 +138,8 @@ public class TextSearchFragment extends BaseStateRefreshLoadingFragment<CellItem
 
                     @Override
                     public void onNext(PageListEntity<CellItemEntity> cellItemEntityPageListEntity) {
+
+
                         if (cellItemEntityPageListEntity == null || cellItemEntityPageListEntity.getContent() == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

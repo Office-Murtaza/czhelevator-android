@@ -149,6 +149,7 @@ public class Mp4Composer {
                 }
 
                 final int videoRotate = getVideoRotation(srcPath);
+                Log.e("TAG==111",videoRotate+"==="+srcPath);
                 final Resolution srcVideoResolution = getVideoResolution(srcPath, videoRotate);
 
                 if (filter == null) {
@@ -263,7 +264,9 @@ public class Mp4Composer {
         }
         String orientation = mediaMetadataRetriever.extractMetadata(
                 MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+        Log.e("TAG==",orientation+"=====");
         return Integer.valueOf(orientation);
+//        return 0;
     }
 
     private int calcBitRate(int width, int height) {

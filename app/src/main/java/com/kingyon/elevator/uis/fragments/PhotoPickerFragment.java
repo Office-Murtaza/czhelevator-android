@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
@@ -22,8 +24,13 @@ import com.kingyon.elevator.uis.adapters.PhotoPickerAdapter;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
+import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.kingyon.elevator.view.PhotoPickerView;
+import com.marvhong.videoeffect.FillMode;
+import com.marvhong.videoeffect.composer.Mp4Composer;
+import com.marvhong.videoeffect.helper.MagicFilterFactory;
 import com.yalantis.ucrop.UCrop;
+import com.zhaoss.weixinrecorded.util.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +40,8 @@ import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.blankj.utilcode.util.Utils.runOnUiThread;
 
 /**
  * 图片选择界面
@@ -84,24 +93,29 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
                     MyActivityUtils.goVideoEditorActivity(getActivity(), fromType, planType);
                     getActivity().finish();
                 } else {
-                    if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
-                        LogUtils.d("+++++++++++++++++++++++",mediaData.getOriginalPath(),mediaData.getDuration());
-//                        MyActivityUtils.goPreviewVideoActivity(getActivity(), PreviewVideoActivity.class, mediaData.getOriginalPath(), mediaData.getDuration());
-                        Intent intent = new Intent(getActivity(), EditVideoActivity.class);
-                        intent.putExtra("path",mediaData.getOriginalPath());
-                        intent.putExtra("fromType",fromType);
-                        startActivity(intent);
-                        getActivity().finish();
-                    } else {
-                        //来自于我的广告，发送通知 告诉选择成功
-//                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, mediaData));
-                        Intent intent = new Intent(getActivity(), EditVideoActivity.class);
-                        intent.putExtra("path",mediaData.getOriginalPath());
-                        intent.putExtra("fromType",fromType);
-                        startActivity(intent);
-                        getActivity().finish();
+                    LogUtils.e(mediaData.getOriginalPath());
+                    showProgressDialog("请稍等...", false);
+                    hideProgressDailog();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
+                                Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+                                intent.putExtra("path",mediaData.getOriginalPath());
+                                intent.putExtra("fromType",fromType);
+                                startActivity(intent);
+                                getActivity().finish();
+                            } else {
+                                //来自于我的广告，发送通知 告诉选择成功
+                                Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+                                intent.putExtra("path",mediaData.getOriginalPath());
+                                intent.putExtra("fromType", fromType);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+                        }
+                    });
 
-                    }
                 }
             } else {
                 openCrop(mediaDataArrayList.get(position).getOriginalPath());

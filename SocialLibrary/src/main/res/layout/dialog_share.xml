@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bj"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="4dp"
         android:layout_gravity="center"
-        android:background="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:background="#CFCFCF"
         android:gravity="center"
         android:paddingTop="15dp"
-        android:text="分享到"
         android:textColor="@color/black_normal"
         android:textSize="16sp" />
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="5dp"
-            android:drawableTop="@drawable/icon_wechat"
+            android:drawableTop="@drawable/ic_share_wechart"
             android:gravity="center_horizontal"
             android:text="微信"
             android:textColor="@color/coical_dialog_textcolor"
@@ -44,11 +44,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="5dp"
-            android:drawableTop="@drawable/icon_wechat_moments"
+            android:drawableTop="@drawable/ic_share_circle"
             android:gravity="center_horizontal"
             android:text="朋友圈"
             android:textColor="@color/coical_dialog_textcolor"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/share_sinaweibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_share_weibo"
+            android:gravity="center_horizontal"
+            android:text="微博"
+            android:textColor="@color/coical_dialog_textcolor"
+            android:textSize="14sp" />
+
 
         <TextView
             android:id="@+id/share_qq"
@@ -56,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="5dp"
-            android:drawableTop="@drawable/icon_qq"
+            android:drawableTop="@drawable/ic_share_qq"
             android:gravity="center_horizontal"
             android:text="QQ"
             android:textColor="@color/coical_dialog_textcolor"
@@ -76,7 +89,6 @@
 
 
         <TextView
-            android:id="@+id/share_sinaweibo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -118,9 +130,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#FCF3F4"
+        android:background="@drawable/bg_ad_qx"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="10dp"
         android:text="取消"
         android:textColor="@android:color/black"
         android:textSize="14sp" />

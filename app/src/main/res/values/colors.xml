@@ -17,6 +17,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="testcolor">#000000</color>
+    <color name="color_00000000">#00000000</color>
 
     <color name="btn_start_crop_color">#00ff00</color>
 
@@ -27,6 +28,8 @@
     <color name="biometricprompt_color_FF5555">#FF5555</color>
 
     <color name="red">#FF0000</color>
+    <color name="type1">#60A4D3</color>
+    <color name="type2">#999999</color>
 
     <color name="text1">#FFFFFF</color>
     <color name="text2">#ffefa8</color>
@@ -61,6 +64,7 @@
 
     <color name="speedTextNormal">#ffdddddd</color>
     <color name="textSelectorBG">#2d2b39</color>
+    <color name="color_666666">#666666</color>
 
     <color name="transitionSelectorBG">#575558</color>
     <color name="sectionDrawColor">#80575558</color>
@@ -93,5 +97,7 @@
     <color name="lsq_alpha_black_66">#66000000</color>
     <color name="lsq_alpha_black_B4">#B4000000</color>
     <color name="lsq_alpha_black_CO">#C0000000</color>
+
+
 
 </resources>

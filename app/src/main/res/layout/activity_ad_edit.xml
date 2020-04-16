@@ -245,6 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="657"
+
                     android:background="@drawable/bg_ad_image">
 
                     <ImageView
@@ -263,7 +264,8 @@
                         android:id="@+id/img_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        />
 
                     <ImageView
                         android:id="@+id/img_image_clear"

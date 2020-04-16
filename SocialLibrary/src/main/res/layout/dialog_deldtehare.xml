@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bj"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="24dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="#CFCFCF"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:textColor="@color/black_normal"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除"
+        android:textColor="#fffe2944"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/share_btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_ad_qx"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="取消"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+</LinearLayout>

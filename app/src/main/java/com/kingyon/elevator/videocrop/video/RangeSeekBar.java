@@ -18,6 +18,7 @@ import android.view.ViewConfiguration;
 import androidx.annotation.Nullable;
 
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 
 import java.text.DecimalFormat;
@@ -27,7 +28,7 @@ public class RangeSeekBar extends View {
     private double absoluteMinValuePrim, absoluteMaxValuePrim;
     private double normalizedMinValue = 0d;//点坐标占总长度的比例值，范围从0-1
     private double normalizedMaxValue = 1d;//点坐标占总长度的比例值，范围从0-1
-    private long min_cut_time = 3000;
+    private long min_cut_time = 1000;
     private double normalizedMinValueTime = 0d;
     private double normalizedMaxValueTime = 1d;// normalized：规格化的--点坐标占总长度的比例值，范围从0-1
     private int mScaledTouchSlop;
@@ -61,6 +62,7 @@ public class RangeSeekBar extends View {
 
     public RangeSeekBar(Context context) {
         super(context);
+
     }
 
     public RangeSeekBar(Context context, @Nullable AttributeSet attrs) {
@@ -454,21 +456,7 @@ public class RangeSeekBar extends View {
         return (value - absoluteMinValuePrim) / (absoluteMaxValuePrim - absoluteMinValuePrim);
     }
 
-    public void setSelectedMinValue(long value) {
-        if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
-            setNormalizedMinValue(0d);
-        } else {
-            setNormalizedMinValue(valueToNormalized(value));
-        }
-    }
 
-    public void setSelectedMaxValue(long value) {
-        if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
-            setNormalizedMaxValue(1d);
-        } else {
-            setNormalizedMaxValue(valueToNormalized(value));
-        }
-    }
 
     public void setNormalizedMinValue(double value) {
         normalizedMinValue = Math.max(0d, Math.min(1d, Math.min(value, normalizedMaxValue)));
@@ -490,6 +478,22 @@ public class RangeSeekBar extends View {
         return normalizedToValue(normalizedMaxValueTime);
     }
 
+
+    public void setSelectedMinValue(long value) {
+        if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
+            setNormalizedMinValue(0d);
+        } else {
+            setNormalizedMinValue(valueToNormalized(value));
+        }
+    }
+
+    public void setSelectedMaxValue(long value) {
+        if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
+            setNormalizedMaxValue(1d);
+        } else {
+            setNormalizedMaxValue(valueToNormalized(value));
+        }
+    }
     private long normalizedToValue(double normalized) {
         return (long) (absoluteMinValuePrim + normalized
                 * (absoluteMaxValuePrim - absoluteMinValuePrim));

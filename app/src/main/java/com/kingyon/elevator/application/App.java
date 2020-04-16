@@ -5,12 +5,14 @@ import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.utils.DensityUtil;
+import com.kingyon.elevator.utils.FileUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -66,7 +68,10 @@ public class App extends LitePalApplication {
         initLeakCanary();
         initDownLoader();
         initShareSdk();
+        ARouter.init(this);
         sApplication = getApplicationContext();
+        FileUtils.createFile("PDD");
+
     }
 
     private void initLogger() {

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp10"
+    android:paddingRight="@dimen/dp10"
+    android:paddingTop="@dimen/dp10"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/ic_launcher"
+                />
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="@dimen/dp10"
+                android:text="V"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/dp5"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@drawable/bg_gf_lanv"
+                android:textColor="#A3D0FF"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="屏多多官方"
+            android:textColor="#ff333333"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textSize="16sp"
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp5"
+            android:src="@mipmap/ic_tips_talent"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_comm_menu"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="描述内容--刘兵亮发起了“汉字百人舞”征集设计师集体造字，参与设计师近百人。#字体设计大赛#"
+        android:textColor="#ff333333"
+        android:textSize="14sp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rv_conent_img"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@drawable/bg_ad_screen"
+        >
+
+
+    <LinearLayout
+        android:id="@+id/ll_conent_img"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        tools:ignore="Orientation">
+    </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/ll_xssjcs"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:background="@mipmap/bg_play_count"
+          android:layout_alignParentBottom="true"
+          android:gravity="center"
+          android:visibility="gone"
+          android:paddingLeft="@dimen/dp20"
+          android:paddingRight="@dimen/dp20"
+          >
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="243次播放"
+              android:textColor="#ffffffff"
+              android:textSize="10sp"
+              />
+
+          <TextView
+              android:layout_weight="1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="1:23"
+              android:textColor="#ffffffff"
+              android:textSize="10sp"
+              />
+
+      </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_small_like"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="109"
+            android:textColor="#ff999999"
+            android:layout_marginLeft="@dimen/dp5"
+            android:textSize="11sp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_small_connent"
+            android:layout_marginLeft="@dimen/dp30"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            android:textColor="#ff999999"
+            android:layout_marginLeft="@dimen/dp5"
+            android:textSize="11sp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_small_share"
+            android:layout_marginLeft="@dimen/dp30"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            android:layout_marginLeft="@dimen/dp5"
+            android:textColor="#ff999999"
+            android:textSize="11sp"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1小时前"
+            android:textColor="#ffb4b3b3"
+            android:textSize="11sp"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_like_message"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dp6"
+        android:paddingLeft="@dimen/dp5"
+        android:gravity="center|fill"
+        >
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_small_like_gray"
+            ></ImageView>
+
+
+        <ImageView
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp10"
+            android:src="@mipmap/ic_launcher"
+            ></ImageView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="等109人觉得很赞"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="#ff333333"
+            android:textSize="11sp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E1E1E1"
+        android:layout_marginTop="@dimen/dp10"
+        />
+
+
+</LinearLayout>

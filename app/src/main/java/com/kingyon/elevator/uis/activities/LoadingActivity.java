@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -235,6 +236,7 @@ public class LoadingActivity extends BaseActivity {
 //            } else {
 //            String myUserRole = AppContent.getInstance().getMyUserRole();
 //            if (TextUtils.isEmpty(
+            LogUtils.e( AppContent.getInstance().getMyUserRole());
 
             JumpUtils.getInstance().jumpToRoleMain(this, AppContent.getInstance().getMyUserRole());
 //            }

@@ -66,6 +66,42 @@ public class OrderDetailsEntity implements Parcelable {
     private boolean isInvoice;
     private String invoiceId;
 
+    @Override
+    public String toString() {
+        return "OrderDetailsEntity{" +
+                "auditLate=" + auditLate +
+                ", address='" + address + '\'' +
+                ", releaseingPercent=" + releaseingPercent +
+                ", failedReason='" + failedReason + '\'' +
+                ", advertising=" + advertising +
+                ", name='" + name + '\'' +
+                ", payTime=" + payTime +
+                ", remainTime=" + remainTime +
+                ", objctId=" + objctId +
+                ", createTime=" + createTime +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", creator=" + creator +
+                ", goodsPrice=" + goodsPrice +
+                ", couponPrice=" + couponPrice +
+                ", realPrice=" + realPrice +
+                ", reviewFaild='" + reviewFaild + '\'' +
+                ", adStartTime=" + adStartTime +
+                ", adEndTime=" + adEndTime +
+                ", orderType='" + orderType + '\'' +
+                ", contract=" + contract +
+                ", totalScreen=" + totalScreen +
+                ", cancelReason='" + cancelReason + '\'' +
+                ", cancelTime=" + cancelTime +
+                ", orderSn='" + orderSn + '\'' +
+                ", payWay='" + payWay + '\'' +
+                ", undercastReason='" + undercastReason + '\'' +
+                ", informationAdContent='" + informationAdContent + '\'' +
+                ", adId=" + adId +
+                ", isInvoice=" + isInvoice +
+                ", invoiceId='" + invoiceId + '\'' +
+                '}';
+    }
+
     public boolean isAuditLate() {
         return auditLate;
     }

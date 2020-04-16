@@ -27,8 +27,6 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.VideoEditorPresenter;
-import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
-import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RuntimeUtils;
@@ -42,6 +40,10 @@ import com.kingyon.elevator.videocrop.video.VideoEditAdapter;
 import com.kingyon.elevator.videocrop.video.VideoEditInfo;
 import com.kingyon.elevator.view.VideoEditorView;
 import com.lansosdk.NoFree.LSOVideoScale;
+import com.marvhong.videoeffect.FillMode;
+import com.marvhong.videoeffect.composer.Mp4Composer;
+import com.marvhong.videoeffect.helper.MagicFilterFactory;
+import com.zhaoss.weixinrecorded.util.Utils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -51,6 +53,9 @@ import VideoHandle.OnEditorListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * 视频编辑界面
@@ -97,6 +102,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     private int fromType = Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN;//来自于哪个界面
     private String planType = "";
     private LSOVideoScale videoCompress;
+    private Mp4Composer mMp4Composer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,31 +330,92 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
             }
         });
         animator.start();
+
     }
 
     private final MainHandler mUIHandler = new MainHandler(this);
 
     @Override
     public void cropVideoSuccess(String path) {
-        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
-//            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, path));
-//            剪切完成
-            Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
-            intent.putExtra("path",path);
-            intent.putExtra("fromType",fromType);
-            startActivity(intent);
-//            startCompress(path);
-        } else {
-//            剪切完成预览
-//            MyActivityUtils.goPreviewVideoActivity(this, PreviewVideoActivity.class, path, MAX_CUT_DURATION);
-            Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
-            intent.putExtra("path",path);
-            intent.putExtra("fromType",fromType);
-            startActivity(intent);
+//        剪切完成，开始压缩
+        final String outputPath = Utils.getTrimmedVideoPath(this, "small_video/PDD",
+                "testVideo_");
+        mMp4Composer = new Mp4Composer(path, outputPath)
+                // .rotation(Rotation.ROTATION_270)
+                .size(768, 1220)
+                .videoBitrate(2000000)
+                .fillMode(FillMode.PRESERVE_ASPECT_FIT)
+                .filter(null)
+                .mute(false)
+                .flipHorizontal(false)
+                .flipVertical(false)
+                .listener(new Mp4Composer.Listener() {
+                    @Override
+                    public void onProgress(final double progress) {
+                        Log.d("TAG", "filterVideo---onProgress: " + (int) (progress * 100));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgressDialog("视频裁剪中..."+ (int) (progress * 100)+"%", false);
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCompleted() {
+                        Log.d("TAG", "filterVideo---onCompleted"+outputPath);
+                        hideProgressDailog();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
+                    //            剪切完成
+                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
+                                    intent.putExtra("path",outputPath);
+                                    intent.putExtra("fromType",fromType);
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
+                                    intent.putExtra("path",outputPath);
+                                    intent.putExtra("fromType",fromType);
+                                    startActivity(intent);
 
-        }
-        finish();
+                                }
+                                finish();
+                            }
+                        });
+                    }
 
+                    @Override
+                    public void onCanceled() {
+//                        NormalProgressDialog.stopLoading();
+                    }
+
+                    @Override
+                    public void onFailed(Exception exception) {
+                        Log.e("TAG", "filterVideo---onFailed()");
+                        hideProgressDailog();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
+                                    //            剪切完成
+                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
+                                    intent.putExtra("path",outputPath);
+                                    intent.putExtra("fromType",fromType);
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
+                                    intent.putExtra("path",outputPath);
+                                    intent.putExtra("fromType",fromType);
+                                    startActivity(intent);
+
+                                }
+                                finish();
+                            }
+                        });
+                    }
+                })
+                .start();
     }
 
 
@@ -358,8 +425,6 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
             @Override
             public void onSuccess() {
                 LogUtils.e(audioPath);
-
-
 //            分离完成
 //                new Thread(new Runnable() {
 //                    @Override
@@ -399,7 +464,6 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
 //                    }
 //                }).start();
             }
-
             @Override
             public void onFailure() {
                 LogUtils.d("onFailure====");

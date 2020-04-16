@@ -106,65 +106,119 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#EB7A12"
         android:orientation="vertical">
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:visibility="gone"-->
+<!--            >-->
+
+<!--            <LinearLayout-->
+
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_toStartOf="@+id/iv_dianzan"-->
+<!--                android:background="@drawable/shape_comment_input_bg"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:hint="说两句"-->
+<!--                    android:maxLength="100"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="发送"-->
+<!--                    android:textColor="#ffeb7a12"-->
+<!--                    android:textSize="21sp" />-->
+<!--            </LinearLayout>-->
+
+
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="22dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginStart="21dp"-->
+<!--                android:layout_toStartOf="@+id/iv_share_news"-->
+<!--                android:src="@mipmap/details_shoucanganniu" />-->
+
+<!--            <ImageView-->
+<!--          -->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="22dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginStart="36dp"-->
+<!--                android:layout_marginEnd="14dp"-->
+<!--                android:src="@mipmap/details_fengxainganniu2" />-->
+
+
+
+<!--        </RelativeLayout>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp10"
+            >
 
-            <LinearLayout
+
+            <ImageView
                 android:id="@+id/input_comment_container"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toStartOf="@+id/iv_dianzan"
-                android:background="@drawable/shape_comment_input_bg"
-                android:orientation="horizontal">
+                android:layout_marginStart="21dp"
+                android:src="@mipmap/btn_big_comments" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:gravity="center_vertical"
-                    android:hint="说两句"
-                    android:maxLength="100"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="发送"
-                    android:textColor="#ffeb7a12"
-                    android:textSize="21sp" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_share_news"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="21dp"
+                android:layout_toLeftOf="@id/im_sc"
+                android:src="@mipmap/btn_big_share" />
+
+
+
+            <ImageView
+                android:id="@+id/im_sc"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="21dp"
+                android:layout_toLeftOf="@+id/iv_dianzan"
+                android:src="@mipmap/btn_big_collect" />
+
 
 
             <ImageView
                 android:id="@+id/iv_dianzan"
-                android:layout_width="24dp"
-                android:layout_height="22dp"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
                 android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginStart="21dp"
-                android:layout_toStartOf="@+id/iv_share_news"
-                android:src="@mipmap/details_shoucanganniu" />
+                android:src="@mipmap/btn_big_like" />
 
-            <ImageView
-                android:id="@+id/iv_share_news"
-                android:layout_width="24dp"
-                android:layout_height="22dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="36dp"
-                android:layout_marginEnd="14dp"
-                android:src="@mipmap/details_fengxainganniu2" />
         </RelativeLayout>
+
+
     </LinearLayout>
 
 </RelativeLayout>

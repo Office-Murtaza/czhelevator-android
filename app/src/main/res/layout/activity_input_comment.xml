@@ -8,43 +8,62 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#EB7A12"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:background="@color/white"
+        android:padding="@dimen/dp10"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="@dimen/dp20"
+            android:src="@mipmap/btn_comments_expression" />
+
+        <EditText
+            android:id="@+id/input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dp10"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/bg_pl"
+            android:layout_marginRight="@dimen/dp10"
+            android:hint="请输入评论内容……"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="#ffffff"
+            android:background="@mipmap/btn_common_sent"
+            android:textSize="21sp" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
+            android:visibility="gone"
             android:background="@drawable/shape_comment_input_bg"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/input_comment"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:hint="说两句"
-                android:maxLength="100"
-                android:maxLines="1"
-                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/btn_send"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:text="发送"
-                android:textColor="#ffeb7a12"
-                android:textSize="21sp" />
+
+
         </LinearLayout>
 
 

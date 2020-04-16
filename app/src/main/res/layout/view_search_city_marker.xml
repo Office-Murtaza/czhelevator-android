@@ -32,6 +32,6 @@
             android:textColor="#ffffffff"
             android:textSize="@dimen/txt_normal_content"
             android:textStyle="bold"
-            tools:text="小区356个" />
+            tools:text="小区0个" />
     </LinearLayout>
 </com.kingyon.elevator.uis.widgets.RatioFrameLayoutByWidth>

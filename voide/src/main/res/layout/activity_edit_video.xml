@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,7 +32,9 @@
         <RelativeLayout
             android:id="@+id/rl_touch_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -79,10 +81,12 @@
         android:id="@+id/rl_edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:background="#000"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:visibility="gone">
+        android:visibility="gone"
+       >
         <TextView
             android:id="@+id/tv_close"
             android:layout_width="50dp"
@@ -103,11 +107,11 @@
         <EditText
             android:id="@+id/et_tag"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             android:layout_margin="5dp"
             android:textSize="24sp"
             android:layout_below="@id/tv_finish"
-            android:textColor="#fff"
+            android:textColor="#FA0606"
             android:gravity="top"
             android:background="@null"/>
         <TextView
@@ -115,10 +119,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:padding="@dimen/dp5"
             android:layout_centerInParent="true"
-            android:textSize="24sp"
-            android:textColor="#fff"
+            android:textColor="#FA0606"
+            android:textSize="@dimen/dp50"
             android:visibility="invisible" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="字体大小"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:layout_below="@id/et_tag"
+            android:layout_marginBottom="@dimen/dp10"
+            />
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/et_tag"
+            android:layout_marginBottom="@dimen/dp10"
+            />
+
+        <SeekBar
+            android:id="@+id/text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="50dp"
+            android:layout_below="@id/tv_size"
+            android:layout_marginBottom="10dp"/>
+
+        <com.kingyon.elevator.view.ColorBar
+            android:id="@+id/colorbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/text_size"
+            />
+
     </RelativeLayout>
 
     <TextView
@@ -308,9 +351,8 @@
             android:id="@+id/rl_jq"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:paddingLeft="@dimen/dp20"
-            android:paddingEnd="@dimen/dp20"
-           android:visibility="invisible"
+            android:visibility="invisible"
+            android:background="@mipmap/bg_video_dialog_down"
             android:layout_alignParentBottom="true"
             >
             <TextView
@@ -318,6 +360,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 android:text="00:00"/>
 
             <TextView
@@ -326,14 +369,17 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:layout_alignParentRight="true"
+                android:textStyle="bold"
                 android:text="00:00"/>
 
             <TextView
                 android:id="@+id/tv_center_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:layout_below="@+id/thumbnailView"
+                android:layout_below="@+id/fl"
+                android:textStyle="bold"
                 android:layout_centerHorizontal="true"
                 android:text="00:00"/>
 
@@ -343,42 +389,108 @@
                 android:orientation="horizontal"
                 android:layout_below="@+id/tv_center_text"
                 android:layout_alignParentBottom="true"
+                android:gravity="center"
                 >
 
                 <ImageView
                     android:id="@+id/img_qx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_qx"/>
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30"
+                    android:src="@drawable/icon_qx"
+                    android:layout_marginLeft="50dp"
+                    />
 
                 <TextView
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    />
 
                 <ImageView
                     android:id="@+id/img_wc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30"
                     android:src="@drawable/icon_wc"
-                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/dp50"
                     />
 
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50"
+                android:layout_height="50dp"
                 android:layout_below="@+id/tv_end_text"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="horizontal"/>
+
+            <cn.bar.DoubleHeadedDragonBar
+                android:id="@+id/doubleSeekbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/tv_end_text"
+                app:text_color="#ffffff"
+                app:button_img="@mipmap/video_thumbnail"
+                app:button_width="10dp"
+                app:bg_color="#00000000"
+                app:value_color="#00000000"
+                app:seek_height="@dimen/dp50"
+                android:visibility="gone"
+                />
 
             <com.zhaoss.weixinrecorded.view.ThumbnailView
                 android:id="@+id/thumbnailView"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:layout_centerVertical="true"
                 android:layout_below="@+id/tv_end_text"
-                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                />
+                android:visibility="gone"
+                ></com.zhaoss.weixinrecorded.view.ThumbnailView>
+
+
+            <FrameLayout
+                android:id="@+id/fl"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/tv_end_text"
+                android:layout_height="@dimen/dp50">
+
+
+                <ImageView
+                    android:id="@+id/positionIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/shape_seek_bar"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:background="#66000000"/>
+
+                    <LinearLayout
+                        android:id="@+id/id_seekBarLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical"/>
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:background="#66000000"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
 
 
         </RelativeLayout>
@@ -479,8 +591,11 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="14sp"
+                    android:maxLength="3"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="#E8391A"
-                    android:text="1"/>
+                    android:text="1.0"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

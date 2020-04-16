@@ -19,6 +19,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
@@ -183,6 +184,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
                     @Override
                     public void onNext(List<CityCellEntity> cityCellEntities) {
+                        CityCellEntity cityCellEntity = new CityCellEntity();
+                        LogUtils.e(cityCellEntity.toString());
                         if (cityCellEntities == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -358,6 +361,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
     private void showCellNumsMarkers(List<CityCellEntity> cityCellEntities) {
         Set<Long> cityIds = cityMarkersMap.keySet();
+        LogUtils.e(cityCellEntities.toString());
         for (CityCellEntity item : cityCellEntities) {
             if (!cityIds.contains(item.getCityCode())) {
                 MarkerOptions markerOptions = createCityMarkerOptions(item);

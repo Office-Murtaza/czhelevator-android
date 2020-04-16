@@ -20,6 +20,17 @@ public class CityCellEntity {
     private double latitude;
     private long cellCount;
 
+    @Override
+    public String toString() {
+        return "CityCellEntity{" +
+                "cityCode=" + cityCode +
+                ", cityName='" + cityName + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", cellCount=" + cellCount +
+                '}';
+    }
+
     public long getCityCode() {
         return cityCode;
     }

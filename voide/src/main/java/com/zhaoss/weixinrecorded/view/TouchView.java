@@ -266,7 +266,11 @@ public class TouchView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        onDrawImages(canvas);
+        try{
+            onDrawImages(canvas);
+        }catch(Exception e){
+        }
+
     }
 
 

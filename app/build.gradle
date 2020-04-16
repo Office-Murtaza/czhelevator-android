@@ -34,6 +34,13 @@ android {
                 JPUSH_APPKEY : "f1e1f8cbb1f9ab97ec6c6a00", //JPush上注册的包名对应的appkey
                 JPUSH_CHANNEL: "jpush", //用户渠道统计的渠道名称
         ]
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                //注解处理器需要的模块名，作为路径映射的前缀
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -164,9 +171,16 @@ dependencies {
     implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
 //    加载库
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
-
+    implementation 'com.github.kaxi4it:BidirectionalSeekBar:1.0'
+    implementation 'com.github.yujinzhao123:DoubleHeadedDragonBar:1.0.4'
+    implementation 'com.luozm.captcha:captcha:1.1.2'
+    implementation 'com.github.donkingliang:LabelsView:1.6.1'
+//    路由
+    implementation 'com.alibaba:arouter-api:1.4.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2' //注解处理器，会将注解编译成Java类
     implementation project(path: ':voide')
     implementation project(path: ':video-effect')
+//    implementation project(path: ':mrclibrary')
 }
 
 MobSDK {

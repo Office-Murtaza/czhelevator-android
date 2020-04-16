@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -53,6 +54,8 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.kareluo.imaging.IMGEditActivity;
+
+import static com.kingyon.elevator.utils.FileUtils.deleteDirWihtFile;
 
 /**
  * Created by GongLi on 2019/1/21.
@@ -124,11 +127,14 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     private OptionsPickerView planTypePicker;
     private List<NormalParamEntity> planTypeOptions;
 
+    private boolean istj = false;
+
     @Override
     protected String getTitleText() {
         edit = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_1, false);
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
         initType = getIntent().getStringExtra(CommonUtil.KEY_VALUE_3);
+        LogUtils.e(entity,initType,edit);
         return edit ? "编辑广告" : "添加广告";
     }
 
@@ -145,10 +151,10 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         if (!TextUtils.isEmpty(initType)) {
             if (TextUtils.equals(Constants.PLAN_TYPE.BUSINESS, initType)) {
                 choosedType(new NormalParamEntity(Constants.PLAN_TYPE.BUSINESS, "商业"));
-                tvPlanType.setEnabled(false);
+//                tvPlanType.setEnabled(false);
             } else if (TextUtils.equals(Constants.PLAN_TYPE.DIY, initType)) {
                 choosedType(new NormalParamEntity(Constants.PLAN_TYPE.DIY, "DIY"));
-                tvPlanType.setEnabled(false);
+//                tvPlanType.setEnabled(false);
             }
         }
         if (edit) {
@@ -157,7 +163,8 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 etName.setSelection(etName.getText().length());
                 tvPlanType.setText(FormatUtils.getInstance().getPlanType(entity.getPlanType()));
                 tvPlanType.setTag(entity.getPlanType());
-                tvPlanType.setEnabled(false);
+                adScreenType = entity.getScreenType();
+//                tvPlanType.setEnabled(false);
                 switch (entity.getScreenType()) {
                     case Constants.AD_SCREEN_TYPE.FULL_IMAGE:
                         onAdTypeClick(R.id.fl_full_image);
@@ -187,6 +194,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                         tvImageEdit.setVisibility(View.VISIBLE);
                         break;
                     default:
+                        flImage.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -200,7 +208,11 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_plan_type:
-                showPlanTypePicker();
+                if (edit){
+                    showToast("当前页面不可操作广告类型");
+                }else {
+                    showPlanTypePicker();
+                }
                 break;
             case R.id.fl_video:
                 String planType1 = (String) tvPlanType.getTag();
@@ -210,6 +222,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 }
                 String video = (String) flVideo.getTag();
                 Bundle videoBundle = new Bundle();
+                istj = true;
                 if (TextUtils.isEmpty(video)) {
                     jumpToVideoChoose();
                 } else {
@@ -219,13 +232,19 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 }
                 break;
             case R.id.img_video_clear:
+                istj = true;
+                adScreenType = null;
                 flVideo.setTag(null);
                 imgVideo.setImageDrawable(null);
                 imgVideoClear.setVisibility(View.GONE);
                 tvVideoEdit.setVisibility(View.GONE);
 //                tvVideoTip.setVisibility(View.GONE);
+
+                File file = new File("/sdcard/PDD/");
+                deleteDirWihtFile(file);
                 break;
             case R.id.tv_video_edit:
+
                 videoEdit();
                 break;
             case R.id.fl_image:
@@ -234,6 +253,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                     showToast("请先选择广告类型");
                     return;
                 }
+
                 String image = (String) flImage.getTag();
                 if (TextUtils.isEmpty(image)) {
                     jumpToImageChoose();
@@ -249,12 +269,15 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 }
                 break;
             case R.id.img_image_clear:
+                istj = true;
+                adScreenType = null;
                 flImage.setTag(null);
                 imgImage.setImageDrawable(null);
                 imgImageClear.setVisibility(View.GONE);
                 tvImageEdit.setVisibility(View.GONE);
                 break;
             case R.id.tv_image_edit:
+                istj = true;
                 imageEdit();
                 break;
             case R.id.tv_save:
@@ -369,13 +392,16 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 @Override
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     if (planTypeOptions == null || planTypeOptions.size() <= options1) {
+                        LogUtils.e("11111111111111");
                         return;
+
                     }
                     choosedType(planTypeOptions.get(options1));
                 }
             }).setCyclic(false, false, false).build();
             planTypePicker.setPicker(planTypeOptions);
         }
+        LogUtils.e("2222222222222");
         KeyBoardUtils.closeKeybord(this);
         planTypePicker.show();
     }
@@ -410,9 +436,13 @@ public class AdEditActivity extends BaseSwipeBackActivity {
             return;
         }
         if (TextUtils.isEmpty(adScreenType)) {
-            showToast("请选择投放类型");
+            showToast("没有广告资源");
             return;
         }
+       if (!istj){
+           showToast("当前广告内容未做修改");
+           return;
+       }
         videoPath = flVideo.getTag() != null ? new String((String) flVideo.getTag()) : null;
         imagePath = flImage.getTag() != null ? new String((String) flImage.getTag()) : null;
         videoUrl = videoPath;
@@ -485,6 +515,8 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                     if (images != null && images.size() > 0) {
                         videoUrl = images.get(0);
                         checkVideoCodecName();
+                        File file = new File("/sdcard/PDD/");
+                        deleteDirWihtFile(file);
                     } else {
                         hideProgress();
                         tvPublish.setEnabled(true);
@@ -674,6 +706,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK == resultCode && data != null) {
+            istj = true;
             switch (requestCode) {
                 case CommonUtil.REQ_CODE_1:
                     String videoPath = data.getStringExtra(CommonUtil.KEY_VALUE_1);
@@ -708,6 +741,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     public void eventHandler(EventBusObjectEntity eventBusObjectEntity) {
         if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoCropSuccessResult) {
             //这里返回的是裁剪过后的视频 时长要么为15s要么为60s
+            istj = true;
             selectIsVideoHandlerView();
             String videoPath = (String) eventBusObjectEntity.getData();
             flVideo.setTag(videoPath);
@@ -718,6 +752,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         }
         if (eventBusObjectEntity.getEventCode() == EventBusConstants.VideoOrImageSelectSuccess) {
             LogUtils.d("视频或图片选择成功--------------");
+            istj = true;
             if (eventBusObjectEntity.getData() != null) {
                 if (eventBusObjectEntity.getData() instanceof String) {
                     //返回的是图片

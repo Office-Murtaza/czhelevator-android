@@ -165,31 +165,47 @@ public class MagicFilterFactory {
     public static int filterType2Thumb(MagicFilterType filterType) {
         switch (filterType) {
             case NONE:
-                return R.drawable.filter;
+//                原图
+                return R.drawable.filter1;
             case INVERT:
-                return R.drawable.filter_invert;
+//                胶片
+                return R.drawable.filter_invert1;
             case SEPIA:
-                return R.drawable.filter_sepia;
+//                怀旧
+                return R.drawable.filter_sepia1;
             case GRAYSCALE:
-                return R.drawable.filter_grayscale;
+//                灰度
+                return R.drawable.filter_grayscale1;
             case CGACOLORSPACE:
-                return R.drawable.filter_cgacolorspace;
+//                染料
+                return R.drawable.filter_cgacolorspace1;
             case BARRELBLUR:
-                return R.drawable.filter_barrelblur;
+//                模糊
+                return R.drawable.filter_barrelblur1;
             case BLACKANDWHITE:
-                return R.drawable.filter_blackandwhite;
+//                黑白
+                return R.drawable.filter_blackandwhite1;
             case CONTRAST:
-                return R.drawable.filter_contrast;
+//                对比度
+                return R.drawable.filter_contrast1;
             case CROSSPROCESS:
-                return R.drawable.filter_crossprocess;
+//                交叉
+                return R.drawable.filter_crossprocess1;
             case GAMMA:
-                return R.drawable.filter_gamma;
+//                伽马线
+                return R.drawable.filter_gamma1;
             case HUE:
-                return R.drawable.filter_hue;
+//                色度
+                return R.drawable.filter_hue1;
             case OVERLAY:
-                return R.drawable.filter_overlay;
+//                重叠
+                return R.drawable.filter_overlay1;
             case TEMPERATURE:
-                return R.drawable.filter_temperature;
+//                色温
+                return R.drawable.filter_temperature1;
+            case POSTERIZE:
+//                噪点
+                return R.drawable.filter_posterize1;
             default:
                 return R.drawable.filter;
         }

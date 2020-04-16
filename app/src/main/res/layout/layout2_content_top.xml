@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp10"
+    >
+
+
+    <ImageView
+        android:id="@+id/img_bake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_arrow_back"
+        android:padding="@dimen/dp5"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        >
+
+        <ImageView
+            android:id="@+id/img_portrait"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="屏多多"
+            android:textColor="#ff333333"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_attention"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关注"
+        android:textColor="#ffffffff"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/img_jb"
+        android:layout_marginRight="@dimen/dp30"
+        android:background="@mipmap/btn_release_img"
+        />
+
+
+    <ImageView
+        android:id="@+id/img_jb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_comm_menu"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

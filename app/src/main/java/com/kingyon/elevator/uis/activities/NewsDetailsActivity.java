@@ -84,7 +84,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
     @BindView(R.id.comment_container)
     LinearLayout comment_container;
     @BindView(R.id.input_comment_container)
-    LinearLayout input_comment_container;
+    ImageView input_comment_container;
     @BindView(R.id.progress_bar)
     ProgressBar progressbar;
     @BindView(R.id.my_action_bar)
@@ -206,11 +206,12 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
                         currentIsLike = detailsEntity.isLike();
                         comment_count.setText("全部评论(" + detailsEntity.getCommentCount() + ")条");
                         //webview.loadUrl("http://baijiahao.baidu.com/s?id=1659006947390217662");
+                        LogUtils.e(detailsEntity.getContentUrl());
                         webview.loadUrl(detailsEntity.getContentUrl());
                         if (detailsEntity.isLike()) {
-                            iv_dianzan.setImageResource(R.mipmap.details_yishoucang);
+                            iv_dianzan.setImageResource(R.mipmap.btn_big_like_off);
                         } else {
-                            iv_dianzan.setImageResource(R.mipmap.details_shoucanganniu);
+                            iv_dianzan.setImageResource(R.mipmap.btn_big_like);
                         }
                     }
                 });
@@ -236,10 +237,10 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
                         iv_dianzan.setEnabled(true);
                         if (currentIsLike) {
                             currentIsLike = false;
-                            iv_dianzan.setImageResource(R.mipmap.details_shoucanganniu);
+                            iv_dianzan.setImageResource(R.mipmap.btn_big_like_off);
                         } else {
                             currentIsLike = true;
-                            iv_dianzan.setImageResource(R.mipmap.details_yishoucang);
+                            iv_dianzan.setImageResource(R.mipmap.btn_big_like);
                         }
                     }
                 });
@@ -300,6 +301,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
             newsSharedEntity.setShareContent(newsDetailsEntity.getSummary());
             newsSharedEntity.setShareLink(newsDetailsEntity.getShareUrl());
             newsSharedEntity.setShareTitle(newsDetailsEntity.getTitle());
+            LogUtils.e(newsDetailsEntity.getSummary(),newsDetailsEntity.getShareUrl(),newsDetailsEntity.getTitle());
         }
         if (shareDialog == null) {
             BaseSharePramsProvider<NewsSharedEntity> baseSharePramsProvider = new BaseSharePramsProvider<>(NewsDetailsActivity.this);
