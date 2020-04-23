@@ -57,7 +57,7 @@ import cn.jpush.android.api.JPushInterface;
  * Created By Admin  on 2020/3/30
  * Email : 163235610@qq.com
  * Author:Myczh
- * Instructions:首页入口宣传宣传宣传下下策
+ * Instructions:首页入口在下载中心
  */
 public class HomeActivity extends BaseActivity implements AMapLocationListener {
     @BindView(R.id.frame_content)
