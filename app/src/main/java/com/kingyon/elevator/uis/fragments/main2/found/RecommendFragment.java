@@ -2,19 +2,16 @@ package com.kingyon.elevator.uis.fragments.main2.found;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.adapter2.AttentionAdapter;
-import com.kingyon.elevator.uis.adapters.adapter2.RecommendtopAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendtopAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyFragment;
-import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyloadFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -23,17 +20,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Created By Admin  on 2020/4/14
  * Email : 163235610@qq.com
  * Author:Mrczh
  * Instructions:推荐
  */
-public class RecommendFragment extends LazyloadFragment {
+public class RecommendFragment extends LazyFragment {
     RecyclerView rvAttentionTop;
     RecyclerView rvAttentionList;
     SmartRefreshLayout smartRefreshLayout;
@@ -44,20 +37,20 @@ public class RecommendFragment extends LazyloadFragment {
     RecommendtopAdapter recommendtopAdapter;
     List<String> list =new ArrayList<>();
 
+
+
     @Override
-    protected int setContentView() {
-        return R.layout.fragment_recommend;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        isPrepared = true;
+        lazyLoad();//加载数据
+        initUI();
+        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
 
-    }
-
-    @Override
-    protected void init() {
+    private void initUI() {
         list.add("1");
         list.add("2");
         list.add("3");
@@ -70,9 +63,9 @@ public class RecommendFragment extends LazyloadFragment {
         list.add("2");
         list.add("2");
         list.add("1");
-        rvAttentionList = rootView.findViewById(R.id.rv_attention_list1);
-        rvAttentionTop = rootView.findViewById(R.id.rv_attention_top);
-        smartRefreshLayout = rootView.findViewById(R.id.smart_refresh_layout);
+        rvAttentionList = view.findViewById(R.id.rv_attention_list1);
+        rvAttentionTop = view.findViewById(R.id.rv_attention_top);
+        smartRefreshLayout = view.findViewById(R.id.smart_refresh_layout);
 
         recommendtopAdapter = new RecommendtopAdapter(getActivity(),2);
         rvAttentionTop.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,24 +91,19 @@ public class RecommendFragment extends LazyloadFragment {
                 smartRefreshLayout.finishRefresh();
             }
         });
-      smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-          @Override
-          public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-              smartRefreshLayout.finishLoadMore();
-          }
-      });
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                smartRefreshLayout.finishLoadMore();
+            }
+        });
 
 
-
-        LogUtils.e("推荐开始");
     }
-
-
-
     @Override
     protected void lazyLoad() {
-        init();
+
     }
-
-
 }
+
+

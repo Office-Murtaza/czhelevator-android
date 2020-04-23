@@ -4,25 +4,20 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.customview.MyGridView;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.DateGridEntity;
-import com.kingyon.elevator.entities.HorizontalSelectDateEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
-import com.kingyon.elevator.interfaces.BaseOnItemClick;
+import com.kingyon.elevator.uis.adapters.adapterone.HorizontalSelectDateAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

@@ -106,6 +106,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 def static releaseTime() {
@@ -178,10 +179,21 @@ dependencies {
 //    路由
     implementation 'com.alibaba:arouter-api:1.4.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2' //注解处理器，会将注解编译成Java类
+//    富文本
+    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+
+    implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
+
+    implementation 'com.github.sd6352051:android-image-picker:v1.0.1'
+
     implementation project(path: ':voide')
     implementation project(path: ':video-effect')
-//    implementation project(path: ':mrclibrary')
+    implementation project(path: ':myversiontwo')
+//    implementation project(path: ':are')
+
 }
+
+
 
 MobSDK {
     appKey "29e114d347e00"

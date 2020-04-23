@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.leo.afbaselibrary.R;
@@ -22,6 +24,7 @@ import com.leo.afbaselibrary.mvp.views.IBaseView;
 import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.BarUtils;
 import com.leo.afbaselibrary.utils.EasyPermissions;
+import com.leo.afbaselibrary.utils.QuickClickUtils;
 import com.leo.afbaselibrary.utils.RxCheckLifeCycleTransformer;
 import com.leo.afbaselibrary.utils.statusbar.Eyes;
 import com.umeng.analytics.MobclickAgent;
@@ -35,13 +38,16 @@ import rx.subjects.BehaviorSubject;
  * created by arvin on 16/10/24 14:55
  * email：1035407623@qq.com
  */
-public abstract class BaseActivity extends AppCompatActivity implements IBaseView, EasyPermissions.PermissionCallbacks {
+public abstract class BaseActivity extends AppCompatActivity implements IBaseView, EasyPermissions.PermissionCallbacks{
 
     private static final String TAG = "BaseActivity";
     private BasePresenter<IBaseView> mPresenter;
     protected BehaviorSubject<RxCheckLifeCycleTransformer.LifeCycleEvent> eventBehaviorSubject = BehaviorSubject.create();
-
-    /**
+    /** 触摸时按下的点 **/
+    PointF downP = new PointF();
+    /** 触摸时当前的点 **/
+    PointF curP = new PointF();
+    /**startActivity
      * 权限回调接口
      */
     private CheckPermListener mListener;
@@ -105,22 +111,30 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
 
     @Override
     public void startActivity(Class clazz) {
-        mPresenter.startActivity(clazz, null);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivity(clazz, null);
+        }
     }
 
     @Override
     public void startActivity(Class clazz, Bundle bundle) {
-        mPresenter.startActivity(clazz, bundle);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivity(clazz, bundle);
+        }
     }
 
     @Override
     public void startActivityForResult(Class clazz, int requestCode) {
-        mPresenter.startActivityForResult(clazz, requestCode, null);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivityForResult(clazz, requestCode, null);
+        }
     }
 
     @Override
     public void startActivityForResult(Class clazz, int requestCode, Bundle bundle) {
-        mPresenter.startActivityForResult(clazz, requestCode, bundle);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivityForResult(clazz, requestCode, bundle);
+        }
     }
 
     @Override
@@ -293,4 +307,34 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
         }
         return resources;
     }
+
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//
+//        curP.x = event.getX();
+//        switch (event.getAction()) {
+//
+//            case MotionEvent.ACTION_DOWN:
+//                downP.x = event.getX();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (curP.x- downP.x > 500) {
+//                    Log.i("TEST", "move-=-=-=--=-");
+//                    finish();
+//
+//                }
+//
+//                break;
+//            case MotionEvent.ACTION_UP:
+//
+//                break;
+//
+//            default:
+//                break;
+//        }
+//
+//        return true;
+//    }
+
 }

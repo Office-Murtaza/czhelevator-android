@@ -8,22 +8,17 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.DateGridEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
-import com.kingyon.elevator.uis.adapters.HorizontalSelectDateAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.HorizontalSelectDateAdapter;
 import com.kingyon.elevator.utils.DensityUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

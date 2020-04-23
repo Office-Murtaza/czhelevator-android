@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.gerry.scaledelete.ScreenUtil;
@@ -85,4 +87,6 @@ public class MyMateriaActivity extends BaseTabActivity<TabPagerEntity> {
             }
         }
     }
+
+
 }

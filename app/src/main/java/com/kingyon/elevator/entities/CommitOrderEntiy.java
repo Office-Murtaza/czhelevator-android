@@ -9,6 +9,14 @@ public class CommitOrderEntiy {
     private long orderId;
     private float payMoney;
 
+    @Override
+    public String toString() {
+        return "CommitOrderEntiy{" +
+                "orderId=" + orderId +
+                ", payMoney=" + payMoney +
+                '}';
+    }
+
     public long getOrderId() {
         return orderId;
     }

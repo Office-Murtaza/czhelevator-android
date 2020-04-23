@@ -15,9 +15,7 @@ import com.kingyon.elevator.entities.MsgNoticeEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.NoticeOrHelperPresenter;
-import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
-import com.kingyon.elevator.uis.adapters.DianZanAdapter;
-import com.kingyon.elevator.uis.adapters.MessageDetailsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.DianZanAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
@@ -28,7 +26,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,11 +64,9 @@ public class DianZanListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
         dianZanAdapter.setBaseOnItemClick(new BaseOnItemClick<DianZanEntity>() {
             @Override
             public void onItemClick(DianZanEntity data, int position) {
-                if (QuickClickUtils.isFastClick()) {
-                    return;
-                }
-                presenter.setMsgRead(data.getId(), position);
-                MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
+                    presenter.setMsgRead(data.getId(), position);
+                    MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
+
             }
         });
         dianZanAdapter.setBaseOnLongItemClick(new BaseOnItemClick<DianZanEntity>() {

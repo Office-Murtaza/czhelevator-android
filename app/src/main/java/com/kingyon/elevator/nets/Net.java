@@ -90,6 +90,7 @@ public class Net extends BaseNet<NetApi> {
         Logger.i("加密src--->" + s);
         String md5Query = EncryptUtil.getInstance().md5Digest(JSONObject.toJSONString(sortedMap));
         urlBuild.addQueryParameter("encryption", md5Query);
+        Logger.i("加密src1--->" + md5Query);
         return request.newBuilder()
                 .url(urlBuild.build())
                 .build();

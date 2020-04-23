@@ -16,11 +16,12 @@ import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.zhaoss.weixinrecorded.util.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import me.nereo.multi_image_selector.utils.TimeUtils;
+import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
 
 /**
  * Created By SongPeng  on 2019/12/13
@@ -80,7 +81,11 @@ public class PhotoPickerAdapter extends BaseAdapter {
         MediaData mediaData = mediaDataList.get(position);
         if (showType == 1) {
             holder.video_time.setVisibility(View.VISIBLE);
-            holder.video_time.setText(TimeUtils.getRemainingTimeFormat(mediaData.getDuration()));
+//            holder.video_time.setText(TimeUtils.getRemainingTimeFormat(mediaData.getDuration()));(int) (getVideoDuration(outputPath)/1000)
+            holder.video_time.setText(TimeUtils.secondToTime( (int) (getVideoDuration(mediaData.getOriginalPath()))/1000));
+
+//            holder.video_time.setText(TimeUtils.getRemainingTimeFormat((getVideoDuration(mediaData.getOriginalPath()))));
+
         } else {
             holder.video_time.setVisibility(View.GONE);
             holder.video_time.setText("");

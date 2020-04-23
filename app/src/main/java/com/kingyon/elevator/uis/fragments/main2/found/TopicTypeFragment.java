@@ -1,61 +1,39 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.LogUtils;
+import com.andview.refreshview.utils.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.adapter2.TopicAdapter;
-import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyloadFragment;
+import com.kingyon.elevator.uis.adapters.adaptertwo.TopicAdapter;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
  * Created By Admin  on 2020/4/15
  * Email : 163235610@qq.com
- * Author:Mrczh
+ * @Author:Mrczh
  * Instructions: 话题类别
  */
-public class TopicTypeFragment extends LazyloadFragment {
+public class TopicTypeFragment extends BaseFragment {
     @BindView(R.id.rc_view)
     RecyclerView rcView;
     Unbinder unbinder;
     TopicAdapter topicAdapter;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    Unbinder unbinder1;
 
-    public TopicTypeFragment setIndex(String s) {
-
-        return null;
-    }
-
-    @Override
-    protected int setContentView() {
-        return R.layout.fragment_topic_type;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        init();
-    }
-
-    @Override
-    protected void init() {
-        rcView = rootView.findViewById(R.id.rc_view);
-        smartRefreshLayout = rootView.findViewById(R.id.smart_refresh_layout);
+    private void initUi() {
+        rcView = getContentView().findViewById(R.id.rc_view);
+        smartRefreshLayout = getContentView().findViewById(R.id.smart_refresh_layout);
         topicAdapter = new TopicAdapter(getActivity(), 20);
         rcView.setLayoutManager(new LinearLayoutManager(getActivity()));
         rcView.setAdapter(topicAdapter);
@@ -78,21 +56,19 @@ public class TopicTypeFragment extends LazyloadFragment {
     }
 
     @Override
-    protected void lazyLoad() {
-        init();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        unbinder1.unbind();
     }
+
+    @Override
+    protected int setContentView() {
+        return R.layout.fragment_topic_type;
+    }
+
+    @Override
+    protected void lazyLoad() {
+        initUi();
+    }
+
 }

@@ -72,10 +72,8 @@ public class NewsRecommendationFragment extends MvpBaseFragment<NewsRecommendati
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    if (QuickClickUtils.isFastClick()) {
-                        return;
-                    }
-                    MyActivityUtils.goNewsDetailsActivity(getActivity(), presenter.getNewsEntityList().get(position).getId());
+                        MyActivityUtils.goNewsDetailsActivity(getActivity(), presenter.getNewsEntityList().get(position).getId());
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

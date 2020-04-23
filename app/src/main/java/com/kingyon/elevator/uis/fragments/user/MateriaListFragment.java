@@ -15,7 +15,7 @@ import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.uis.activities.advertising.NetVideoPlayActivity;
-import com.kingyon.elevator.uis.adapters.MateriaLisAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.MateriaLisAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;

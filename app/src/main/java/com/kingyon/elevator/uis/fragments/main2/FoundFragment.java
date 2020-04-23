@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.kingyon.elevator.R;
+
 import com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.RecommendFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.TopicFragment;
@@ -29,13 +30,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_ADVERTISING;
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_SEARCH;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ADVERTISING;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_SEARCH;
 
 /**
  * Created By Admin  on 2020/4/14
  * Email : 163235610@qq.com
- * Author:Mrczh
+ * @Author:Mrczh
  * Instructions:发现
  */
 public class FoundFragment extends BaseFragment {
@@ -68,8 +69,6 @@ public class FoundFragment extends BaseFragment {
     ImageView idTabLine2;
     @BindView(R.id.id_tab_line3)
     ImageView idTabLine3;
-    //屏幕的宽度
-    private int screenWidth;
 
     private FragmentAdapter mAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
@@ -88,9 +87,12 @@ public class FoundFragment extends BaseFragment {
         //初始化Adapter
         mAdapter = new FragmentAdapter(getFragmentManager(), fragments);
 
+        viewPager.setOffscreenPageLimit(0);
         viewPager.setAdapter(mAdapter);
         viewPager.addOnPageChangeListener(new TabOnPageChangeListener());
-        viewPager.setCurrentItem(1);//选择某一页
+//       选择某一页
+        viewPager.setCurrentItem(1);
+
     }
 
     private void initView() {
@@ -120,6 +122,7 @@ public class FoundFragment extends BaseFragment {
             index = i;
         }
 
+        @Override
         public void onClick(View v) {
             viewPager.setCurrentItem(index);//选择某一页
         }
@@ -160,6 +163,7 @@ public class FoundFragment extends BaseFragment {
             case R.id.img_edit:
                 new ConfirmPopWindow(getActivity()).showAtBottom(imgEdit);
                 break;
+                default:
         }
     }
 
@@ -170,17 +174,20 @@ public class FoundFragment extends BaseFragment {
     public class TabOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         //当滑动状态改变时调用
+        @Override
         public void onPageScrollStateChanged(int state) {
 
         }
 
         //当前页面被滑动时调用
+        @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 
         }
 
         //当新的页面被选中时调用
+        @Override
         public void onPageSelected(int position) {
             //重置所有TextView的字体颜色
             resetTextView();

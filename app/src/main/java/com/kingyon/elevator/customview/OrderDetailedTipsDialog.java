@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
-import com.kingyon.elevator.interfaces.OnItemClick;
-import com.kingyon.elevator.uis.adapters.HousingAdPriceAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.HousingAdPriceAdapter;
 import com.kingyon.elevator.utils.DensityUtil;
-import com.kingyon.elevator.utils.DialogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

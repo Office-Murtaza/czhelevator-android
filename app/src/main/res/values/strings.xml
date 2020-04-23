@@ -61,5 +61,7 @@
     <string name="toufang_shuoming" translatable="false">订单内容需要审核通过后才生效，请保证内容符合《广告法》规定。订单生效后进入投放流程。</string>
     <string name="tuikuan_shuoming" translatable="false">根据投放政策，用户不能单方面取消订单。如遇系统及设备故障，可联系客服退款。\n由于投放内容不符合《广告法》规定、自己申请下播的均不能申请退款</string>
 
+    <string name="pinglun" translatable="false">&#064;和评论</string>
+
 
 </resources>

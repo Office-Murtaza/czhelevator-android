@@ -25,52 +25,52 @@ public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
     String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
     String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.156:1510/";  //公司测试服
+//    String domainDebugName = "https://api.pddtv.cn/";  //公司测试服
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";
     String rapUrl = "http://rap2api.taobao.org/app/mock/121571/";
 
-    //静态/通用
+    //静态/通用获取七牛云参数
     @GET("common/getQiNiu")
     Observable<UploadParamsEnitty> getUploadToken();
-
+//POST /common/bindPushId绑定推送id
     @POST("common/bindPushId")
     @FormUrlEncoded
     Observable<String> bindPushId(@Field("pushId") String pushId, @Field("deviceType") String deviceType);
-
+//请求富文本接口
     @POST("common/getRichText")
     @FormUrlEncoded
     Observable<DataEntity<String>> richText(@Field("type") String type);
-
+//获取最新版本
     @GET("common/getLatestVersion")
     Observable<VersionEntity> getLatestVersion(@Query("platform") String platform, @Query("versionCode") int versionCode);
-
+//收入明细
     @POST("common/incomeList")
     @FormUrlEncoded
     Observable<PageListEntity<IncomeRecordEntity>> incomeRecordsList(@Field("type") String type
             , @Field("deviceId") Long deviceId, @Field("billSn") String billSn
             , @Field("role") String role, @Field("page") int page);
-
+//物业/合伙人 小区设备列表(add)
     @GET("common/cellDeviceList")
     Observable<List<PointItemEntity>> cellDeviceList(@Query("cellId") long cellId);
-
+//物业/合伙人 小区设备数量列表(add
     @GET("common/cellDevicesNumber")
     Observable<List<CellDeviceNumberEntity>> cellDevicesNumber();
-
+//物业/合伙人 设备数(add
     @GET("common/devicesNumber")
     Observable<DeviceNumberEntity> devicesNumber();
-
+//设备详情(add)
     @GET("common/deviceDetails")
     Observable<PointItemEntity> deviceDetails(@Query("deviceId") long deviceId);
-
+//设备报修
     @POST("common/repairDevice")
     @FormUrlEncoded
     Observable<String> repairDevice(@Field("deviceId") long deviceId, @Field("reasonId") Long reasonId
             , @Field("remarks") String remarks, @Field("images") String images);
-
+//获取设备报修原因列表（add)
     @GET("common/repairReasons")
     Observable<List<NormalElemEntity>> repairReasons();
-
+//添加/修改设备
     @POST("common/addDevice")
     @FormUrlEncoded
     Observable<String> addDevice(@Field("objectId") Long objectId, @Field("deviceNo") String deviceNo
@@ -78,7 +78,7 @@ public interface NetApi {
             , @Field("cellId") long cellId, @Field("buildId") long buildId
             , @Field("unitId") long unitId, @Field("liftId") long liftId
             , @Field("cameraBrand") Long cameraBrand, @Field("cameraIp") String cameraIp);
-
+//添加小区&编辑小区
     @POST("common/addCell")
     @FormUrlEncoded
     Observable<String> addCell(@Field("objctId") Long objectId, @Field("adcode") String adcode

@@ -3,6 +3,7 @@ package com.kingyon.elevator.nets;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.entities.UploadParamsEnitty;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -80,6 +81,7 @@ public class NetUpload {
 
     void uploadFilesNoActivity(Context context, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener, final boolean needCompress) {
         Logger.d("开始上传 --> " + files);
+
         netApi.getUploadToken()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new CustomApiCallback<UploadParamsEnitty>() {
@@ -93,6 +95,7 @@ public class NetUpload {
                         if (files == null || files.size() < 1) {
                             throw new ResultException(205, "LuBanUtils compress image error");
                         }
+                        LogUtils.e("文件上传=订单请求得到参数=",enitty.getToken(),enitty.getDomain(),files);
                         if (needCompress) {
                             try {
                                 List<File> dstFiles = new ArrayList<>();
@@ -127,6 +130,7 @@ public class NetUpload {
 
                     @Override
                     public void onNext(UploadParamsEnitty enitty) {
+                        LogUtils.e("文件上传=请求得到参数=",enitty.getToken(),enitty.getDomain());
                         if (files == null || files.size() < 1) {
                             throw new ResultException(205, "LuBanUtils compress image error");
                         }
@@ -170,6 +174,7 @@ public class NetUpload {
     }
 
     private void uploadCallback(BaseActivity baseActivity, final OnUploadCompletedListener onUploadCompletedListener, final List<String> images, final ApiException ex) {
+        LogUtils.e("文件上传=七牛上传成功返回2=",onUploadCompletedListener,images,ex);
         if (onUploadCompletedListener != null) {
             try {
                 if (images != null && images.size() > 0) {
@@ -216,11 +221,23 @@ public class NetUpload {
 //                }
 //            }
 //        }, null);
+
+        /**
+         * 上传数据
+         *
+         * @param data     上传的数据
+         * @param key      上传数据保存的文件名
+         * @param token    上传凭证
+         * @param complete 上传完成后续处理动作
+         * @param options  上传数据的可选参数
+         */
+
         uploadManager.put(bytes, null, token, new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 List<String> resultImages = new ArrayList<>();
                 if (info.isOK()) {
+                    LogUtils.e("文件上传=七牛上传成功返回2=",key,info,response);
                     try {
                         resultImages.add(getDomain(domain) + response.getString("key"));
                         uploadCallback(baseActivity, onUploadCompletedListener, resultImages, null);
@@ -245,6 +262,7 @@ public class NetUpload {
     }
 
     private void uploadByQiNiu(final BaseActivity baseActivity, String token, final String domain, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener) {
+        LogUtils.e("文件上传=1=",token,domain,files);
         final List<String> uploadResponse = new ArrayList<>();
         String uuid = String.valueOf(UUID.randomUUID());
         for (int i = 0; i < files.size(); i++) {
@@ -259,6 +277,7 @@ public class NetUpload {
                 @Override
                 public void complete(String key, ResponseInfo info, JSONObject response) {
                     if (info.isOK()) {
+                        LogUtils.e("文件上传=七牛上传成功返回=",key,info,response);
                         try {
                             uploadResponse.add(getDomain(domain) + response.getString("key"));
                             if (uploadResponse.size() == files.size()) {
@@ -292,6 +311,7 @@ public class NetUpload {
                 @Override
                 public void complete(String key, ResponseInfo info, JSONObject response) {
                     if (info.isOK()) {
+                        LogUtils.e("文件上传=订单请求成功=",key,info,response);
                         try {
                             uploadResponse.add(getDomain(domain) + response.getString("key"));
                             if (uploadResponse.size() == files.size()) {

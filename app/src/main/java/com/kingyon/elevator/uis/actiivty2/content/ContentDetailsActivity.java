@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.content;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,11 +14,10 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.NewsDetailsEntity;
 import com.kingyon.elevator.entities.NewsSharedEntity;
-import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
-import com.kingyon.elevator.uis.adapters.adapter2.ContentCommentsAdapter;
-import com.kingyon.elevator.uis.adapters.adapter2.ContentImageAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.ContentCommentsAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.ContentImageAdapter;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.DeleteShareDialog;
 import com.kingyon.library.social.ShareDialog;
@@ -29,12 +27,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
 
 /**
  * Created By Admin  on 2020/4/16
  * Email : 163235610@qq.com
- * Author:Mrczh
+ * @Author:Mrczh
  * Instructions:内容详情
  */
 @Route(path = ACTIVITY_MAIN2_CONTENT_DRTAILS)
@@ -148,6 +146,7 @@ public class ContentDetailsActivity extends BaseActivity {
                 DeleteShareDialog deleteShareDialog = new DeleteShareDialog(this);
                 deleteShareDialog.show();
                 break;
+                default:
         }
     }
 
@@ -165,5 +164,11 @@ public class ContentDetailsActivity extends BaseActivity {
             shareDialog = new ShareDialog(ContentDetailsActivity.this, baseSharePramsProvider);
         }
         shareDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

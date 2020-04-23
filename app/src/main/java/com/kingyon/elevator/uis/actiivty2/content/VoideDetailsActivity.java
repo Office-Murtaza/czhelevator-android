@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.adapter2.ContentCommentsAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.ContentCommentsAdapter;
 import com.kingyon.library.social.ReportShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -19,14 +19,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
 
 
 /**
  * Created By Admin  on 2020/4/16
  * Email : 163235610@qq.com
- * Author:Mrczh
- * Instructions:
+ * @Author:Mrczh
+ * Instructions:视频详情
  */
 @Route(path = ACTIVITY_MAIN2_VIDEO_DRTAILS)
 public class VoideDetailsActivity extends BaseActivity {
@@ -126,7 +126,12 @@ public class VoideDetailsActivity extends BaseActivity {
                 break;
             case R.id.iv_like:
                 break;
+                default:
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

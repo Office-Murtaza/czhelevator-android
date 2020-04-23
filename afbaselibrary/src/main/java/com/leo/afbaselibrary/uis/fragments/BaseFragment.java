@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.leo.afbaselibrary.mvp.presenters.BasePresenter;
 import com.leo.afbaselibrary.mvp.views.IBaseView;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.QuickClickUtils;
 import com.leo.afbaselibrary.utils.RxCheckLifeCycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 
@@ -61,22 +62,30 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
 
     @Override
     public void startActivity(Class clazz) {
-        mPresenter.startActivity(clazz, null);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivity(clazz, null);
+        }
     }
 
     @Override
     public void startActivity(Class clazz, Bundle bundle) {
-        mPresenter.startActivity(clazz, bundle);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivity(clazz, bundle);
+        }
     }
 
     @Override
     public void startActivityForResult(Class clazz, int requestCode) {
-        mPresenter.startActivityForResult(clazz, requestCode, null);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivityForResult(clazz, requestCode, null);
+        }
     }
 
     @Override
     public void startActivityForResult(Class clazz, int requestCode, Bundle bundle) {
-        mPresenter.startActivityForResult(clazz, requestCode, bundle);
+        if (QuickClickUtils.isFastClick()) {
+            mPresenter.startActivityForResult(clazz, requestCode, bundle);
+        }
     }
 
     @Override

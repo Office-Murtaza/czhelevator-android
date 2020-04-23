@@ -93,28 +93,24 @@ public class PreviewVideoActivity extends AppCompatActivity {
 
     @OnClick({R.id.go_place_an_order})
     public void onClick(View view) {
-        if (QuickClickUtils.isFastClick()) {
-            LogUtils.d("快速点击了-------------------");
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.go_place_an_order:
+            switch (view.getId()) {
+                case R.id.go_place_an_order:
 //                MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
 //                        Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
 //                finish();
-                EditVideoActivity.editVideoActivity.finish();
-                if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
-                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, videoPath));
-                    finish();
-                }else {
-                    MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
-                            Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
-                    finish();
-                }
+                    EditVideoActivity.editVideoActivity.finish();
+                    if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
+                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, videoPath));
+                        finish();
+                    }else {
+                        MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,
+                                Constants.FROM_TYPE.MEDIADATA, videoPath, Constants.Materia_Type.VIDEO);
+                        finish();
+                    }
 
-
-                break;
+                    break;
         }
+
     }
 
 

@@ -185,77 +185,74 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
             R.id.tv_device_manager, R.id.ll_cells, R.id.pre_v_right, R.id.crash_money_history,
             R.id.yesterday_income_container, R.id.tv_all_income, R.id.already_crash_container})
     public void onViewClicked(View view) {
-        if (QuickClickUtils.isFastClick()) {
-            return;
-        }
-        Bundle bundle = new Bundle();
-        switch (view.getId()) {
-            case R.id.pre_v_back:
-                FragmentActivity activity = getActivity();
-                if (activity != null && !activity.isFinishing()) {
-                    activity.finish();
-                }
-                break;
-            case R.id.crash_money_history:
-                startActivity(CooperationWithdrawRecordsActivity.class);
-                break;
-            case R.id.tv_all_income:
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
-                break;
-            case R.id.yesterday_income_container:
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
-                break;
-            case R.id.already_crash_container:
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
-                break;
-            case R.id.btn_apply_crash:
-                if (entity.isDisable()) {
-                    showToast("您已被禁止提现，如有问题请联系客服！");
-                } else {
-                    if (entity.isCashing()) {
-                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
-                        //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
-                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
-                    } else {
-                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
+            Bundle bundle = new Bundle();
+            switch (view.getId()) {
+                case R.id.pre_v_back:
+                    FragmentActivity activity = getActivity();
+                    if (activity != null && !activity.isFinishing()) {
+                        activity.finish();
                     }
-                }
-                break;
-            case R.id.ll_income_today:
-                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);
-                startActivity(CooperationIncomeActivity.class, bundle);
-                break;
-            case R.id.ll_income_month:
-                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.MONTH);
-                startActivity(CooperationIncomeActivity.class, bundle);
-                break;
-            case R.id.ll_income_year:
-                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.YEAR);
-                startActivity(CooperationIncomeActivity.class, bundle);
-                break;
-            case R.id.ll_fee_property:
-                startActivity(PropertyFeeActivity.class);
-                break;
-            case R.id.ll_fee_optical:
-                startActivity(OpticalFeeActivity.class);
-                break;
-            case R.id.tv_income:
-                startActivity(CooperationEarningsActivity.class);
+                    break;
+                case R.id.crash_money_history:
+                    startActivity(CooperationWithdrawRecordsActivity.class);
+                    break;
+                case R.id.tv_all_income:
+                    MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
+                    break;
+                case R.id.yesterday_income_container:
+                    MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
+                    break;
+                case R.id.already_crash_container:
+                    MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
+                    break;
+                case R.id.btn_apply_crash:
+                    if (entity.isDisable()) {
+                        showToast("您已被禁止提现，如有问题请联系客服！");
+                    } else {
+                        if (entity.isCashing()) {
+                            bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+                            //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
+                            MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
+                        } else {
+                            showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
+                        }
+                    }
+                    break;
+                case R.id.ll_income_today:
+                    bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);
+                    startActivity(CooperationIncomeActivity.class, bundle);
+                    break;
+                case R.id.ll_income_month:
+                    bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.MONTH);
+                    startActivity(CooperationIncomeActivity.class, bundle);
+                    break;
+                case R.id.ll_income_year:
+                    bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.YEAR);
+                    startActivity(CooperationIncomeActivity.class, bundle);
+                    break;
+                case R.id.ll_fee_property:
+                    startActivity(PropertyFeeActivity.class);
+                    break;
+                case R.id.ll_fee_optical:
+                    startActivity(OpticalFeeActivity.class);
+                    break;
+                case R.id.tv_income:
+                    startActivity(CooperationEarningsActivity.class);
 //                startActivity(CooperationIncomeActivity.class);
-                break;
-            case R.id.tv_device_manager:
-                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.PARTNER);
-                startActivity(CooperationDeviceActivity.class, bundle);
-                break;
-            case R.id.ll_cells:
+                    break;
+                case R.id.tv_device_manager:
+                    bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.PARTNER);
+                    startActivity(CooperationDeviceActivity.class, bundle);
+                    break;
+                case R.id.ll_cells:
 //                bundle.putBoolean(CommonUtil.KEY_VALUE_3, true);
 //                startActivity(CellChooseActivity.class, bundle);
-                startActivity(SalesmanActivity.class);
-                break;
-            case R.id.pre_v_right:
-                onTipClick();
-                break;
-        }
+                    startActivity(SalesmanActivity.class);
+                    break;
+                case R.id.pre_v_right:
+                    onTipClick();
+                    break;
+            }
     }
 
     private void onTipClick() {

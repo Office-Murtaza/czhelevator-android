@@ -1,20 +1,13 @@
 package com.kingyon.elevator.uis.fragments.main;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -24,50 +17,30 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.customview.MessageTabView;
-import com.kingyon.elevator.customview.PlanSelectDateNewDialog;
-import com.kingyon.elevator.date.DateUtils;
-import com.kingyon.elevator.entities.DianZanEntity;
-import com.kingyon.elevator.entities.MsgCommentEntity;
 import com.kingyon.elevator.entities.MsgNoticeEntity;
 import com.kingyon.elevator.entities.MsgUnreadCountEntity;
-import com.kingyon.elevator.entities.SelectDateEntity;
-import com.kingyon.elevator.entities.TabPagerEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
-import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
 import com.kingyon.elevator.uis.activities.MainActivity;
-import com.kingyon.elevator.uis.adapters.MessageAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.MessageAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.JumpUtils;
-import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.uis.adapters.UnLazyAdapter;
-import com.leo.afbaselibrary.uis.fragments.BaseRefreshFragment;
-import com.leo.afbaselibrary.uis.fragments.BaseRefreshLoadingFragment;
 import com.leo.afbaselibrary.uis.fragments.BaseStateLoadingFragment;
-import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshFragment;
-import com.leo.afbaselibrary.uis.fragments.BaseTabFragment;
-import com.leo.afbaselibrary.utils.ScreenUtil;
-import com.leo.afbaselibrary.widgets.PagerSlidingTabStrip;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -123,15 +96,15 @@ public class MessageFragment extends BaseStateLoadingFragment {
         messageAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgNoticeEntity>() {
             @Override
             public void onItemClick(MsgNoticeEntity data, int position) {
-                if (QuickClickUtils.isFastClick()) {
-                    return;
-                }
-                setMsgRead(data.getId(), position);
-                if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
-                    HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
-                } else {
-                    JumpUtils.getInstance().jumpToMessagePage(getActivity(), data);
-                }
+//                if (QuickClickUtils.isFastClick()) {
+                    setMsgRead(data.getId(), position);
+                    if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
+                        HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
+                    } else {
+                        JumpUtils.getInstance().jumpToMessagePage(getActivity(), data);
+                    }
+//                }
+
             }
         });
         messageAdapter.setBaseOnLongItemClick(new BaseOnItemClick<MsgNoticeEntity>() {
@@ -193,26 +166,24 @@ public class MessageFragment extends BaseStateLoadingFragment {
 
     @OnClick({R.id.tab_comment, R.id.tab_notice, R.id.tab_helper, R.id.tab_dianzan, R.id.set_all_read})
     public void OnClick(View view) {
-        if (QuickClickUtils.isFastClick()) {
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.tab_comment:
-                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.CommentListFragment);
-                break;
-            case R.id.tab_notice:
-                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.NoticeListFragment);
-                break;
-            case R.id.tab_helper:
-                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.HelperListFragment);
-                break;
-            case R.id.tab_dianzan:
-                MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.DianZanListFragment);
-                break;
-            case R.id.set_all_read:
-                setAllRead();
-                break;
-        }
+            switch (view.getId()) {
+                case R.id.tab_comment:
+                    MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.CommentListFragment);
+                    break;
+                case R.id.tab_notice:
+                    MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.NoticeListFragment);
+                    break;
+                case R.id.tab_helper:
+                    MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.HelperListFragment);
+                    break;
+                case R.id.tab_dianzan:
+                    MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.DianZanListFragment);
+                    break;
+                case R.id.set_all_read:
+                    setAllRead();
+                    break;
+            }
+
     }
 
 

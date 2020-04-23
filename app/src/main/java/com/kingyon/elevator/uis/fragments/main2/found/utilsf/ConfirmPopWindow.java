@@ -14,14 +14,14 @@ import android.widget.PopupWindow;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.kingyon.elevator.R;
 
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
 
 /**
  * Created By Admin  on 2020/4/15
  * Email : 163235610@qq.com
- * Author:Mrczh
+ * @Author:Mrczh
  * Instructions:
  */
 public class ConfirmPopWindow extends PopupWindow implements View.OnClickListener {
@@ -37,9 +37,9 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
     private void initalize() {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.main2_edit_dialog, null);
-        ll_community = view.findViewById(R.id.ll_community);//社区
-        ll_voide = view.findViewById(R.id.ll_voide);//视频
-        ll_article = view.findViewById(R.id.ll_article);//文章
+        ll_community = view.findViewById(R.id.ll_community);
+        ll_voide = view.findViewById(R.id.ll_voide);
+        ll_article = view.findViewById(R.id.ll_article);
         ll_community.setOnClickListener(this);
         ll_voide.setOnClickListener(this);
         ll_article.setOnClickListener(this);
@@ -59,7 +59,7 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
         ColorDrawable dw = new ColorDrawable(0x00000000);
         //设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
-        backgroundAlpha((Activity) context, 1.0f);//0.0-1.0
+        backgroundAlpha((Activity) context, 1.0f);
         this.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -68,7 +68,8 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
         });
     }
 
-    //设置添加屏幕的背景透明度
+//    设置添加屏幕的背景透明度
+
     public void backgroundAlpha(Activity context, float bgAlpha) {
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
         lp.alpha = bgAlpha;

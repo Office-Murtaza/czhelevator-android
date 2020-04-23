@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -241,4 +243,6 @@ public class DonateCouponsActivity extends BaseStateRefreshingLoadingActivity<Co
     protected boolean isShowDivider() {
         return false;
     }
+
+
 }

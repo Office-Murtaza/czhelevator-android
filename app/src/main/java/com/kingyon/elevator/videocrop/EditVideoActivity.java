@@ -886,7 +886,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                     try {
                     EpVideo epVideo = new EpVideo(outfilePath);
                     EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-//                    epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
+                    epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
                     EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
                                 mMediaPlayer.getVideoWidth(),
                                 mMediaPlayer.getVideoHeight(),false);
@@ -949,7 +949,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             try {
             EpVideo epVideo = new EpVideo(path);
             EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-//            epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
+            epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
             EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
                         mMediaPlayer.getVideoWidth(),
                         mMediaPlayer.getVideoHeight(),false);
@@ -1408,15 +1408,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath),fromType);
-//                                if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
-//                                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, outputPath));
-//                                    finish();
-//                                }else {
-//                                    MyActivityUtils.goConfirmOrderActivity(EditVideoActivity.this,
-//                                            Constants.FROM_TYPE.MEDIADATA, outputPath, Constants.Materia_Type.VIDEO);
-//                                    finish();
-//                                }
+                            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath), fromType);
                             }
                         });
                     }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.donkingliang.labels.LabelsView;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.adapter2.SearchAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.SearchAdapter;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.kingyon.elevator.utils.Constance.ACTIVITY_MAIN2_SEARCH;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_SEARCH;
 
 /**
  * Created By Admin  on 2020/4/15
  * Email : 163235610@qq.com
- * Author:Mrczh
+ * @Author:Mrczh
  * Instructions:
  */
 @Route(path = ACTIVITY_MAIN2_SEARCH)

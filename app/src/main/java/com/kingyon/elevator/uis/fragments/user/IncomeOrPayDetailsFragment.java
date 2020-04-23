@@ -2,10 +2,8 @@ package com.kingyon.elevator.uis.fragments.user;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
@@ -13,16 +11,12 @@ import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.IncomeOrPayDetailsPresenter;
-import com.kingyon.elevator.uis.adapters.IncomeDetailsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.IncomeDetailsAdapter;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.IncomeOrPayDetailsView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

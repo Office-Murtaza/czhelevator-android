@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".uis.actiivty2.content.TopicDetailsActivity">
+
+
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smart_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/my_action_bar"
+            app:srlEnableAutoLoadMore="false"
+            app:srlEnableRefresh="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+            <RelativeLayout
+                android:id="@+id/rl_bg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_180"
+                >
+
+                <ImageView
+                    android:id="@+id/img_topimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/bg_topic_sport"
+                    android:scaleType="fitXY"
+                    ></ImageView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_vertical"
+                    android:background="@mipmap/bg_dialog_title"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_25"
+                        android:layout_height="@dimen/dp_25"
+                        android:src="@mipmap/ic_topic_tips"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_topic_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#跑起来，就现在#"
+                        android:textColor="#fffffefe"
+                        android:textSize="@dimen/sp_16"
+                        />
+
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_bake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_back"
+                    android:padding="@dimen/dp_10"
+                    ></ImageView>
+
+
+                <ImageView
+                    android:id="@+id/img_jb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_comm_menu_white"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_10"
+                    ></ImageView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_topic_contetn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这里是话题介绍，这里是跑友们的大本营，喜欢跑步的你快来加入我们，一起分享跑步经验！"
+                android:textColor="#ff666666"
+                android:layout_margin="@dimen/dp_10"
+                android:textSize="@dimen/sp_14"
+                />
+
+            <com.kingyon.elevator.view.ModifyTabLayout
+
+                android:id="@+id/modiftTabLayout"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="35dp" />
+
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/viewpagertab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35"
+                android:background="@drawable/bg_topic_zxzr"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorColor="@color/red"
+                app:stl_indicatorThickness="2dp"
+                app:stl_indicatorWidth="@dimen/dp_20"
+                app:stl_indicatorCornerRadius="0dp"
+                app:stl_overlineThickness="0dp"
+                app:stl_underlineThickness="0dp"
+                app:stl_dividerThickness="0dp"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_customTabTextLayoutId="@layout/view_tab_text"
+                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextColor="#333333"
+                app:stl_defaultTabTextSize="12sp"
+                app:stl_defaultTabTextHorizontalPadding="16dp"
+                app:stl_defaultTabTextMinWidth="@dimen/dp_100"
+                app:stl_distributeEvenly="true"
+                app:stl_clickable="true"
+                app:stl_titleOffset="24dp"
+                app:stl_drawDecorationAfterTab="false"
+                />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp"
+                android:layout_margin="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

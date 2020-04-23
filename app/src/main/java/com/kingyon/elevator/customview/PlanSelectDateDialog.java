@@ -3,20 +3,15 @@ package com.kingyon.elevator.customview;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.HorizontalSelectDateEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
-import com.kingyon.elevator.uis.adapters.GridDateAdapter;
-import com.kingyon.elevator.uis.adapters.HorizontalSelectDateAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.HorizontalSelectDateAdapter;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 
@@ -25,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

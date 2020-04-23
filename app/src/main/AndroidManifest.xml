@@ -106,7 +106,7 @@
                     android:scheme="elevator" />
             </intent-filter>
         </activity>
-        <activity android:name=".uis.actiivty2.CodeActivity">
+        <activity android:name=".uis.actiivty2.login.CodeActivity">
 
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -123,7 +123,7 @@
             android:theme="@style/BaseTheme" />
 
         <activity
-            android:name=".uis.activities.HomeActivity"
+            android:name=".uis.actiivty2.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
@@ -591,7 +591,31 @@
         <activity android:name=".uis.actiivty2.content.VoideDetailsActivity"
             android:screenOrientation="portrait"
             ></activity>
-
+        <!--        内容详情文章-->
+        <activity android:name=".uis.actiivty2.content.ArticleDetailsActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+<!--        内容详情 视频竖版-->
+        <activity android:name=".uis.actiivty2.content.VoideVerticalDetailsActivity"
+            android:screenOrientation="portrait"
+            />
+<!--        富文本编辑-->
+        <activity android:name=".uis.actiivty2.main.ArticleReleaseActivity"
+            android:screenOrientation="portrait"
+            />
+<!--       话题选择-->
+        <activity android:name=".uis.actiivty2.main.TopicSelectionActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+<!--        视频发布-->
+        <activity android:name=".uis.actiivty2.main.VoideReleasetyActiivty"
+            android:screenOrientation="portrait"
+            />
+<!--话题详情-->
+        <activity android:name=".uis.actiivty2.content.TopicDetailsActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+<!--        图片选择-->
         <!-- ****************友盟配置****************************** -->
         <meta-data
             android:name="UMENG_APPKEY"

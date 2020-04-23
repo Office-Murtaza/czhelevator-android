@@ -93,13 +93,10 @@ public class AddNewBankCardActivity extends MvpBaseActivity<AddNewBankCardPresen
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_confirm_bind:
-                if (QuickClickUtils.isFastClick()) {
-                    return;
-                }
-                presenter.checkBindAccountData(bingType,
-                        tv_zfb_account.getText().toString().trim(),
-                        tv_zfb_name.getText().toString().trim(),
-                        tv_bank_card_kaihuhang.getText().toString().trim());
+                    presenter.checkBindAccountData(bingType,
+                            tv_zfb_account.getText().toString().trim(),
+                            tv_zfb_name.getText().toString().trim(),
+                            tv_bank_card_kaihuhang.getText().toString().trim());
                 break;
         }
     }

@@ -2,25 +2,22 @@ package com.kingyon.elevator.utils;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.BannerEntity;
 import com.kingyon.elevator.entities.MsgNoticeEntity;
 import com.kingyon.elevator.entities.NormalMessageEntity;
 import com.kingyon.elevator.entities.NormalOptionEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
-import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.UserEntity;
-import com.kingyon.elevator.uis.activities.HomeActivity;
+import com.kingyon.elevator.uis.actiivty2.HomeActivity;
+import com.kingyon.elevator.uis.activities.MainActivity;
 import com.kingyon.elevator.uis.activities.advertising.AdPreviewActivity;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
-import com.kingyon.elevator.uis.activities.MainActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
 import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.uis.activities.homepage.RecommendListActivity;
@@ -40,9 +37,6 @@ import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
 import com.kingyon.elevator.uis.activities.user.MyInvoiceActivity;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
-import com.leo.afbaselibrary.utils.ActivityUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by GongLi on 2018/9/13.

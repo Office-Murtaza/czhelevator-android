@@ -1,33 +1,24 @@
 package com.kingyon.elevator.uis.fragments.user;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.BindAccountEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
-import com.kingyon.elevator.entities.IncomeDetailsEntity;
-import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.CashMethodSettingPresenter;
 import com.kingyon.elevator.uis.activities.cooperation.AddNewBankCardActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawActivity;
-import com.kingyon.elevator.uis.adapters.BindedCardAdapter;
-import com.kingyon.elevator.uis.adapters.IncomeDetailsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.BindedCardAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
@@ -39,7 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

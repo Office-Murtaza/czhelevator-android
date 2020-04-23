@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/image"
         android:layout_width="108dp"
         android:layout_height="108dp"
         android:src="@mipmap/ic_launcher"

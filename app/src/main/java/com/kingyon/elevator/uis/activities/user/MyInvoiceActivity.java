@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -127,4 +128,5 @@ public class MyInvoiceActivity extends BaseStateRefreshingLoadingActivity<Invoic
             autoRefresh();
         }
     }
+
 }

@@ -14,7 +14,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.CouponsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.CouponsAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;

@@ -163,10 +163,9 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                 break;
             case R.id.select_date_container:
                 if (QuickClickUtils.isFastClick()) {
-                    LogUtils.d("快速点击了-------------------");
-                    return;
+                    showDateDialog();
                 }
-                showDateDialog();
+
                 break;
         }
     }

@@ -1,27 +1,16 @@
 package com.kingyon.elevator.uis.activities;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,44 +19,29 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.utils.QuickClickUtils;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.customview.NoScrollViewPager;
-import com.kingyon.elevator.entities.ADEntity;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
-import com.kingyon.elevator.entities.FolderEntity;
-import com.kingyon.elevator.entities.TabEntity;
-import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.presenter.PhotoPickerPresenter;
-import com.kingyon.elevator.uis.activities.advertising.InfomationAdvertisingActivity;
-import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
-import com.kingyon.elevator.uis.adapters.FolderListAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.FolderListAdapter;
 import com.kingyon.elevator.uis.fragments.PhotoPickerFragment;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
-import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.PhotoPickerView;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.EasyPermissions;
-import com.leo.afbaselibrary.utils.ToastUtils;
 import com.yalantis.ucrop.UCrop;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -75,9 +49,6 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.nereo.multi_image_selector.MultiFilterType;
-import me.nereo.multi_image_selector.bean.Folder;
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * 图片视频选择界面
@@ -126,15 +97,18 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
         folderListAdapter = new FolderListAdapter(this, fromType, presenter.getDirectories());
         folder_list.setAdapter(folderListAdapter);
         folder_list.setOnItemClickListener((parent, view, position, id) -> {
-            folder_list.setVisibility(View.GONE);
-            if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
-                if (position == 0) {
-                    jumpToAdvertising();
+            if (QuickClickUtils.isFastClick()) {
+                if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+                    if (position == 0) {
+                        jumpToAdvertising();
+                    } else {
+                        folder_list.setVisibility(View.GONE);
+                        setItemClick(position);
+                    }
                 } else {
+                    folder_list.setVisibility(View.GONE);
                     setItemClick(position);
                 }
-            } else {
-                setItemClick(position);
             }
         });
         view_pager_container.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

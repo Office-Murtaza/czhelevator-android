@@ -28,6 +28,7 @@ public class MyActivityUtils {
      * @param tag     标志参数，跳转对应界面
      */
     public static void goFragmentContainerActivity(Context context, String tag) {
+        if (QuickClickUtils.isFastClick()){
         try {
             Intent intent = new Intent(context, FragmentContainerActivity.class);
             intent.putExtra("tag", tag);
@@ -35,6 +36,7 @@ public class MyActivityUtils {
         } catch (Exception e) {
             ToastUtils.showShort("跳转失败，请重试");
             LogUtils.e("跳转失败：" + e.toString());
+        }
         }
     }
 
@@ -45,14 +47,16 @@ public class MyActivityUtils {
      * @param tag     标志参数，跳转对应界面
      */
     public static void goFragmentContainerActivity(Context context, String tag, Boolean isRememberPwd) {
-        try {
-            Intent intent = new Intent(context, FragmentContainerActivity.class);
-            intent.putExtra("tag", tag);
-            intent.putExtra("isRememberPwd", isRememberPwd);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, FragmentContainerActivity.class);
+                intent.putExtra("tag", tag);
+                intent.putExtra("isRememberPwd", isRememberPwd);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -64,14 +68,16 @@ public class MyActivityUtils {
      * @param from    来自于哪个界面
      */
     public static void goFragmentContainerActivity(Context context, String tag, String from) {
-        try {
-            Intent intent = new Intent(context, FragmentContainerActivity.class);
-            intent.putExtra("tag", tag);
-            intent.putExtra("from", from);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, FragmentContainerActivity.class);
+                intent.putExtra("tag", tag);
+                intent.putExtra("from", from);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -83,14 +89,16 @@ public class MyActivityUtils {
      * @param bundle
      */
     public static void goActivity(Context context, Class classes, String tag, Bundle bundle) {
-        try {
-            Intent intent = new Intent(context, classes);
-            intent.putExtra("tag", tag);
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                intent.putExtra("tag", tag);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -102,13 +110,15 @@ public class MyActivityUtils {
      * @param bundle
      */
     public static void goActivity(Context context, Class classes, Bundle bundle) {
-        try {
-            Intent intent = new Intent(context, classes);
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -119,12 +129,14 @@ public class MyActivityUtils {
      * @param classes
      */
     public static void goActivity(Context context, Class classes) {
-        try {
-            Intent intent = new Intent(context, classes);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -135,13 +147,15 @@ public class MyActivityUtils {
      * @param classes
      */
     public static void goActivity(Context context, Class classes, String value1) {
-        try {
-            Intent intent = new Intent(context, classes);
-            intent.putExtra("value1", value1);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                intent.putExtra("value1", value1);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -152,14 +166,16 @@ public class MyActivityUtils {
      * @param classes
      */
     public static void goActivity(Context context, Class classes, Bundle bundle, String value1) {
-        try {
-            Intent intent = new Intent(context, classes);
-            intent.putExtras(bundle);
-            intent.putExtra("value1", value1);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                intent.putExtras(bundle);
+                intent.putExtra("value1", value1);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -171,15 +187,17 @@ public class MyActivityUtils {
      * @param classes
      */
     public static void goPreviewVideoActivity(Context context, Class classes, String videoPath, long videoTime,int fromType) {
-        try {
-            Intent intent = new Intent(context, classes);
-            intent.putExtra("videoPath", videoPath);
-            intent.putExtra("videoTime", videoTime);
-            intent.putExtra("fromType", fromType);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, classes);
+                intent.putExtra("videoPath", videoPath);
+                intent.putExtra("videoTime", videoTime);
+                intent.putExtra("fromType", fromType);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -191,15 +209,17 @@ public class MyActivityUtils {
      * @param resType 资源文件的类型  视频还是图片
      */
     public static void goConfirmOrderActivity(Context context, int fromType, String path, String resType) {
-        try {
-            Intent intent = new Intent(context, ConfirmOrderActivity.class);
-            intent.putExtra("path", path);
-            intent.putExtra("fromType", fromType);
-            intent.putExtra("resType", resType);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, ConfirmOrderActivity.class);
+                intent.putExtra("path", path);
+                intent.putExtra("fromType", fromType);
+                intent.putExtra("resType", resType);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -212,14 +232,16 @@ public class MyActivityUtils {
      * @param planType 广告计划的类型
      */
     public static void goPhotoPickerActivity(Context context, int fromType, String planType) {
-        try {
-            Intent intent = new Intent(context, PhotoPickerActivity.class);
-            intent.putExtra("fromType", fromType);
-            intent.putExtra("planType", planType);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, PhotoPickerActivity.class);
+                intent.putExtra("fromType", fromType);
+                intent.putExtra("planType", planType);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -231,16 +253,18 @@ public class MyActivityUtils {
      * @param planType 广告计划的类型
      */
     public static void goVideoEditorActivity(Context context, int fromType, String planType) {
-        try {
+        if (QuickClickUtils.isFastClick()) {
+            try {
 //            Intent intent = new Intent(context, EditVideoActivity.class);
-            Intent intent = new Intent(context, VideoEditorActivity.class);
-            intent.putExtra("fromType", fromType);
-            intent.putExtra("planType", planType);
+                Intent intent = new Intent(context, VideoEditorActivity.class);
+                intent.putExtra("fromType", fromType);
+                intent.putExtra("planType", planType);
 //            intent.putExtra("path",RuntimeUtils.selectVideoPath);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -251,13 +275,15 @@ public class MyActivityUtils {
      * @param context
      */
     public static void goOrderCOntainerActivity(Context context, NormalParamEntity normalParamEntity) {
-        try {
-            Intent intent = new Intent(context, OrderContainerActivity.class);
-            intent.putExtra("normalEntity", normalParamEntity);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, OrderContainerActivity.class);
+                intent.putExtra("normalEntity", normalParamEntity);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 
@@ -268,13 +294,15 @@ public class MyActivityUtils {
      * @param context
      */
     public static void goNewsDetailsActivity(Context context,int newsId) {
-        try {
-            Intent intent = new Intent(context, NewsDetailsActivity.class);
-            intent.putExtra("newsId", newsId);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            ToastUtils.showShort("跳转失败，请重试");
-            LogUtils.e("跳转失败：" + e.toString());
+        if (QuickClickUtils.isFastClick()) {
+            try {
+                Intent intent = new Intent(context, NewsDetailsActivity.class);
+                intent.putExtra("newsId", newsId);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showShort("跳转失败，请重试");
+                LogUtils.e("跳转失败：" + e.toString());
+            }
         }
     }
 }

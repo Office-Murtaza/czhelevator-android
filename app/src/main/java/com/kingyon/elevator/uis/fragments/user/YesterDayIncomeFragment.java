@@ -2,13 +2,9 @@ package com.kingyon.elevator.uis.fragments.user;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
@@ -16,19 +12,14 @@ import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.kingyon.elevator.entities.IncomeEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.YesterDayIncomePresenter;
-import com.kingyon.elevator.uis.adapters.IncomeAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.IncomeAdapter;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.YesterDayIncomeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

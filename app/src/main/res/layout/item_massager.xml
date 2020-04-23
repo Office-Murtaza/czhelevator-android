@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:ios="true"
+    app:leftSwipe="true"
+    app:swipeEnable="true">
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item"
+        android:padding="@dimen/dp_10"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_message_notice"
+            ></ImageView>
+
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="多多助手"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="系统维护通知：因假期放假3天4月系统…"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="03-28"
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                />
+
+            <TextView
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:text="8"
+                android:gravity="center"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_10"
+                android:padding="@dimen/dp_2"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_masg_number"
+
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:background="#FF1330"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/white_normal"
+            android:textSize="@dimen/txt_normal_content" />
+    </LinearLayout>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

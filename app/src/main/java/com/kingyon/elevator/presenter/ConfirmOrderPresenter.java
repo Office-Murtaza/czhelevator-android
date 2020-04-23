@@ -124,6 +124,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     if (images != null && images.size() > 0) {
                         uploadUrl = images.get(0);
                         commitAd(uploadUrl, planType, screenType, adName, resPath);
+                        LogUtils.e("成功 提交服务器",uploadUrl);
                     } else {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
@@ -230,6 +231,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                 .subscribe(new CustomApiCallback<CommitOrderEntiy>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage());
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
@@ -238,6 +240,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
 
                     @Override
                     public void onNext(CommitOrderEntiy orderEntiy) {
+                        LogUtils.e(orderEntiy.toString());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             LogUtils.d("订单提交成功：", GsonUtils.toJson(orderEntiy));

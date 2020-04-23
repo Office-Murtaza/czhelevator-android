@@ -13,7 +13,7 @@ import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.FeedBackMessageEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.FeedBackDetailsAdaper;
+import com.kingyon.elevator.uis.adapters.adapterone.FeedBackDetailsAdaper;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.KeyboardChangeListener;

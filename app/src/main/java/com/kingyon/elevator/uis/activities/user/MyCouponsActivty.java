@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -121,6 +122,8 @@ public class MyCouponsActivty extends BaseTabActivity<TabPagerEntity> {
             }
         }
     }
+
+
 //
 //    private ArrayList<CouponItemEntity> getChoosedCoupons() {
 //        ArrayList<CouponItemEntity> coupons = null;

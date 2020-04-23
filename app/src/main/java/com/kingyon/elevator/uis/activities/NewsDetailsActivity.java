@@ -249,49 +249,46 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
 
     @OnClick({R.id.input_comment_container, R.id.iv_share_news, R.id.iv_dianzan,R.id.sort_list})
     public void OnClick(View view) {
-        if (QuickClickUtils.isFastClick()) {
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.input_comment_container:
-                InputCommentActivity.openEditor(NewsDetailsActivity.this, new EditorCallback() {
-                    @Override
-                    public void onCancel() {
-                        LogUtils.d("关闭输入法-------------");
-                        KeyboardUtils.hideSoftInput(NewsDetailsActivity.this);
+            switch (view.getId()) {
+                case R.id.input_comment_container:
+                    InputCommentActivity.openEditor(NewsDetailsActivity.this, new EditorCallback() {
+                        @Override
+                        public void onCancel() {
+                            LogUtils.d("关闭输入法-------------");
+                            KeyboardUtils.hideSoftInput(NewsDetailsActivity.this);
+                        }
+
+                        @Override
+                        public void onSubmit(String content) {
+                            showShortToast(content);
+                            presenter.addNewsComment((long) newsId, content);
+
+                        }
+
+                        @Override
+                        public void onAttached(ViewGroup rootView) {
+
+                        }
+                    });
+                    break;
+                case R.id.iv_share_news:
+                    shared();
+                    break;
+                case R.id.iv_dianzan:
+                    setLikeOrDislike();
+                    break;
+                case R.id.sort_list:
+                    if (currentSortType==1) {
+                        currentSortType=2;
+                        sort_list.setText("按时间排序");
+                    }else {
+                        currentSortType=1;
+                        sort_list.setText("按热度排序");
                     }
-
-                    @Override
-                    public void onSubmit(String content) {
-                        showShortToast(content);
-                        presenter.addNewsComment((long) newsId, content);
-
-                    }
-
-                    @Override
-                    public void onAttached(ViewGroup rootView) {
-
-                    }
-                });
-                break;
-            case R.id.iv_share_news:
-                shared();
-                break;
-            case R.id.iv_dianzan:
-                setLikeOrDislike();
-                break;
-            case R.id.sort_list:
-                if (currentSortType==1) {
-                    currentSortType=2;
-                    sort_list.setText("按时间排序");
-                }else {
-                    currentSortType=1;
-                    sort_list.setText("按热度排序");
-                }
-                showProgressDialog("加载中",true);
-                presenter.loadCommentList(ReflashConstants.Refalshing, newsId, currentSortType);
-                break;
-        }
+                    showProgressDialog("加载中",true);
+                    presenter.loadCommentList(ReflashConstants.Refalshing, newsId, currentSortType);
+                    break;
+            }
 
     }
 

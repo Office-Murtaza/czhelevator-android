@@ -17,8 +17,7 @@ import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.NoticeOrHelperPresenter;
 import com.kingyon.elevator.uis.activities.HtmlActivity;
-import com.kingyon.elevator.uis.adapters.MessageAdapter;
-import com.kingyon.elevator.uis.adapters.MessageDetailsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.MessageDetailsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
@@ -29,7 +28,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,15 +67,13 @@ public class NoticeOrHelperFragment extends MvpBaseFragment<NoticeOrHelperPresen
             messageAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgNoticeEntity>() {
                 @Override
                 public void onItemClick(MsgNoticeEntity data, int position) {
-                    if (QuickClickUtils.isFastClick()) {
-                        return;
-                    }
-                    presenter.setMsgRead(data.getId(), position);
-                    if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
-                        HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
-                    } else {
-                        JumpUtils.getInstance().jumpToMessagePage(getActivity(), data);
-                    }
+                        presenter.setMsgRead(data.getId(), position);
+                        if (data.getType().equals(Constants.MessageType.OFFICIAL.getValue())) {
+                            HtmlActivity.start(getActivity(), data.getTitle(), data.getLink());
+                        } else {
+                            JumpUtils.getInstance().jumpToMessagePage(getActivity(), data);
+                        }
+
                 }
             });
             messageAdapter.setBaseOnLongItemClick(new BaseOnItemClick<MsgNoticeEntity>() {

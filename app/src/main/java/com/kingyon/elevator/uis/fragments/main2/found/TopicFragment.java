@@ -1,18 +1,15 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
-import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyloadFragment;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyFragment;
 import com.kingyon.elevator.view.ModifyTabLayout;
 
 import butterknife.BindView;
@@ -25,34 +22,33 @@ import butterknife.Unbinder;
  * Author:Mrczh
  * Instructions:话题
  */
-public class TopicFragment extends LazyloadFragment {
+public class TopicFragment extends LazyFragment {
 
-
+    @BindView(R.id.modiftTabLayout)
     ModifyTabLayout tabLayout;
+    @BindView(R.id.vp)
     ViewPager vp;
-    Unbinder unbinder;
+    Unbinder unbinder1;
+    private View view;
 
     @Override
-    protected int setContentView() {
-        return R.layout.fragment_topic;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_topic, container, false);
+        lazyLoad();//加载数据
+        unbinder1 = ButterKnife.bind(this, view);
+        initUi();
+        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        init();
-    }
 
-    @Override
-    protected void init() {
-        tabLayout = rootView.findViewById(R.id.modiftTabLayout);
-        vp = rootView.findViewById(R.id.vp);
+
+    private void initUi() {
         tabLayout.setViewHeight(dp2px(30));
         tabLayout.setBottomLineWidth(dp2px(10));
         tabLayout.setBottomLineHeight(dp2px(3));
         tabLayout.setBottomLineHeightBgResId(R.color.color_00000000);
-        tabLayout.setItemInnerPaddingLeft(dp2px(6));
-        tabLayout.setItemInnerPaddingRight(dp2px(6));
+        tabLayout.setItemInnerPaddingLeft(dp2px(10));
+        tabLayout.setItemInnerPaddingRight(dp2px(10));
         tabLayout.setmTextColorSelect(ContextCompat.getColor(getActivity(),R.color.type1));
         tabLayout.setmTextColorUnSelect(ContextCompat.getColor(getActivity(),R.color.type2));
         tabLayout.setmTextBgUnSelectResId(R.drawable.bg_ad_type1);
@@ -68,35 +64,24 @@ public class TopicFragment extends LazyloadFragment {
         vp.setAdapter(adapter);
         vp.setOffscreenPageLimit(adapter.getCount());
         tabLayout.setupWithViewPager(vp);
+//        vp.setCurrentItem(3);
     }
 
     @Override
     protected void lazyLoad() {
 
-        LogUtils.e("话题首页");
-    }
-
-    /**
-     * dp转换成px
-     */
-    public int dp2px( float dpValue){
-        float scale=getResources().getDisplayMetrics().density;
-        return (int)(dpValue*scale+0.5f);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        unbinder1.unbind();
     }
 
+
+    public int dp2px( float dpValue){
+        float scale=getResources().getDisplayMetrics().density;
+        return (int)(dpValue*scale+0.5f);
+    }
 
 }

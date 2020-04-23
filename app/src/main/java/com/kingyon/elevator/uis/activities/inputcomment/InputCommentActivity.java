@@ -58,25 +58,22 @@ public class InputCommentActivity extends Activity {
 
     @OnClick({R.id.btn_send, R.id.iv_dianzan, R.id.iv_share_news})
     public void OnClick(View view) {
-        if (QuickClickUtils.isFastClick()) {
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.btn_send:
-                if (input_comment.getText().toString().trim().isEmpty()) {
-                    ToastUtils.showShort("请输入评论内容");
-                    return;
-                }
-                mEditorCallback.onSubmit(input_comment.getText().toString().trim());
-                finish();
-                break;
-            case R.id.iv_dianzan:
+            switch (view.getId()) {
+                case R.id.btn_send:
+                    if (input_comment.getText().toString().trim().isEmpty()) {
+                        ToastUtils.showShort("请输入评论内容");
+                        return;
+                    }
+                    mEditorCallback.onSubmit(input_comment.getText().toString().trim());
+                    finish();
+                    break;
+                case R.id.iv_dianzan:
 
-                break;
-            case R.id.iv_share_news:
+                    break;
+                case R.id.iv_share_news:
 
-                break;
-        }
+                    break;
+            }
 
     }
 

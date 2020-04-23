@@ -15,7 +15,7 @@ import com.kingyon.elevator.entities.MsgNoticeEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.NoticeOrHelperPresenter;
-import com.kingyon.elevator.uis.adapters.CommentsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.CommentsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
@@ -67,11 +67,8 @@ public class CommentListFragment extends MvpBaseFragment<NoticeOrHelperPresenter
         commentsAdapter.setBaseOnItemClick(new BaseOnItemClick<MsgCommentEntity>() {
             @Override
             public void onItemClick(MsgCommentEntity data, int position) {
-                if (QuickClickUtils.isFastClick()) {
-                    return;
-                }
-                presenter.setMsgRead(data.getId(), position);
-                MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
+                    presenter.setMsgRead(data.getId(), position);
+                    MyActivityUtils.goNewsDetailsActivity(getActivity(), data.getNewsId());
             }
         });
         commentsAdapter.setBaseOnLongItemClick(new BaseOnItemClick<MsgCommentEntity>() {
