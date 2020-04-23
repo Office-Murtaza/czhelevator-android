@@ -60,7 +60,6 @@ import cn.jpush.android.api.JPushInterface;
  * Instructions:首页入口
  */
 public class HomeActivity extends BaseActivity implements AMapLocationListener {
-//ssssssss
     @BindView(R.id.frame_content)
     FrameLayout frameContent;
     @BindView(R.id.img_home_found)
