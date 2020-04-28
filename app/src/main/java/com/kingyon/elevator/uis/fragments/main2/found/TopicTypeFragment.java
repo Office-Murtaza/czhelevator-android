@@ -58,7 +58,7 @@ public class TopicTypeFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder1.unbind();
+//        unbinder1.unbind();
     }
 
     @Override

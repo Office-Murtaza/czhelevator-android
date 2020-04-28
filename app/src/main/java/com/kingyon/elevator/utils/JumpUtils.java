@@ -64,6 +64,7 @@ public class JumpUtils {
 //        if (TextUtils.isEmpty(role)) {
 //            baseActivity.startActivity(MainActivity.class);
 //        }
+//        baseActivity.startActivity(MainActivity.class);
         baseActivity.startActivity(HomeActivity.class);
     }
 

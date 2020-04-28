@@ -268,7 +268,9 @@
                             android:id="@+id/rv_classify"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_default" />
+                            android:paddingBottom="@dimen/spacing_default"
+                            android:visibility="gone"
+                            />
 
                         <FrameLayout
                             android:id="@+id/news_container"

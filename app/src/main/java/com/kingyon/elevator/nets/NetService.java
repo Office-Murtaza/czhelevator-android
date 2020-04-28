@@ -86,6 +86,7 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -160,6 +161,34 @@ public class NetService {
         return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    /*2.0验证码*/
+
+    public Observable<String> setSendCheckConde(String type, String phone){
+        return addSchedulers(getApi().getSendCheckCode(type,phone));
+    }
+
+    /*2.0登录*/
+    public Observable<CodeEntity> setLogin(String phone,String password,String way,String unique,String avatar,String nickName ){
+        return addSchedulers(getApi().getLogin(phone,password,way,unique,avatar,nickName));
+    }
+    /*2.0设置密码*/
+    public Observable<CodeEntity> setPasswordSetting(String phone,String password,String inviter){
+        return addSchedulers(getApi().getPassswordSetting(phone,password,inviter));
+    }
+    /*2.0绑定手机*/
+    public Observable<CodeEntity> setBindPhone(String phone, String verifyCode,String unique,String avatar, String nickName){
+        return addSchedulers(getApi().getBindPhone(phone,verifyCode,unique,avatar,nickName));
+    }
+    /*2.0验证码验证*/
+    public Observable<CodeEntity> setCheckVerifyCode(String phone, String verifyCode){
+        return addSchedulers(getApi().getCheckVerifyCode(phone,verifyCode));
+    }
+    /*2.0找回密码*/
+    public Observable<String> setResetPassword(String phone,String verifyCode,String newPassword){
+        return addSchedulers(getApi().getResetPassword(phone,verifyCode,newPassword));
+    }
+
+
     //验证码
     public Observable<String> sendVerifyCode(String mobile, CheckCodePresenter.VerifyCodeType type) {
         return addSchedulers(getApi().getVerifyCode(mobile, type.getValue()));
@@ -199,6 +228,7 @@ public class NetService {
     public Observable<String> bindPushId(String pushId) {
         return addSchedulers(getApi().bindPushId(pushId, "ANDROID"));
     }
+
 
     public Observable<DataEntity<String>> richText(String type) {
         return addSchedulers(getApi().richText(type));

@@ -36,6 +36,17 @@ public class MediaDirectory implements Serializable {
     private ArrayList<MediaData> mediaDatas = new ArrayList<>();
 
     @Override
+    public String toString() {
+        return "MediaDirectory{" +
+                "id='" + id + '\'' +
+                ", coverPath='" + coverPath + '\'' +
+                ", name='" + name + '\'' +
+                ", dirPath='" + dirPath + '\'' +
+                ", mediaDatas=" + mediaDatas +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MediaDirectory)) return false;

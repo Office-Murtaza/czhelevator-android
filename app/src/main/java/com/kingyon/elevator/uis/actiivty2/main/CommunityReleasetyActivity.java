@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +44,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACTIVITYUTILS_PICTURE_CHOOSE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_SEARCH;
 import static com.kingyon.elevator.utils.PictureSelectorUtil.showPictureSelectorCropProperty;
 
@@ -74,6 +78,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @BindView(R.id.tv_zishu)
     TextView tvZishu;
     ChooseAdapter mAdapter;
+    @Autowired
+    String imagePath;
     @Override
     public int getContentViewId() {
         return R.layout.activity_community_releaset;
@@ -81,6 +87,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
 
     @Override
     public void init(Bundle savedInstanceState) {
+        ARouter.getInstance().inject(this);
         editContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -105,6 +112,9 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        LogUtils.e(imagePath);
+
         mAdapter = new ChooseAdapter(this);
         rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
         rcvListImg.setAdapter(mAdapter);
@@ -139,8 +149,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Override
     public void onItemClicked(int position) {
         if (position == mAdapter.getItemCount()-1) {
-
-
+            ARouter.getInstance().build(ACTIVITY_ACTIVITYUTILS_PICTURE_CHOOSE).navigation();
         }
     }
 

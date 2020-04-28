@@ -4,17 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@mipmap/bg_login_round">
+    android:background="@color/white">
 
-    <include layout="@layout/layout2_top"/>
 
-    <com.luozm.captcha.Captcha
-        android:id="@+id/captCha"
-        android:layout_marginTop="@dimen/dp20"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:src="@mipmap/ic_launcher"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@mipmap/bg_login_round"
+        >
+    <include layout="@layout/layout2_top"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -287,12 +286,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:layout_gravity="center"
-        android:background="@mipmap/btn_common_normal"
+        android:background="@mipmap/btn_common_dislabled"
         android:text="验证登录"
         android:textColor="#ffffffff"
         android:textSize="14sp"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         />
+    </LinearLayout>
 
 </LinearLayout>

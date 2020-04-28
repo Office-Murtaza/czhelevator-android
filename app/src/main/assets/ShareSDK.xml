@@ -50,4 +50,5 @@
 <HWAccount Enable="false" />
 <Oasis Enable="false" />
 <XMAccount Enable="false" />
+<SnapChat Enable="false" />
 </DevInfor>

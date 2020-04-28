@@ -115,7 +115,7 @@ public class ActivityUtil {
         if (activities.size() == 0)
             return;
         for (Activity activity : activities) {
-            if (!activity.getClass().getSimpleName().contains("MainActivity") && !activity.isFinishing())
+            if (!activity.getClass().getSimpleName().contains("HomeActivity") && !activity.isFinishing())
                 activity.finish();
         }
     }

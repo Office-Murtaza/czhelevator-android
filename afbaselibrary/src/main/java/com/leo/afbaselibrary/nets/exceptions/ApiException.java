@@ -5,7 +5,7 @@ package com.leo.afbaselibrary.nets.exceptions;
  */
 public class ApiException extends Exception {
     private final int code;
-    private String displayMessage;
+    private String message;
 
     public static final int NO_LOGIN = 999;
     public static final int RE_LOGIN = 1000;
@@ -19,21 +19,23 @@ public class ApiException extends Exception {
         this.code = code;
     }
 
-    public ApiException(Throwable throwable, int code, String displayMessage) {
+    public ApiException(Throwable throwable, int code, String message) {
         super(throwable);
         this.code = code;
-        this.displayMessage = displayMessage;
+        this.message = message;
     }
+
+
 
     public int getCode() {
         return code;
     }
 
     public String getDisplayMessage() {
-        return displayMessage;
+        return message;
     }
 
     public void setDisplayMessage(String msg) {
-        this.displayMessage = msg;
+        this.message = msg;
     }
 }

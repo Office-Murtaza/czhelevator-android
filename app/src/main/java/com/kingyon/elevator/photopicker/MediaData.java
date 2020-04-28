@@ -82,6 +82,26 @@ public class MediaData implements Parcelable {
      */
     private boolean isCamera;
 
+    @Override
+    public String toString() {
+        return "MediaData{" +
+                "mediaId=" + mediaId +
+                ", originalPath='" + originalPath + '\'' +
+                ", originalSize=" + originalSize +
+                ", compressionPath='" + compressionPath + '\'' +
+                ", clipImagePath='" + clipImagePath + '\'' +
+                ", cameraImagePath='" + cameraImagePath + '\'' +
+                ", imageWidth=" + imageWidth +
+                ", imageHeight=" + imageHeight +
+                ", mediaSize=" + mediaSize +
+                ", mimeType=" + mimeType +
+                ", imageType='" + imageType + '\'' +
+                ", duration=" + duration +
+                ", isCompressed=" + isCompressed +
+                ", isClip=" + isClip +
+                ", isCamera=" + isCamera +
+                '}';
+    }
 
     public MediaData(int id, String path) {
         this.originalPath = path;

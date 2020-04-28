@@ -52,6 +52,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:icon,android:theme,android:name">
 <!--        订单  -->
         <activity android:name=".uis.activities.OrderContainerActivity"></activity>
@@ -105,14 +107,6 @@
                     android:host="app.elevator.kingyon.com"
                     android:scheme="elevator" />
             </intent-filter>
-        </activity>
-        <activity android:name=".uis.actiivty2.login.CodeActivity">
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
 
 <!--        主Activity-->
@@ -616,6 +610,30 @@
             android:screenOrientation="portrait"
             ></activity>
 <!--        图片选择-->
+        <activity android:name=".uis.actiivty2.activityutils.PictureChooseActivity"
+            android:screenOrientation="portrait"
+            />
+<!--        登录-->
+        <activity android:name=".uis.actiivty2.login.LoginActiivty"
+            android:screenOrientation="portrait"
+            />
+<!--        验证码-->
+        <activity android:name=".uis.actiivty2.login.CodeActivity"
+            android:screenOrientation="portrait"
+            />
+<!--        用户名密码登录-->
+        <activity android:name=".uis.actiivty2.login.UserLoginActiivty"
+            android:screenOrientation="portrait"
+            />
+<!--        忘记密码-->
+        <activity android:name=".uis.actiivty2.login.ForgetPasswordActivity"
+            android:screenOrientation="portrait"
+            />
+<!--        设置用户名密码-->
+        <activity android:name=".uis.actiivty2.login.PasswordSettingActivity"
+            android:screenOrientation="portrait"
+            />
+
         <!-- ****************友盟配置****************************** -->
         <meta-data
             android:name="UMENG_APPKEY"

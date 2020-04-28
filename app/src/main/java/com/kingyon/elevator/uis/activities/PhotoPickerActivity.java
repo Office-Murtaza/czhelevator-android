@@ -94,6 +94,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
 
 
     private void initView() {
+        LogUtils.e(presenter.getDirectories());
         folderListAdapter = new FolderListAdapter(this, fromType, presenter.getDirectories());
         folder_list.setAdapter(folderListAdapter);
         folder_list.setOnItemClickListener((parent, view, position, id) -> {
@@ -152,10 +153,15 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
     }
 
     private void setItemClick(int position) {
+        LogUtils.e(RuntimeUtils.currentMediaDirectory.getId(),
+                RuntimeUtils.currentMediaDirectory,
+                presenter.getDirectories().get(position),
+                presenter.getDirectories().get(position).getId());
         if (presenter.getDirectories().get(position) != null) {
             if (RuntimeUtils.currentMediaDirectory != null) {
                 if (!RuntimeUtils.currentMediaDirectory.getId().equals(presenter.getDirectories().get(position).getId())) {
                     RuntimeUtils.currentMediaDirectory = presenter.getDirectories().get(position);
+                    LogUtils.e(RuntimeUtils.currentMediaDirectory.getId(),  RuntimeUtils.currentMediaDirectory,presenter.getDirectories().get(position));
                     tv_action_title.setText(RuntimeUtils.currentMediaDirectory.getName());
                     ((PhotoPickerFragment) fragmentList.get(0)).changeData(RuntimeUtils.currentMediaDirectory);
                     ((PhotoPickerFragment) fragmentList.get(1)).changeData(RuntimeUtils.currentMediaDirectory);

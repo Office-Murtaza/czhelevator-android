@@ -33,6 +33,7 @@ public class CommonUtil {
     public static final int REQ_CODE_4 = 4004;
     public static final int REQ_CODE_5 = 4005;
     public static final int REQ_CODE_6 = 4006;
+    public static final int REQ_CODE_7 = 4007;
 
     public static final int DEFULT_AREA_ID = 0;
 

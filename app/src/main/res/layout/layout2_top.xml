@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_arrow_back"
         android:layout_centerVertical="true"
+        android:padding="@dimen/dp_5"
         />
 
     <TextView

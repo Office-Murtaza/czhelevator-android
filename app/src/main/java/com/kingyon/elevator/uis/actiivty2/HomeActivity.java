@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.kingyon.elevator.R;
@@ -53,11 +54,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
+
 /**
  * Created By Admin  on 2020/3/30
  * Email : 163235610@qq.com
  * Author:Myczh
- * Instructions:首页入口111
+ * Instructions:首页入口
  */
 public class HomeActivity extends BaseActivity implements AMapLocationListener {
     @BindView(R.id.frame_content)
@@ -107,6 +110,7 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
     @Override
     public void init(Bundle savedInstanceState) {
         StatusBarUtil.setTransparent(this, false);
+        ButterKnife.bind(this);
 //        EventBus.getDefault().register(this);
         checkLocation();
         initPushId();
@@ -114,6 +118,9 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         checkVersion();
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
+        if (DataSharedPreferences.getToken().isEmpty()){
+            ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
+        }
     }
 
     @Override

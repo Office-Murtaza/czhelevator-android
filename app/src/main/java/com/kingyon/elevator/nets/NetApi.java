@@ -2,6 +2,7 @@ package com.kingyon.elevator.nets;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.kingyon.elevator.entities.*;
+import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.entities.WxPayEntity;
@@ -24,12 +25,51 @@ import rx.Observable;
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
     String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
-    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
+//    1.0测试接口
+//    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
+//    2.0测试接口
+    String domainDebugName = "http://192.168.1.156:8080/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.253:1510/";  //公司测试服
+
 //    String domainDebugName = "https://api.pddtv.cn/";  //公司测试服
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";
     String rapUrl = "http://rap2api.taobao.org/app/mock/121571/";
+//2.0
+    /*验证码*/
+    @POST("app/userSecurity/sendCheckCode")
+    @FormUrlEncoded
+    Observable<String> getSendCheckCode(@Field("type") String type, @Field("phone") String phone);
 
+    /*登录*/
+    @POST("app/userSecurity/login")
+    @FormUrlEncoded
+    Observable<CodeEntity> getLogin(@Field("phone") String phone,@Field("password") String password
+            ,@Field("way")String way,@Field("unique")String unique,@Field("avatar") String avatar,@Field("nickName") String nickName);
+
+    /*设置密码*/
+    @POST("app/userSecurity/setPassword")
+    @FormUrlEncoded
+    Observable<CodeEntity> getPassswordSetting(@Field("phone") String phone,@Field("password") String password,@Field("inviter") String inviter);
+
+    /*绑定手机*/
+    @POST("app/userSecurity/bindPhone")
+    @FormUrlEncoded
+    Observable<CodeEntity> getBindPhone(@Field("phone") String phone, @Field("verifyCode") String verifyCode,
+                                    @Field("unique") String unique, @Field("avatar") String avatar,
+                                    @Field("nickName") String nickName);
+    /*验证码验证*/
+    @POST("/app/userSecurity/checkVerifyCode")
+    @FormUrlEncoded
+    Observable<CodeEntity> getCheckVerifyCode (@Field("phone") String phone,@Field("verifyCode") String verifyCode);
+
+    /*忘记密码*/
+    @POST("/app/userSecurity/resetPassword")
+    @FormUrlEncoded
+    Observable<String> getResetPassword (@Field("phone") String phone,@Field("verifyCode") String verifyCode,@Field("newPassword") String newPassword );
+
+
+//    1.0
     //静态/通用获取七牛云参数
     @GET("common/getQiNiu")
     Observable<UploadParamsEnitty> getUploadToken();

@@ -51,11 +51,12 @@ public interface Constants {
         String PROPERTY = "PROPERTY";
     }
 
-    interface LoginType {//登录方式（nor：密码登录，wx：微信，qq：QQ，wb：新浪微博）
+    interface LoginType {//登录方式（nor：密码登录，wx：微信，qq：QQ，wb：新浪微博,ALI支付宝）
         String NORMAL = "NOR";
         String WX = "WX";
         String QQ = "QQ";
         String SINA = "WB";
+        String ALI = "ALI";
     }
 
     interface PayType {//ali，wechat，balance

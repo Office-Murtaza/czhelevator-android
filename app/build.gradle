@@ -185,10 +185,13 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
 
     implementation 'com.github.sd6352051:android-image-picker:v1.0.1'
-
+    implementation 'com.github.razerdp:BasePopup:2.2.2.2'
+//必须使用
+    implementation 'com.lzy.net:okgo:3.0.4'
     implementation project(path: ':voide')
     implementation project(path: ':video-effect')
     implementation project(path: ':myversiontwo')
+
 //    implementation project(path: ':are')
 
 }

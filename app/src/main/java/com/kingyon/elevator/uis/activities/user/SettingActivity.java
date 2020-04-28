@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -39,6 +40,8 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
  * Created by GongLi on 2019/1/10.
@@ -93,7 +96,8 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.tv_logout:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
-                    startActivity(LoginActivity.class);
+//                    startActivity(LoginActivity.class);
+                    ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
                 } else {
                     showExitDialog();
                 }
@@ -106,7 +110,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
                     try {
                         Context currentActivity = ActivityUtil.getCurrentActivity();
                         if (currentActivity != null) {
-                            Intent intent = new Intent(currentActivity, Class.forName("com.kingyon.elevator.uis.activities.password.LoginActivity"));
+                            Intent intent = new Intent(currentActivity, Class.forName("com.kingyon.elevator.uis.actiivty2.login.LoginActiivty"));
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("value_1", true);
                             intent.putExtras(bundle);

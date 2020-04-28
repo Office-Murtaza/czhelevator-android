@@ -130,6 +130,8 @@ public abstract class AbsAPICallback<T> extends Subscriber<T> {
      */
     protected abstract void onResultError(ApiException ex);
 
+
+
     @Override
     public void onCompleted() {
     }

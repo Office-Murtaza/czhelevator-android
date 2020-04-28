@@ -7,10 +7,14 @@ import com.google.gson.JsonElement;
  * email：1035407623@qq.com
  */
 public class ResultEntity {
+
+    private boolean status;
+//    private int status;
+
     /**
      * 状态码
      */
-    private int status;
+    private int code;
     /**
      * 处理消息
      */
@@ -20,15 +24,43 @@ public class ResultEntity {
      */
     private JsonElement content;
 
+    @Override
+    public String toString() {
+        return "ResultEntity{" +
+                "status=" + status +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", content=" + content +
+                ", inputError=" + inputError +
+                '}';
+    }
+
     private InputErrorEntity inputError;
 
-    public int getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
+
+//    public int getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(int status) {
+//        this.status = status;
+//    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
 
     public String getMessage() {
         if (inputError != null) {
