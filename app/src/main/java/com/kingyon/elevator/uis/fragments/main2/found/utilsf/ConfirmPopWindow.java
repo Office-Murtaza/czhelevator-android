@@ -1,19 +1,31 @@
 package com.kingyon.elevator.uis.fragments.main2.found.utilsf;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.czh.myversiontwo.activity.ActivityUtils;
+import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.R;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
@@ -25,10 +37,10 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASET
  * Instructions:
  */
 public class ConfirmPopWindow extends PopupWindow implements View.OnClickListener {
-    private Context context;
+    private Activity context;
     private View ll_article, ll_voide,ll_community;
 
-    public ConfirmPopWindow(Context context) {
+    public ConfirmPopWindow(Activity context) {
         super(context);
         this.context = context;
         initalize();
@@ -87,17 +99,53 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_article:
-                ARouter.getInstance().build(ACTIVITY_MAIN2_ARTICLE_RELEASETY).navigation();
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_RELEASETY);
                 break;
             case R.id.ll_community:
-                ARouter.getInstance().build(ACTIVITY_MAIN2_COMMUNITY_RELEASETY).navigation();
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_COMMUNITY_RELEASETY);
                 break;
             case R.id.ll_voide:
-                ARouter.getInstance().build(ACTIVITY_MAIN2_VOIDE_RELEASETY).navigation();
+//                ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY);
+                RxPermissions rxPermissions = new RxPermissions(context);
+                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .subscribe(aBoolean -> {
+                            if (aBoolean) {
+                                startAction();
+                            } else {
+                                Toast.makeText(context, "没有权限", Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        }, Throwable::printStackTrace);
                 break;
             default:
                 break;
         }
+    }
+
+    private void startAction() {
+        Matisse.from(context)
+                .choose(MimeType.ofVideo1(), false)
+                .countable(false)
+                .capture(false)
+                .captureStrategy(
+                        new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
+                .maxSelectable(1)
+                .gridExpectedSize(context.getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .setOnSelectedListener((uriList, pathList) -> {
+                    Log.e("onSelected", "onSelected: pathList=" + pathList);
+                })
+                .showSingleMediaType(true)
+                .originalEnable(false)
+                .maxOriginalSize(10)
+                .autoHideToolbarOnSingleTap(false)
+                .setOnCheckedListener(isChecked -> {
+                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                })
+                .forResult(ACCESS_VOIDE_PATH);
+
     }
 
 }

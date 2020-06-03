@@ -13,7 +13,7 @@ import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.AssignChildrenAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.AssignChildrenAdapter;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.uis.dialogs.OccupyDialog;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
@@ -86,7 +86,7 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                 holder.setTextNotHide(R.id.tv_name, String.format("%s%s", item.getCellName(), item.getBuildName()));
                 holder.setSelected(R.id.tv_name, item.isChoosed());
                 holder.setSelected(R.id.img_expand, item.isExpand());
-                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+//                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
                 RecyclerView rvPoints = holder.getView(R.id.rv_points);
                 AssignChildrenAdapter childrenAdapter = (AssignChildrenAdapter) rvPoints.getAdapter();
                 if (childrenAdapter == null) {

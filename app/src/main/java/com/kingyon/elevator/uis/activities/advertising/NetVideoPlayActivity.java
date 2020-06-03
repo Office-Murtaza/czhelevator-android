@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.MusicUtils;
@@ -29,6 +31,7 @@ public class NetVideoPlayActivity extends BaseSwipeBackActivity {
     @Override
     protected String getTitleText() {
         url = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
+        LogUtils.e(url);
         return "视频播放";
     }
 

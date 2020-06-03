@@ -92,9 +92,9 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
 //        if (tabParam.tabViewResId > 0) {
 //            defaultLayout = tabParam.tabViewResId;
 //        }
-        if (TextUtils.isEmpty(tabParam.title)) {
-            tabParam.title = getContext().getString(tabParam.titleStringRes);
-        }
+//        if (TextUtils.isEmpty(tabParam.title)) {
+//            tabParam.title = getContext().getString(tabParam.titleStringRes);
+//        }
 
         View view = LayoutInflater.from(getContext()).inflate(defaultLayout, null);
         view.setFocusable(true);
@@ -112,7 +112,7 @@ public class TabStripView extends LinearLayout implements View.OnClickListener {
         holder.tabUnread = ((TextView) view.findViewById(R.id.tv_msg_num));
 
         if (TextUtils.isEmpty(tabParam.title)) {
-            holder.tabTitle.setVisibility(View.INVISIBLE);
+            holder.tabTitle.setVisibility(View.GONE);
         } else {
             holder.tabTitle.setText(tabParam.title);
         }

@@ -3,10 +3,14 @@ package com.kingyon.elevator.uis.activities;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -19,7 +23,17 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
+import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
+import com.kingyon.elevator.uis.fragments.main.MessageFragment;
+import com.kingyon.elevator.uis.fragments.main.OrderFragment;
+import com.kingyon.elevator.uis.fragments.main.UserFragment;
+import com.kingyon.elevator.uis.fragments.main2.FoundFragment;
+import com.kingyon.elevator.uis.fragments.main2.MessageFragmentg;
+import com.kingyon.elevator.uis.fragments.main2.PersonalFragment;
+import com.kingyon.elevator.uis.fragments.main2.PutcastAdvertisFragment;
+import com.kingyon.elevator.uis.fragments.main2.SquareFragmnet;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;
@@ -39,11 +53,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
-import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
-import com.kingyon.elevator.uis.fragments.main.MessageFragment;
-import com.kingyon.elevator.uis.fragments.main.OrderFragment;
-import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
-import com.kingyon.elevator.uis.fragments.main.UserFragment;
+
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DensityUtil;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -79,6 +89,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.JPushMessage;
+import cn.jpush.android.service.JPushMessageReceiver;
 
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
     @BindView(R.id.tabBar)
@@ -110,26 +122,51 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
         tabBar.postDelayed(() -> loadUserPrivacy(), 400);
+        tabBar.setTabUnread(3, 20);
+        httpPersonal();
     }
 
 
     private void initTab(Bundle savedInstanceState) {
         //设置tab栏
-        tabBar.addTab(HomepageFragment.class, new TabStripView.TabParam(R.color.colorPrimary
-                , R.drawable.ic_homepage_nor, R.drawable.ic_homepage_sec, "首页"));
-        tabBar.addTab(PlanNewFragment.class, new TabStripView.TabParam(R.color.colorPrimary
-                , R.drawable.ic_plan_nor, R.drawable.ic_plan_sec, "计划"));
-        tabBar.addTab(MessageFragment.class, new TabStripView.TabParam(R.color.colorPrimary
-                , R.drawable.ic_order_nor, R.drawable.ic_order_sec, "消息"));
-        tabBar.addTab(UserFragment.class, new TabStripView.TabParam(R.color.colorPrimary
-                , R.drawable.ic_mine_nor, R.drawable.ic_mine_sec, "我的"));
+        tabBar.addTab(FoundFragment.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_nav_find_off, R.drawable.ic_nav_find_on, "发现"));
+        tabBar.addTab(SquareFragmnet.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_nav_square_off, R.drawable.ic_nav_square_on, "广场"));
+
+        tabBar.addTab(PutcastAdvertisFragment.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_nav_release_on, R.drawable.ic_nav_release_on, ""));
+
+        tabBar.addTab(MessageFragmentg.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_nav_message_off, R.drawable.ic_nav_message_on, "消息"));
+
+        tabBar.addTab(PersonalFragment.class, new TabStripView.TabParam(R.color.colorPrimary
+                , R.drawable.ic_nav_private_off, R.drawable.ic_nav_private_on, "个人"));
         tabBar.onRestoreInstanceState(savedInstanceState);
         tabBar.setTabSelectListener(this);
         tabBar.post(() -> {
-            tabBar.createFragmentByTag(MessageFragment.newInstance(), "消息");
-            tabBar.createFragmentByTag(PlanNewFragment.newInstance(), "计划");
+            tabBar.createFragmentByTag(new MessageFragmentg(), "消息");
+            tabBar.createFragmentByTag(new SquareFragmnet(), "计划");
         });
     }
+
+    private void httpPersonal() {
+        NetService.getInstance().userProfile()
+                .compose(this.<UserEntity>bindLifeCycle())
+                .subscribe(new CustomApiCallback<UserEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e("未登录");
+                    }
+
+                    @Override
+                    public void onNext(UserEntity userEntity) {
+                        if (userEntity != null) {
+                            DataSharedPreferences.saveUserBean(userEntity);
+                        }
+                    }
+                });
+        }
 
     private void dealOpenActivity(PushMessageEntity messageEntity) {
         if (messageEntity == null) {
@@ -178,6 +215,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         if (PublicFuncation.isIntervalSixMin()) {
             loadWindowAd();
         }
+        httpPersonal();
     }
 
     @Override
@@ -227,10 +265,10 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 if (tabEntity.getPos() == 1 && !TextUtils.isEmpty(tabEntity.getPlanType())) {
                     String tagByPos = tabBar.getTagByPos(1);
                     if (tabBar.isExist(tagByPos)) {
-                        BaseFragment curFragment = tabBar.findFragmentByTag(tagByPos);
-                        if (curFragment != null && curFragment instanceof PlanNewFragment) {
-                            ((PlanNewFragment) curFragment).onTypeModify(tabEntity.getPlanType());
-                        }
+//                        BaseFragment curFragment = tabBar.findFragmentByTag(tagByPos);
+//                        if (curFragment != null && curFragment instanceof SquareFragmnet) {
+//                            ((SquareFragmnet) curFragment).onTypeModify(tabEntity.getPlanType());
+//                        }
                     }
                 }
             }
@@ -252,15 +290,15 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 String tagByPos = tabBar.getTagByPos(1);
                 if (tabBar.isExist(tagByPos)) {
                     BaseFragment curFragment = tabBar.findFragmentByTag(tagByPos);
-                    if (curFragment != null && curFragment instanceof PlanNewFragment) {
-                        ((PlanNewFragment) curFragment).onTypeModify((String) eventBusObjectEntity.getData());
-                    }
+//                    if (curFragment != null && curFragment instanceof SquareFragmnet) {
+//                        ((SquareFragmnet) curFragment).onTypeModify((String) eventBusObjectEntity.getData());
+//                    }
                 }
             }
         } else if (eventBusObjectEntity.getEventCode() == EventBusConstants.ReflashPlanCount) {
             int allCount = RuntimeUtils.infomationPlanCount + RuntimeUtils.diyPlanCount + RuntimeUtils.businessPlanCount;
             if (allCount > 0) {
-                tabBar.showRedDot(1);
+//                tabBar.showRedDot(1);
             } else {
                 tabBar.hideRedDot(1);
             }
@@ -334,7 +372,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                     iv_add_plan_animation_view.setVisibility(View.GONE);
                     iv_add_plan_animation_view.setScaleX(1f);
                     iv_add_plan_animation_view.setScaleY(1f);
-                    tabBar.showRedDot(1);
+//                    tabBar.showRedDot(1);
                 }
 
                 @Override
@@ -357,12 +395,15 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     }
 
     private void initPushId() {
+        setAlias();
         if (TextUtils.isEmpty(Net.getInstance().getToken())) {
             return;
         }
         String pushId = DataSharedPreferences.getJPushId();
+        LogUtils.e(pushId);
         if (TextUtils.isEmpty(pushId)) {
             pushId = JPushInterface.getRegistrationID(this);
+            LogUtils.e(pushId);
             DataSharedPreferences.setPushRegisterId(pushId);
         }
         if (TextUtils.isEmpty(pushId)) {
@@ -382,6 +423,40 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                     }
                 });
     }
+
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 100) {
+                JPushInterface.setAlias(getApplicationContext(), 1, DataSharedPreferences.getCreatateAccount());
+            }
+        }
+    };
+    private JPushMessageReceiver jPushMessageReceiver = new JPushMessageReceiver() {
+        @Override
+        public void onAliasOperatorResult(Context context, JPushMessage jPushMessage) {
+            super.onAliasOperatorResult(context, jPushMessage);
+            if (jPushMessage.getErrorCode() == 6002) {//超时处理
+                Message obtain = Message.obtain();
+                obtain.what = 100;
+                mHandler.sendMessageDelayed(obtain, 1000 * 60);//60秒后重新验证
+            } else {
+                Log.e("onAliasOperatorResult: ", jPushMessage.getErrorCode() + "");
+            }
+        }
+    };
+
+    private void setAlias() {
+        String alias = DataSharedPreferences.getCreatateAccount();//别名
+        LogUtils.e(alias);
+        if (!alias.isEmpty()) {
+            JPushInterface.setAlias(getApplicationContext(), 1, alias);//设置别名或标签
+        }
+
+    }
+
 
     public void checkLocation() {
         String[] locationPermission = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
@@ -408,6 +483,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 entity.setLatitude(aMapLocation.getLatitude());
                 entity.setName(String.format("%s%s", FormatUtils.getInstance().getCityName(aMapLocation.getCity()), aMapLocation.getAoiName()));
                 entity.setCity(aMapLocation.getCity());
+                LogUtils.e(aMapLocation.getLongitude(), aMapLocation.getLatitude(), aMapLocation.getCity(),
+                        FormatUtils.getInstance().getCityName(aMapLocation.getCity()), aMapLocation.getAoiName());
+
                 boolean firstLocation = AppContent.getInstance().getLocation() == null;
                 DataSharedPreferences.saveLatLon(new LatLonCache(entity.getLatitude(), entity.getLongitude()));
                 AppContent.getInstance().setLocation(entity);

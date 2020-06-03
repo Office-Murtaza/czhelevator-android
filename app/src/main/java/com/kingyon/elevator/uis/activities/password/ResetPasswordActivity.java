@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -162,7 +163,7 @@ public class ResetPasswordActivity extends BaseSwipeBackActivity {
                         tvLogin.setEnabled(true);
                         showToast("重置密码成功");
                         ActivityUtil.finishAllNotThis("ResetPasswordActivity");
-                        startActivity(LoginActivity.class);
+                        startActivity(LoginActiivty.class);
                         finish();
                     }
                 });

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+
+    >
+
+    <include layout="@layout/layout2_top"/>
+
+
+    <ImageView
+        android:id="@+id/img_photo"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:src="@mipmap/im_head_placeholder"
+        android:layout_gravity="center"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="哥还能是传说"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID:12345654"
+        android:textColor="#ff999999"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        />
+
+    <ImageView
+        android:id="@+id/img_re_code"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:src="@mipmap/btn_login_qq"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>

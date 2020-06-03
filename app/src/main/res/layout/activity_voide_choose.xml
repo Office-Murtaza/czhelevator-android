@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".uis.actiivty2.activityutils.VoideChooseActiivty"
     >
 
 

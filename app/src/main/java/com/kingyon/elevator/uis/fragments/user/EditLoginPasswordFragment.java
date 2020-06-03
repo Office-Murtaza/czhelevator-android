@@ -18,7 +18,7 @@ import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditLoginPasswordPresenter;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
@@ -96,7 +96,7 @@ public class EditLoginPasswordFragment extends MvpBaseFragment<EditLoginPassword
         // DialogUtils.getInstance().showEditSuccessTipsDialog(getActivity(), position -> {
         //DialogUtils.getInstance().hideEditSuccessTipsDialog();
         ActivityUtils.finishAllActivities();
-        MyActivityUtils.goActivity(getContext(), LoginActivity.class);
+        MyActivityUtils.goActivity(getContext(), LoginActiivty.class);
         //});
     }
 

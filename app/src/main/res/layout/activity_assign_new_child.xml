@@ -39,12 +39,17 @@
         android:id="@+id/tv_deliver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginLeft="@dimen/dp_15"
         android:layout_marginRight="@dimen/spacing_two"
-        android:layout_toStartOf="@+id/img_screen"
+        android:layout_toEndOf="@+id/tv_name"
         android:text="维修中"
-        android:textColor="#ffec7a12"
-        android:textSize="@dimen/txt_normal_content"
+        android:background="@drawable/ad_assign_new"
+        android:paddingRight="@dimen/dp10"
+        android:paddingBottom="@dimen/dp_2"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingLeft="@dimen/dp10"
+        android:textColor="#FF3049"
+        android:textSize="@dimen/sp_12"
         android:textStyle="bold" />
 
     <ImageView
@@ -53,15 +58,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_six"
         android:layout_marginRight="@dimen/spacing_six"
-        android:layout_toStartOf="@+id/tv_screen"
-        android:src="@drawable/ic_screen_center" />
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/ic_screen_middle" />
 
     <TextView
         android:id="@+id/tv_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_toStartOf="@+id/img_screen"
         android:textColor="#ffababab"
+        android:layout_centerVertical="true"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
         tools:text="中屏" />

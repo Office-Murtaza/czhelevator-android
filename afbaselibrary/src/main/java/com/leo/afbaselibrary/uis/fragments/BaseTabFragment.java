@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.leo.afbaselibrary.R;
 import com.leo.afbaselibrary.listeners.ITabContent;
 import com.leo.afbaselibrary.listeners.ITabPager;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.adapters.TabPagerAdapter;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.widgets.PagerSlidingTabStrip;
@@ -20,7 +21,7 @@ import java.util.List;
  * created by arvin on 16/11/21 17:54
  * email：1035407623@qq.com
  */
-public abstract class BaseTabFragment<T extends ITabPager> extends BaseFragment implements ViewPager.OnPageChangeListener, ITabContent {
+public abstract class BaseTabFragment<T extends ITabPager> extends BaseActivity implements ViewPager.OnPageChangeListener, ITabContent {
 
     protected PagerSlidingTabStrip mTabLayout;
     protected ViewPager mPager;
@@ -65,7 +66,7 @@ public abstract class BaseTabFragment<T extends ITabPager> extends BaseFragment 
 
     @NonNull
     protected PagerAdapter getPagerAdapter() {
-        return new TabPagerAdapter<>(getChildFragmentManager(), mItems, this);
+        return new TabPagerAdapter<>(getSupportFragmentManager(), mItems, this);
     }
 
     protected boolean isDrawDivider() {
@@ -101,4 +102,6 @@ public abstract class BaseTabFragment<T extends ITabPager> extends BaseFragment 
      * 获取完数据后回调设置pager
      */
     protected abstract void getData();
+
+    protected abstract void dealLeackCanary();
 }

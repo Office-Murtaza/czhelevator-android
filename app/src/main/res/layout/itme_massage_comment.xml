@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp10"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:src="@mipmap/im_head_placeholder"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="哥不只是传说"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="#ff333333"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4月8日"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="可以的，感谢分享，下次我也试试哈"
+        android:textColor="#ff666666"
+        android:paddingRight="@dimen/dp10"
+        android:paddingLeft="@dimen/dp10"
+        android:textSize="14sp"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="这个可以，我学到了！"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:background="@drawable/massage_conent"
+        android:padding="@dimen/dp10"
+        android:layout_margin="@dimen/dp10"
+
+        />
+
+
+    <LinearLayout
+        android:id="@+id/ll_wz_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10"
+        android:padding="@dimen/dp10"
+
+        android:background="@drawable/massage_conent"
+        >
+
+
+        <ImageView
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_65"
+            android:src="@mipmap/btn_login_qq"
+            android:scaleType="fitXY"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_5"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网红达人文章"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                />
+            <TextView
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="有道翻译提供即时免费的全文翻译、网页翻译、文档翻译服务。服务译提供…"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                />
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_community"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10"
+        android:padding="@dimen/dp10"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+
+        android:background="@drawable/massage_conent"
+        >
+
+
+        <ImageView
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:src="@mipmap/s2"
+            android:scaleType="fitXY"
+            />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="有道翻译提供即时免费的全文翻译、网页翻译、文档翻译服务。服务译提供…"
+                android:textColor="#ff999999"
+                android:layout_marginLeft="@dimen/dp10"
+                android:textSize="12sp"
+                />
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

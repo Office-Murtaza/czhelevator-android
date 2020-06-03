@@ -2,34 +2,28 @@ package com.kingyon.elevator.uis.activities.order;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.AutoCalculationDiscountEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CouponItemEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.ImageScan;
-import com.kingyon.elevator.entities.IndustryEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
@@ -44,25 +38,25 @@ import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.ConfirmOrderView;
 import com.leo.afbaselibrary.utils.GlideUtils;
-import com.leo.afbaselibrary.widgets.StateLayout;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE1;
+import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE2;
 
 /**
  * 订单确认界面
@@ -71,18 +65,12 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
     @BindView(R.id.tv_cat_order_detailed)
     TextView tv_cat_order_detailed;
-    @BindView(R.id.input_count_tips)
-    TextView input_count_tips;
     @BindView(R.id.et_input_ad_name)
     EditText et_input_ad_name;
-    @BindView(R.id.et_input_information)
-    EditText et_input_information;
     @BindView(R.id.tv_ad_type)
     TextView tv_ad_type;
     @BindView(R.id.ad_img_preview)
     ImageView ad_img_preview;
-    @BindView(R.id.information_img_tips)
-    ImageView information_img_tips;
     @BindView(R.id.tv_start_date)
     TextView tv_start_date;
     @BindView(R.id.tv_start_date_desc)
@@ -105,14 +93,17 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     TextView cuxiao_manjian;
     @BindView(R.id.tv_youhuiquan)
     TextView tv_youhuiquan;
-    @BindView(R.id.information_name_container)
-    RelativeLayout information_name_container;
-    @BindView(R.id.ad_name_container)
-    RelativeLayout ad_name_container;
+
 
     GoPlaceAnOrderEntity goPlaceAnOrderEntity;
     SimpleDateFormat simpleDateFormat;
     SimpleDateFormat monthSimpleDateFormat;//格式化为 月日
+    @BindView(R.id.my_action_bar)
+    MyActionBar myActionBar;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_total_day)
+    TextView tvTotalDay;
     private String mediaPath = "";//多媒体数据的路径
     private String mediaType = "";//媒体的类型 VIDEO 还是IMAGE
     private String screenType = "";
@@ -132,16 +123,16 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
         ButterKnife.bind(this);
-        setStateLayout();
-        stateLayout.setErrorAction(v -> {
-            if (goPlaceAnOrderEntity != null) {
-                presenter.loadIdentityInfo(getAllMoney(),
-                        goPlaceAnOrderEntity.getPlanType(), false, "");
-            } else {
-                showShortToast("数据异常，请重试");
-                finish();
-            }
-        });
+//        setStateLayout();
+//        stateLayout.setErrorAction(v -> {
+//            if (goPlaceAnOrderEntity != null) {
+//                presenter.loadIdentityInfo(getAllMoney(),
+//                        goPlaceAnOrderEntity.getPlanType(), false, "");
+//            } else {
+//                showShortToast("数据异常，请重试");
+//                finish();
+//            }
+//        });
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         monthSimpleDateFormat = new SimpleDateFormat("MM月dd日");
         goPlaceAnOrderEntity = RuntimeUtils.goPlaceAnOrderEntity;
@@ -157,29 +148,29 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 }
             }
             if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.INFORMATION)) {
-                information_name_container.setVisibility(View.VISIBLE);
-                ad_name_container.setVisibility(View.GONE);
-                et_input_information.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        int textLength = s.toString().trim().length();
-                        if (textLength > 0) {
-                            input_count_tips.setText(textLength + "/60");
-                        } else {
-                            input_count_tips.setText("最多输入60字/符");
-                        }
-                    }
-                });
+                ad_img_preview.setVisibility(View.GONE);
+//                ad_name_container.setVisibility(View.GONE);
+//                et_input_information.addTextChangedListener(new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable s) {
+//                        int textLength = s.toString().trim().length();
+//                        if (textLength > 0) {
+//                            input_count_tips.setText(textLength + "/60");
+//                        } else {
+//                            input_count_tips.setText("最多输入60字/符");
+//                        }
+//                    }
+//                });
             } else if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.DIY)) {
                 initDiyAndBussines();
                 setInformationHide();
@@ -201,14 +192,19 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     GlideUtils.loadImage(this, mediaPath, ad_img_preview);
                 }
             }
-            tv_end_date_desc.setText(String.format("(共%d天)", FormatUtils.getInstance().getTimeDays(goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime())));
+            tvTotalDay.setText(String.format("共%d天", FormatUtils.getInstance().getTimeDays(goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime())));
             tv_all_screen_count.setText(getPointCount());
             try {
                 Calendar startCalendar = Calendar.getInstance();
                 startCalendar.setTimeInMillis(goPlaceAnOrderEntity.getStartTime());
-                tv_start_date_desc.setText(DateUtils.getWeekOfDate(startCalendar.getTime()));
-                tv_start_date.setText(monthSimpleDateFormat.format(goPlaceAnOrderEntity.getStartTime()));
-                tv_end_date.setText(monthSimpleDateFormat.format(goPlaceAnOrderEntity.getEndTime()));
+                Calendar startCalendar1 = Calendar.getInstance();
+                startCalendar1.setTimeInMillis(goPlaceAnOrderEntity.getEndTime());
+
+                tv_start_date_desc.setText("开始");
+                tv_end_date_desc.setText("结束");
+
+                tv_start_date.setText(monthSimpleDateFormat.format(goPlaceAnOrderEntity.getStartTime())+"("+DateUtils.getWeekOfDate(startCalendar.getTime())+")");
+                tv_end_date.setText(monthSimpleDateFormat.format(goPlaceAnOrderEntity.getEndTime())+"("+DateUtils.getWeekOfDate(startCalendar1.getTime())+")");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -243,11 +239,11 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             couponsBundle.putParcelableArrayList(CommonUtil.KEY_VALUE_3, coupons);
         } else {
             coupons = new ArrayList<>();
-            for (Integer id : autoCalculationDiscountEntity.getCons()) {
-                CouponItemEntity couponItemEntity = new CouponItemEntity();
-                couponItemEntity.setObjctId(id);
-                coupons.add(couponItemEntity);
-            }
+//            for (Integer id : autoCalculationDiscountEntity.getCons()) {
+//                CouponItemEntity couponItemEntity = new CouponItemEntity();
+//                couponItemEntity.setObjctId(id);
+//                coupons.add(couponItemEntity);
+//            }
             couponsBundle.putParcelableArrayList(CommonUtil.KEY_VALUE_3, coupons);
         }
         Intent intent = new Intent(this, OrderCouponsActivity.class);
@@ -277,8 +273,8 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     }
 
     private void setInformationHide() {
-        information_name_container.setVisibility(View.GONE);
-        ad_name_container.setVisibility(View.VISIBLE);
+        ad_img_preview.setVisibility(View.VISIBLE);
+//        ad_name_container.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -288,46 +284,104 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
     @OnClick({R.id.tv_cat_order_detailed, R.id.tv_youhuiquan, R.id.ad_img_preview, R.id.tv_go_pay})
     public void OnClick(View view) {
-            switch (view.getId()) {
-                case R.id.tv_cat_order_detailed:
-                    DialogUtils.getInstance().showOrderDetailedTipsDialog(this, goPlaceAnOrderEntity, getAllMoney(),
-                            realPayPrice,
-                            zheKouPrice,
-                            couponsPrice);
-                    break;
-                case R.id.tv_youhuiquan:
-                    goSelectDiscount();
-                    break;
-                case R.id.ad_img_preview:
-                    previewAd();
-                    break;
-                case R.id.tv_go_pay:
-                    //先判断有没有实名认证，再判断广告内容是否为空
-                    if (authStatus.equals(Constants.IDENTITY_STATUS.NO_AUTH)
-                            || authStatus.equals(Constants.IDENTITY_STATUS.FAILD)
-                            || authStatus.equals(Constants.IDENTITY_STATUS.AUTHING)) {
-                        showOrderIdentityDialog();
+        switch (view.getId()) {
+            case R.id.tv_cat_order_detailed:
+                DialogUtils.getInstance().showOrderDetailedTipsDialog(this, goPlaceAnOrderEntity, getAllMoney(),
+                        realPayPrice,
+                        zheKouPrice,
+                        couponsPrice);
+                break;
+            case R.id.tv_youhuiquan:
+                goSelectDiscount();
+                break;
+            case R.id.ad_img_preview:
+                previewAd();
+                break;
+            case R.id.tv_go_pay:
+                //先判断有没有实名认证，再判断广告内容是否为空
+                if (authStatus.equals(Constants.IDENTITY_STATUS.NO_AUTH)
+                        || authStatus.equals(Constants.IDENTITY_STATUS.FAILD)
+                        || authStatus.equals(Constants.IDENTITY_STATUS.AUTHING)) {
+                    showOrderIdentityDialog();
+                } else {
+                    if (adEntity != null) {
+                        if (realPayPrice > 0) {
+                            if (autoCalculationDiscountEntity.isHasMore()) {
+                                new AlertDialog.Builder(this)
+                                        .setTitle("提示")
+                                        .setMessage("您当前还有可使用的优惠券，是否继续支付？")
+                                        .setPositiveButton("继续支付", (dialog, which) -> {
+                                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                    LogUtils.e("您当前还有可使用的优惠券", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                }
+                                        )
+                                        .setNegativeButton("取消", null)
+                                        .show();
+                            } else {
+                                presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                LogUtils.e("没有可以用优惠卷", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                            }
+                        } else {
+                            if (couponsPrice > getAllMoney()) {
+                                //提示优惠券金额大于总价
+                                new AlertDialog.Builder(this)
+                                        .setTitle("提示")
+                                        .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
+                                        .setPositiveButton("继续支付", (dialog, which) -> {
+                                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                    LogUtils.e("优惠券金额大于总价", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                }
+                                        )
+                                        .setNegativeButton("取消", null)
+                                        .show();
+                            } else {
+                                presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                LogUtils.e("正常价格", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                            }
+                        }
                     } else {
-                        if (adEntity != null) {
+                        //没有选择已经上传过的广告
+                        if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.INFORMATION)) {
+                            if (et_input_ad_name.getText().toString().trim().isEmpty()) {
+                                showShortToast("请输入便民信息");
+                                return;
+                            }
+                            presenter.sendInformation(et_input_ad_name.getText().toString().trim());
+                        } else {
+                            if (et_input_ad_name.getText().toString().trim().isEmpty()) {
+                                showShortToast("请输入广告名称");
+                                return;
+                            }
                             if (realPayPrice > 0) {
+                                LogUtils.d("是否还有优惠券可用：" + autoCalculationDiscountEntity.isHasMore());
                                 if (autoCalculationDiscountEntity.isHasMore()) {
                                     new AlertDialog.Builder(this)
                                             .setTitle("提示")
                                             .setMessage("您当前还有可使用的优惠券，是否继续支付？")
-                                            .setPositiveButton("继续支付", (dialog, which) -> {
-                                                        presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                                        LogUtils.e("您当前还有可使用的优惠券",goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                                    }
-                                            )
+                                            .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                                            screenType, et_input_ad_name.getText().toString().trim());
+                                                    LogUtils.e("是否还有优惠券可用", mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                                            screenType, et_input_ad_name.getText().toString().trim());
+                                                }
+                                            })
                                             .setNegativeButton("取消", null)
                                             .show();
                                 } else {
-                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                    LogUtils.e("没有可以用优惠卷",goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                    presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                            screenType, et_input_ad_name.getText().toString().trim());
+                                    LogUtils.e("是否还有优惠券可用1", mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                            screenType, et_input_ad_name.getText().toString().trim());
                                 }
                             } else {
                                 if (couponsPrice > getAllMoney()) {
@@ -335,88 +389,30 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                     new AlertDialog.Builder(this)
                                             .setTitle("提示")
                                             .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
-                                            .setPositiveButton("继续支付", (dialog, which) -> {
-                                                        presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                                        LogUtils.e("优惠券金额大于总价",goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                                    }
-                                            )
+                                            .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                                            screenType, et_input_ad_name.getText().toString().trim());
+                                                    LogUtils.e("您当前使用的优惠券金额大于总金额", mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                                            screenType, et_input_ad_name.getText().toString().trim());
+                                                }
+                                            })
                                             .setNegativeButton("取消", null)
                                             .show();
                                 } else {
-                                    presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                    LogUtils.e("正常价格",goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
-                                }
-                            }
-                        } else {
-                            //没有选择已经上传过的广告
-                            if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.INFORMATION)) {
-                                if (et_input_information.getText().toString().trim().isEmpty()) {
-                                    showShortToast("请输入便民信息");
-                                    return;
-                                }
-                                presenter.sendInformation(et_input_information.getText().toString().trim());
-                            } else {
-                                if (et_input_ad_name.getText().toString().trim().isEmpty()) {
-                                    showShortToast("请输入广告名称");
-                                    return;
-                                }
-                                if (realPayPrice > 0) {
-                                    LogUtils.d("是否还有优惠券可用：" + autoCalculationDiscountEntity.isHasMore());
-                                    if (autoCalculationDiscountEntity.isHasMore()) {
-                                        new AlertDialog.Builder(this)
-                                                .setTitle("提示")
-                                                .setMessage("您当前还有可使用的优惠券，是否继续支付？")
-                                                .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                                screenType, et_input_ad_name.getText().toString().trim());
-                                                        LogUtils.e("是否还有优惠券可用",mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                                screenType, et_input_ad_name.getText().toString().trim());
-                                                    }
-                                                })
-                                                .setNegativeButton("取消", null)
-                                                .show();
-                                    } else {
-                                        presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                screenType, et_input_ad_name.getText().toString().trim());
-                                        LogUtils.e("是否还有优惠券可用1",mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                screenType, et_input_ad_name.getText().toString().trim());
-                                    }
-                                } else {
-                                    if (couponsPrice > getAllMoney()) {
-                                        //提示优惠券金额大于总价
-                                        new AlertDialog.Builder(this)
-                                                .setTitle("提示")
-                                                .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
-                                                .setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                                screenType, et_input_ad_name.getText().toString().trim());
-                                                        LogUtils.e("您当前使用的优惠券金额大于总金额",mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                                screenType, et_input_ad_name.getText().toString().trim());
-                                                    }
-                                                })
-                                                .setNegativeButton("取消", null)
-                                                .show();
-                                    } else {
-                                        presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                screenType, et_input_ad_name.getText().toString().trim());
-                                        LogUtils.e("您当前使用的优惠券金额大于总金额111",mediaPath, goPlaceAnOrderEntity.getPlanType(),
-                                                screenType, et_input_ad_name.getText().toString().trim());
-                                    }
+                                    presenter.uploadAdVideoOrImg(mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                            screenType, et_input_ad_name.getText().toString().trim());
+                                    LogUtils.e("您当前使用的优惠券金额大于总金额111", mediaPath, goPlaceAnOrderEntity.getPlanType(),
+                                            screenType, et_input_ad_name.getText().toString().trim());
                                 }
                             }
                         }
                     }
-                    break;
-                default:
-            }
+                }
+                break;
+            default:
+        }
 
     }
 
@@ -478,7 +474,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         tv_youhuiquan.setText(couponsText);
         tv_discount_money.setText("已优惠" + (autoCalculationDiscountEntity.getConcessionalRate() +
                 autoCalculationDiscountEntity.getDiscountRate()) + "元");
-        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+//        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+        tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,autoCalculationDiscountEntity.getActualAmount())));
+        LogUtils.e(String.format(STRING_PRICE2,autoCalculationDiscountEntity.getActualAmount()));
         coupons = new ArrayList<>();
         for (Integer id : autoCalculationDiscountEntity.getCons()) {
             CouponItemEntity couponItemEntity = new CouponItemEntity();
@@ -539,7 +537,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         tv_youhuiquan.setText(couponsText);
         tv_discount_money.setText("已优惠" + (autoCalculationDiscountEntity.getConcessionalRate() +
                 autoCalculationDiscountEntity.getDiscountRate()) + "元");
-        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+//        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+        tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,autoCalculationDiscountEntity.getActualAmount())));
+
+        LogUtils.e(String.format(STRING_PRICE2,autoCalculationDiscountEntity.getActualAmount()));
         coupons = new ArrayList<>();
         for (Integer id : autoCalculationDiscountEntity.getCons()) {
             CouponItemEntity couponItemEntity = new CouponItemEntity();
@@ -649,12 +650,14 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             float resultPrice = totalPrice - couponsSum;
             if (resultPrice > 0) {
                 tv_discount_money.setText("已优惠" + couponsSum + "元");
-                tv_order_money.setText("¥" + resultPrice + "元");
+//                tv_order_money.setText("¥" + resultPrice + "元");
+                tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,resultPrice)));
                 realPayPrice = resultPrice;
                 couponsAllPrice = zheKouPrice + couponsPrice;
             } else {
                 tv_discount_money.setText("已优惠" + totalPrice + "元");
-                tv_order_money.setText("¥ 0.0元");
+//                tv_order_money.setText("¥ 0.0元");
+                tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,"0.0")));
                 realPayPrice = 0;
                 couponsAllPrice = zheKouPrice + couponsPrice;
             }
@@ -664,8 +667,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             tv_youhuiquan.setText("未选择优惠券");
             float resultPrice = totalPrice - couponsSum;
             tv_discount_money.setText("已优惠" + couponsSum + "元");
-            tv_order_money.setText("¥" + resultPrice + "元");
-            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
+//            tv_order_money.setText("¥" + resultPrice + "元");
+            tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,resultPrice)));
+//            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
+            if (autoCalculationDiscountEntity.getCons().size() > 0) {
                 autoCalculationDiscountEntity.setHasMore(true);
             } else {
                 autoCalculationDiscountEntity.setHasMore(false);

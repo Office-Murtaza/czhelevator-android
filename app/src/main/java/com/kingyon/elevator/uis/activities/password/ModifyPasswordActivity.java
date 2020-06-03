@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
@@ -107,7 +108,7 @@ public class ModifyPasswordActivity extends BaseSwipeBackActivity {
                         showToast("操作成功");
                         hideProgress();
                         ActivityUtil.finishAllNotThis("ModifyPasswordActivity");
-                        startActivity(LoginActivity.class);
+                        startActivity(LoginActiivty.class);
                         finish();
                     }
                 });

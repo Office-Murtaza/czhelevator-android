@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#EC7A12</color>
+    <color name="colorAccent">#333333</color>
     <color name="background">#F3F3F3</color>
 
     <color name="baseTitleColor">#0C0C0C</color>
@@ -98,6 +98,13 @@
     <color name="lsq_alpha_black_B4">#B4000000</color>
     <color name="lsq_alpha_black_CO">#C0000000</color>
 
+    <color name="tagatbule">#4DACEE</color>
 
+    <color name="colorRed">#FF0000</color>
+
+    <color name="color2F93FF">#2F93FF</color>
+    <color name="color0084FB">#0084FB</color>
+    <color name="colorC07703">#C07703</color>
+    <color name="colorFDDA35">#FDDA35</color>
 
 </resources>

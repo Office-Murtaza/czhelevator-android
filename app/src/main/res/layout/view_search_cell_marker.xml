@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_marker_cell"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginTop="@dimen/dp_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="3dp">
+        android:background="@drawable/ad_map_make"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_name"
@@ -21,7 +22,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="#ffffffff"
+            android:textColor="#000000"
             android:textSize="13sp"
             tools:text="南城都汇" />
 
@@ -32,8 +33,15 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="#ffffffff"
+            android:textColor="#999999"
             android:textSize="13sp"
             tools:text="电梯数56个" />
     </LinearLayout>
-</FrameLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_site_map_find"
+        android:layout_centerHorizontal="true"
+        />
+</RelativeLayout>

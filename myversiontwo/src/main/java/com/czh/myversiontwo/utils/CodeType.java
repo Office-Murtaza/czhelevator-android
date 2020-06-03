@@ -24,4 +24,79 @@ public class CodeType {
   public static String WX = "WX";
   public static String QQ = "QQ";
   public static String WB = "WB";
+
+  /**
+   *(query)发布类型：wsq/video/article
+   * */
+  public static String TYPE_WSQ = "wsq";
+  public static String TYPE_VIDEO = "video";
+  public static String TYPE_ARTICLE = "article";
+
+
+  /**
+   * 选择视频
+   * */
+
+  public static final  int ACCESS_IMAGE_PATH  = 10001;
+
+  public static final  int ACCESS_VOIDE_PATH  = 10002;
+
+  public static final  int ACCESS_VOIDE_COVER  = 10003;
+
+ /**
+  *选择视频视频发布中心
+  * */
+
+ public static final  int ACCESS_VOIDE_RELEASETY = 10004;
+
+  /**
+   * 用户视频
+   * */
+
+  public static final  int ACCESS_VOIDE_CODE  = 10010;
+
+  /**
+   * 喜欢与否（like—喜欢，cancelLike—取消喜欢）
+   *
+   * */
+
+  public static final  String LIKE  = "like";
+  public static final  String CANCEL_LIKE  = "cancelLike";
+
+
+  /**
+   * （CONTENT/COMMENT）内容/评论
+   (query)
+   举报类型（CONTENT/COMMENT/…）
+   * **/
+
+  public static final  String HOME_CONTENT  = "CONTENT";
+  public static final  String HOME_COMMENT  = "COMMENT";
+
+ /**
+  * 获取用户类型attention/fans/friend
+  * **/
+
+ public static final String ATTENTION = "attention";
+ public static final String FANS = "fans";
+ public static final String FRIEND = "friend";
+
+
+ /**
+  * 艾特 话题
+  * */
+
+ public static final int REQUEST_USER_APPEND = 1 << 2;
+ public static final int REQUEST_TAG_APPEND = 1 << 3;
+
+
+ /**
+  * 广告类型（DIY, BUSINESS, INFORMATION）
+  * */
+
+ public static final String ADV_DAY = "DIY";
+ public static final String ADV_BUSINESS = "BUSINESS";
+ public static final String ADV_INFORMATION = "INFORMATION";
+
+
 }

@@ -31,6 +31,8 @@ import com.kingyon.elevator.view.ConfirmOrderView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +66,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
-                            getView().showErrorView();
+//                            getView().showErrorView();
                         }
                     }
 
@@ -91,7 +93,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
-                            getView().showErrorView();
+//                            getView().showErrorView();
                         }
                     }
 
@@ -119,11 +121,12 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         Handler handler = new Handler();
         NetService.getInstance().uploadFileNoActivity(mContext, new File(resPath), new NetUpload.OnUploadCompletedListener() {
             @Override
-            public void uploadSuccess(List<String> images) {
+            public void uploadSuccess(List<String> images,List<String> hash, JSONObject response) {
+                LogUtils.e(images,hash,response);
                 handler.post(() -> {
                     if (images != null && images.size() > 0) {
                         uploadUrl = images.get(0);
-                        commitAd(uploadUrl, planType, screenType, adName, resPath);
+                        commitAd(uploadUrl, planType, screenType, adName, resPath,response.optString("hash"));
                         LogUtils.e("成功 提交服务器",uploadUrl);
                     } else {
                         if (isViewAttached()) {
@@ -154,7 +157,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
      * @param planType   广告计划的类型
      * @param screenType 全屏图片还是视频
      */
-    public void commitAd(String url, String planType, String screenType, String adName, String localPath) {
+    public void commitAd(String url, String planType, String screenType, String adName, String localPath,String hash) {
         String videoUrl = "";
         String imageUrl = "";
         String videoLocalPath = "";
@@ -168,13 +171,14 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             videoLocalPath = localPath;
         }
         NetService.getInstance().createOrEidtAd(null, false
-                , planType, screenType, adName, videoUrl, imageUrl, null, videoLocalPath, imageLocalPath)
+                , planType, screenType, adName, videoUrl, imageUrl, null, videoLocalPath, imageLocalPath,hash)
                 .subscribe(new CustomApiCallback<ADEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             getView().showShortToast(ex.getDisplayMessage());
+                            LogUtils.e(ex.getCode(),ex.getDisplayMessage());
                         }
                     }
 
@@ -261,7 +265,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         }
         NetService.getInstance().createOrEidtAd(null
                 , true, Constants.PLAN_TYPE.INFORMATION, Constants.AD_SCREEN_TYPE.INFORMATION
-                , informationContent, null, null, null, null, null)
+                , informationContent, null, null, null, null, null,null)
                 .subscribe(new CustomApiCallback<ADEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -305,7 +309,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
-                            getView().showErrorView();
+//                            getView().showErrorView();
                             getView().hideProgressDailog();
                         }
                     }

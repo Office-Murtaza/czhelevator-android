@@ -89,6 +89,7 @@ public class CityActivity extends BaseStateRefreshingActivity implements BaseAda
         });
         sideBar.setIndexItems("#", "A", "B", "C", "D", "E", "F", "G", "H", "I",
                 "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+        sideBar.setTextColor(R.color.biometricprompt_color_primary);
         sideBar.setOnSelectIndexItemListener(new WaveSideBar.OnSelectIndexItemListener() {
             @Override
             public void onSelectIndexItem(String index) {

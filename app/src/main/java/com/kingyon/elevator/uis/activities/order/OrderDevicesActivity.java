@@ -8,7 +8,7 @@ import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.PlanPointChildrenAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PlanPointChildrenAdapter;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;

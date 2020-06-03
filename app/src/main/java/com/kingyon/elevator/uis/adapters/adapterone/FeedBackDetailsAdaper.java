@@ -10,7 +10,6 @@ import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.FeedBackMessageEntity;
 import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.ImageShowAdapter;
 import com.kingyon.elevator.uis.widgets.BlankRecyclerView;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;

@@ -1,5 +1,6 @@
 package com.leo.afbaselibrary.uis.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,7 +28,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
     protected Unbinder unbinder;
     protected BasePresenter<IBaseView> mPresenter;
     protected BehaviorSubject<RxCheckLifeCycleTransformer.LifeCycleEvent> eventBehaviorSubject = BehaviorSubject.create();
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,10 +41,11 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
 
     @Override
     public void onDestroyView() {
-        unbinder.unbind();
         eventBehaviorSubject.onNext(RxCheckLifeCycleTransformer.LifeCycleEvent.DESTROY_VIEW);
         super.onDestroyView();
     }
+
+
 
     @Override
     public final <T extends View> T getView(int id) {
@@ -87,6 +88,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
             mPresenter.startActivityForResult(clazz, requestCode, bundle);
         }
     }
+
 
     @Override
     public abstract int getContentViewId();
@@ -155,4 +157,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
             baseActivity.hideProgress();
         }
     }
+
+
 }

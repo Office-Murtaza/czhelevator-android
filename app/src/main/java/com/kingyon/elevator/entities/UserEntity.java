@@ -12,6 +12,7 @@ public class UserEntity implements Parcelable {
 
     /**
      * objectId : 1
+     * account
      * avatar : http://www.ghost64.com/qqtupian/zixunImg/local/2017/12/28/15144398193808.jpg
      * nikeName : TONY
      * phone : 13888888888
@@ -22,12 +23,29 @@ public class UserEntity implements Parcelable {
 
     private Long recommendTime;
     private long objectId;
+    private String account;
     private String avatar;
     private String nikeName;
     private String phone;
     private String role;
     private String authStatus;
+    private String fullName;
     private boolean isBindPhone;
+
+    public String getFullname() {
+        return fullName;
+    }
+
+    public void setFullname(String fullName) {
+        this.fullName = fullName;
+    }
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
     public Long getRecommendTime() {
         return recommendTime;

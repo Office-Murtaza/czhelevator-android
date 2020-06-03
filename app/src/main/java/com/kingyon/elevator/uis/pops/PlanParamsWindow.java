@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NormalParamEntity;
-import com.kingyon.elevator.uis.adapters.PlanTypeAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PlanTypeAdapter;
 import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ScreenUtil;

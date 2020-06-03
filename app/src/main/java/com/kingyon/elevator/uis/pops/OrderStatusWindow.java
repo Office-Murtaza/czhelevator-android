@@ -16,7 +16,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.OrderStatusAdaper;
+import com.kingyon.elevator.uis.adapters.adapterone.OrderStatusAdaper;
 import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 

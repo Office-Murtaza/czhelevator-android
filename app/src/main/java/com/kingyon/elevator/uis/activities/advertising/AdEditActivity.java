@@ -45,6 +45,7 @@ import com.leo.afbaselibrary.utils.GlideUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -439,10 +440,10 @@ public class AdEditActivity extends BaseSwipeBackActivity {
             showToast("没有广告资源");
             return;
         }
-       if (!istj){
-           showToast("当前广告内容未做修改");
-           return;
-       }
+        if (!istj){
+            showToast("当前广告内容未做修改");
+            return;
+        }
         videoPath = flVideo.getTag() != null ? new String((String) flVideo.getTag()) : null;
         imagePath = flImage.getTag() != null ? new String((String) flImage.getTag()) : null;
         videoUrl = videoPath;
@@ -504,17 +505,18 @@ public class AdEditActivity extends BaseSwipeBackActivity {
 
     private void publishVideo() {
         if (videoPath == null) {
-            publishImage();
+            publishImage(null);
         } else if (videoPath.startsWith("http")) {
-            checkVideoCodecName();
+            checkVideoCodecName(null);
         } else {
             showProgressDialog("视频上传中...");
             NetService.getInstance().uploadFile(this, new File(videoPath), new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images) {
+                public void uploadSuccess(List<String> images,List<String> hash, JSONObject response) {
+                    LogUtils.e(images,hash,response);
                     if (images != null && images.size() > 0) {
                         videoUrl = images.get(0);
-                        checkVideoCodecName();
+                        checkVideoCodecName(hash.get(0));
                         File file = new File("/sdcard/PDD/");
                         deleteDirWihtFile(file);
                     } else {
@@ -534,21 +536,23 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         }
     }
 
-    private void checkVideoCodecName() {
-        publishImage();
+    private void checkVideoCodecName(String hash) {
+        publishImage(hash);
     }
 
-    private void publishImage() {
+    private void publishImage(String hash) {
         if (imagePath == null || imagePath.startsWith("http")) {
-            publishAd();
+            publishAd(hash);
         } else {
             showProgressDialog("图片上传中...");
             NetService.getInstance().uploadFile(this, new File(imagePath), new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images) {
+                public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
+                    LogUtils.e(images,hash,response);
                     if (images != null && images.size() > 0) {
                         imageUrl = images.get(0);
-                        publishAd();
+
+                        publishAd(response.optString("hash"));
                     } else {
                         hideProgress();
                         tvPublish.setEnabled(true);
@@ -566,10 +570,10 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         }
     }
 
-    private void publishAd() {
+    private void publishAd(String hashCode) {
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().createOrEidtAd(edit ? entity.getObjctId() : null, edit && entity.isOnlyInfo()
-                , (String) tvPlanType.getTag(), adScreenType, etName.getText().toString(), videoUrl, imageUrl, null, videoPath, imagePath)
+                , (String) tvPlanType.getTag(), adScreenType, etName.getText().toString(), videoUrl, imageUrl, null, videoPath, imagePath,hashCode)
                 .compose(this.<ADEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ADEntity>() {
                     @Override

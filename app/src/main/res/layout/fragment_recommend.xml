@@ -10,14 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/my_action_bar"
-        app:srlEnableAutoLoadMore="false"
+        app:srlEnableAutoLoadMore="true"
         app:srlEnableRefresh="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_attention_top"
             android:layout_width="match_parent"
@@ -30,6 +31,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+
+             <include layout="@layout/layout_error"
+                 android:visibility="gone"
+                 />
+             <include layout="@layout/layout_null"
+                 android:visibility="gone"
+                 />
 
 
     </LinearLayout>

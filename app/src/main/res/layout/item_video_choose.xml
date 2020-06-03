@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_90"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/img_video_image"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_90"
+        tools:ignore="MissingConstraints"
+        android:scaleType="centerCrop"
+        android:padding="@dimen/dp_2"
+        />
+
+    <TextView
+        android:id="@+id/tv_xznum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/dp_5"
+        android:background="@mipmap/bg_choose_class"
+        android:visibility="invisible"
+        ></TextView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/dp5"
+        >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_vedio_long"
+        />
+
+        <TextView
+            android:id="@+id/tv_video_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="12:25"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/sp_10"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

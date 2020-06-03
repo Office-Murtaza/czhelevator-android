@@ -419,65 +419,6 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     }
 
 
-    private void voideEditor(String path) {
-        String audioPath = Environment.getExternalStorageDirectory() + File.separator + "/PDD/audio"+System.currentTimeMillis()+".mp3";
-        EpEditor.demuxer(path, audioPath,EpEditor.Format.MP3, new OnEditorListener() {
-            @Override
-            public void onSuccess() {
-                LogUtils.e(audioPath);
-//            分离完成
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-////                            开始压缩
-//                            String newVideoPath = SiliCompressor.with(VideoEditorActivity.this).compressVideo(path,
-//                                    new File(Environment.getExternalStoragePublicDirectory("PDD"), "").getPath(),
-//                                    768, 1220, 1200000);
-//                            String outfilePath = Environment.getExternalStorageDirectory() + File.separator + "/PDD/voide"+System.currentTimeMillis()+".mp4";
-//                            LogUtils.e(newVideoPath+"===="+audioPath+"==="+outfilePath);
-////                           添加音频
-//                            hideProgressDailog();
-//
-//                            EpEditor.music(videoPath, audioPath, outfilePath, 1, 0.7f, new OnEditorListener() {
-//                                @Override
-//                                public void onSuccess() {
-//                                    LogUtils.e(videoPath, audioPath, outfilePath);
-//                                }
-//
-//                                @Override
-//                                public void onFailure() {
-//                                    LogUtils.e("onFailure");
-//                                }
-//
-//                                @Override
-//                                public void onProgress(float progress) {
-//                                    //这里获取处理进度
-//                                    LogUtils.e("onProgress"+progress);
-//                                }
-//                            });
-////                            LogUtils.e(VideoClipUtils.muxVideoAudio(newVideoPath,audioPath,outfilePath));
-//
-//                        } catch (URISyntaxException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
-            }
-            @Override
-            public void onFailure() {
-                LogUtils.d("onFailure====");
-            }
-
-            @Override
-            public void onProgress(float progress) {
-                //这里获取处理进度
-                LogUtils.d("onProgress===="+progress);
-            }
-        });
-
-
-    }
 
     private static class MainHandler extends Handler {
         private final WeakReference<VideoEditorActivity> mActivity;
@@ -488,12 +429,13 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
 
         @Override
         public void handleMessage(Message msg) {
-
+            LogUtils.e(msg.obj.toString());
             VideoEditorActivity activity = mActivity.get();
             if (activity != null) {
                 if (msg.what == ExtractFrameWorkThread.MSG_SAVE_SUCCESS) {
                     if (activity.videoEditAdapter != null) {
                         VideoEditInfo info = (VideoEditInfo) msg.obj;
+                        LogUtils.e(info.toString());
                         activity.videoEditAdapter.addItemVideoInfo(info);
                     }
                 }

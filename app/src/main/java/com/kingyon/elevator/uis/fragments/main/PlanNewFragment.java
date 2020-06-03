@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.PlanSelectDateNewDialog;
@@ -22,9 +22,8 @@ import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.TabPagerEntity;
 import com.kingyon.elevator.interfaces.PlanSelectDateLinsener;
-import com.kingyon.elevator.interfaces.ShowPlanDateDailogLisenter;
+import com.kingyon.elevator.uis.widgets.RoundPagerSlidingTabStrip;
 import com.kingyon.elevator.utils.DialogUtils;
-import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
@@ -41,11 +40,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by GongLi on 2019/2/19.
  * Email：lc824767150@163.com
+ * 计划activity 更改时间2020-5-22日
  */
 
 public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
@@ -72,16 +73,38 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     TextView tv_end_date;
     @BindView(R.id.tv_end_date_desc)
     TextView tv_end_date_desc;
+    @BindView(R.id.img_top_back)
+    ImageView img_top_back;
     SimpleDateFormat simpleDateFormat;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.head_root)
+    RelativeLayout headRoot;
+    @BindView(R.id.tv_business)
+    TextView tvBusiness;
+    @BindView(R.id.tv_diy_ad)
+    TextView tvDiyAd;
+    @BindView(R.id.tv_bianmin)
+    TextView tvBianmin;
+    @BindView(R.id.rl_xz)
+    RelativeLayout rlXz;
+    @BindView(R.id.ll_kstime)
+    LinearLayout llKstime;
+    @BindView(R.id.pre_tab_layout)
+    RoundPagerSlidingTabStrip preTabLayout;
+    @BindView(R.id.pre_pager)
+    ViewPager prePager;
+    @BindView(R.id.ll_root)
+    LinearLayout llRoot;
     private boolean editMode;
     PlanSelectDateNewDialog planSelectDateNewDialog;
 
-    public static PlanNewFragment newInstance() {
-        Bundle args = new Bundle();
-        PlanNewFragment fragment = new PlanNewFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static PlanNewFragment newInstance() {
+//        Bundle args = new Bundle();
+//        PlanNewFragment fragment = new PlanNewFragment();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public int getContentViewId() {
@@ -91,7 +114,11 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     @Override
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
-        StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
+//        StatusBarUtil.setHeadViewPadding(this, flTitle);
+//        StatusBarUtil.setTransparent(this);
         selectedIndex = 0;
         updateMode();
         initDateView();
@@ -102,7 +129,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         tv_end_date.setText(String.format("%d月%d日", DateUtils.getLastSelectDateDay().getMonth(), DateUtils.getLastSelectDateDay().getDay()));
         tv_total_day.setText(String.format("共%d天", getDiffDay(DateUtils.getLastSelectDateDay().getDate() + " 00:00:00.000",
                 DateUtils.getLastSelectDateDay().getDate() + " 23:59:59.999")));
-        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof PlanListFragment) {
                 ((PlanListFragment) fragment).updateTime(DateUtils.getLastSelectDateDay().getDate() + " 00:00:00.000",
                         DateUtils.getLastSelectDateDay().getDate() + " 23:59:59.999");
@@ -127,34 +154,43 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     }
 
 
-    @OnClick({R.id.tab_business, R.id.tab_diy_ad, R.id.tab_bianmin, R.id.tv_mode, R.id.select_date_container})
+    @OnClick({R.id.tab_business, R.id.tab_diy_ad, R.id.tab_bianmin, R.id.tv_mode, R.id.select_date_container,R.id.img_top_back})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tab_business:
                 tab_business.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+                tvBusiness.setVisibility(View.VISIBLE);
+                tvBianmin.setVisibility(View.GONE);
+                tvDiyAd.setVisibility(View.GONE);
                 tab_diy_ad.setBackground(null);
                 tab_bianmin.setBackground(null);
                 tab_business.setTextColor(Color.parseColor("#000000"));
-                tab_diy_ad.setTextColor(Color.parseColor("#ffffff"));
-                tab_bianmin.setTextColor(Color.parseColor("#ffffff"));
+                tab_diy_ad.setTextColor(Color.parseColor("#666666"));
+                tab_bianmin.setTextColor(Color.parseColor("#666666"));
                 mPager.setCurrentItem(0, false);
                 break;
             case R.id.tab_diy_ad:
                 tab_diy_ad.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+                tvBusiness.setVisibility(View.GONE);
+                tvBianmin.setVisibility(View.GONE);
+                tvDiyAd.setVisibility(View.VISIBLE);
                 tab_business.setBackground(null);
                 tab_bianmin.setBackground(null);
                 tab_diy_ad.setTextColor(Color.parseColor("#000000"));
-                tab_business.setTextColor(Color.parseColor("#ffffff"));
-                tab_bianmin.setTextColor(Color.parseColor("#ffffff"));
+                tab_business.setTextColor(Color.parseColor("#666666"));
+                tab_bianmin.setTextColor(Color.parseColor("#666666"));
                 mPager.setCurrentItem(1, false);
                 break;
             case R.id.tab_bianmin:
                 tab_bianmin.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+                tvBusiness.setVisibility(View.GONE);
+                tvBianmin.setVisibility(View.VISIBLE);
+                tvDiyAd.setVisibility(View.GONE);
                 tab_diy_ad.setBackground(null);
                 tab_business.setBackground(null);
                 tab_bianmin.setTextColor(Color.parseColor("#000000"));
-                tab_business.setTextColor(Color.parseColor("#ffffff"));
-                tab_diy_ad.setTextColor(Color.parseColor("#ffffff"));
+                tab_business.setTextColor(Color.parseColor("#666666"));
+                tab_diy_ad.setTextColor(Color.parseColor("#666666"));
                 mPager.setCurrentItem(2, false);
                 break;
             case R.id.tv_mode:
@@ -167,18 +203,21 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                 }
 
                 break;
+            case R.id.img_top_back:
+                finish();
+                break;
         }
     }
 
     private void showDateDialog() {
-        DialogUtils.getInstance().showPlanSelectDateDialog(getActivity(), new PlanSelectDateLinsener() {
+        DialogUtils.getInstance().showPlanSelectDateDialog(this, new PlanSelectDateLinsener() {
             @Override
             public void confirmSelectDate(SelectDateEntity startTime, SelectDateEntity endTime) {
                 if (startTime != null && endTime != null) {
                     tv_start_date.setText(String.format("%d月%d日", startTime.getMonth(), startTime.getDay()));
                     tv_end_date.setText(String.format("%d月%d日", endTime.getMonth(), endTime.getDay()));
                     tv_total_day.setText(String.format("共%d天", getDiffDay(startTime.getDate(), endTime.getDate())));
-                    for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                    for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                         if (fragment instanceof PlanListFragment) {
                             ((PlanListFragment) fragment).updateTime(startTime.getDate(), endTime.getDate());
                         }
@@ -220,7 +259,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     @NonNull
     @Override
     protected PagerAdapter getPagerAdapter() {
-        return new UnLazyAdapter<>(getChildFragmentManager(), mItems, this);
+        return new UnLazyAdapter<>(getSupportFragmentManager(), mItems, this);
     }
 
     public void onTypeModify(String planType) {
@@ -245,25 +284,34 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     private void setSelectedDataView(int position) {
         if (position == 0) {
             tab_business.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+            tvBusiness.setVisibility(View.VISIBLE);
+            tvBianmin.setVisibility(View.GONE);
+            tvDiyAd.setVisibility(View.GONE);
             tab_diy_ad.setBackground(null);
             tab_bianmin.setBackground(null);
             tab_business.setTextColor(Color.parseColor("#000000"));
-            tab_diy_ad.setTextColor(Color.parseColor("#ffffff"));
-            tab_bianmin.setTextColor(Color.parseColor("#ffffff"));
+            tab_diy_ad.setTextColor(Color.parseColor("#666666"));
+            tab_bianmin.setTextColor(Color.parseColor("#666666"));
         } else if (position == 1) {
             tab_diy_ad.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+            tvBusiness.setVisibility(View.GONE);
+            tvBianmin.setVisibility(View.GONE);
+            tvDiyAd.setVisibility(View.VISIBLE);
             tab_business.setBackground(null);
             tab_bianmin.setBackground(null);
             tab_diy_ad.setTextColor(Color.parseColor("#000000"));
-            tab_business.setTextColor(Color.parseColor("#ffffff"));
-            tab_bianmin.setTextColor(Color.parseColor("#ffffff"));
+            tab_business.setTextColor(Color.parseColor("#666666"));
+            tab_bianmin.setTextColor(Color.parseColor("#666666"));
         } else if (position == 2) {
             tab_bianmin.setBackgroundResource(R.drawable.shape_plan_tab_title_selected_bg);
+            tvBusiness.setVisibility(View.GONE);
+            tvBianmin.setVisibility(View.VISIBLE);
+            tvDiyAd.setVisibility(View.GONE);
             tab_diy_ad.setBackground(null);
             tab_business.setBackground(null);
             tab_bianmin.setTextColor(Color.parseColor("#000000"));
-            tab_business.setTextColor(Color.parseColor("#ffffff"));
-            tab_diy_ad.setTextColor(Color.parseColor("#ffffff"));
+            tab_business.setTextColor(Color.parseColor("#666666"));
+            tab_diy_ad.setTextColor(Color.parseColor("#666666"));
         }
     }
 
@@ -282,7 +330,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     }
 
     private void updateFragmentContent() {
-        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof BaseRefreshLoadingFragment) {
                 ((BaseRefreshLoadingFragment) fragment).autoRefresh();
             } else if (fragment instanceof BaseRefreshFragment) {
@@ -304,7 +352,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
 
     private void updateMode() {
         tvMode.setText(editMode ? "取消" : "编辑");
-        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof PlanListFragment) {
                 ((PlanListFragment) fragment).setEditMode(editMode);
             }
@@ -314,7 +362,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof PlanListFragment) {
                 ((PlanListFragment) fragment).onActivityResult(requestCode, resultCode, data);
             }
@@ -326,9 +374,17 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         LeakCanaryUtils.watchLeakCanary(this);
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         DialogUtils.getInstance().hidePlanSelectDateDialog();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

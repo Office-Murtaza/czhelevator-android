@@ -12,7 +12,7 @@ import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.DownReasonsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.DownReasonsAdapter;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;

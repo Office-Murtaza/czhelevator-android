@@ -13,14 +13,13 @@ import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.RecommendInfoEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.InviteCouponsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.InviteCouponsAdapter;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
-import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 
 import java.util.List;

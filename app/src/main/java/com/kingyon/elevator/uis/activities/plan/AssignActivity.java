@@ -6,13 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.PlanPointChildrenAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PlanPointChildrenAdapter;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
@@ -82,7 +83,7 @@ public class AssignActivity extends BaseStateRefreshingLoadingActivity<PlanPoint
                 holder.setTextNotHide(R.id.tv_name, String.format("%s%s", item.getCellName(), item.getBuildName()));
                 holder.setSelected(R.id.tv_name, item.isChoosed());
                 holder.setSelected(R.id.img_expand, item.isExpand());
-                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+//                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
                 RecyclerView rvPoints = holder.getView(R.id.rv_points);
                 PlanPointChildrenAdapter childrenAdapter = (PlanPointChildrenAdapter) rvPoints.getAdapter();
                 if (childrenAdapter == null) {
@@ -188,6 +189,7 @@ public class AssignActivity extends BaseStateRefreshingLoadingActivity<PlanPoint
 
                     @Override
                     public void onNext(List<PointItemEntity> pointItemEntities) {
+                        LogUtils.e(pointItemEntities.toString());
                         List<PlanPointGroup> planPointGroups = FormatUtils.getInstance().getPlanPointGroup(pointItemEntities, choosedPoints);
                         canCacheChoose = true;
                         if (FIRST_PAGE == page) {

@@ -152,6 +152,38 @@
         android:padding="20dp">
 
         <RadioButton
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/image_btn_doodle"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:textColor="#FFF"
+            android:contentDescription="滤镜"
+            />
+
+        <Space
+            android:layout_width="@dimen/image_mode_space"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/image_btn_doodle"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:textColor="#FFF"
+            android:contentDescription="贴图"
+
+            />
+
+        <Space
+            android:layout_width="@dimen/image_mode_space"
+            android:layout_height="wrap_content" />
+
+
+        <RadioButton
             android:id="@+id/rb_doodle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,9 +194,12 @@
 
         <Space
             android:layout_width="@dimen/image_mode_space"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+
+            />
 
         <ImageButton
+
             android:id="@+id/btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -202,7 +237,7 @@
             android:onClick="onClick"
             android:src="@drawable/image_btn_clip"
             android:textColor="#FFF"
-            android:visibility="gone" />
+            />
 
     </RadioGroup>
 

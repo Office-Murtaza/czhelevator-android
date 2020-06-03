@@ -1,15 +1,11 @@
 package com.kingyon.elevator.uis.actiivty2.activityutils;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,18 +14,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
@@ -38,11 +28,8 @@ import com.kingyon.elevator.photopicker.ExternalStorage;
 import com.kingyon.elevator.photopicker.LocalMediaLoader;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.photopicker.MediaDirectory;
-import com.kingyon.elevator.presenter.PhotoPickerPresenter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ImageDialoAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter;
-import com.kingyon.elevator.utils.RuntimeUtils;
-import com.kingyon.library.social.ReportContentShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.io.File;
@@ -52,10 +39,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import razerdp.basepopup.BasePopupWindow;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACTIVITYUTILS_PICTURE_CHOOSE;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 import static com.kingyon.elevator.presenter.PhotoPickerPresenter.eqVideo;
 import static com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter.SCROLL_STATE_IDLE;
 import static com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter.listimage;
@@ -111,9 +96,9 @@ public class PictureChooseActivity extends BaseActivity {
             int media_width = cursor.getInt(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[1]));
             int media_height = cursor.getInt(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[2]));
             // 使用DURATION获取的时长不准确
-            long media_duration = cursor.getLong(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[3]));
-//            long media_duration = 1;
-            LogUtils.e(media_duration);
+//            long media_duration = cursor.getLong(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[3]));
+////            long media_duration = 1;
+//            LogUtils.e(media_duration);
             String media_path = cursor.getString(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[4]));
             String media_type = cursor.getString(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[5]));
             long media_size = cursor.getLong(cursor.getColumnIndexOrThrow(LocalMediaLoader.FILE_PROJECTION[6]));
@@ -122,16 +107,16 @@ public class PictureChooseActivity extends BaseActivity {
             String media_directoryPath = media_path.substring(0, media_path.lastIndexOf(File.separator));
             // long media_duration = MimeType.isVideo(media_type) ? MimeType.getVideoDuration(media_path) : 0;
             if (eqVideo(media_type)) {
-                if (media_duration==0) {
-                    //如果视频时长为0，就跳过这一条
-                    continue;
-                }
+//                if (media_duration==0) {
+//                    //如果视频时长为0，就跳过这一条
+//                    continue;
+//                }
             }else {
                 //判断文件是否损坏
                 boolean isDamage = ExternalStorage.getInstance().checkImageIsDamage(media_width, media_path);
                 if (isDamage) continue;
             }
-            MediaData mediaData =getMediaData(media_id, media_path, media_size, media_duration, media_type, media_width, media_height);
+            MediaData mediaData =getMediaData(media_id, media_path, media_size, 0, media_type, media_width, media_height);
             MediaDirectory mediaDirectory = new MediaDirectory();
             mediaDirectory.setId(media_dirId);
             mediaDirectory.setDirPath(media_directoryPath);
@@ -199,8 +184,13 @@ public class PictureChooseActivity extends BaseActivity {
             case R.id.tv_right:
                 if (listimage.size()>0) {
                     LogUtils.e(listimage.toString());
-                    ARouter.getInstance().build(ACTIVITY_MAIN2_COMMUNITY_RELEASETY).withString("imagePath",listimage.toString()).navigation();
+                    Intent intent=new Intent();
+                    intent.putExtra("imagePath", listimage.toString());
+                    setResult(RESULT_OK,intent);
                     finish();
+//                    OrdinaryActivity.communityReleasetyActivity.finish();
+//                    ARouter.getInstance().build(ACTIVITY_MAIN2_COMMUNITY_RELEASETY).withString("imagePath",listimage.toString()).navigation();
+//                    finish();
                 }else {
                     ToastUtils.showShort("还没有选择图片");
                 }

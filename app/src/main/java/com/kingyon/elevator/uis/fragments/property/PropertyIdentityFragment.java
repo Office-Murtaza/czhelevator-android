@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.PropertyIdentityEntity;
@@ -33,6 +34,8 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -260,7 +263,8 @@ public class PropertyIdentityFragment extends BaseFragment implements OnParamsCh
                         showProgressDialog(getString(R.string.wait));
                         NetService.getInstance().uploadFile((BaseActivity) getActivity(), new File(facePath.get(0)), new NetUpload.OnUploadCompletedListener() {
                             @Override
-                            public void uploadSuccess(List<String> images) {
+                            public void uploadSuccess(List<String> images, List<String> hash,JSONObject response) {
+                                LogUtils.e(images,hash,response);
                                 if (images != null && images.size() > 0) {
                                     String certUrl = images.get(0);
                                     flCert.setTag(certUrl);
@@ -296,4 +300,6 @@ public class PropertyIdentityFragment extends BaseFragment implements OnParamsCh
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

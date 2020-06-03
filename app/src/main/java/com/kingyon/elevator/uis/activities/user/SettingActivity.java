@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -21,7 +23,6 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.utils.GlideCacheUtil;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -35,6 +36,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,21 +55,29 @@ public class SettingActivity extends BaseSwipeBackActivity {
     TextView tvCache;
     @BindView(R.id.ll_cache)
     LinearLayout llCache;
-    @BindView(R.id.tv_feed_bak)
-    TextView tvFeedBak;
-    @BindView(R.id.tv_version)
-    TextView tvVersion;
     @BindView(R.id.tv_logout)
     TextView tvLogout;
-    @BindView(R.id.ll_user_privacy)
-    LinearLayout ll_user_privacy;
     @BindView(R.id.security_setting)
     LinearLayout security_setting;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.head_root)
+    RelativeLayout headRoot;
+    @BindView(R.id.tv_account_binding)
+    TextView tvAccountBinding;
+    @BindView(R.id.default_setting)
+    TextView defaultSetting;
+    @BindView(R.id.tv_font)
+    LinearLayout tvFont;
+    @BindView(R.id.tv_about)
+    TextView tvAbout;
 
 
     @Override
     protected String getTitleText() {
-        return "设置";
+        return "系统设置";
     }
 
     @Override
@@ -78,21 +88,15 @@ public class SettingActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         initSize();
-        tvVersion.setText(String.format("V%s", AFUtil.getVersion(this)));
-        requestUpdate(false);
+
     }
 
-    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout, R.id.ll_user_privacy, R.id.security_setting})
+    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout, R.id.ll_user_privacy,
+            R.id.security_setting,R.id.tv_account_binding, R.id.tv_font, R.id.tv_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cache:
                 clearCache();
-                break;
-            case R.id.tv_feed_bak:
-                startActivity(FeedBackActivity.class);
-                break;
-            case R.id.ll_version:
-                requestUpdate(true);
                 break;
             case R.id.tv_logout:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
@@ -122,6 +126,18 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 } else {
                     MyActivityUtils.goFragmentContainerActivity(SettingActivity.this, FragmentConstants.SecuritySettingFragment);
                 }
+                break;
+            case R.id.tv_account_binding:
+                /*账户绑定*/
+
+                break;
+            case R.id.tv_font:
+                /*字体大小*/
+
+                break;
+            case R.id.tv_about:
+                /*关于*/
+
                 break;
         }
     }
@@ -175,43 +191,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
         super.onResume();
     }
 
-    private void requestUpdate(final boolean update) {
-        if (update) {
-            showProgressDialog(getString(R.string.wait));
-        }
-        NetService.getInstance().getLatestVersion(this)
-                .compose(this.<VersionEntity>bindLifeCycle())
-                .subscribe(new CustomApiCallback<VersionEntity>() {
-                    @Override
-                    public void onResultError(ApiException ex) {
-                        if (update) {
-                            showToast(ex.getDisplayMessage());
-                        }
-                        hideProgress();
-                    }
 
-                    @Override
-                    public void onNext(VersionEntity versionEntity) {
-                        hideProgress();
-                        if (update) {
-                            if (versionEntity == null) {
-                                ToastUtils.toast(SettingActivity.this, "已是最新版本");
-                                return;
-                            }
-                            DownloadApkUtil.getInstance(SettingActivity.this).isDownloadNewVersion(SettingActivity.this, versionEntity);
-                        } else {
-                            if (versionEntity == null) {
-                                return;
-                            }
-                            if (versionEntity.getVersionCode() > AFUtil.getVersionCode(SettingActivity.this)) {
-                                tvVersion.setSelected(true);
-                            } else {
-                                tvVersion.setSelected(false);
-                            }
-                        }
-                    }
-                });
-    }
 
     private void clearCache() {
         llCache.setEnabled(false);
@@ -261,5 +241,12 @@ public class SettingActivity extends BaseSwipeBackActivity {
         GlideCacheUtil glideCacheUtil = GlideCacheUtil.getInstance();
         return glideCacheUtil.getFolderSize(getCacheDir())
                 + glideCacheUtil.getFolderSize(getExternalCacheDir());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_found_zxzr"
+    android:layout_margin="@dimen/dp_20"
+    android:padding="@dimen/dp10"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请先完成如下验证"
+        android:textColor="#ff333333"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/dp_20"
+
+        />
 
     <com.luozm.captcha.Captcha
         android:id="@+id/captCha"
@@ -12,8 +27,8 @@
         android:layout_height="wrap_content"
         app:progressDrawable="@drawable/progress"
         app:thumbDrawable="@drawable/thumbtype"
-        app:src="@mipmap/ic_launcher"
+        app:src="@mipmap/bg_topic_sport"
         tools:ignore="MissingConstraints" />
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

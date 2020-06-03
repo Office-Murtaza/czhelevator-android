@@ -1,10 +1,13 @@
 package com.kingyon.elevator.uis.actiivty2;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -30,20 +34,25 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
 import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
 import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
-import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
 import com.kingyon.elevator.uis.fragments.main2.FoundFragment;
 import com.kingyon.elevator.uis.fragments.main2.MessageFragmentg;
+import com.kingyon.elevator.uis.fragments.main2.PersonalFragment;
+import com.kingyon.elevator.uis.fragments.main2.PutcastAdvertisFragment;
+import com.kingyon.elevator.uis.fragments.main2.SquareFragmnet;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
 import com.kingyon.elevator.utils.OCRUtil;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.download.DownloadApkUtil;
 import com.orhanobut.logger.Logger;
+import com.zhihu.matisse.Matisse;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -54,6 +63,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
@@ -102,6 +113,7 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
     boolean isMessage = true;
     boolean isMy = true;
     private LocationEntity locationEntity;
+    private BaseFragment currentFragment;
     @Override
     public int getContentViewId() {
         return R.layout.activity_home;
@@ -118,9 +130,7 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         checkVersion();
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
-        if (DataSharedPreferences.getToken().isEmpty()){
-            ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
-        }
+
     }
 
     @Override
@@ -128,6 +138,11 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        currentFragment = new FoundFragment();
+        currentFragment = new MessageFragmentg();
+        currentFragment = new PersonalFragment();
+        currentFragment = new PutcastAdvertisFragment();
+        currentFragment = new SquareFragmnet();
         if (isFound) {
             isFound = false;
             isMessage = true;
@@ -163,9 +178,15 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
                 }
                 break;
             case R.id.ll_home_fb:
-                Bundle searchBundle1 = getSearchBundle();
-                searchBundle1.putBoolean(CommonUtil.KEY_VALUE_3, false);
-                startActivity(SearchActivity.class, searchBundle1);
+//                Bundle searchBundle1 = getSearchBundle();
+//                searchBundle1.putBoolean(CommonUtil.KEY_VALUE_3, false);
+//                startActivity(SearchActivity.class, searchBundle1);
+                isFound = true;
+                isMessage = true;
+                isMy = true;
+                isSquare = true;
+                viewInit();
+                advertis();
                 break;
             case R.id.ll_home_message:
                 if (isMessage) {
@@ -188,6 +209,24 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
                 }
                 break;
         }
+    }
+
+    private void advertis() {
+        PutcastAdvertisFragment userFragment = new PutcastAdvertisFragment();
+        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_content, userFragment);
+        fragmentTransaction.commit();
+//        tvHomeMy.setTextColor(Color.parseColor("#000000"));
+//        imgHomeMy.setImageResource(R.drawable.ic_nav_private_on);
+//        tvHomeFound.setSelected(false);
+//        imgHomeFound.setSelected(false);
+//        tvHomeSquare.setSelected(false);
+//        imgHomeSquare.setSelected(false);
+//        tvHomeMessage.setSelected(false);
+//        imgHomeMessage.setSelected(false);
+//        tvHomeMy.setSelected(true);
+//        imgHomeFb.setSelected(true);
+
     }
 
     private void homeMy() {
@@ -227,20 +266,20 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
     }
 
     private void square() {
-            PlanNewFragment planNewFragment = new PlanNewFragment();
-            FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_content, planNewFragment);
-            fragmentTransaction.commit();
-            tvHomeSquare.setTextColor(Color.parseColor("#000000"));
-            imgHomeSquare.setImageResource(R.drawable.ic_nav_square_on);
-            tvHomeFound.setSelected(false);
-            imgHomeFound.setSelected(false);
-            tvHomeSquare.setSelected(true);
-            imgHomeSquare.setSelected(true);
-            tvHomeMessage.setSelected(false);
-            imgHomeMessage.setSelected(false);
-            tvHomeMy.setSelected(false);
-            imgHomeFb.setSelected(false);
+//            PlanNewFragment planNewFragment = new PlanNewFragment();
+//            FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.frame_content, planNewFragment);
+//            fragmentTransaction.commit();
+//            tvHomeSquare.setTextColor(Color.parseColor("#000000"));
+//            imgHomeSquare.setImageResource(R.drawable.ic_nav_square_on);
+//            tvHomeFound.setSelected(false);
+//            imgHomeFound.setSelected(false);
+//            tvHomeSquare.setSelected(true);
+//            imgHomeSquare.setSelected(true);
+//            tvHomeMessage.setSelected(false);
+//            imgHomeMessage.setSelected(false);
+//            tvHomeMy.setSelected(false);
+//            imgHomeFb.setSelected(false);
     }
     private void found() {
             FoundFragment homepageFragment = new FoundFragment();
@@ -406,5 +445,46 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
         LocationEntity city = locationEntity != null ? locationEntity : DataSharedPreferences.getLocationCache();
         bundle.putParcelable(CommonUtil.KEY_VALUE_2, new AMapCityEntity(city.getCity(), TextUtils.isEmpty(city.getCityCode()) ? "" : city.getCityCode()));
         return bundle;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (currentFragment != null) {
+            LogUtils.e(requestCode,resultCode,data);
+            currentFragment.onActivityResult(requestCode, resultCode, data);
+        }
+        LogUtils.e("456",requestCode,resultCode,data);
+        if (resultCode == Activity.RESULT_OK && null != data) {
+            switch (requestCode) {
+                case ACCESS_VOIDE_PATH:
+                    LogUtils.e(Matisse.obtainPathResult(data),Matisse.obtainResult(data),Matisse.obtainOriginalState(data));
+                    Intent intent = new Intent(this, EditVideoActivity.class);
+                    intent.putExtra("path",Matisse.obtainPathResult(data).get(0));
+                    intent.putExtra("fromType",ACCESS_VOIDE_CODE);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 递归调用，对所有子Fragement生效
+     *
+     * @param frag
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    private void handleResult(Fragment frag, int requestCode, int resultCode,
+                              Intent data) {
+        frag.onActivityResult(requestCode & 0xffff, resultCode, data);
+        List<Fragment> frags = frag.getChildFragmentManager().getFragments();
+        if (frags != null) {
+            for (Fragment f : frags) {
+                if (f != null)
+                    handleResult(f, requestCode, resultCode, data);
+            }
+        }
     }
 }

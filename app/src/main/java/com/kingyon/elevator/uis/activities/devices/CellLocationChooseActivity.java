@@ -44,7 +44,7 @@ import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.SearchResultAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchResultAdapter;
 import com.kingyon.elevator.uis.widgets.SegmentedGroup;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;

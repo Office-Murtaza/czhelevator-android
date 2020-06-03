@@ -3,32 +3,21 @@ package com.kingyon.elevator.uis.pops;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.amap.api.services.core.AMapException;
-import com.amap.api.services.district.DistrictItem;
-import com.amap.api.services.district.DistrictResult;
-import com.amap.api.services.district.DistrictSearch;
-import com.amap.api.services.district.DistrictSearchQuery;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.uis.adapters.SearchAreaAdapter;
-import com.kingyon.elevator.uis.adapters.SearchCellTypeAdapter;
-import com.kingyon.elevator.uis.adapters.SearchDistanceAdapter;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchAreaAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchCellTypeAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchDistanceAdapter;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by GongLi on 2018/12/28.

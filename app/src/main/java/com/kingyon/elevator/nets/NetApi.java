@@ -2,7 +2,20 @@ package com.kingyon.elevator.nets;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.kingyon.elevator.entities.*;
+import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.CityFacilityInfoEntiy;
 import com.kingyon.elevator.entities.entities.CodeEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
+import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
+import com.kingyon.elevator.entities.entities.QueryTopicEntity;
+import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.entities.WxPayEntity;
@@ -28,51 +41,285 @@ public interface NetApi {
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-    String domainDebugName = "http://192.168.1.156:8080/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.253:1510/";  //公司测试服
+    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
-//    String domainDebugName = "https://api.pddtv.cn/";  //公司测试服
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
     //    String rapUrl = "http://ky-rap2-server.i-te.cn/app/mock/17/";
     String rapUrl = "http://rap2api.taobao.org/app/mock/121571/";
 //2.0
-    /*验证码*/
-    @POST("app/userSecurity/sendCheckCode")
+    /*2.0验证码*/
+    @POST("userSecurity/sendCheckCode")
     @FormUrlEncoded
     Observable<String> getSendCheckCode(@Field("type") String type, @Field("phone") String phone);
 
-    /*登录*/
-    @POST("app/userSecurity/login")
+    /*2.0登录*/
+    @POST("userSecurity/login")
     @FormUrlEncoded
-    Observable<CodeEntity> getLogin(@Field("phone") String phone,@Field("password") String password
+    Observable<
+            CodeEntity> getLogin(@Field("phone") String phone,@Field("password") String password
             ,@Field("way")String way,@Field("unique")String unique,@Field("avatar") String avatar,@Field("nickName") String nickName);
 
-    /*设置密码*/
-    @POST("app/userSecurity/setPassword")
+    /*2.0设置密码*/
+    @POST("userSecurity/setPassword")
     @FormUrlEncoded
     Observable<CodeEntity> getPassswordSetting(@Field("phone") String phone,@Field("password") String password,@Field("inviter") String inviter);
 
-    /*绑定手机*/
-    @POST("app/userSecurity/bindPhone")
+    /*2.0绑定手机*/
+    @POST("userSecurity/bindPhone")
     @FormUrlEncoded
     Observable<CodeEntity> getBindPhone(@Field("phone") String phone, @Field("verifyCode") String verifyCode,
                                     @Field("unique") String unique, @Field("avatar") String avatar,
                                     @Field("nickName") String nickName);
-    /*验证码验证*/
-    @POST("/app/userSecurity/checkVerifyCode")
+    /*2.0验证码验证*/
+    @POST("userSecurity/checkVerifyCode")
     @FormUrlEncoded
     Observable<CodeEntity> getCheckVerifyCode (@Field("phone") String phone,@Field("verifyCode") String verifyCode);
 
-    /*忘记密码*/
-    @POST("/app/userSecurity/resetPassword")
+    /*2.0忘记密码*/
+    @POST("userSecurity/resetPassword")
     @FormUrlEncoded
     Observable<String> getResetPassword (@Field("phone") String phone,@Field("verifyCode") String verifyCode,@Field("newPassword") String newPassword );
 
+    /*2.0获取话题*/
+    @POST("topic/queryTopic")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryTopicEntity.PageContentBean>>
+    getOueryTopic(@Field("page") int page,
+                  @Field("title") String title,@Field("label") int label);
 
-//    1.0
-    //静态/通用获取七牛云参数
+    /*2.0静态/通用获取七牛云参数*/
     @GET("common/getQiNiu")
     Observable<UploadParamsEnitty> getUploadToken();
+
+    /*2.0获取话题栏目*/
+    @POST("topic/queryTopicLabel")
+    Observable<TopicLabelEntity<TopicLabelEntity.PageContentBean>> getTopicLabel();
+
+    /*2.0内容发布*/
+    @POST("content/contentPublish")
+    @FormUrlEncoded
+    Observable<String> getContentPublish(@Field("title") String title,@Field("content") String content,
+                                         @Field("image") String image,@Field("video") String video,
+                                         @Field("type") String type ,@Field("combination") String combination ,
+                                         @Field("topicId") String topicId ,@Field("atAccount") String atAccount,
+                                         @Field("videoSize") int videoSize,@Field("videoCover") String videoCover,
+                                         @Field("playTime")long playTime,@Field("videoHorizontalVertical") int videoHorizontalVertical);
+
+    /*2.0置顶内容*/
+    @POST("content/queryRecommendTop")
+    Observable<ConentEntity<QueryRecommendTopEntity>> getQueryRecommendTop();
+
+    /*2.0推荐内容*/
+    @POST("content/queryRecommend")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryRecommendEntity>> getQueryRecommend(@Field("page") int page ,@Field("title") String title);
+
+    /*2.0获取关注内容*/
+    @POST("content/queryAttention")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryRecommendEntity>> getQueryAttention(@Field("page") int page,@Field("title") String title,@Field("orderBy") String orderBy);
+
+    /*2.0内容点赞*/
+    @POST("content/handlerLikeOrNot")
+    @FormUrlEncoded
+    Observable<String> getLikeNot(@Field("objId") String objId ,@Field("likeType") String likeType,@Field("handleType") String handleType);
+
+    /*2.0首页话题栏目*/
+    @POST("topic/queryTopicLabel")
+    Observable<ConentEntity<HomeTopicEntity>> getQueryTopicLabel();
+
+    /*2.0话题查询*/
+    @POST("topic/queryTopic")
+    @FormUrlEncoded
+    Observable<ConentEntity<HomeTopicConentEntity>> getQueryTopicConetn(@Field("page") int page
+            ,@Field("label") int label,@Field("title") String title,@Field("id") String id);
+
+
+    /*2.0内容点赞*/
+    @POST("content/handlerLikeOrNot")
+    @FormUrlEncoded
+    Observable<String> getHandlerLikeOrNot(@Field("objId") int objId,
+                                           @Field("likeType") String likeType,
+                                           @Field("handleType") String handleType );
+    /*2.0删除内容*/
+    @POST("content/delContent")
+    @FormUrlEncoded
+    Observable<String> getDelContent(@Field("contentId") int contentId);
+
+    /*2.0内容举报*/
+    @POST("content/report")
+    @FormUrlEncoded
+    Observable<String> getReport(@Field("objId") int objId,@Field("reportType") String reportType,
+                                 @Field("reportContent") String reportContent );
+
+    /*2.0内容评论*/
+    @POST("content/comment")
+    @FormUrlEncoded
+    Observable<String> getComment(@Field("contentId") int contentId,@Field("parentId") int parentId ,
+                                  @Field("comment") String comment);
+
+    /*2.0添加浏览数*/
+    @POST("content/addBrowseTime")
+    @FormUrlEncoded
+    Observable<String> getAddBrowse(@Field("contentId") int contentId );
+
+    /*2.0获取内容评论*/
+    @POST("content/queryComment")
+    @FormUrlEncoded
+    Observable<ConentEntity<CommentListEntity>> getQueryListComment(@Field("page") int page , @Field("contentId") int contentId );
+
+    /*2.0获取子级评论*/
+    @POST("content/queryCommentByParentId")
+    @FormUrlEncoded
+    Observable<ConentEntity<CommentListEntity>> getCommentBy(@Field("page") int page
+            , @Field("contentId") int contentId, @Field("parentId") int parentId );
+
+    /*2.0用户关注*/
+    @POST("user/addOrCancelAttention")
+    @FormUrlEncoded
+    Observable<String> getAddAttention(@Field("handlerType") String handlerType,@Field("beFollowerAccount") String beFollowerAccount);
+
+    /*2.0获取用户*/
+    @POST("user/getAttention")
+    @FormUrlEncoded
+    Observable<ConentEntity<AttenionUserEntiy>> getAttention(@Field("page") int page, @Field("handlerType") String handlerType);
+
+    /*2.0话题内容*/
+    @POST("topic/queryTopicAttention")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryRecommendEntity>> getTopicAttention(@Field("page") int page,@Field("topicId") int topicId ,
+                                         @Field("orderBy") String orderBy);
+
+
+    /*2.0投放首页*/
+    @POST("throwIn/cityFacilityInfo")
+    @FormUrlEncoded
+    Observable<ConentOdjerEntity> getCityFacility(@Field("provinceCode") String provinceCode, @Field("cityCode") String cityCode ,
+                                                                         @Field("countyCode") String countyCode);
+    /*2.0获取推荐小区*/
+    @POST("throwIn/getRecommendHouse")
+    @FormUrlEncoded
+    Observable<ConentEntity<RecommendHouseEntiy>> getRecommendHouse(@Field("page") int page , @Field("latitude") String latitude ,
+                                                                    @Field("longitude") String longitude , @Field("cityId") int cityId,
+                                                                    @Field("areaId") String areaId, @Field("pointType") String pointType,
+                                                                    @Field("keyWord") String keyWord, @Field("distance") String distance);
+
+    /*2.0评论删除*/
+    @POST("content/delComment")
+    @FormUrlEncoded
+    Observable<String> getDelcomment(@Field("commentId") int commentId );
+
+    /*2.0添加编辑计划*/
+//    @POST("point/plansAddOrModify")
+//    @FormUrlEncoded
+//    Observable<String> getPlasAddOrModify(@Field("planId") int planId,@Field("planName") String planName,@Field("type") String type);
+
+    @POST("point/plansAddOrModify")
+    @FormUrlEncoded
+    Observable<String> plansAdd(@Field("planId") Long planId
+            , @Field("planName") String planName, @Field("type") String type);
+
+    /*2.0点位筛选内容*/
+    @POST("throwIn/getPointClassic")
+    Observable<ConentEntity<PointClassicEntiy>> getPointClassic();
+
+    /*2.0计划列表*/
+    @POST("point/findAdPlanList")
+    @FormUrlEncoded
+    Observable<ConentEntity<CellItemEntity>> plansList(@Field("type") String type, @Field("startTime") Long startTime
+            , @Field("endTime") Long endTime, @Field("page") int page);
+
+
+    /*2.0小区单独指定*/
+    @POST("point/findPlansCellsPointList")
+    @FormUrlEncoded
+    Observable<List<PointItemEntity>> planCellsPoinList(@Field("cellId") long cellId, @Field("type") String type
+            , @Field("startTime") long startTime, @Field("endTime") long endTime);
+
+    /*2.0小区添加计划*/
+    @POST("point/plansAddCells")
+    @FormUrlEncoded
+    Observable<String> plansAddCells(@Field("type") String type, @Field("cells") String cells);
+
+    /*2.0点位计划删除*/
+    @POST("point/plansDelete")
+    @FormUrlEncoded
+    Observable<String> plansDelete(@Field("planIds") String planIds);
+
+    /*2.0点位计划删除小区*/
+    @POST("point/plansRemoveCells")
+    @FormUrlEncoded
+    Observable<String> plansRemoveCells(@Field("type") String type, @Field("cells") String cells);
+
+    /*2.0我的广告列表*/
+    @POST("ad/adlist")
+    @FormUrlEncoded
+    Observable<PageListEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
+
+    /*2.0创建编辑广告*/
+    @POST("ad/createOrEidtAd")
+    @FormUrlEncoded
+    Observable<ADEntity> createOrEidtAd(@Field("objectId") Long objectId, @Field("onlyInfo") boolean onlyInfo
+            , @Field("planType") String planType
+            , @Field("screenType") String screenType, @Field("title") String title
+            , @Field("videoUrl") String videoUrl, @Field("imageUrl") String imageUrl
+            , @Field("bgMusic") String bgMusic, @Field("duration") Long duration,@Field("hashCode") String hashCode);
+
+    /*2.0广告删除*/
+    @POST("ad/deleteAd")
+    @FormUrlEncoded
+    Observable<String> deleteAd(@Field("objectId") long objectId);
+
+    /*2.0获取分类模板*/
+    @POST("ad/getAdTempletType")
+    Observable<List<NormalElemEntity>> getAdTempletType();
+
+    /*2.0获取订单优惠信息*/
+    @POST("order/getCouponsInfo")
+    @FormUrlEncoded
+    Observable<AutoCalculationDiscountEntity> getCouponsInfo(@Field("amount") double amount,
+                                                             @Field("type") String type,
+                                                             @Field("isManual") Boolean isManual,
+                                                             @Field("consIds") String consIds);
+
+    /*2.0获取订单身份认证信息*/
+    @POST("order/getIdentityInfo")
+    Observable<OrderIdentityEntity> orderIdentityInfo();
+
+    /*2.0订单提交*/
+    @POST("order/commitOrder")
+    @FormUrlEncoded
+    Observable<CommitOrderEntiy> commitOrder(@Field("type") String type, @Field("startTime") long startTime
+            , @Field("endTime") long endTime
+            , @Field("adId") Long adId, @Field("deviceParams") String deviceParams
+            , @Field("coupons") String coupons, @Field("adIndustry") long adIndustry);
+
+    /*2.0查看监播*/
+    @POST("order/adPlayList")
+    @FormUrlEncoded
+    Observable<PageListEntity<AdDetectingEntity>> adPlayList(@Field("orderId") long orderId
+            , @Field("deviceId") long deviceId, @Field("page") int page);
+
+
+    /*2.0申请下播*/
+    @GET("order/downAd")
+    Observable<String> downAd(@Query("orderId") long orderId, @Query("tagReasonId") long tagReasonId
+            , @Query("undercastRemarks") String undercastRemarks);
+
+    /*2.0获取=播原因*/
+    @POST("order/downAdTags")
+    Observable<List<NormalElemEntity>> downAdTags();
+
+    /*2.0合同下载地址*/
+    @POST("order/downloadContract")
+    Observable<DataEntity<String>> downloadContract();
+
+
+    //    1.0
+    //静态/通用获取七牛云参数
+//    @GET("common/getQiNiu")
+//    Observable<UploadParamsEnitty> getUploadToken();
 //POST /common/bindPushId绑定推送id
     @POST("common/bindPushId")
     @FormUrlEncoded
@@ -210,32 +457,17 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<CellDetailsEntity> cellDetails(@Field("objectId") long objectId);
 
-    @POST("point/plansList")
-    @FormUrlEncoded
-    Observable<PageListEntity<CellItemEntity>> plansList(@Field("type") String type, @Field("startTime") Long startTime
-            , @Field("endTime") Long endTime, @Field("page") int page);
 
-    @POST("point/planCellsPoinList")
-    @FormUrlEncoded
-    Observable<List<PointItemEntity>> planCellsPoinList(@Field("cellId") long cellId, @Field("type") String type
-            , @Field("startTime") long startTime, @Field("endTime") long endTime);
 
-    @POST("point/plansAdd")
-    @FormUrlEncoded
-    Observable<String> plansAdd(@Field("planId") Long planId
-            , @Field("planName") String planName, @Field("type") String type);
 
-    @POST("point/plansDelete")
-    @FormUrlEncoded
-    Observable<String> plansDelete(@Field("planIds") String planIds);
 
-    @POST("point/plansAddCells")
-    @FormUrlEncoded
-    Observable<String> plansAddCells(@Field("type") String type, @Field("cells") String cells);
 
-    @POST("point/plansRemoveCells")
-    @FormUrlEncoded
-    Observable<String> plansRemoveCells(@Field("type") String type, @Field("cells") String cells);
+
+
+
+
+
+
 
     @POST("cell/getBuildByCell")
     @FormUrlEncoded
@@ -276,80 +508,50 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> removeLift(@Field("objectId") long objectId);
 
-    //订单
-    @POST("order/commitOrder")
-    @FormUrlEncoded
-    Observable<CommitOrderEntiy> commitOrder(@Field("type") String type, @Field("startTime") long startTime
-            , @Field("endTime") long endTime
-            , @Field("adId") Long adId, @Field("deviceParams") String deviceParams
-            , @Field("coupons") String coupons, @Field("adIndustry") long adIndustry);
 
+    /*2.0订单详情*/
     @POST("order/orderDetatils")
     @FormUrlEncoded
     Observable<OrderDetailsEntity> orderDetatils(@Field("orderId") long orderId);
 
-    @POST("order/getIdentityInfo")
-    Observable<OrderIdentityEntity> orderIdentityInfo();
 
+    /*2.0订单支付*/
     @POST("order/orderPay")
     @FormUrlEncoded
     Observable<WxPayEntity> orderPay(@Field("orderId") long orderId, @Field("way") String way);
 
+    /*2.0订单详情*/
     @POST("order/orderList")
     @FormUrlEncoded
     Observable<PageListEntity<OrderDetailsEntity>> orderList(@Field("status") String status, @Field("page") int page);
 
-    @POST("order/downloadContract")
-    Observable<DataEntity<String>> downloadContract();
 
+    /*2.0查看订单点位列表*/
     @POST("order/orderPoints")
     @FormUrlEncoded
     Observable<List<PointItemEntity>> orderPoints(@Field("orderId") long orderId);
 
-    @GET("order/downAd")
-    Observable<String> downAd(@Query("orderId") long orderId, @Query("tagReasonId") long tagReasonId
-            , @Query("undercastRemarks") String undercastRemarks);
 
-    @POST("order/adPlayList")
-    @FormUrlEncoded
-    Observable<PageListEntity<AdDetectingEntity>> adPlayList(@Field("orderId") long orderId
-            , @Field("deviceId") long deviceId, @Field("page") int page);
-
-    @POST("order/downAdTags")
-    Observable<List<NormalElemEntity>> downAdTags();
-
+    /*2.0取消订单*/
     @POST("order/orderCancel")
     @FormUrlEncoded
     Observable<String> orderCancel(@Field("orderId") long orderId);
 
+    /*2.0删除订单*/
     @POST("order/orderDelete")
     @FormUrlEncoded
     Observable<String> orderDelete(@Field("orderId") long orderId);
 
-    //广告
-    @POST("ad/createOrEidtAd")
-    @FormUrlEncoded
-    Observable<ADEntity> createOrEidtAd(@Field("objectId") Long objectId, @Field("onlyInfo") boolean onlyInfo
-            , @Field("planType") String planType
-            , @Field("screenType") String screenType, @Field("title") String title
-            , @Field("videoUrl") String videoUrl, @Field("imageUrl") String imageUrl
-            , @Field("bgMusic") String bgMusic, @Field("duration") Long duration);
 
-    @POST("ad/adlist")
-    @FormUrlEncoded
-    Observable<PageListEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
 
-    @POST("ad/deleteAd")
-    @FormUrlEncoded
-    Observable<String> deleteAd(@Field("objectId") long objectId);
+
 
     @POST("ad/getPicAdTemplet")
     @FormUrlEncoded
     Observable<PageListEntity<AdTempletEntity>> getPicAdTemplet(@Field("screenSplit") String screenSplit
             , @Field("sort") String sort, @Field("type") Long type, @Field("page") int page);
 
-    @POST("ad/getAdTempletType")
-    Observable<List<NormalElemEntity>> getAdTempletType();
+
 
     @POST("ad/getMaterial")
     @FormUrlEncoded
@@ -385,6 +587,7 @@ public interface NetApi {
     @POST("user/userProfile")
     Observable<UserEntity> userProfile();
 
+    /*2.0用户信息修改*/
     @POST("user/userEidtProfile")
     @FormUrlEncoded
     Observable<UserEntity> userEidtProfile(@FieldMap Map<String, String> params);
@@ -456,6 +659,7 @@ public interface NetApi {
     @POST("user/unReadCount")
     Observable<UnreadNumberEntity> unreadCount();
 
+    /*2.0审核未通过的订单数量*/
     @POST("order/publishFailed")
     Observable<OrderFailedNumberEntity> orderPublishFailedNum();
 
@@ -730,9 +934,7 @@ public interface NetApi {
     Observable<String> vaildPasswordIsRight(@Field("password") String password);
 
 
-    @POST("order/getCouponsInfo")
-    @FormUrlEncoded
-    Observable<AutoCalculationDiscountEntity> getCouponsInfo(@Field("amount") double amount, @Field("type") String type, @Field("isManual") Boolean isManual, @Field("consIds") String consIds);
+
 
     /**
      * 获取弹窗广告数据或者固定位置通知

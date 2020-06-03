@@ -28,6 +28,7 @@ import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
@@ -64,6 +65,7 @@ import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshFragment;
 import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
+import com.leo.afbaselibrary.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -316,7 +318,7 @@ public class UserFragment extends BaseStateRefreshFragment {
                 break;
             case R.id.ll_info:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
-                    startActivity(LoginActivity.class);
+                    startActivity(LoginActiivty.class);
                 } else {
                     startActivity(UserProfileActivity.class);
                 }
@@ -376,7 +378,11 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(InstallerActivity.class);
                 break;
             case R.id.tv_service:
-                AFUtil.toCall(getContext(), getString(R.string.service_phone));
+                try {
+                    AFUtil.toCall(getContext(), getString(R.string.service_phone));
+                }catch (Exception e){
+                    ToastUtils.showToast(getActivity(),"当前手机不允许拨打电话，请换手机操作",2000);
+                }
                 break;
         }
     }
@@ -437,4 +443,6 @@ public class UserFragment extends BaseStateRefreshFragment {
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

@@ -1,101 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_weight="1"
     android:id="@+id/ll_tab"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/viewpagertab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/id_tab01"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/id_tab01_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="关注"
-                android:textColor="@color/color_666666"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/id_tab_line1"
-                android:layout_width="20dp"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/di_tab_line"
-                android:visibility="gone"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/id_tab02"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/id_tab02_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="推荐"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/id_tab_line2"
-                android:layout_width="20dp"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/di_tab_line"
-                android:visibility="gone"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/id_tab03"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/id_tab03_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="话题"
-                android:textColor="@color/color_666666"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/id_tab_line3"
-                android:layout_width="20dp"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/di_tab_line"
-                android:visibility="gone"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="@dimen/dp_40"
+        android:background="@drawable/bg_found_zxzr"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorWithoutPadding="false"
+        app:stl_indicatorInFront="false"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorGravity="bottom"
+        app:stl_indicatorColor="@color/red"
+        app:stl_indicatorThickness="2dp"
+        app:stl_indicatorWidth="@dimen/dp_20"
+        app:stl_indicatorCornerRadius="0dp"
+        app:stl_overlineThickness="0dp"
+        app:stl_underlineThickness="0dp"
+        app:stl_dividerThickness="0dp"
+        app:stl_defaultTabBackground="?attr/selectableItemBackground"
+        app:stl_customTabTextLayoutId="@layout/view_found_tab_text"
+        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextColor="#333333"
+        app:stl_defaultTabTextSize="@dimen/sp_18"
+        app:stl_defaultTabTextHorizontalPadding="16dp"
+        app:stl_defaultTabTextMinWidth="@dimen/dp_100"
+        app:stl_distributeEvenly="true"
+        app:stl_clickable="true"
+        app:stl_titleOffset="24dp"
+        app:stl_drawDecorationAfterTab="false"
+        />
 
 
+    <com.kingyon.elevator.view.ModifyTabLayout
+        android:background="#ffffff"
+        android:id="@+id/modiftTabLayout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/dp_44" />
 
 </LinearLayout>

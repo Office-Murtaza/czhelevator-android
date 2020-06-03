@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:paddingTop="10dp" />
+                />
         </android.support.v4.widget.SwipeRefreshLayout>
     </com.leo.afbaselibrary.widgets.StateLayout>
 </LinearLayout>

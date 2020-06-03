@@ -32,6 +32,8 @@ public class InputCommentActivity extends Activity {
     ImageView iv_dianzan;
     @BindView(R.id.iv_share_news)
     ImageView iv_share_news;
+    @BindView(R.id.img_icon)
+    ImageView img_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class InputCommentActivity extends Activity {
 
 
 
-    @OnClick({R.id.btn_send, R.id.iv_dianzan, R.id.iv_share_news})
+    @OnClick({R.id.btn_send, R.id.iv_dianzan, R.id.iv_share_news,R.id.img_icon})
     public void OnClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_send:
@@ -71,6 +73,10 @@ public class InputCommentActivity extends Activity {
 
                     break;
                 case R.id.iv_share_news:
+
+                    break;
+                case R.id.img_icon:
+                    mEditorCallback.onIcon();
 
                     break;
             }

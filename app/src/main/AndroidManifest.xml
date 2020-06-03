@@ -29,10 +29,10 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 极光推送 -->
     <permission
-        android:name="${applicationId}.permission.JPUSH_MESSAGE"
+        android:name="com.kingyon.elevator.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.kingyon.elevator.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -575,7 +575,7 @@
             android:name=".uis.actiivty2.main.CommunityReleasetyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NextTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             />
 <!--        内容详情图文-->
         <activity android:name=".uis.actiivty2.content.ContentDetailsActivity"
@@ -633,6 +633,70 @@
         <activity android:name=".uis.actiivty2.login.PasswordSettingActivity"
             android:screenOrientation="portrait"
             />
+<!--        视频选择-->
+        <activity android:name=".uis.actiivty2.activityutils.VoideChooseActiivty"
+            android:screenOrientation="portrait"
+            />
+<!--        用户-->
+<!--        <activity android:name=".uis.actiivty2.input.UserList"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            />-->
+<!--        话题-->
+        <activity android:name=".uis.actiivty2.input.TagList"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0评论回复-->
+        <activity android:name=".uis.actiivty2.content.CommentReplyActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <!--2.0视频封面-->
+      <activity android:name=".uis.actiivty2.activityutils.VideoCoverActivity"
+          android:screenOrientation="portrait"
+          />
+        <!--2.0关注用户 用户艾特@-->
+        <activity android:name=".uis.actiivty2.main.UserSelectionActiivty"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0计划-->
+        <activity android:name=".uis.fragments.main.PlanNewFragment"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0查看样式-->
+        <activity android:name=".uis.actiivty2.advertis.AdvertisStyleActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0定位详情-->
+        <activity android:name=".uis.actiivty2.advertis.AdPointDetailsActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0消息-@和评论-->
+        <activity android:name=".uis.actiivty2.massage.CommentActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0消息-关注-->
+        <activity android:name=".uis.actiivty2.massage.MessageAttentionActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0消息-点赞-->
+        <activity android:name=".uis.actiivty2.massage.MessageLikeActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0消息-消息内-->
+        <activity android:name=".uis.actiivty2.massage.MessageNewsActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0消息-消息推送-->
+        <activity android:name=".uis.actiivty2.massage.MessagePushActivity"
+            android:screenOrientation="portrait"/>
+        <!--2.0测试推送内容-->
+        <activity android:name=".uis.actiivty2.content.ContentActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0二维码显示-->
+        <activity android:name=".uis.actiivty2.user.RECodeActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- ****************友盟配置****************************** -->
         <meta-data
@@ -643,7 +707,7 @@
             android:value="umeng" /> <!-- ****************图片选择器配置****************************** -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.kingyon.elevator.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -671,7 +735,9 @@
         <!-- ****************极光推送配置****************************** -->
         <receiver
             android:name=".receiver.JPushReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            >
+
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
@@ -680,7 +746,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
 
-                <category android:name="${applicationId}" />
+                <category android:name="com.kingyon.elevator" />
             </intent-filter>
         </receiver>
 
@@ -698,7 +764,7 @@
 
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="${applicationId}.DataProvider"
+            android:authorities="com.kingyon.elevator.DataProvider"
             android:exported="false" />
 
         <service
@@ -708,7 +774,7 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
 
-                <category android:name="${applicationId}" />
+                <category android:name="com.kingyon.elevator" />
             </intent-filter>
         </service>
 
@@ -718,7 +784,7 @@
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
 
-                <category android:name="${applicationId}" />
+                <category android:name="com.kingyon.elevator" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -742,7 +808,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${applicationId}" />
+                <category android:name="com.kingyon.elevator" />
             </intent-filter>
         </activity>
         <activity
@@ -752,7 +818,7 @@
             android:theme="@style/MyDialogStyle">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${applicationId}" />
+                <category android:name="com.kingyon.elevator" />
             </intent-filter>
         </activity>
 
@@ -779,7 +845,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 高德 -->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".uis.actiivty2.user.SecurityCenterActivity" /> <!-- 高德 -->
         <service android:name="com.amap.api.location.APSService" />
 
         <meta-data

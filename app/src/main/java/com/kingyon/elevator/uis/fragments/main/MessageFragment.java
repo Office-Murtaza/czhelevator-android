@@ -164,6 +164,7 @@ public class MessageFragment extends BaseStateLoadingFragment {
 
     }
 
+
     @OnClick({R.id.tab_comment, R.id.tab_notice, R.id.tab_helper, R.id.tab_dianzan, R.id.set_all_read})
     public void OnClick(View view) {
             switch (view.getId()) {

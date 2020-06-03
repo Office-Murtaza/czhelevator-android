@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.InputEntity;
@@ -15,6 +16,7 @@ import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.InputActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.password.ModifyPasswordActivity;
@@ -26,6 +28,8 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -116,7 +120,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                     startActivity(ModifyPhoneFirstActivity.class, bundle);
                 } else {
                     bundle.putBoolean(CommonUtil.KEY_VALUE_1, true);
-                    startActivity(LoginActivity.class, bundle);
+                    startActivity(LoginActiivty.class, bundle);
                 }
                 break;
         }
@@ -173,7 +177,8 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                         showProgressDialog(getString(R.string.wait));
                         NetService.getInstance().uploadFile(this, new File(mSelectPath2.get(0)), new NetUpload.OnUploadCompletedListener() {
                             @Override
-                            public void uploadSuccess(List<String> images) {
+                            public void uploadSuccess(List<String> images,List<String> hash, JSONObject response) {
+                                LogUtils.e(images,hash,response);
                                 if (images != null && images.size() > 0) {
                                     modify(R.id.ll_head, images.get(0));
                                 } else {

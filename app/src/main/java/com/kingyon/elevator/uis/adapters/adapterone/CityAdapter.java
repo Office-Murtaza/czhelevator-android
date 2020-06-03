@@ -75,7 +75,7 @@ public class CityAdapter extends BaseAdapterWithHF<AMapCityEntity> {
         if (getItemViewType(position) == TYPE_HEADER) {
             LocationEntity location = AppContent.getInstance().getLocation();
             if (location != null) {
-                holder.tvCurrent.setText("当前城市/位置");
+                holder.tvCurrent.setText("当前位置");
                 holder.llInfo.setVisibility(View.VISIBLE);
                 holder.tvCity.setText(FormatUtils.getInstance().getCityName(location.getCity()));
                 holder.tvLocation.setText(location.getName());

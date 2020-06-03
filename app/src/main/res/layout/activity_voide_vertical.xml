@@ -58,7 +58,10 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/img_jb"
             android:layout_marginRight="@dimen/dp30"
-            android:background="@mipmap/btn_focus_off"
+            android:paddingTop="@dimen/dp5"
+            android:paddingBottom="@dimen/dp5"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"
             />
 
 
@@ -123,7 +126,7 @@
                 />
         </LinearLayout>
 
-        <TextView
+        <com.bobomee.android.mentions.text.MentionTextView
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -14,4 +14,6 @@ public class MessageCommentPresenterz extends BasePresenter {
     public MessageCommentPresenterz(Context mContext) {
         super(mContext);
     }
+
+
 }

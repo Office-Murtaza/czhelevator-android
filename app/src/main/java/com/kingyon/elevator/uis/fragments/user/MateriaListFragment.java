@@ -255,6 +255,8 @@ public class MateriaListFragment extends BaseStateRefreshLoadingFragment<Object>
         LeakCanaryUtils.watchLeakCanary(this);
     }
 
+
+
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
         updateMode();

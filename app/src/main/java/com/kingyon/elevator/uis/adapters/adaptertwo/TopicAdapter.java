@@ -7,10 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.czh.myversiontwo.R;
+import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
+import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.utils.utilstwo.JsonUtils;
+import com.leo.afbaselibrary.utils.GlideUtils;
+
+import java.util.List;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
 
@@ -22,11 +32,15 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
  */
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> {
     Context context;
-    int data;
-    public TopicAdapter(Context context,int data){
+    List<HomeTopicConentEntity> conentEntity;
+
+    public TopicAdapter(Context context){
         this.context = context;
-        this.data = data;
     }
+    public void addData(List<HomeTopicConentEntity> conentEntity){
+        this.conentEntity = conentEntity;
+    }
+    
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,10 +52,20 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder!=null) {
-            holder.img_topic_image.setOnClickListener(new View.OnClickListener() {
+            holder.tv_conent.setText(conentEntity.get(position).content);
+            holder.tv_title.setText(conentEntity.get(position).title);
+            holder.tv_nickname.setText(conentEntity.get(position).nickname);
+            GlideUtils.loadRoundCornersImage(context,conentEntity.get(position).image,holder.img_topic_image,20);
+            GlideUtils.loadCircleImage(context,conentEntity.get(position).photo,holder.img_portrait);
+            HomeTopicConentEntity homeTopicConentEntity = conentEntity.get(position);
+            holder.ll_topic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ACTIVITY_MAIN2_TOPIC_DETAILS).navigation();
+                    LogUtils.e(conentEntity.get(position).id);
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",String.valueOf(conentEntity.get(position).id));
+//                    ARouter.getInstance().build(ACTIVITY_MAIN2_TOPIC_DETAILS)
+//                            .withString("conentEntity", JsonUtils.beanToJson(homeTopicConentEntity))
+//                            .navigation();
                 }
             });
         }
@@ -49,16 +73,21 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return data;
+        return conentEntity.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
-        ImageView img_topic_image;
+        TextView tv_title,tv_conent,tv_nickname;
+        ImageView img_topic_image,img_portrait;
+        LinearLayout ll_topic;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tv_content);
             img_topic_image = itemView.findViewById(R.id.img_topic_image);
+            ll_topic = itemView.findViewById(R.id.ll_topic);
+            tv_title = itemView.findViewById(R.id.tv_title);
+            tv_conent = itemView.findViewById(R.id.tv_conent);
+            tv_nickname = itemView.findViewById(R.id.tv_nickname);
+            img_portrait = itemView.findViewById(R.id.img_portrait);
         }
     }
 }

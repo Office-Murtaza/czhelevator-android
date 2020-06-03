@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content">
-    <com.litao.android.lib.view.SquaredImageView
+    android:layout_width="@dimen/dp_100"
+    android:layout_height="@dimen/dp_100"
+
+    >
+
+    <com.czh.myversiontwo.view.RoundImageView
         android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerInside"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg_topic_sport"
       />
+
+    <ImageView
+        android:id="@+id/img_deldte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/btn_image_clear"
+        android:layout_alignParentRight="true"
+
+        />
+    <TextView
+        android:id="@+id/tv_image_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/btn_image_edit"
+        android:text="编辑"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:padding="2dp"
+        android:textSize="@dimen/sp_10"
+        android:layout_alignParentBottom="true"
+
+        />
 </RelativeLayout>

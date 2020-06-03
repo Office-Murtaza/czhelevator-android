@@ -10,12 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.UploadImageAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.UploadImageAdapter;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
@@ -23,6 +24,8 @@ import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -151,7 +154,8 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     }
 
     @Override
-    public void uploadSuccess(final List<String> images) {
+    public void uploadSuccess(final List<String> images, List<String> hash,JSONObject response) {
+        LogUtils.e(images,hash,response);
         List<String> result = new ArrayList<>();
         int index = 0;
         for (Object object : uploadAdapter.getDatas()) {

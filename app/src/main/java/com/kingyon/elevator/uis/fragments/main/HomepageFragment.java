@@ -55,9 +55,9 @@ import com.kingyon.elevator.uis.activities.homepage.SearchHistoryActivity;
 import com.kingyon.elevator.uis.activities.homepage.WikiListActivity;
 import com.kingyon.elevator.uis.adapters.adapterone.BannerAdaper;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.ClassifyAdapter;
-import com.kingyon.elevator.uis.adapters.HomeCellsAdaper;
-import com.kingyon.elevator.uis.adapters.NewsListAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.ClassifyAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.HomeCellsAdaper;
+import com.kingyon.elevator.uis.adapters.adapterone.NewsListAdapter;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.uis.widgets.NewsItemDecornation;
@@ -655,9 +655,5 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
         return rootView;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 }

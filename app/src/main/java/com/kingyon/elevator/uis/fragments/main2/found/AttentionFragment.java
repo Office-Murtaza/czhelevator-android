@@ -1,26 +1,52 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.AgreementActivity;
+import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
-import com.kingyon.elevator.uis.fragments.main2.found.utilsf.LazyFragment;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -28,77 +54,143 @@ import butterknife.Unbinder;
  * Author:Mrczh
  * Instructions:关注
  */
-public class AttentionFragment extends LazyFragment {
+public class AttentionFragment extends FoundFragemtUtils {
     @BindView(R.id.rv_attention_list)
     RecyclerView rvAttentionList;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     Unbinder unbinder;
-
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+    @BindView(R.id.rl_null)
+    RelativeLayout rlNull;
+    @BindView(R.id.rl_notlogin)
+    RelativeLayout rl_notlogin;
     private View view;
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
     AttentionAdapter attentionAdapter;
-    List<String> list = new ArrayList<>();
+    List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
+    private int page = 1;
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_attention;
+    }
+
+    @Override
+    public void init(Bundle savedInstanceState) {
+
+    }
+
+
+    private void httpQueryAttention(int page, String title, String orderBy) {
+        LogUtils.e(page, title, orderBy);
+//        showProgressDialog("请稍后...");
+        NetService.getInstance().setQueryAttention(page, title, orderBy)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        hideProgress();
+                        closeRefresh();
+                        if (ex.getCode() == -102) {
+                            if (page > 1) {
+                                ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
+                            } else {
+                                rvAttentionList.setVisibility(View.GONE);
+                                rlError.setVisibility(View.GONE);
+                                rlNull.setVisibility(View.VISIBLE);
+                                rl_notlogin.setVisibility(View.GONE);
+                            }
+
+                        } else if (ex.getCode()==100200){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rl_notlogin.setVisibility(View.VISIBLE);
+                        }else {
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.VISIBLE);
+                            rlNull.setVisibility(View.GONE);
+                            rl_notlogin.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
+                        hideProgress();
+                        closeRefresh();
+                        rvAttentionList.setVisibility(View.VISIBLE);
+                        rlError.setVisibility(View.GONE);
+                        rlNull.setVisibility(View.GONE);
+                        rl_notlogin.setVisibility(View.GONE);
+                        dataAdd(conentEntity);
+
+                    }
+                });
+
+
+    }
+
+    private void dataAdd(ConentEntity<QueryRecommendEntity> conentEntity) {
+        for (int i = 0; i < conentEntity.getContent().size(); i++) {
+            QueryRecommendEntity queryRecommendEntity = new QueryRecommendEntity();
+            queryRecommendEntity = conentEntity.getContent().get(i);
+            recommendEntityList.add(queryRecommendEntity);
+        }
+        if (attentionAdapter == null || page == 1) {
+            attentionAdapter = new AttentionAdapter((BaseActivity) getActivity());
+            attentionAdapter.addData(recommendEntityList);
+            rvAttentionList.setAdapter(attentionAdapter);
+            rvAttentionList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
+        } else {
+            attentionAdapter.addData(recommendEntityList);
+            attentionAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void dealLeackCanary() {
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.e("onRefresh");
+                page = 1;
+                recommendEntityList.clear();
+                httpQueryAttention(1, "", "");
+            }
+        });
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.e("onLoadMore");
+                page++;
+                httpQueryAttention(page, "", "");
+            }
+        });
+
+
+    }
+
+    public void closeRefresh() {
+        smartRefreshLayout.finishRefresh();
+        smartRefreshLayout.finishLoadMore();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_attention, container, false);
-        unbinder = ButterKnife.bind(this, view);
-//
-        isPrepared = true;
-        lazyLoad();//加载数据
-        initUI();
-        return view;
-    }
-
-    private void initUI() {
-        /**
-         * 1文字
-         * 2图片
-         * 3视频
-         * 4文字+图片
-         * 5文字+视频
-         * */
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("5");
-        list.add("1");
-        list.add("5");
-        list.add("4");
-        list.add("3");
-        list.add("2");
-        list.add("2");
-        list.add("1");
-        if (rvAttentionList != null) {
-            attentionAdapter = new AttentionAdapter(getActivity(), list);
-            rvAttentionList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvAttentionList.setAdapter(attentionAdapter);
-        }
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                attentionAdapter = new AttentionAdapter(getActivity(), list);
-                rvAttentionList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                rvAttentionList.setAdapter(attentionAdapter);
-                smartRefreshLayout.finishRefresh();
-            }
-        });
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                smartRefreshLayout.finishRefresh();
-            }
-        });
-
-    }
-
-
-    @Override
-    protected void lazyLoad() {
-
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 
     @Override
@@ -106,4 +198,33 @@ public class AttentionFragment extends LazyFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    protected void lazyLoad() {
+        if (smartRefreshLayout!=null) {
+            smartRefreshLayout.autoRefresh(100);
+        }else {
+            httpQueryAttention(1, "", "");
+        }
+    }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        smartRefreshLayout.autoRefresh(100);
+//    }
+
+    @OnClick({R.id.rl_error, R.id.rl_notlogin})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_error:
+                httpQueryAttention(1, "", "");
+                break;
+            case R.id.rl_notlogin:
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
+                break;
+        }
+    }
+
+
 }

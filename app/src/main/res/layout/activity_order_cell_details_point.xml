@@ -35,16 +35,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_six"
         android:layout_marginRight="@dimen/spacing_six"
-        android:layout_toStartOf="@+id/tv_screen"
-        android:src="@drawable/ic_screen_center" />
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/ic_screen_middle" />
 
     <TextView
         android:id="@+id/tv_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:textColor="#ffababab"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp_5"
         android:textSize="@dimen/txt_normal_content"
         android:textStyle="bold"
+        android:layout_toLeftOf="@+id/img_screen"
         tools:text="中屏" />
 </RelativeLayout>

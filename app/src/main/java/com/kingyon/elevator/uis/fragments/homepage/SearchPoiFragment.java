@@ -14,14 +14,13 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.homepage.SearchHistoryActivity;
-import com.kingyon.elevator.uis.adapters.SearchPoiAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchPoiAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
-import com.leo.afbaselibrary.uis.fragments.BaseRefreshLoadingFragment;
 import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshLoadingFragment;
 
 import java.util.ArrayList;
@@ -150,4 +149,6 @@ public class SearchPoiFragment extends BaseStateRefreshLoadingFragment<Object> i
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

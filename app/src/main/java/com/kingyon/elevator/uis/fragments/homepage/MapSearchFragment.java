@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
@@ -21,18 +25,23 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.CityCellEntity;
 import com.kingyon.elevator.entities.LocationEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
-import com.kingyon.elevator.uis.adapters.SearchCellsAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.SearchCellsAdapter;
+import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DensityUtil;
@@ -52,8 +61,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimerTask;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADPOINT_DETAILS;
+import static com.czh.myversiontwo.utils.DistanceUtils.distance;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
 
 /**
  * Created by GongLi on 2018/12/27.
@@ -67,29 +84,51 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     ViewPager vpCells;
     @BindView(R.id.pfl_cells)
     ProportionFrameLayout pflCells;
+    @BindView(R.id.tv_community_name)
+    TextView tvCommunityName;
+    @BindView(R.id.tv_community_number)
+    TextView tvCommunityNumber;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.img_add)
+    ImageView imgAdd;
+    @BindView(R.id.ll_point)
+    LinearLayout llPoint;
+    Unbinder unbinder;
+    @BindView(R.id.img_menu)
+    ImageView imgMenu;
+    @BindView(R.id.img_current)
+    ImageView imgCurrent;
+    @BindView(R.id.img_zoom)
+    ImageView imgZoom;
+    private String communityName;
+    private int planId;
 
     private SearchCellsAdapter cellsAdapter;
 
     private final int cityZoomLevel = 10;
     private LinkedHashMap<Long, Marker> markersMap = new LinkedHashMap<>();
     private LinkedHashMap<Long, Marker> cityMarkersMap = new LinkedHashMap<>();
+    private ConentEntity<RecommendHouseEntiy> entiyConentEntity;
     private boolean showCityMarkers;
     //初始化地图控制器对象
     private AMap aMap;
     //定义一个UiSettings对象
     private UiSettings mUiSettings;
-
+    private double latitude;
+    private double longitude;
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private int[] clickPosition = new int[2];
 
-    public static MapSearchFragment newInstance(AMapCityEntity entity) {
-        Bundle args = new Bundle();
-        MapSearchFragment fragment = new MapSearchFragment();
-        if (entity != null) {
-            args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
-        }
-        fragment.setArguments(args);
-        return fragment;
+    public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2) {
+        this.entiyConentEntity = entiyConentEntity2;
+//        Bundle args = new Bundle();
+//        MapSearchFragment fragment = new MapSearchFragment();
+//        if (entity != null) {
+//            args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+//        }
+//        fragment.setArguments(args);
+        return (this);
     }
 
     @Override
@@ -100,6 +139,30 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     @Override
     public void init(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
+        LocationEntity entity = AppContent.getInstance().getLocation();
+        latitude = entity.getLatitude();
+        longitude = entity.getLongitude();
+        /*地图*/
+         initMap();
+         /*标点*/
+        new Thread(new TimerTask() {
+            @Override
+            public void run() {
+                for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
+                    RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
+                    MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
+                    if (markerOptions!=null) {
+                        Marker marker = aMap.addMarker(markerOptions);
+                        markersMap.put((long) recommendHouseEntiy.id, marker);
+                    }
+                }
+            }
+        }).start();
+
+        moveMapToPositon(longitude,latitude,cityZoomLevel+3f);
+    }
+
+    private void initMap() {
         addCellToPlanPresenter = new AddCellToPlanPresenter((BaseActivity) getActivity());
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -139,8 +202,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    if (pflCells.getVisibility() == View.VISIBLE) {
-                        pflCells.setVisibility(View.GONE);
+                    if (llPoint.getVisibility() == View.VISIBLE) {
+                        llPoint.setVisibility(View.GONE);
                     }
                 }
             });
@@ -165,21 +228,41 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         getCityCellNums();
     }
 
+
+
+
+
     public void showClickId(long clickCellId) {
-        pflCells.setVisibility(View.VISIBLE);
-        Integer index = cellsAdapter.getIdIndex(clickCellId);
-        if (index != null) {
-            vpCells.setCurrentItem(index, false);
+        llPoint.setVisibility(View.VISIBLE);
+        LogUtils.e(clickCellId, "点击");
+        for (int c = 0; c < entiyConentEntity.getContent().size(); c++) {
+            RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(c);
+            if (clickCellId == recommendHouseEntiy.id) {
+                tvAddress.setText(recommendHouseEntiy.address);
+                tvCommunityName.setText(recommendHouseEntiy.name);
+                tvCommunityNumber.setText(String.format("%s · %s台电梯", distance(recommendHouseEntiy.distanceM)
+                        , recommendHouseEntiy.numberElevator));
+                planId = recommendHouseEntiy.id;
+                communityName = recommendHouseEntiy.name;
+
+            }
         }
+//        Integer index = cellsAdapter.getIdIndex(clickCellId);
+//        if (index != null) {
+//            vpCells.setCurrentItem(index, false);
+//        }
     }
 
+    /**
+     * 获取小区数量
+     * */
     private void getCityCellNums() {
         NetService.getInstance().cityCellNums()
                 .compose(this.<List<CityCellEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<CityCellEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        showToast("获取小区数量失败");
+//                        showToast("获取小区数量失败");
                     }
 
                     @Override
@@ -230,14 +313,14 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 }
             }
             //添加marker
-            Set<Long> cellIds = markersMap.keySet();
-            for (CellItemEntity item : cells) {
-                if (!cellIds.contains(item.getObjctId())) {
-                    MarkerOptions markerOptions = createMarkerOptions(item);
-                    Marker marker = aMap.addMarker(markerOptions);
-                    markersMap.put(item.getObjctId(), marker);
-                }
-            }
+//            Set<Long> cellIds = markersMap.keySet();
+//            for (CellItemEntity item : cells) {
+//                if (!cellIds.contains(item.getObjctId())) {
+//                    MarkerOptions markerOptions = createMarkerOptions(item);
+//                    Marker marker = aMap.addMarker(markerOptions);
+//                    markersMap.put(item.getObjctId(), marker);
+//                }
+//            }
             moveToCurCellsRange(cells);
             updateIsShowCity();
             updateMarkersShow();
@@ -265,10 +348,10 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         if (view.getId() == R.id.tv_choose) {
             if (addCellToPlanPresenter != null) {
                 clickPosition[0] = ScreenUtils.getScreenWidth() - DensityUtil.dip2px(16);
-                clickPosition[1] = ScreenUtils.getScreenHeight()- DensityUtil.dip2px(16);
-                RuntimeUtils.mapOrListAddPositionAnimation=clickPosition;
+                clickPosition[1] = ScreenUtils.getScreenHeight() - DensityUtil.dip2px(16);
+                RuntimeUtils.mapOrListAddPositionAnimation = clickPosition;
                 RuntimeUtils.animationImagePath = item.getCellLogo();
-                addCellToPlanPresenter.showPlanPicker(item.getObjctId(),false);
+                addCellToPlanPresenter.showPlanPicker(item.getObjctId(), false);
             }
         } else {
             Bundle bundle = new Bundle();
@@ -319,18 +402,24 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     /**
      * 往地图上添加marker
      */
-    public MarkerOptions createMarkerOptions(CellItemEntity cell) {
-        View view = View.inflate(getContext(), R.layout.view_search_cell_marker, null);
-        TextView tvName = view.findViewById(R.id.tv_name);
-        TextView tvLift = view.findViewById(R.id.tv_lift);
-        tvName.setText(cell.getCellName());
-        tvLift.setText(String.format("电梯数%s个", cell.getLiftNum()));
-        Bitmap bitmap = convertViewToBitmap(view);
-        return new MarkerOptions()
-                .title(String.valueOf(cell.getObjctId()))
-                .position(new LatLng(cell.getLatitude(), cell.getLongitude()))
-                .draggable(false)
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+    public MarkerOptions createMarkerOptions(RecommendHouseEntiy cell) {
+        try {
+            View view = View.inflate(getContext(), R.layout.view_search_cell_marker, null);
+            TextView tvName = view.findViewById(R.id.tv_name);
+            TextView tvLift = view.findViewById(R.id.tv_lift);
+            tvName.setText(cell.name);
+            tvLift.setText(String.format("电梯数%s个", cell.numberElevator));
+            Bitmap bitmap = convertViewToBitmap(view);
+            return new MarkerOptions()
+                    .title(String.valueOf(cell.id))
+                    .position(new LatLng(cell.latitude, cell.longitude))
+                    .draggable(false)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+        }catch (Exception e){
+
+            return null;
+        }
+
     }
 
     public void moveMapToPositon(double longitude, double latitude, float zoomLevel) {
@@ -412,6 +501,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         }
         mapView.onDestroy();
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -452,5 +542,48 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     @Override
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @OnClick()
+    public void onViewClicked() {
+
+    }
+
+    @OnClick({R.id.img_menu, R.id.img_current, R.id.img_zoom,R.id.img_add,R.id.ll_point})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_menu:
+
+                break;
+            case R.id.img_current:
+                moveMapToPositon(longitude,latitude,cityZoomLevel+7f);
+                break;
+            case R.id.img_zoom:
+                moveMapToPositon(longitude,latitude,cityZoomLevel+3f);
+                break;
+            case R.id.img_add:
+                if (isCertification()){
+                    DialogUtils.shwoCertificationDialog(getActivity());
+                }else {
+                    AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
+                    advertisPutDialog.show();
+                }
+
+                break;
+            case R.id.ll_point:
+
+                ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(planId));
+                break;
+                default:
+        }
     }
 }

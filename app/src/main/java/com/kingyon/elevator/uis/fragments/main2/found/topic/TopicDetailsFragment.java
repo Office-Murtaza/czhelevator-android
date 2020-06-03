@@ -2,17 +2,29 @@ package com.kingyon.elevator.uis.fragments.main2.found.topic;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
-import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.fragments.main2.found.utilsf.BaseFragment;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -20,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -28,52 +41,115 @@ import butterknife.Unbinder;
  * @Author:Mrczh
  * @Instructions:
  */
-public class TopicDetailsFragment extends BaseFragment {
+public class TopicDetailsFragment extends FoundFragemtUtils {
     AttentionAdapter attentionAdapter;
-    List<String> list = new ArrayList<>();
+    List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
     @BindView(R.id.rv_attention_list)
     RecyclerView rvAttentionList;
     Unbinder unbinder;
-
+    String type;
+    int topicId;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+    @BindView(R.id.rl_null)
+    RelativeLayout rlNull;
+    @BindView(R.id.smart_refresh_layout)
+    SmartRefreshLayout smartRefreshLayout;
+    int page = 1;
 
     @Override
-    protected int setContentView() {
+    public int getContentViewId() {
         return R.layout.fragment_topic_deatils;
     }
 
+    public TopicDetailsFragment setIndex(String type,int topicId) {
+        this.type = type;
+        this.topicId = topicId;
+        return (this);
+    }
     @Override
-    protected void lazyLoad() {
-        initUI();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.e("onRefresh");
+                page = 1;
+                recommendEntityList.clear();
+                httpQueryAttention(1, topicId, type);
+            }
+        });
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.e("onLoadMore");
+                page++;
+                httpQueryAttention(page, topicId, type);
+            }
+        });
     }
 
+    private void httpQueryAttention(int page, int  topicId, String type) {
+        LogUtils.e(page, topicId, type);
+//        showProgressDialog("请稍后...");
+        NetService.getInstance().steTopicAttention(page, topicId, type)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        hideProgress();
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        if (ex.getCode() == -102) {
+                            if (page > 1) {
+                                ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
+                            } else {
+                                rvAttentionList.setVisibility(View.GONE);
+                                rlError.setVisibility(View.GONE);
+                                rlNull.setVisibility(View.VISIBLE);
+                            }
 
-    private void initUI() {
-        /**
-         * 1文字
-         * 2图片
-         * 3视频
-         * 4文字+图片
-         * 5文字+视频
-         * */
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("5");
-        list.add("1");
-        list.add("5");
-        list.add("4");
-        list.add("3");
-        list.add("2");
-        list.add("2");
-        list.add("1");
-        rvAttentionList = getContentView().findViewById(R.id.rv_attention_list);
-        if (rvAttentionList != null) {
-            attentionAdapter = new AttentionAdapter(getActivity(), list);
-            rvAttentionList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvAttentionList.setAdapter(attentionAdapter);
+                        } else if (ex.getCode() == 100200) {
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        } else {
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.VISIBLE);
+                            rlNull.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
+                        hideProgress();
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        rvAttentionList.setVisibility(View.VISIBLE);
+                        rlError.setVisibility(View.GONE);
+                        rlNull.setVisibility(View.GONE);
+                        dataAdd(conentEntity);
+
+                    }
+                });
+
+
+    }
+
+    private void dataAdd(ConentEntity<QueryRecommendEntity> conentEntity) {
+        for (int i = 0; i < conentEntity.getContent().size(); i++) {
+            QueryRecommendEntity queryRecommendEntity = new QueryRecommendEntity();
+            queryRecommendEntity = conentEntity.getContent().get(i);
+            recommendEntityList.add(queryRecommendEntity);
         }
-
+        if (attentionAdapter == null || page == 1) {
+            attentionAdapter = new AttentionAdapter((BaseActivity) getActivity());
+            attentionAdapter.addData(recommendEntityList);
+            rvAttentionList.setAdapter(attentionAdapter);
+            rvAttentionList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
+        } else {
+            attentionAdapter.addData(recommendEntityList);
+            attentionAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -88,5 +164,30 @@ public class TopicDetailsFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    protected void lazyLoad() {
+        if (smartRefreshLayout!=null) {
+            smartRefreshLayout.autoRefresh(100);
+        }else {
+            httpQueryAttention(1, topicId, type);
+        }
+    }
+
+
+    @Override
+    public void init(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void dealLeackCanary() {
+
+    }
+
+    @OnClick(R.id.rl_error)
+    public void onViewClicked() {
+        httpQueryAttention(1, topicId, type);
     }
 }

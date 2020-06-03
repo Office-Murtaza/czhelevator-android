@@ -2,55 +2,58 @@ package com.kingyon.elevator.uis.fragments.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.CellItemEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.StateHolder;
 import com.kingyon.elevator.entities.TimeHolder;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignNewActivity;
-import com.kingyon.elevator.uis.activities.plan.OrderEditActivity;
-import com.kingyon.elevator.uis.adapters.PlanAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PlanAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
-import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.kingyon.elevator.utils.RuntimeUtils;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
-import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshLoadingFragment;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.leo.afbaselibrary.widgets.emptyprovider.FadeViewAnimProvider;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,7 +66,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
+
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
 
 /**
  * Created by GongLi on 2019/2/19.
@@ -97,6 +104,25 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     LinearLayout llBar;
     @BindView(R.id.tv_select_all)
     TextView tv_select_all;
+    @BindView(R.id.img_select_all)
+    ImageView imgSelectAll;
+    @BindView(R.id.tv_number)
+    TextView tvNumber;
+    @BindView(R.id.tv_folding)
+    TextView tvFolding;
+    @BindView(R.id.pre_recycler_view)
+    RecyclerView preRecyclerView;
+    @BindView(R.id.pre_refresh)
+    SwipeRefreshLayout preRefresh;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
+    @BindView(R.id.fl_bar)
+    FrameLayout flBar;
+    @BindView(R.id.ll_root)
+    LinearLayout llRoot;
+    Unbinder unbinder;
+    @BindView(R.id.ll_xz)
+    LinearLayout llXz;
     /**
      * 是否全部选中
      */
@@ -167,7 +193,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
      */
     public void updateTime(String startDate, String endDate) {
         try {
-            if (simpleDateFormat==null) {
+            if (simpleDateFormat == null) {
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             }
             startTime = simpleDateFormat.parse(startDate).getTime();
@@ -184,8 +210,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         updateBarVisiable();
         if (!TextUtils.isEmpty(Net.getInstance().getToken())) {
             NetService.getInstance().plansList(planType, startTime, endTime, page)
-                    .compose(this.<PageListEntity<CellItemEntity>>bindLifeCycle())
-                    .subscribe(new CustomApiCallback<PageListEntity<CellItemEntity>>() {
+                    .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
+                    .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                         @Override
                         protected void onResultError(ApiException ex) {
                             showToast(ex.getDisplayMessage());
@@ -194,7 +220,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                         }
 
                         @Override
-                        public void onNext(PageListEntity<CellItemEntity> cellItemEntityPageListEntity) {
+                        public void onNext(ConentEntity<CellItemEntity> cellItemEntityPageListEntity) {
                             if (cellItemEntityPageListEntity == null) {
                                 throw new ResultException(9000, "返回参数异常");
                             }
@@ -246,6 +272,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanCount, null));
                         }
                     });
+
+
         } else {
             mCurrPage = FIRST_PAGE;
             mItems.clear();
@@ -346,6 +374,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         try {
             if (llDelete != null) {
                 llDelete.setVisibility(editMode ? View.VISIBLE : View.GONE);
+                tvDeleteAll.setVisibility(editMode ? View.VISIBLE : View.GONE);
+                llXz.setVisibility(editMode ? View.GONE : View.VISIBLE);
             }
             if (planAdapter != null) {
                 planAdapter.setEditMode(editMode);
@@ -389,7 +419,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             }
         }
         tvCellNum.setText(String.format("覆盖%s个小区", cellNum));
+        tvNumber.setText(String.format("(%s/%s)", cellNum, mItems.size()));
         tvScreenNum.setText(String.format("%s面屏", screenNum));
+        imgSelectAll.setSelected(cellNum==mItems.size());
         tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(sum * FormatUtils.getInstance().getTimeDays(startTime, endTime))));
     }
 
@@ -407,7 +439,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             }
         }
         tvDeleteAll.setSelected(allEdit);
-        tvDeleteNumber.setText(String.format("已选%s个小区", editNum));
+        tvDeleteAll.setText(String.format("全选(%s/%s)", editNum, mItems.size()));
+        tvDeleteNumber.setText(String.format("已选：%s个小区", editNum));
     }
 
     public void setEditMode(boolean editMode) {
@@ -423,7 +456,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         return spannableString;
     }
 
-    @OnClick({R.id.tv_ensure, R.id.tv_delete_all, R.id.tv_delete, R.id.tv_select_all})
+    @OnClick({R.id.tv_ensure, R.id.tv_delete_all, R.id.tv_delete, R.id.tv_select_all, R.id.img_select_all, R.id.tv_folding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_ensure:
@@ -448,6 +481,25 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                     }
                 }
                 break;
+            case R.id.img_select_all:
+                if (mItems.size() > 0) {
+                    if (mItems.size() == 1) {
+                        if (mItems.get(0) instanceof StateHolder) {
+                            MyToastUtils.showShort("没有小区可供选择，请先添加小区 ");
+                            return;
+                        }
+                        clickSelectAll();
+                    } else {
+                        clickSelectAll();
+                    }
+                }
+                break;
+            case R.id.tv_folding:
+                /*折叠*/
+
+
+                break;
+
         }
     }
 
@@ -455,10 +507,12 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         if (isSelectAll) {
             isSelectAll = false;
             tv_select_all.setText("全选");
+            imgSelectAll.setSelected(false);
             setSelectAllStatus(false);
         } else {
             isSelectAll = true;
-            tv_select_all.setText("取消");
+            tv_select_all.setText("全选");
+            imgSelectAll.setSelected(true);
             setSelectAllStatus(true);
         }
     }
@@ -469,18 +523,23 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             showToast("至少需要一个小区一面屏");
             return;
         }
+        LogUtils.e(planType);
         RuntimeUtils.goPlaceAnOrderEntity = new GoPlaceAnOrderEntity(orderCells, startTime, endTime, planType);
         RuntimeUtils.goPlaceAnOrderEntity.setTotalDayCount(FormatUtils.getInstance().getTimeDays(startTime, endTime));
-        if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
+        if (isCertification()){
+            DialogUtils.shwoCertificationDialog(getActivity());
+        }else {
+            if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
 //            Bundle bundle = new Bundle();
 //            bundle.putString(CommonUtil.KEY_VALUE_1, planType);
 //            bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
 //            bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
 //            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
 //            startActivityForResult(OrderEditActivity.class, 8101, bundle);
-            MyActivityUtils.goActivity(getActivity(), ConfirmOrderActivity.class);
-        } else {
-            MyActivityUtils.goPhotoPickerActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+                MyActivityUtils.goActivity(getActivity(), ConfirmOrderActivity.class);
+            } else {
+                MyActivityUtils.goPhotoPickerActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+            }
         }
     }
 
@@ -660,7 +719,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
-                    startActivity(LoginActivity.class);
+                    startActivity(LoginActiivty.class);
                 } else {
                     autoLoading();
                 }
@@ -706,7 +765,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPaySuccess(EventBusObjectEntity eventBusObjectEntity) {
         if (eventBusObjectEntity.getEventCode() == EventBusConstants.ReflashPlanList) {
-             LogUtils.d("支付成功刷新计划单列表-------------");
+            LogUtils.d("支付成功刷新计划单列表-------------");
             autoRefresh();
         }
     }
@@ -721,9 +780,24 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         LeakCanaryUtils.watchLeakCanary(this);
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

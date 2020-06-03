@@ -4,11 +4,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.net.http.SslError;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,24 +16,19 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.customview.CommentDetailBottomSheetDialog;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.customview.NonScrollableListView;
 import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.NewsDetailsEntity;
-import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.entities.NewsSharedEntity;
-import com.kingyon.elevator.entities.RecommendInfoEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
@@ -46,23 +37,16 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.presenter.NewsDetailsPresenter;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
-import com.kingyon.elevator.uis.adapters.NewsCommentAdapter;
-import com.kingyon.elevator.utils.DensityUtil;
-import com.kingyon.elevator.utils.QuickClickUtils;
-import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.uis.adapters.adapterone.NewsCommentAdapter;
 import com.kingyon.elevator.view.NewsDetailsView;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.utils.ScreenUtil;
-import com.leo.afbaselibrary.widgets.ProgressWebView;
-import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -267,6 +251,11 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
 
                         @Override
                         public void onAttached(ViewGroup rootView) {
+
+                        }
+
+                        @Override
+                        public void onIcon() {
 
                         }
                     });

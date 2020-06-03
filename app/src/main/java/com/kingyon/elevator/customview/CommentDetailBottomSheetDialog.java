@@ -7,17 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
@@ -28,15 +24,13 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.CommentEntity;
-import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
-import com.kingyon.elevator.uis.adapters.NewsCommentAdapter;
-import com.kingyon.elevator.uis.adapters.NewsReplyCommentAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.NewsReplyCommentAdapter;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.GlideUtils;
@@ -172,6 +166,11 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
             public void onAttached(ViewGroup rootView) {
 
             }
+
+            @Override
+            public void onIcon() {
+
+            }
         });
     }
 
@@ -195,6 +194,11 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
 
             @Override
             public void onAttached(ViewGroup rootView) {
+
+            }
+
+            @Override
+            public void onIcon() {
 
             }
         });

@@ -5,15 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:paddingTop="@dimen/dp10"
     android:paddingRight="@dimen/dp10"
     android:paddingLeft="@dimen/dp10"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/fl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
         android:orientation="horizontal"
         android:gravity="center"
         >

@@ -67,7 +67,7 @@ public class FormatUtils {
         int index3 = priceStr.indexOf("/");
         int index4 = priceStr.length();
         result.setSpan(new ForegroundColorSpan(0xFFABABAB), index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        result.setSpan(new ForegroundColorSpan(0xFF333333), index3, index4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        result.setSpan(new ForegroundColorSpan(0xFFff3049), index3, index4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         result.setSpan(new AbsoluteSizeSpan(13, true), index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         result.setSpan(new AbsoluteSizeSpan(13, true), index3, index4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return result;

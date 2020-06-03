@@ -13,7 +13,7 @@
     <dimen name="WheelItemWidthSpace">32dp</dimen>
     <dimen name="home_img">25dp</dimen>
     <dimen name="size_home_text">12dp</dimen>
-
+    <dimen name="grid_expected_size">90dp</dimen>
 
     <dimen name="gr_img">20dp</dimen>
     <dimen name="size_0">0dp</dimen>

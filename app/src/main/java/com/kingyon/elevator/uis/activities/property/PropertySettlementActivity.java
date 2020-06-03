@@ -9,7 +9,7 @@ import com.kingyon.elevator.entities.SettlementEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.IncomeRecordsActivity;
-import com.kingyon.elevator.uis.adapters.PropertySettlementAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PropertySettlementAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;

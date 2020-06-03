@@ -22,9 +22,9 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnClickWithObjectListener;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.uis.activities.order.OrderPayActivity;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.pops.OrderStatusWindow;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -418,7 +418,7 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
-                    startActivity(LoginActivity.class);
+                    startActivity(LoginActiivty.class);
                 } else {
                     autoLoading();
                 }
@@ -431,4 +431,5 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
 }

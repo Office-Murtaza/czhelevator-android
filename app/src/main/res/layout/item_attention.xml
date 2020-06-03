@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/ll_itme_root"
     android:paddingLeft="@dimen/dp10"
     android:paddingRight="@dimen/dp10"
     android:paddingTop="@dimen/dp10"
@@ -13,26 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+
         >
 
         <RelativeLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40">
 
             <ImageView
                 android:id="@+id/img_tx"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/ic_launcher"
                 />
             <TextView
-                android:layout_width="10dp"
-                android:layout_height="@dimen/dp10"
+                android:id="@+id/tv_authstatus"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
                 android:text="V"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:textSize="@dimen/dp5"
+                android:textSize="@dimen/sp_10"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:background="@drawable/bg_gf_lanv"
@@ -43,17 +46,20 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="屏多多官方"
             android:textColor="#ff333333"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dp10"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp_18"
+
             />
 
 
         <ImageView
+            android:id="@+id/img_talent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp5"
@@ -68,6 +74,7 @@
             android:layout_height="wrap_content"/>
 
         <ImageView
+            android:id="@+id/img_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_comm_menu"
@@ -75,31 +82,34 @@
             />
     </LinearLayout>
 
-    <TextView
+    <com.bobomee.android.mentions.text.MentionTextView
         android:id="@+id/tv_title"
         android:layout_marginTop="@dimen/dp10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="描述内容--刘兵亮发起了“汉字百人舞”征集设计师集体造字，参与设计师近百人。#字体设计大赛#"
         android:textColor="#ff333333"
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_16"
+        android:maxLines="3"
+        android:ellipsize="end"
+
         />
 
     <RelativeLayout
         android:id="@+id/rv_conent_img"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp10"
-        android:background="@drawable/bg_ad_screen"
         >
 
 
     <LinearLayout
         android:id="@+id/ll_conent_img"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         tools:ignore="Orientation">
+
+
     </LinearLayout>
 
       <LinearLayout
@@ -116,6 +126,7 @@
           >
 
           <TextView
+              android:id="@+id/tv_video_number"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="243次播放"
@@ -129,6 +140,7 @@
               android:layout_height="wrap_content"/>
 
           <TextView
+              android:id="@+id/tv_video_time"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="1:23"
@@ -152,17 +164,19 @@
 
 
         <ImageView
+            android:id="@+id/img_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_small_like"
             />
         <TextView
+            android:id="@+id/tv_like_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="109"
             android:textColor="#ff999999"
             android:layout_marginLeft="@dimen/dp5"
-            android:textSize="11sp"
+            android:textSize="@dimen/sp_12"
             />
 
         <ImageView
@@ -177,22 +191,23 @@
             android:text="评论"
             android:textColor="#ff999999"
             android:layout_marginLeft="@dimen/dp5"
-            android:textSize="11sp"
+            android:textSize="@dimen/sp_12"
             />
         <ImageView
+            android:id="@+id/img_shared"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_small_share"
             android:layout_marginLeft="@dimen/dp30"
             />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="评论"
             android:layout_marginLeft="@dimen/dp5"
+            android:text="分享"
             android:textColor="#ff999999"
-            android:textSize="11sp"
-            />
+            android:textSize="@dimen/sp_12" />
 
         <ImageView
             android:layout_weight="1"
@@ -200,16 +215,18 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1小时前"
             android:textColor="#ffb4b3b3"
-            android:textSize="11sp"
+            android:textSize="@dimen/sp_12"
             />
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/ll_like"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@mipmap/bg_like_message"
@@ -229,6 +246,7 @@
 
 
         <ImageView
+            android:id="@+id/img_topimg"
             android:layout_width="@dimen/dp20"
             android:layout_height="@dimen/dp20"
             android:layout_gravity="center"
@@ -238,13 +256,14 @@
 
 
         <TextView
+            android:id="@+id/tv_like_number_bottm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="等109人觉得很赞"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dp10"
             android:textColor="#ff333333"
-            android:textSize="11sp"
+            android:textSize="@dimen/sp_12"
             />
 
     </LinearLayout>

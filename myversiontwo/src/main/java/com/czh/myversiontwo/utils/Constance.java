@@ -43,6 +43,42 @@ public class Constance {
     public static final String ACTIVITY_ACTIVITYUTILS_PICTURE_CHOOSE = "/app/activityutils/picturechoose";
     /**视频选择*/
     public static final String ACTIVITY_ACTIVITYUTILS_VIDEO_CHOOSE = "/app/activityutils/videochoose";
+    /**c传值*/
+    public static final String ACTIVITY_STRING_OBJECT = "/app/activityutils/videochoose";
+    /**评论二级*/
+    public static final String ACTIVITY_COMMENT_TWO = "/app/activity/commenttwo";
+    /**封面选择*/
+    public static final String ACTIVITY_VIDEO_COVER = "/app/activity/videocover";
+    /**广告样式*/
+    public static final String ACTIVITY_ADVERTIS_STYLE = "/app/activity/advertisstyle";
+    /**点位详情*/
+    public static final String ACTIVITY_ADPOINT_DETAILS = "/app/activity/adpointdetails";
+    /**消息@和评论*/
+    public static final String ACTIVITY_MASSAGE_COMMENT = "/app/activity/message/comment";
+    /**消息*/
+    public static final String ACTIVITY_MASSAGE_MSAGGER = "/app/activity/message/msagger";
+    /**关注*/
+    public static final String ACTIVITY_MASSAGE_ATTENTION= "/app/activity/message/attention";
+    /**消息点赞*/
+    public static final String ACTIVITY_MASSAGE_LIKE = "/app/activity/message/like";
+    /**推送消息*/
+    public static final String ACTIVITY_MESSAGE_PUSH = "/app/activity/message/push";
+    /**推送内容*/
+    public static final String ACTIVITY_TEXT_CONTENT = "/app/activity/content";
+    /**认证*/
+    public static final String ACTIVITY_IDENTITY_INFO = "/app/activity/identityinfo";
+    /**用户二维码*/
+    public static final String ACTIVITY_RE_CODE = "/app/activity/recode";
+    /**第三方绑定界面*/
+    public static final String ACTIVITY_ACCOUNT_BINDING = "/app/activity/accountbinding";
+    /**关于*/
+    public static final String ACTIVITY_USER_ABOUT = "/app/activity/about";
+
+
+
+
+
+
 
 
 

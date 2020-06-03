@@ -6,8 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.czh.myversiontwo.R;
+
+import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -18,10 +25,10 @@ import com.czh.myversiontwo.R;
 public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapter.ViewHolder> {
 
     Context context;
-    int data;
-    public RecommendtopAdapter(Context context,int data){
+    ConentEntity<QueryRecommendTopEntity> conentEntity;
+    public RecommendtopAdapter(Context context, ConentEntity<QueryRecommendTopEntity> conentEntity){
         this.context = context;
-        this.data = data;
+        this.conentEntity = conentEntity;
     }
     @NonNull
     @Override
@@ -33,17 +40,36 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (holder != null) {
+            holder.tvTitle.setText(conentEntity.getContent().get(position).title);
+            holder.tvName.setText(conentEntity.getContent().get(position).sourceName);
+            holder.tvNumber.setText(conentEntity.getContent().get(position).readNum+"阅读");
+            if (conentEntity.getContent().get(position).image==null){
+                holder.ll_image.setVisibility(View.GONE);
+            }else {
+                GlideUtils.loadRoundCornersImage(context,conentEntity.getContent().get(position).image,holder.imageView,20);
+            }
 
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data;
+        return conentEntity.getContent().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTitle,tvName,tvNumber;
+        ImageView imageView;
+        LinearLayout ll_image;
         public ViewHolder(View itemView) {
             super(itemView);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvNumber = itemView.findViewById(R.id.tv_number);
+            imageView = itemView.findViewById(R.id.img_topimg);
+            ll_image = itemView.findViewById(R.id.ll_image);
+
         }
     }
 }

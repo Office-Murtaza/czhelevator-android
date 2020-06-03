@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/bg_article_function_down"
+    android:orientation="horizontal"
+    android:paddingRight="@dimen/dp10"
+    android:paddingLeft="@dimen/dp10"
+    android:paddingTop="@dimen/dp5"
+    android:paddingBottom="@dimen/dp5"
+    >
+
+
+    <ImageView
+        android:id="@+id/img_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_front_blue"
+        
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+    <ImageView
+        android:id="@+id/img_tilt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_tilt"
+        
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+    <ImageView
+        android:id="@+id/img_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_bold"
+        
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+
+    <ImageView
+        android:id="@+id/img_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_level"
+        
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+
+    <ImageView
+        android:id="@+id/img_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_number"
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+
+    <ImageView
+        android:id="@+id/img_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_article_point"
+        android:padding="@dimen/dp10"
+        ></ImageView>
+
+
+</LinearLayout>

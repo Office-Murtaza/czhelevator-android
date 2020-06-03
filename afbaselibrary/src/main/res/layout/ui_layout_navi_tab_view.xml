@@ -37,18 +37,17 @@
             android:layout_height="16dp"
             android:layout_alignRight="@id/tab_icon"
             android:layout_alignTop="@id/tab_icon"
-            android:layout_marginTop="-3dp"
-            android:layout_marginRight="-6dp"
             android:background="@drawable/bg_red_msg_num"
             android:gravity="center"
+            android:layout_marginRight="14dp"
             android:minWidth="16dp"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:maxLines="1"
             android:ellipsize="end"
+            android:visibility="gone"
             android:textColor="@color/white_normal"
             android:textSize="@dimen/txt_small"
-            android:visibility="gone"
             tools:text="8" />
 
         <TextView

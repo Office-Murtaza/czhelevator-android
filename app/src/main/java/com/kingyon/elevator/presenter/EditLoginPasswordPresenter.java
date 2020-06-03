@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.MyActivityUtils;

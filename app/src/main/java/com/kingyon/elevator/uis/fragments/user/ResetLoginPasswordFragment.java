@@ -17,6 +17,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditLoginPasswordPresenter;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
@@ -119,7 +120,7 @@ public class ResetLoginPasswordFragment extends MvpBaseFragment<EditLoginPasswor
            // DialogUtils.getInstance().hideEditSuccessTipsDialog();
             presenter.cancel();
             ActivityUtils.finishAllActivities();
-            MyActivityUtils.goActivity(getContext(), LoginActivity.class);
+            MyActivityUtils.goActivity(getContext(), LoginActiivty.class);
        // });
     }
 

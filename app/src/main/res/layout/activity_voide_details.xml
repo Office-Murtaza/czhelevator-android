@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
 
@@ -23,7 +23,7 @@
             <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
                 android:id="@+id/video"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="@dimen/dp_180"/>
 
 
             <LinearLayout
@@ -72,10 +72,18 @@
 
         </RelativeLayout>
 
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smart_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl"
+            app:srlEnableAutoLoadMore="true"
+            app:srlEnableRefresh="false">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/rl"
+
                 android:orientation="vertical"
                 android:padding="@dimen/dp10"
                 >
@@ -163,14 +171,11 @@
                         android:layout_height="@dimen/dp1"
                         android:background="#E1E1E1"/>
 
-                    <TextView
+                    <com.bobomee.android.mentions.text.MentionTextView
                         android:id="@+id/tv_content"
                         android:layout_marginTop="@dimen/dp10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="描述内容--刘兵亮发起了“汉字百人舞”征集设计师集体造字，参与设计师近百人。
-蓝湖是一款产品文档和设计图的共享平台，帮助互联网团队更好地管理文档和设计图。蓝湖可以在线展示Axure，自动生成设计图标注，与团队共享设计图,展示页面之间的跳转关系。
-#字体设计大赛#"
                         android:textColor="#ff333333"
                         android:textSize="14sp"
                         />
@@ -219,7 +224,7 @@
             </LinearLayout>
 
 
-
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

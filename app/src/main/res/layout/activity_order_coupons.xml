@@ -38,7 +38,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="#F8F6F3"
+                android:background="#F3F3F9"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/spacing_default"
@@ -61,7 +61,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="优惠金额：0¥"
-                    android:textColor="#ffff6b00"
+                    android:textColor="#999999"
                     android:textSize="12sp" />
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#ff6c6c6c"
                     android:textSize="12sp"
-                    tools:text="订单金额：500¥" />
+                    tools:text="实付金额：0" />
             </LinearLayout>
 
             <android.support.v4.widget.SwipeRefreshLayout

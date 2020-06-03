@@ -11,6 +11,7 @@ import com.amap.api.services.district.DistrictItem;
 import com.amap.api.services.district.DistrictResult;
 import com.amap.api.services.district.DistrictSearch;
 import com.amap.api.services.district.DistrictSearchQuery;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -86,7 +87,20 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.CityFacilityInfoEntiy;
 import com.kingyon.elevator.entities.entities.CodeEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
+import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
+import com.kingyon.elevator.entities.entities.QueryTopicEntity;
+import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -186,6 +200,147 @@ public class NetService {
     /*2.0找回密码*/
     public Observable<String> setResetPassword(String phone,String verifyCode,String newPassword){
         return addSchedulers(getApi().getResetPassword(phone,verifyCode,newPassword));
+    }
+    /*2.0话题*/
+    public Observable<ConentEntity<QueryTopicEntity.PageContentBean>> setOueryTopic(int page,String title,int label){
+        return addSchedulers(getApi().getOueryTopic(page,title,label));
+    }
+    /*2.0话题栏目*/
+    public Observable<TopicLabelEntity<TopicLabelEntity.PageContentBean>> setTopicLable(){
+        return addSchedulers(getApi().getTopicLabel());
+    }
+
+    /*2.0内容发布*/
+    public Observable<String> setContentPublish(String title, String content, String image,String video, String type ,
+                                                String combination , String topicId , String atAccount ,int videoSize,
+                                                String videoCover,long playTime, int videoHorizontalVertical){
+        return addSchedulers(getApi().getContentPublish(title,content,image,video,
+                type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical));
+    }
+
+    /*2.0置顶内容*/
+    public Observable<ConentEntity<QueryRecommendTopEntity>> setQueryRecommendTop(){
+        return addSchedulers(getApi().getQueryRecommendTop());
+    }
+    /*2.0推荐内容*/
+    public Observable<ConentEntity<QueryRecommendEntity>> setQueryRecommend(int page,String title){
+        return addSchedulers(getApi().getQueryRecommend(page,title));
+    }
+    /*2.0关注内容*/
+    public Observable<ConentEntity<QueryRecommendEntity>> setQueryAttention(int page,String title,String orderBy){
+        return addSchedulers(getApi().getQueryAttention(page,title,orderBy));
+    }
+    /*2.0 内容点赞*/
+    public Observable<String> setLikeNot(String objId,String likeType,String handleType  ){
+        return addSchedulers(getApi().getLikeNot(objId,likeType,handleType));
+    }
+
+    /*2.0首页话题栏目*/
+    public Observable<ConentEntity<HomeTopicEntity>> setQueryTopicLabel(){
+        return addSchedulers(getApi().getQueryTopicLabel());
+    }
+    /*2.0话题内容*/
+    public Observable<ConentEntity<HomeTopicConentEntity>> setQueryTopicConetn(int page,int label,String title,int id){
+        if (id==0){
+            return addSchedulers(getApi().getQueryTopicConetn(page, label, title, ""));
+        }else {
+            return addSchedulers(getApi().getQueryTopicConetn(page, label, title, String.valueOf(id)));
+        }
+    }
+    /*2.0点赞*/
+    public Observable<String> setHandlerLikeOrNot(int objId,String likeType,String handleType ){
+        return addSchedulers(getApi().getHandlerLikeOrNot(objId,likeType,handleType));
+    }
+    /*2.0删除*/
+    public Observable<String> setDelContent(int contentId){
+        return addSchedulers(getApi().getDelContent(contentId));
+    }
+
+    /*2.0举报*/
+    public Observable<String> setReport(int objId, String reportType,String reportContent){
+        return addSchedulers(getApi().getReport(objId,reportType,reportContent));
+    }
+
+    /*2.0内容评论*/
+    public Observable<String> setComment(int contentId,int parentId,String comment){
+        return addSchedulers(getApi().getComment(contentId,parentId,comment));
+    }
+
+    /*2.0添加浏览数*/
+    public Observable<String> setAddBrowse(int contentId){
+        return addSchedulers(getApi().getAddBrowse(contentId));
+    }
+
+    /*2.0获取内容评论数据*/
+    public Observable<ConentEntity<CommentListEntity>> setQueryListComment(int page, int contentId){
+        return addSchedulers(getApi().getQueryListComment(page,contentId));
+    }
+
+    /*2.0获取子级评论内容*/
+    public Observable<ConentEntity<CommentListEntity>> setCommentBy(int page, int contentId,int parentId ){
+        return addSchedulers(getApi().getCommentBy(page,contentId,parentId));
+    }
+
+    /*2.0用户关注*/
+    public Observable<String> setAddAttention( String handlerType,String beFollowerAccount){
+        return addSchedulers(getApi().getAddAttention(handlerType,beFollowerAccount));
+    }
+
+    /*2.0获取用户*/
+    public Observable<ConentEntity<AttenionUserEntiy>> setAttention(int page,String handlerType){
+        return addSchedulers(getApi().getAttention(page,handlerType));
+    }
+
+    /*2.0获取投放首页*/
+    public Observable<ConentOdjerEntity> setCityFacilty(String provinceCode, String cityCode, String countyCode){
+        if (cityCode!=null) {
+            return addSchedulers(getApi().getCityFacility(provinceCode, cityCode, countyCode));
+        }else {
+            return addSchedulers(getApi().getCityFacility(provinceCode, "520100", countyCode));
+        }
+    }
+    /*2.0获取话题内容*/
+
+    public Observable<ConentEntity<QueryRecommendEntity>>steTopicAttention(int page,int topicId ,String orderBy){
+        return addSchedulers(getApi().getTopicAttention(page,topicId,orderBy));
+    }
+
+    /*2.0评论删除*/
+    public Observable<String> setDelcomment(int commentId){
+        return addSchedulers(getApi().getDelcomment(commentId));
+    }
+
+    /*2.0获取推荐小区*/
+
+    public Observable<ConentEntity<RecommendHouseEntiy>> setRecommendHouse(int page , String latitude , String longitude , int cityId,
+                                                                           String areaId,  String pointType, String keyWord, String distance){
+        if (latitude!=null) {
+            return addSchedulers(getApi().getRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance));
+        }else {
+            return addSchedulers(getApi().getRecommendHouse(page, "26.578343", "106.713478", cityId, areaId, pointType, keyWord, distance));
+        }
+    }
+
+    /*2.0添加编辑计划*/
+
+    public Observable<String> plansAdd(Long planId
+            , String planName, String type) {
+        return addSchedulers(getApi().plansAdd(planId, planName, type));
+    }
+
+
+//    public Observable<String> setPlasAddOrModify(int planId,String planName,String type){
+//        return addSchedulers(getApi().getPlasAddOrModify(planId,planName,type));
+//    }
+
+    /*2.0获取点位筛选内容*/
+    public Observable<ConentEntity<PointClassicEntiy>> setPointClassic(){
+        return addSchedulers(getApi().getPointClassic());
+    }
+
+    /*2.0小区添加计划*/
+    public Observable<String> plansAddCells(String type, String cells) {
+        return addSchedulers(getApi().plansAddCells(type, cells));
     }
 
 
@@ -504,8 +659,8 @@ public class NetService {
     public Observable<CellDetailsEntity> cellDetails(long objectId) {
         return addSchedulers(getApi().cellDetails(objectId));
     }
-
-    public Observable<PageListEntity<CellItemEntity>> plansList(String type
+    /*2.0计划列表*/
+    public Observable<ConentEntity<CellItemEntity>> plansList(String type
             , Long startTime, Long endTime, int page) {
 //        return addSchedulers(getApi().plansList(type, startTime, endTime)
 //                .doOnNext(new Action1<List<CellItemEntity>>() {
@@ -524,25 +679,19 @@ public class NetService {
 //                }));
         return addSchedulers(getApi().plansList(type, startTime, endTime, page));
     }
-
+    /*2.0小区单独指定*/
     public Observable<List<PointItemEntity>> planCellsPoinList(long cellId, String type
             , long startTime, long endTime) {
         return addSchedulers(getApi().planCellsPoinList(cellId, type, startTime, endTime));
     }
 
-    public Observable<String> plansAdd(Long planId
-            , String planName, String type) {
-        return addSchedulers(getApi().plansAdd(planId, planName, type));
-    }
-
+    /*2.0点位计划删除*/
     public Observable<String> plansDelete(String planIds) {
         return addSchedulers(getApi().plansDelete(planIds));
     }
 
-    public Observable<String> plansAddCells(String type, String cells) {
-        return addSchedulers(getApi().plansAddCells(type, cells));
-    }
 
+    /*2.0点位计划删除小区*/
     public Observable<String> plansRemoveCells(String type, String cells) {
         return addSchedulers(getApi().plansRemoveCells(type, cells));
     }
@@ -615,9 +764,10 @@ public class NetService {
         return addSchedulers(getApi().removeLift(objectId));
     }
 
-    //订单
+    /*2.0订单提交*/
     public Observable<CommitOrderEntiy> commitOrder(String type, long startTime, long endTime
             , Long adId, String deviceParams, String coupons, long adIndustry) {
+        LogUtils.e(type,startTime,endTime,adId,deviceParams,coupons,adIndustry);
         long startRealTime;
         long curTime = System.currentTimeMillis();
         if (TextUtils.equals(TimeUtil.getYMdTime(startTime), TimeUtil.getYMdTime(curTime))) {
@@ -628,15 +778,16 @@ public class NetService {
         return addSchedulers(getApi().commitOrder(type, startRealTime, endTime, adId, deviceParams
                 , coupons, adIndustry));
     }
-
+    /*2.0订单详情*/
     public Observable<OrderDetailsEntity> orderDetatils(long orderId) {
         return addSchedulers(getApi().orderDetatils(orderId));
     }
-
+    /*2.0获取订单身份认证信息*/
     public Observable<OrderIdentityEntity> orderIdentityInfo() {
         return addSchedulers(getApi().orderIdentityInfo());
     }
 
+    /*2.0订单支付*/
     public Observable<WxPayEntity> orderPay(long orderId, String way) {
         Observable<WxPayEntity> zip = Observable.zip(getApi().orderPay(orderId, way), Observable.just(way), new Func2<WxPayEntity, String, WxPayEntity>() {
             @Override
@@ -650,47 +801,49 @@ public class NetService {
         });
         return addSchedulers(zip);
     }
-
+    /*2.0订单详情*/
     public Observable<PageListEntity<OrderDetailsEntity>> orderList(String status, int page) {
         return addSchedulers(getApi().orderList(status, page));
     }
-
+    /*2.0合同下载地址*/
     public Observable<DataEntity<String>> downloadContract() {
         return addSchedulers(getApi().downloadContract());
     }
 
+    /*2.0查看订单点位列表*/
     public Observable<List<PointItemEntity>> orderPoints(long orderId) {
         return addSchedulers(getApi().orderPoints(orderId));
     }
-
+    /*2.0申请下播*/
     public Observable<String> downAd(long orderId, long tagReasonId, String undercastRemarks) {
         return addSchedulers(getApi().downAd(orderId, tagReasonId, undercastRemarks));
     }
-
+    /*2.0查看监播*/
     public Observable<PageListEntity<AdDetectingEntity>> adPlayList(long orderId, long deviceId, int page) {
         return addSchedulers(getApi().adPlayList(orderId, deviceId, page));
     }
-
+    /*2.0获取=播原因*/
     public Observable<List<NormalElemEntity>> downAdTags() {
         return addSchedulers(getApi().downAdTags());
     }
-
+    /*2.0取消订单*/
     public Observable<String> orderCancel(long orderId) {
         return addSchedulers(getApi().orderCancel(orderId));
     }
 
+    /*2.0删除订单*/
     public Observable<String> orderDelete(long orderId) {
         return addSchedulers(getApi().orderDelete(orderId));
     }
 
-    //广告
+    /*2.0创建编辑广告*/
     public Observable<ADEntity> createOrEidtAd(final Long objectId, final boolean onlyInfo, String planType, final String screenType
-            , final String title, final String videoUrl, final String imageUrl, final String bgMusic, final String videoPath, final String imagePath) {
+            , final String title, final String videoUrl, final String imageUrl, final String bgMusic, final String videoPath, final String imagePath,String hashCode) {
         final Long[] durationResult = new Long[1];
         Observable<ADEntity> observable;
         if (TextUtils.isEmpty(videoUrl)) {
             observable = getApi().createOrEidtAd(objectId, onlyInfo, planType, screenType, title, videoUrl
-                    , imageUrl, bgMusic, null);
+                    , imageUrl, bgMusic, null,hashCode);
         } else {
             observable = getAvInfoDuration(videoUrl)
                     .flatMap(new Func1<Long, Observable<ADEntity>>() {
@@ -698,7 +851,7 @@ public class NetService {
                         public Observable<ADEntity> call(Long duration) {
                             durationResult[0] = duration;
                             return getApi().createOrEidtAd(objectId, onlyInfo, planType, screenType, title, videoUrl
-                                    , imageUrl, bgMusic, duration);
+                                    , imageUrl, bgMusic, duration,hashCode);
                         }
                     });
         }
@@ -792,11 +945,11 @@ public class NetService {
                 });
         return addSchedulers(observable);
     }
-
+    /*2.0我的广告列表*/
     public Observable<PageListEntity<ADEntity>> myAdList(String planType, int page) {
         return addSchedulers(getApi().myAdList(planType, page));
     }
-
+    /*2.0广告删除*/
     public Observable<String> deleteAd(long objectId) {
         return addSchedulers(getApi().deleteAd(objectId));
     }
@@ -805,7 +958,7 @@ public class NetService {
             , Long type, int page) {
         return addSchedulers(getApi().getPicAdTemplet(screenSplit, sort, type, page));
     }
-
+    /*2.0获取分类模板*/
     public Observable<List<NormalElemEntity>> getAdTempletType() {
         return addSchedulers(getApi().getAdTempletType());
     }
@@ -977,7 +1130,7 @@ public class NetService {
     public Observable<UnreadNumberEntity> unreadCount() {
         return addSchedulers(getApi().unreadCount());
     }
-
+    /*2.0审核未通过的订单数量*/
     public Observable<OrderFailedNumberEntity> orderPublishFailed() {
         return addSchedulers(getApi().orderPublishFailedNum());
     }
@@ -1038,46 +1191,84 @@ public class NetService {
         return addSchedulers(observable);
     }
 
-    public Observable<String> cooperationApply(final String partnerName, final String phone, final AMapCityEntity city) {
-        Observable<String> observable;
-        if (TextUtils.isEmpty(city.getAdcode())) {
-            observable = Observable.just(city)
-                    .flatMap(new Func1<AMapCityEntity, Observable<String>>() {
-                        @Override
-                        public Observable<String> call(AMapCityEntity cityEntity) {
-                            DistrictSearch search = new DistrictSearch(App.getContext());
-                            DistrictSearchQuery query = new DistrictSearchQuery();
-                            query.setKeywords(cityEntity.getName());//传入关键字
-                            query.setShowBoundary(false);//是否返回边界值
-                            query.setShowChild(false);
-                            search.setQuery(query);
-                            try {
-                                DistrictResult districtResult = search.searchDistrict();//开始搜索
-                                ArrayList<DistrictItem> districts = districtResult.getDistrict();
-                                if (districts != null && districts.size() > 0) {
-                                    DistrictItem districtItem = districts.get(0);
-                                    LatLonPoint center = districtItem.getCenter();
-                                    cityEntity.setCenter(String.format("%s,%s", center.getLongitude(), center.getLatitude()));
-                                    cityEntity.setAdcode(districtItem.getAdcode());
-                                } else {
-                                    Logger.e("cooperationApply() 出错");
-                                }
-                            } catch (AMapException e) {
-                                e.printStackTrace();
-                                Logger.e("cooperationApply() 出错");
-                            }
-                            if (TextUtils.isEmpty(cityEntity.getAdcode())) {
-                                throw new ResultException(9002, "AMap DistrictSearch error!");
-                            }
-                            return getApi().cooperationApply(partnerName, phone, cityEntity.getAdcode());
-                        }
-                    });
-        } else {
-            observable = getApi().cooperationApply(partnerName, phone, city.getAdcode());
-        }
-        return addSchedulers(observable);
-    }
-
+//    public Observable<String> cooperationApply(final String partnerName, final String phone, final AMapCityEntity city) {
+//        Observable<String> observable;
+//        if (TextUtils.isEmpty(city.getAdcode())) {
+//            observable = Observable.just(city)
+//                    .flatMap(new Func1<AMapCityEntity, Observable<String>>() {
+//                        @Override
+//                        public Observable<String> call(AMapCityEntity cityEntity) {
+//                            DistrictSearch search = new DistrictSearch(App.getContext());
+//                            DistrictSearchQuery query = new DistrictSearchQuery();
+//                            query.setKeywords(cityEntity.getName());//传入关键字
+//                            query.setShowBoundary(false);//是否返回边界值
+//                            query.setShowChild(false);
+//                            search.setQuery(query);
+//                            try {
+//                                DistrictResult districtResult = search.searchDistrict();//开始搜索
+//                                ArrayList<DistrictItem> districts = districtResult.getDistrict();
+//                                if (districts != null && districts.size() > 0) {
+//                                    DistrictItem districtItem = districts.get(0);
+//                                    LatLonPoint center = districtItem.getCenter();
+//                                    cityEntity.setCenter(String.format("%s,%s", center.getLongitude(), center.getLatitude()));
+//                                    cityEntity.setAdcode(districtItem.getAdcode());
+//                                } else {
+//                                    Logger.e("cooperationApply() 出错");
+//                                }
+//                            } catch (AMapException e) {
+//                                e.printStackTrace();
+//                                Logger.e("cooperationApply() 出错");
+//                            }
+//                            if (TextUtils.isEmpty(cityEntity.getAdcode())) {
+//                                throw new ResultException(9002, "AMap DistrictSearch error!");
+//                            }
+//                            return getApi().cooperationApply(partnerName, phone, cityEntity.getAdcode());
+//                        }
+//                    });
+//        } else {
+//            observable = getApi().cooperationApply(partnerName, phone, city.getAdcode());
+//        }
+//        return addSchedulers(observable);
+//    }
+public Observable<String> cooperationApply(final String partnerName, final String phone, final String city) {
+    Observable<String> observable;
+//        if (TextUtils.isEmpty(city.getAdcode())) {
+//            observable = Observable.just(city)
+//                    .flatMap(new Func1<AMapCityEntity, Observable<String>>() {
+//                        @Override
+//                        public Observable<String> call(AMapCityEntity cityEntity) {
+//                            DistrictSearch search = new DistrictSearch(App.getContext());
+//                            DistrictSearchQuery query = new DistrictSearchQuery();
+//                            query.setKeywords(cityEntity.getName());//传入关键字
+//                            query.setShowBoundary(false);//是否返回边界值
+//                            query.setShowChild(false);
+//                            search.setQuery(query);
+//                            try {
+//                                DistrictResult districtResult = search.searchDistrict();//开始搜索
+//                                ArrayList<DistrictItem> districts = districtResult.getDistrict();
+//                                if (districts != null && districts.size() > 0) {
+//                                    DistrictItem districtItem = districts.get(0);
+//                                    LatLonPoint center = districtItem.getCenter();
+//                                    cityEntity.setCenter(String.format("%s,%s", center.getLongitude(), center.getLatitude()));
+//                                    cityEntity.setAdcode(districtItem.getAdcode());
+//                                } else {
+//                                    Logger.e("cooperationApply() 出错");
+//                                }
+//                            } catch (AMapException e) {
+//                                e.printStackTrace();
+//                                Logger.e("cooperationApply() 出错");
+//                            }
+//                            if (TextUtils.isEmpty(cityEntity.getAdcode())) {
+//                                throw new ResultException(9002, "AMap DistrictSearch error!");
+//                            }
+//                            return getApi().cooperationApply(partnerName, phone, cityEntity.getAdcode());
+//                        }
+//                    });
+//        } else {
+    observable = getApi().cooperationApply(partnerName, phone, city);
+//        }
+    return addSchedulers(observable);
+}
     public Observable<String> partnerWithdraw(double amount, String withDrawWay, String aliAcount
             , String bankName, String cardNo, String cardholder) {
         return addSchedulers(getApi().partnerWithdraw(amount, withDrawWay, aliAcount, bankName, cardNo, cardholder));
@@ -1375,6 +1566,7 @@ public class NetService {
      *
      * @return
      */
+    /*2.0获取订单优惠信息*/
     public Observable<AutoCalculationDiscountEntity> getCouponsInfo(double amount, String type, Boolean isManual, String consIds) {
         return addSchedulers(getApi().getCouponsInfo(amount, type, isManual, consIds));
     }

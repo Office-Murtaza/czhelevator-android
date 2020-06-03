@@ -124,4 +124,6 @@ public class HistoryFragment extends BaseFragment implements OnParamsChangeInter
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

@@ -13,6 +13,15 @@ public class NewsSharedEntity implements ShareEntity {
     private String shareContent;
     private String shareLink;
 
+    @Override
+    public String toString() {
+        return "NewsSharedEntity{" +
+                "shareTitle='" + shareTitle + '\'' +
+                ", shareContent='" + shareContent + '\'' +
+                ", shareLink='" + shareLink + '\'' +
+                '}';
+    }
+
     public void setShareTitle(String shareTitle) {
         this.shareTitle = shareTitle;
     }

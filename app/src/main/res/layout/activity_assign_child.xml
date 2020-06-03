@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_six"
         android:layout_marginRight="@dimen/spacing_six"
-        android:src="@drawable/ic_screen_center" />
+        android:src="@mipmap/ic_screen_middle" />
 
     <TextView
         android:id="@+id/tv_screen"

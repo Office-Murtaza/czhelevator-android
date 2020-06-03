@@ -196,4 +196,6 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

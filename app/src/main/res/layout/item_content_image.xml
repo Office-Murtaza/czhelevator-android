@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="@dimen/dp5"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.czh.myversiontwo.view.RoundImageView
         android:id="@+id/img_content"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/dp_200"
         android:src="@mipmap/ic_launcher"
-        android:scaleType="fitXY"
-        android:padding="@dimen/dp10"
-        tools:ignore="MissingConstraints"></ImageView>
+        android:scaleType="centerCrop"
+        tools:ignore="MissingConstraints"></com.czh.myversiontwo.view.RoundImageView>
 
 
 </android.support.constraint.ConstraintLayout>

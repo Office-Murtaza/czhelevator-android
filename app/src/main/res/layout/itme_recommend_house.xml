@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/ll_itme_root"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp10"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_community_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="梯联网科技大厦"
+            android:textColor="#ff333333"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.6km"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="观山湖区盘江路与盘江南路交汇处都匀路23号金利大厦"
+        android:textColor="#ff999999"
+        android:textSize="12sp"
+        android:paddingLeft="@dimen/dp10"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp10"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_community_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12单元   |   24电梯"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="低至   ¥ 10 元/台/天"
+                android:textColor="#ff333333"
+                android:layout_marginTop="@dimen/dp5"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_site_choose"
+            ></ImageView>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="#E1E1E1"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        />
+
+</LinearLayout>

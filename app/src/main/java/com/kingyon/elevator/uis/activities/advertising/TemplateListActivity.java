@@ -16,7 +16,7 @@ import com.kingyon.elevator.entities.AdTempletEntity;
 import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.TemplateListAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.TemplateListAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;

@@ -151,7 +151,7 @@ public class CodeActivity extends BaseActivity {
         /* 获取对话框窗口 */
         Window window = alertDialog.getWindow();
         /* 设置显示窗口的宽高 */
-        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, 800);
+        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         /* 设置窗口显示位置 */
         window.setGravity(Gravity.CENTER);
         Captcha captcha  = window.findViewById(R.id.captCha);

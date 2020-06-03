@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dp10"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="广告时长60秒，以独占屏幕的方式投放，播放密度大，投放效果好。"
+        android:textColor="#ff333333"
+        android:lineSpacingExtra="@dimen/dp10"
+        android:textSize="14sp"
+        android:padding="@dimen/dp10"
+        />
+
+    <TextView
+        android:id="@+id/tv_content1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="推荐投放尺寸——7（宽）: 11（高）
+        \n视频大小≤15M，支持MP4格式
+        \n图片大小≤5M，支持png、jpg格式"
+        android:textColor="#ff2d6ef2"
+        android:textSize="14sp"
+        android:lineSpacingExtra="@dimen/dp10"
+        android:padding="@dimen/dp10"
+        />
+
+    <ImageView
+        android:id="@+id/img_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/im_style_diy_l"
+        android:scaleType="fitStart"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp20"
+
+        ></ImageView>
+
+
+</LinearLayout>

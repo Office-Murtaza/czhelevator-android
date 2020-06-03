@@ -17,12 +17,11 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.PlanItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.PointPlanAddAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PointPlanAddAdapter;
 import com.kingyon.elevator.uis.dialogs.CellAdSuccessDialog;
 import com.kingyon.elevator.uis.dialogs.PlanEditDialog;
 import com.kingyon.elevator.utils.CommonUtil;

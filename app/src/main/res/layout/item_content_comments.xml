@@ -13,11 +13,13 @@
         >
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="@dimen/dp30"
+            android:id="@+id/img_portrait"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
             android:src="@mipmap/ic_launcher"
             />
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="悄猫猫"
@@ -32,6 +34,7 @@
             android:layout_height="wrap_content"/>
 
         <ImageView
+            android:id="@+id/img_like"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:src="@mipmap/ic_small_like"
@@ -39,6 +42,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_like_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="109"
@@ -49,6 +53,7 @@
 
 
     <TextView
+        android:id="@+id/tv_comment"
         android:layout_marginTop="@dimen/dp5"
         android:layout_width="wrap_content"
         android:layout_marginLeft="40dp"
@@ -68,6 +73,7 @@
         >
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1小时前"
@@ -90,6 +96,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_comment_hf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12回复"
@@ -97,6 +104,18 @@
             android:textColor="#ff999999"
             android:textSize="11sp"
             />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_comm_menu_trans"
+            android:padding="@dimen/dp5"
+            ></ImageView>
 
     </LinearLayout>
 

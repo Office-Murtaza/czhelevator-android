@@ -129,6 +129,7 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'org.jsoup:jsoup:1.10.3'
+
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
@@ -180,19 +181,30 @@ dependencies {
     implementation 'com.alibaba:arouter-api:1.4.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2' //注解处理器，会将注解编译成Java类
 //    富文本
-    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+//    implementation 'jp.wasabeef:richeditor-android:1.2.2'
 
     implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
 
     implementation 'com.github.sd6352051:android-image-picker:v1.0.1'
     implementation 'com.github.razerdp:BasePopup:2.2.2.2'
+
+    implementation 'com.koudai.styletextview:styletextview:1.2.0'
+
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+
+    implementation 'com.youth.banner:banner:1.4.10'
+
+    implementation 'io.github.rockerhieu:emojicon:1.4.1'
+
 //必须使用
     implementation 'com.lzy.net:okgo:3.0.4'
     implementation project(path: ':voide')
     implementation project(path: ':video-effect')
     implementation project(path: ':myversiontwo')
+    implementation project(path: ':mentions')
+    implementation project(path: ':matisse')
+    implementation project(path: ':htmleditorlibrary')
 
-//    implementation project(path: ':are')
 
 }
 

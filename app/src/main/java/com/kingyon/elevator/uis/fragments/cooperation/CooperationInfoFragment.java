@@ -281,4 +281,6 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

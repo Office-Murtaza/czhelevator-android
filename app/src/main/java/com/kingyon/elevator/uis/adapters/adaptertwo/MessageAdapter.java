@@ -6,9 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.fragments.main.MessageFragment;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MESSAGE_PUSH;
 
 /**
  * @Created By Admin  on 2020/4/22
@@ -33,7 +37,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+            holder.ll_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityUtils.setActivity(ACTIVITY_MESSAGE_PUSH);
+                }
+            });
     }
 
     @Override
@@ -42,8 +51,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout ll_content;
         public ViewHolder(View itemView) {
             super(itemView);
+            ll_content = itemView.findViewById(R.id.ll_content);
         }
     }
 }

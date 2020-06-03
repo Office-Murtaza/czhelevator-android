@@ -37,6 +37,17 @@ public class DataSharedPreferences {
 
     public static final String IS_OPEN_FINGER = "IS_OPEN_FINGER";//是否开启指纹设置
 
+    /*保存用户id*/
+    public static final String CREATATE_ACCOUNT ="CREATATE_ACCOUNT";
+
+    public static void saveCreatateAccount(String creatateAccount ){
+        getPreferences().edit().putString(CREATATE_ACCOUNT, creatateAccount).apply();
+    }
+    public static String getCreatateAccount() {
+        return getPreferences().getString(CREATATE_ACCOUNT, "");
+    }
+
+
     private static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext());
     }

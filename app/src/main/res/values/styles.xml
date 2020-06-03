@@ -133,6 +133,14 @@
     <style name="Tabtext">
         <item name="android:textColor">@color/selector_tab_text</item>
         <item name="android:textSize">@dimen/sp_14</item>
+
+    </style>
+
+
+    <style name="adStyleTabtext">
+        <item name="android:textColor">@color/ad_style_tab_text</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:background">@drawable/ad_style_bj</item>
     </style>
 
 </resources>

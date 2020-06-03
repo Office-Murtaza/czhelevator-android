@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dp10"
+    android:background="@color/white"
     >
 
 
@@ -11,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_arrow_back"
+        android:layout_centerVertical="true"
         android:padding="@dimen/dp5"
         />
 
@@ -25,8 +27,8 @@
 
         <ImageView
             android:id="@+id/img_portrait"
-            android:layout_width="@dimen/dp20"
-            android:layout_height="@dimen/dp20"
+            android:layout_width="@dimen/dp_35"
+            android:layout_height="@dimen/dp_35"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
@@ -53,7 +55,11 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/img_jb"
         android:layout_marginRight="@dimen/dp30"
-        android:background="@mipmap/btn_release_img"
+        android:background="@drawable/bj_add_attention"
+        android:paddingTop="@dimen/dp5"
+        android:paddingBottom="@dimen/dp5"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingRight="@dimen/dp10"
         />
 
 

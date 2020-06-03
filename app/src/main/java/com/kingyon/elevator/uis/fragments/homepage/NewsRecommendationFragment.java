@@ -3,11 +3,8 @@ package com.kingyon.elevator.uis.fragments.homepage;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -17,14 +14,10 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.NewsEntity;
-import com.kingyon.elevator.entities.NewsItemEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.NewsRecommendationPresenter;
-import com.kingyon.elevator.uis.activities.NewsDetailsActivity;
-import com.kingyon.elevator.uis.adapters.NewsRecommendAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.NewsRecommendAdapter;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
-import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.NewsRecommendationView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -32,7 +25,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

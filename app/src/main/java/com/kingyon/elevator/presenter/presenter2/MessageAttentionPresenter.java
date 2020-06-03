@@ -14,4 +14,8 @@ public class MessageAttentionPresenter extends BasePresenter {
     public MessageAttentionPresenter(Context mContext) {
         super(mContext);
     }
+
+    public void message(){
+
+    }
 }

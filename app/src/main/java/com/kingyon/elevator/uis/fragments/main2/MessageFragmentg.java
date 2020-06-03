@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
@@ -19,6 +20,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_COMMENT;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_LIKE;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_MSAGGER;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -50,7 +56,7 @@ public class MessageFragmentg extends BaseFragment {
     Unbinder unbinder;
     MessageAdapter messageAdapter;
     @BindView(R.id.rl_bj)
-    RelativeLayout rlBj;
+    LinearLayout rlBj;
 
     @Override
     public int getContentViewId() {
@@ -59,7 +65,7 @@ public class MessageFragmentg extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
         messageAdapter = new MessageAdapter(getActivity());
         rcvListMassage.setLayoutManager(new LinearLayoutManager(getActivity()));
         rcvListMassage.setAdapter(messageAdapter);
@@ -71,6 +77,8 @@ public class MessageFragmentg extends BaseFragment {
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -79,24 +87,26 @@ public class MessageFragmentg extends BaseFragment {
         return rootView;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 
     @OnClick({R.id.tv_read, R.id.ll_msagger, R.id.ll_attention, R.id.ll_like, R.id.ll_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_read:
+                /*全部已读*/
+
                 break;
             case R.id.ll_msagger:
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_MSAGGER);
                 break;
             case R.id.ll_attention:
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
                 break;
             case R.id.ll_like:
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_LIKE);
                 break;
             case R.id.ll_comment:
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_COMMENT);
                 break;
         }
     }

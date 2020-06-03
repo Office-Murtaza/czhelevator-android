@@ -113,7 +113,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                 tvCell.setText(device.getCellName());
                 tvBuild.setTag(device.getBuildId());
                 tvBuild.setText(device.getBuild());
-                tvUnit.setTag(device.getUnitId());
+//                tvUnit.setTag(device.getUnitId());
                 tvUnit.setText(device.getUnit());
                 tvLift.setTag(device.getLiftId());
                 tvLift.setText(device.getLift());

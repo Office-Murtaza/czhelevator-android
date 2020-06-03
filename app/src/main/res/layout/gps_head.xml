@@ -8,41 +8,36 @@
     android:paddingBottom="@dimen/spacing_six"
     android:paddingTop="@dimen/spacing_six">
 
-    <TextView
-        android:id="@+id/tv_current"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/spacing_six"
-        android:paddingLeft="@dimen/spacing_default"
-        android:paddingTop="@dimen/spacing_six"
-        android:text="当前城市"
-        android:textSize="@dimen/txt_normal_content" />
+
 
     <LinearLayout
         android:id="@+id/ll_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/spacing_small"
         android:paddingRight="@dimen/spacing_small">
-
+        <TextView
+            android:id="@+id/tv_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="当前位置： "
+            android:textSize="@dimen/txt_big_content"
+      />
         <TextView
             android:id="@+id/tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_six"
-            android:layout_marginLeft="@dimen/spacing_small"
-            android:layout_marginRight="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_six"
-            android:background="@drawable/hot_choose_bg"
+            android:background="@drawable/ad_caty_dqwz"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_six"
             android:paddingLeft="@dimen/spacing_twelve"
             android:paddingRight="@dimen/spacing_twelve"
-            android:paddingTop="@dimen/spacing_six"
-            android:textColor="@color/color_effect_choose_text"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
+            android:textColor="#FF3049"
             android:textSize="@dimen/txt_big_content"
             android:textStyle="bold"
             tools:text="成都" />
@@ -62,6 +57,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/spacing_six"
             android:paddingLeft="@dimen/spacing_twelve"
+            android:visibility="gone"
             android:paddingRight="@dimen/spacing_twelve"
             android:paddingTop="@dimen/spacing_six"
             android:singleLine="true"

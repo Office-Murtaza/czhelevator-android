@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,14 +9,6 @@
     tools:context=".uis.actiivty2.content.TopicDetailsActivity">
 
 
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/smart_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/my_action_bar"
-            app:srlEnableAutoLoadMore="false"
-            app:srlEnableRefresh="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/bg_topic_sport"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     ></ImageView>
 
 
@@ -45,6 +37,7 @@
                     android:gravity="center_vertical"
                     android:background="@mipmap/bg_dialog_title"
                     android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/dp10"
                     >
 
                     <ImageView
@@ -66,23 +59,6 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/img_bake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_back"
-                    android:padding="@dimen/dp_10"
-                    ></ImageView>
-
-
-                <ImageView
-                    android:id="@+id/img_jb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_comm_menu_white"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dp_10"
-                    ></ImageView>
 
             </RelativeLayout>
 
@@ -145,7 +121,48 @@
 
             </LinearLayout>
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-</LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/img_bake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_back"
+                    android:padding="@dimen/dp_10"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/img_jb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_comm_menu_white"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_10"
+                    ></ImageView>
+
+
+            </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/btn_big_takepart"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_80"
+        ></ImageView>
+
+</RelativeLayout>

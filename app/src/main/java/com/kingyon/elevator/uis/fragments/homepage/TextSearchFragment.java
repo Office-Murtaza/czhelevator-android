@@ -189,4 +189,6 @@ public class TextSearchFragment extends BaseStateRefreshLoadingFragment<CellItem
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

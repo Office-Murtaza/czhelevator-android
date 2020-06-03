@@ -5,15 +5,18 @@
     android:orientation="horizontal"
     android:padding="@dimen/dp10"
     android:gravity="center"
+    android:background="@color/white"
     >
 
     <ImageView
+        android:id="@+id/img_hot"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@mipmap/ic_launcher"
         />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="#跑起来，就现在#"
@@ -28,6 +31,7 @@
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="239人参与"

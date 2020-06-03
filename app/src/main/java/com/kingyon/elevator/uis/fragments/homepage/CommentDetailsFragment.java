@@ -2,11 +2,6 @@ package com.kingyon.elevator.uis.fragments.homepage;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,7 +9,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.CommentDetailsPresenter;
-import com.kingyon.elevator.uis.adapters.NewsReplyAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.NewsReplyAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

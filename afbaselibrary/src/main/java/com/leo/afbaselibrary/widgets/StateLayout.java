@@ -146,7 +146,7 @@ public class StateLayout extends FrameLayout {
             /**
              * 暂无数据时的图片
              */
-            emptyImageView.setImageResource(R.drawable.img_empty_view);
+            emptyImageView.setImageResource(R.drawable.im_blank_empty);
 //            emptyImageView.setImageResource(R.drawable.img_empty_statelayout);
         }
         addView(emptyView);
@@ -369,7 +369,7 @@ public class StateLayout extends FrameLayout {
         emptyView.setVisibility(GONE);
         progressView.setVisibility(GONE);
         boolean hasNet = hasNet(getContext());
-        errorImageView.setImageResource(hasNet ? R.drawable.img_error_view : R.drawable.img_net_view);
+        errorImageView.setImageResource(hasNet ? R.drawable.im_blank_network : R.drawable.img_net_view);
         errorView.setVisibility(VISIBLE);
         if (msg != null) {
             errorTextView.setText(msg);

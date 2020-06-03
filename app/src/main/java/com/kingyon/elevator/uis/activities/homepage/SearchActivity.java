@@ -3,34 +3,43 @@ package com.kingyon.elevator.uis.activities.homepage;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.CheckedTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.donkingliang.labels.LabelsView;
+import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.CellItemEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
-import com.kingyon.elevator.entities.HomepageLocationHolder;
 import com.kingyon.elevator.entities.KeywordEntity;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
-import com.kingyon.elevator.entities.TabEntity;
 import com.kingyon.elevator.entities.ToPlanTab;
+import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.homepage.MapSearchFragment;
-import com.kingyon.elevator.uis.fragments.homepage.TextSearchFragment;
+import com.kingyon.elevator.uis.fragments.homepage.TextSearchTwoFragment;
+import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.pops.CellTypeWindow;
 import com.kingyon.elevator.uis.pops.SearchAreaWindow;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -40,20 +49,26 @@ import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.animationutils.AnimatorPath;
 import com.kingyon.elevator.utils.animationutils.PathEvaluator;
 import com.kingyon.elevator.utils.animationutils.PathPoint;
+import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -85,7 +100,41 @@ public class SearchActivity extends BaseSwipeBackActivity {
     ImageView iv_home_logo;
     @BindView(R.id.iv_gouwuche)
     ImageView iv_gouwuche;
-
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.ll_title)
+    LinearLayout llTitle;
+    @BindView(R.id.ll_city_area)
+    LinearLayout llCityArea;
+    @BindView(R.id.ll_cell_type)
+    LinearLayout llCellType;
+    @BindView(R.id.tv_mag_bottom)
+    TextView tvMagBottom;
+    @BindView(R.id.tv_list_title)
+    TextView tvListTitle;
+    @BindView(R.id.tv_list_bottom)
+    TextView tvListBottom;
+    @BindView(R.id.fl_content)
+    FrameLayout flContent;
+    @BindView(R.id.tv_bumber)
+    TextView tvBumber;
+    @BindView(R.id.rl_plan)
+    RelativeLayout rlPlan;
+    @BindView(R.id.img_menu)
+    ImageView imgMenu;
+    @BindView(R.id.labels)
+    LabelsView labels;
+    @BindView(R.id.labels2)
+    LabelsView labels2;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    List<PointClassicEntiy> list;
+    List<PointClassicEntiy.ChildBean> childBeanList;
+    List<PointClassicEntiy.ChildBean> childBeanList1 = new ArrayList<>();
+    @BindView(R.id.tv_reset)
+    TextView tvReset;
+    @BindView(R.id.tv_confirm)
+    TextView tvConfirm;
 
     private String keyWord;
     private AMapCityEntity cityEntity;
@@ -96,7 +145,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     private boolean mapMode;
 
-    private TextSearchFragment textFragment;
+    private TextSearchTwoFragment textFragment;
     private MapSearchFragment mapFragment;
     private boolean notFirstIn;
 
@@ -105,6 +154,10 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private AnimatorPath path;//声明动画集合
     private String lastPlanType = "";
 
+    private double latitude;
+    private double longitude;
+    private boolean isconent = true;
+    ConentEntity<RecommendHouseEntiy> entiyConentEntity;
     @Override
     public int getContentViewId() {
         return R.layout.activity_search;
@@ -124,25 +177,31 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        LocationEntity entity = AppContent.getInstance().getLocation();
+        latitude = entity.getLatitude();
+        longitude = entity.getLongitude();
+        /*定位请求*/
+        httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
         EventBus.getDefault().register(this);
-        tvMapTitle.setText(mapMode ? "列表" : "地图");
-        showFragment();
-        tvSearchTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        /*侧滑内容*/
+        initData();
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                imgClear.setVisibility(TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
-            }
-        });
+//        tvSearchTitle.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+////                imgClear.setVisibility(TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
+//            }
+//        });
 
         String name = FormatUtils.getInstance().getCityName(cityEntity.getName());
         if (name != null && name.length() > 5) {
@@ -152,12 +211,95 @@ public class SearchActivity extends BaseSwipeBackActivity {
         tvSearchTitle.setText(keyWord);
     }
 
+    private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
+                                    String areaId, String pointType, String keyWord, String distance) {
+        LogUtils.e(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance);
+        showProgressDialog("加载中....");
+        NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<RecommendHouseEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(), ex.getDisplayMessage());
+                        hideProgress();
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
+                        LogUtils.e(conentEntity.toString(),conentEntity.getContent().toString());
+                        entiyConentEntity = conentEntity;
+                        hideProgress();
+                        showFragment();
+                    }
+                });
+    }
+
+    private void initData() {
+        NetService.getInstance().setPointClassic()
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<PointClassicEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<PointClassicEntiy> conentEntity) {
+                        LogUtils.e(conentEntity.getContent().toString(), conentEntity.getContent().get(0).child.toString());
+                        list = new ArrayList<>();
+                        PointClassicEntiy pointClassicEntiy = new PointClassicEntiy();
+                        pointClassicEntiy.id = 0;
+                        pointClassicEntiy.pointName = "不限";
+                        pointClassicEntiy.level = "1";
+                        pointClassicEntiy.parent = 1;
+                        pointClassicEntiy.child = childBeanList1;
+                        list.add(pointClassicEntiy);
+                        for (int i = 0; i < conentEntity.getContent().size(); i++) {
+                            list.add(conentEntity.getContent().get(i));
+                        }
+                        labels.setLabels(list, new LabelsView.LabelTextProvider<PointClassicEntiy>() {
+                            @Override
+                            public CharSequence getLabelText(TextView label, int position, PointClassicEntiy data) {
+                                //根据data和position返回label需要显示的数据。
+                                return data.pointName;
+                            }
+                        });
+                        labels.setSelects(0);
+                        labels.setOnLabelSelectChangeListener(new LabelsView.OnLabelSelectChangeListener() {
+                            @Override
+                            public void onLabelSelectChange(TextView label, Object data, boolean isSelect, int position) {
+                                childBeanList = new ArrayList<>();
+                                if (list.get(position).child != null) {
+                                    for (int c = 0; c < list.get(position).child.size(); c++) {
+                                        childBeanList.add(list.get(position).child.get(c));
+                                    }
+                                    labels2.setLabels(childBeanList, new LabelsView.LabelTextProvider<PointClassicEntiy.ChildBean>() {
+                                        @Override
+                                        public CharSequence getLabelText(TextView label, int position, PointClassicEntiy.ChildBean data) {
+                                            //根据data和position返回label需要显示的数据。
+                                            return data.pointName;
+                                        }
+                                    });
+                                    labels2.setSelects(0);
+                                }
+                            }
+                        });
+
+                    }
+                });
+
+    }
+
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mapFragment = MapSearchFragment.newInstance(cityEntity);
-        fragmentTransaction.add(R.id.fl_content, mapFragment);
-        textFragment = TextSearchFragment.newInstance(keyWord, cityEntity, distance, areaIds, cellType);
-        fragmentTransaction.add(R.id.fl_content, textFragment);
+//        mapFragment = new MapSearchFragment();
+        if (isconent) {
+            fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity));
+//        textFragment = TextSearchFragment.newInstance(keyWord, cityEntity, distance, areaIds, cellType);
+//        textFragment = new TextSearchTwoFragment();
+        }else {
+            fragmentTransaction.add(R.id.fl_content, new TextSearchTwoFragment().newInstance(entiyConentEntity));
+        }
         fragmentTransaction.commit();
     }
 
@@ -167,12 +309,20 @@ public class SearchActivity extends BaseSwipeBackActivity {
             fragmentTransaction.hide(textFragment);
             if (!mapMode) {
                 fragmentTransaction.show(textFragment);
+                tvListTitle.setTextColor(Color.parseColor("#000000"));
+                tvMapTitle.setTextColor(Color.parseColor("#666666"));
+                tvMagBottom.setVisibility(View.GONE);
+                tvListBottom.setVisibility(View.VISIBLE);
             }
         }
         if (mapFragment != null) {
             fragmentTransaction.hide(mapFragment);
             if (mapMode) {
                 fragmentTransaction.show(mapFragment);
+                tvMagBottom.setVisibility(View.VISIBLE);
+                tvListBottom.setVisibility(View.GONE);
+                tvListTitle.setTextColor(Color.parseColor("#666666"));
+                tvMapTitle.setTextColor(Color.parseColor("#000000"));
             }
         }
         fragmentTransaction.commit();
@@ -204,7 +354,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     }
 
     @OnClick({R.id.ll_city_area, R.id.ll_cell_type, R.id.tv_location_title, R.id.tv_search_title, R.id.img_clear, R.id.tv_map_title
-            , R.id.iv_gouwuche})
+            , R.id.iv_gouwuche, R.id.tv_list_title, R.id.rl_plan, R.id.img_menu,R.id.tv_reset, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_city_area:
@@ -229,13 +379,73 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 updateDatas();
                 break;
             case R.id.tv_map_title:
-                mapMode = !mapMode;
-                tvMapTitle.setText(mapMode ? "列表" : "地图");
-                updateFragment();
+                isconent = true;
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity,entiyConentEntity));
+                fragmentTransaction.commit();
+                tvMagBottom.setVisibility(View.VISIBLE);
+                tvListBottom.setVisibility(View.GONE);
+                tvListTitle.setTextColor(Color.parseColor("#666666"));
+                tvMapTitle.setTextColor(Color.parseColor("#000000"));
+
+                break;
+            case R.id.tv_list_title:
+                isconent = false;
+                tvListTitle.setTextColor(Color.parseColor("#000000"));
+                tvMapTitle.setTextColor(Color.parseColor("#666666"));
+                tvMagBottom.setVisibility(View.GONE);
+                tvListBottom.setVisibility(View.VISIBLE);
+                FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction1.add(R.id.fl_content, new TextSearchTwoFragment().newInstance(entiyConentEntity));
+                fragmentTransaction1.commit();
                 break;
             case R.id.iv_gouwuche:
                 EventBus.getDefault().post(new ToPlanTab(lastPlanType));
                 break;
+            case R.id.rl_plan:
+                startActivity(PlanNewFragment.class);
+                break;
+            case R.id.img_menu:
+                drawerLayout.openDrawer(Gravity.LEFT);
+                break;
+            case R.id.tv_reset:
+                labels.clearAllSelect();
+                labels2.clearAllSelect();
+                break;
+            case R.id.tv_confirm:
+//                drawerLayout.openDrawer(Gravity.LEFT);
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                PointClassicEntiy pointClassicEntiy = new PointClassicEntiy();
+                try {
+                    JSONArray jsonArray = new JSONArray(JsonUtils.beanToJson(labels.getSelectLabelDatas()));
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    pointClassicEntiy.pointName = jsonObject.optString("pointName");
+                    pointClassicEntiy.id = jsonObject.optInt("id");
+                    pointClassicEntiy.level = jsonObject.optString("level");
+                    pointClassicEntiy.parent = jsonObject.optInt("parent");
+                    JSONArray jsonArray1 = new JSONArray(JsonUtils.beanToJson(labels2.getSelectLabelDatas()));
+                    LogUtils.e(jsonArray1.length(),jsonArray1);
+                    List<PointClassicEntiy.ChildBean> list = new ArrayList<>();
+                    for (int i=0;i<jsonArray1.length();i++){
+                        PointClassicEntiy.ChildBean childBean = new PointClassicEntiy.ChildBean();
+                        JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
+                        LogUtils.e(jsonObject1.optString("pointName"));
+                        childBean.pointName = jsonObject1.optString("pointName");
+                        childBean.id = jsonObject1.optInt("id");
+                        childBean.level = jsonObject1.optString("level");
+                        childBean.parent = jsonObject1.optInt("parent");
+                        list.add(childBean);
+                    }
+                    pointClassicEntiy.child = list;
+                    LogUtils.e(JsonUtils.beanToJson(pointClassicEntiy));
+                    httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", JsonUtils.beanToJson(pointClassicEntiy), "", "");
+
+                } catch (JSONException e) {
+                    LogUtils.e(e.toString());
+                    e.printStackTrace();
+                }
+                break;
+                default:
         }
     }
 
@@ -338,7 +548,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 showProgressDialog(getString(R.string.wait));
             }
             EventBus.getDefault().post(new KeywordEntity(keyWord));
-            textFragment.onParamsChange(keyWord, cityEntity, distance, areaIds, cellType);
+//            textFragment.onParamsChange(keyWord, cityEntity, distance, areaIds, cellType);
         }
     }
 
@@ -462,4 +672,12 @@ public class SearchActivity extends BaseSwipeBackActivity {
         iv_home_logo.setTranslationX(newLoc.mX);
         iv_home_logo.setTranslationY(newLoc.mY);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
 }

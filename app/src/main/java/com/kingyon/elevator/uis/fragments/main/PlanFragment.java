@@ -13,27 +13,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.PlanCellDeleteEntity;
 import com.kingyon.elevator.entities.PlanItemEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
-import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderEditActivity;
-import com.kingyon.elevator.uis.adapters.PlanAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.PlanAdapter;
 import com.kingyon.elevator.uis.dialogs.PlanParamsDialog;
 import com.kingyon.elevator.uis.pops.PlanParamsWindow;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshLoadingFragment;
@@ -618,7 +615,7 @@ public class PlanFragment extends BaseStateRefreshLoadingFragment<Object> implem
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
-                    startActivity(LoginActivity.class);
+                    startActivity(LoginActiivty.class);
                 } else {
                     autoLoading();
                 }
@@ -636,4 +633,6 @@ public class PlanFragment extends BaseStateRefreshLoadingFragment<Object> implem
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

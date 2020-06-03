@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.OccupyAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.OccupyAdapter;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.Collections;

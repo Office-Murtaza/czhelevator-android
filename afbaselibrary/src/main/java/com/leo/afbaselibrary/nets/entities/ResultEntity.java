@@ -8,8 +8,8 @@ import com.google.gson.JsonElement;
  */
 public class ResultEntity {
 
-    private boolean status;
-//    private int status;
+    private boolean head;
+    private int status;
 
     /**
      * 状态码
@@ -37,21 +37,21 @@ public class ResultEntity {
 
     private InputErrorEntity inputError;
 
-    public boolean isStatus() {
+    public boolean isHead() {
+        return head;
+    }
+
+    public void setHead(boolean head) {
+        this.head = head;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
-
-//    public int getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(int status) {
-//        this.status = status;
-//    }
 
     public int getCode() {
         return code;

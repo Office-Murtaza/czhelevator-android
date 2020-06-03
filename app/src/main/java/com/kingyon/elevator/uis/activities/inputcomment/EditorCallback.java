@@ -12,4 +12,5 @@ public interface EditorCallback {
     void onCancel();
     void onSubmit(String content);
     void onAttached(ViewGroup rootView);
+    void onIcon();
 }

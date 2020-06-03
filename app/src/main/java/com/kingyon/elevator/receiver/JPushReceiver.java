@@ -16,6 +16,8 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.entities.ReceivedPushEntity;
 import com.kingyon.elevator.uis.activities.MainActivity;
@@ -33,12 +35,14 @@ import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_TEXT_CONTENT;
+
 /**
  * Created by gongli on 2017/7/17 17:39
  * email: lc824767150@163.com
  */
 public class JPushReceiver extends BroadcastReceiver {
-    private static final String TAG = "JPush";
+    private static final String TAG = "JPushReceiver";
     private static int notifIndex;
 
     @Override
@@ -48,6 +52,8 @@ public class JPushReceiver extends BroadcastReceiver {
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             if (bundle != null) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+                LogUtils.e( bundle.getString(JPushInterface.EXTRA_EXTRA),bundle.getString("content"));
+
                 Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
 //            JPushInterface.getRegistrationID(App.getInstance());
                 DataSharedPreferences.setPushRegisterId(regId);
@@ -68,13 +74,91 @@ public class JPushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             if (bundle != null) {
                 Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
+                LogUtils.e( bundle.getString(JPushInterface.EXTRA_EXTRA),bundle.getString("content"),bundle.toString());
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             }
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-            openNotification(context, bundle);
+            LogUtils.e( bundle.getString(JPushInterface.EXTRA_EXTRA),bundle.getString("content"));
+
+//           LogUtils.e(
+//                    bundle.getString(JPushInterface.ACTION_CONNECTION_CHANGE),
+//                    bundle.getString(JPushInterface.ACTION_REGISTRATION_ID),
+//                    bundle.getString(JPushInterface.ACTION_MESSAGE_RECEIVED),
+//                    bundle.getString(JPushInterface.ACTION_NOTIFICATION_RECEIVED),
+//                    bundle.getString(JPushInterface.ACTION_NOTIFICATION_OPENED),
+//                    bundle.getString(JPushInterface.ACTION_NOTIFICATION_CLICK_ACTION),
+//                    bundle.getString(JPushInterface.ACTION_NOTIFICATION_RECEIVED_PROXY),
+//                    bundle.getString(JPushInterface.EXTRA_CONNECTION_CHANGE),
+//                    bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID),
+//                    bundle.getString(JPushInterface.EXTRA_APP_KEY),
+//                    bundle.getString(JPushInterface.EXTRA_NOTIFICATION_DEVELOPER_ARG0),
+//                    bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE),
+//                    bundle.getString(JPushInterface.EXTRA_PUSH_ID),
+//                    bundle.getString(JPushInterface.EXTRA_MSG_ID),
+//                    bundle.getString(JPushInterface.EXTRA_NOTI_TYPE),
+//                    bundle.getString(JPushInterface.EXTRA_ALERT),
+//                    bundle.getString(JPushInterface.EXTRA_ALERT_TYPE),
+//                    bundle.getString(JPushInterface.EXTRA_MESSAGE),
+//                    bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE),
+//                    bundle.getString(JPushInterface.EXTRA_TITLE),
+//                    bundle.getString(JPushInterface.EXTRA_BIG_TEXT),
+//                    bundle.getString(JPushInterface.EXTRA_INBOX),
+//                    bundle.getString(JPushInterface.EXTRA_BIG_PIC_PATH),
+//                    bundle.getString(JPushInterface.EXTRA_NOTI_PRIORITY),
+//                    bundle.getString(JPushInterface.EXTRA_NOTI_CATEGORY),
+//                    bundle.getString(JPushInterface.EXTRA_NOTIFICATION_ID),
+//                    bundle.getString(JPushInterface.EXTRA_NOTIFICATION_ACTION_EXTRA),
+//                    bundle.getString(JPushInterface.EXTRA_ACTIVITY_PARAM),
+//                    bundle.getString(JPushInterface.EXTRA_RICHPUSH_FILE_PATH),
+//                    bundle.getString(JPushInterface.EXTRA_RICHPUSH_FILE_TYPE),
+//                    bundle.getString(JPushInterface.EXTRA_RICHPUSH_HTML_PATH),
+//                    bundle.getString(JPushInterface.EXTRA_RICHPUSH_HTML_RES),
+//                    bundle.getString(JPushInterface.EXTRA_STATUS),
+//                    bundle.getString("content")
+//                    );
+
+            ActivityUtils.setActivity(ACTIVITY_TEXT_CONTENT,"conent",
+                    "EXTRA_EXTRA="+bundle.getString(JPushInterface.EXTRA_EXTRA)
+                            +"\ncontent="+bundle.getString("content")
+                            +"\nACTION_CONNECTION_CHANGE=="+bundle.getString(JPushInterface.ACTION_CONNECTION_CHANGE)
+                            +"\nACTION_REGISTRATION_ID=="+bundle.getString(JPushInterface.ACTION_REGISTRATION_ID)
+                            +"\nACTION_MESSAGE_RECEIVED=="+bundle.getString(JPushInterface.ACTION_MESSAGE_RECEIVED)
+                            +"\nACTION_NOTIFICATION_RECEIVED=="+bundle.getString(JPushInterface.ACTION_NOTIFICATION_RECEIVED)
+                            +"\nACTION_NOTIFICATION_OPENED=="+bundle.getString(JPushInterface.ACTION_NOTIFICATION_OPENED)
+                            +"\nACTION_NOTIFICATION_CLICK_ACTION=="+bundle.getString(JPushInterface.ACTION_NOTIFICATION_CLICK_ACTION)
+                            +"\nACTION_NOTIFICATION_RECEIVED_PROXY=="+bundle.getString(JPushInterface.ACTION_NOTIFICATION_RECEIVED_PROXY)
+                            +"\nEXTRA_CONNECTION_CHANGE=="+bundle.getString(JPushInterface.EXTRA_CONNECTION_CHANGE)
+                            +"\nEXTRA_REGISTRATION_ID=="+bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID)
+                            +"\nEXTRA_APP_KEY=="+bundle.getString(JPushInterface.EXTRA_APP_KEY)
+                            +"\nEXTRA_NOTIFICATION_DEVELOPER_ARG0=="+bundle.getString(JPushInterface.EXTRA_NOTIFICATION_DEVELOPER_ARG0)
+                            +"\nEXTRA_PUSH_ID=="+bundle.getString(JPushInterface.EXTRA_PUSH_ID)
+                            +"\nEXTRA_MSG_ID=="+bundle.getString(JPushInterface.EXTRA_MSG_ID)
+                            +"\nEXTRA_NOTI_TYPE=="+bundle.getString(JPushInterface.EXTRA_NOTI_TYPE)
+                            +"\nEXTRA_ALERT=="+bundle.getString(JPushInterface.EXTRA_ALERT)
+                            +"\nEXTRA_ALERT_TYPE=="+bundle.getString(JPushInterface.EXTRA_ALERT_TYPE)
+                            +"\nEXTRA_MESSAGE=="+bundle.getString(JPushInterface.EXTRA_MESSAGE)
+                            +"\nEXTRA_CONTENT_TYPE=="+bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE)
+                            +"\nEXTRA_TITLE=="+bundle.getString(JPushInterface.EXTRA_TITLE)
+                            +"\nEXTRA_BIG_TEXT=="+bundle.getString(JPushInterface.EXTRA_BIG_TEXT)
+                            +"\nEXTRA_INBOX=="+bundle.getString(JPushInterface.EXTRA_INBOX)
+                            +"\nEXTRA_BIG_PIC_PATH=="+bundle.getString(JPushInterface.EXTRA_BIG_PIC_PATH)
+                            +"\nEXTRA_EXTRA=="+bundle.getString(JPushInterface.EXTRA_EXTRA)
+                            +"\nEXTRA_NOTI_PRIORITY=="+bundle.getString(JPushInterface.EXTRA_NOTI_PRIORITY)
+                            +"\nEXTRA_NOTI_CATEGORY=="+bundle.getString(JPushInterface.EXTRA_NOTI_CATEGORY)
+                            +"\nEXTRA_NOTIFICATION_ID=="+bundle.getString(JPushInterface.EXTRA_NOTIFICATION_ID)
+                            +"\nEXTRA_NOTIFICATION_ACTION_EXTRA=="+bundle.getString(JPushInterface.EXTRA_NOTIFICATION_ACTION_EXTRA)
+                            +"\nEXTRA_ACTIVITY_PARAM=="+bundle.getString(JPushInterface.EXTRA_ACTIVITY_PARAM)
+                            +"\nEXTRA_RICHPUSH_FILE_PATH=="+bundle.getString(JPushInterface.EXTRA_RICHPUSH_FILE_PATH)
+                            +"\nEXTRA_RICHPUSH_FILE_TYPE=="+bundle.getString(JPushInterface.EXTRA_RICHPUSH_FILE_TYPE)
+                            +"\nEXTRA_RICHPUSH_HTML_PATH=="+bundle.getString(JPushInterface.EXTRA_RICHPUSH_HTML_PATH)
+                            +"\nEXTRA_RICHPUSH_HTML_RES=="+bundle.getString(JPushInterface.EXTRA_RICHPUSH_HTML_RES)
+                            +"\nEXTRA_RICHPUSH_HTML_RES=="+bundle.getString(JPushInterface.EXTRA_RICHPUSH_HTML_RES)
+                            +"\ntoString=="+bundle.toString()
+                        );
+//            openNotification(context, bundle);
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             if (bundle != null) {
                 Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

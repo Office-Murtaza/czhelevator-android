@@ -40,7 +40,7 @@
                 android:background="#00000000"
                 app:containerId="@id/layout_content"
                 app:navigateTabSelectedTextColor="@color/colorAccent"
-                app:navigateTabTextColor="#ABABAB"
+                app:navigateTabTextColor="#666666"
                 app:navigateTabTextSize="12sp" />
         </LinearLayout>
     </LinearLayout>

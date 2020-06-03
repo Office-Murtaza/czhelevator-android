@@ -14,7 +14,7 @@ import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.ImageShowAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.ImageShowAdapter;
 import com.kingyon.elevator.uis.widgets.BlankRecyclerView;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;

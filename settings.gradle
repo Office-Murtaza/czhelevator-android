@@ -1,1 +1,1 @@
-include ':app', ':scaledelete', ':afbaselibrary', ':Lubanlibrary', ':SocialLibrary', ':multi-image-selector', ':paylibrary', ':simplezxing', ':third-part-color-cardview', ':ocr_ui', ':PLShortVideo', ':image', ':voide', ':video-effect', ':richeditor', ':myversiontwo'
+include ':app', ':scaledelete', ':afbaselibrary', ':Lubanlibrary', ':SocialLibrary', ':multi-image-selector', ':paylibrary', ':simplezxing', ':third-part-color-cardview', ':ocr_ui', ':PLShortVideo', ':image', ':voide', ':video-effect', ':richeditor', ':myversiontwo', ':mentions', ':matisse', ':htmleditorlibrary'

@@ -69,4 +69,31 @@ public class ToastUtils {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
+
+    public static void showToast(Context context, String text, int duration,int textSize) {
+        Toast toast = null;
+        if (mToastRefrence == null) {
+            toast = Toast.makeText(context, text, duration);
+            mToastRefrence = new WeakReference<>(toast);
+        }
+        toast = mToastRefrence.get();
+        if (toast == null) {
+            toast = Toast.makeText(context, text, duration);
+
+            mToastRefrence = new WeakReference<>(toast);
+        } else {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        try {
+            LinearLayout linearLayout = (LinearLayout) toast.getView();
+            TextView messageTextView = (TextView) linearLayout.getChildAt(0);
+            messageTextView.setTextSize(textSize);
+        }catch (Exception e){
+
+        }
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 }

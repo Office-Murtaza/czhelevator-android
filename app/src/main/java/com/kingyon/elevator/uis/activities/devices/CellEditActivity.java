@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.amap.api.services.core.PoiItem;
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.AMapCityEntity;
@@ -19,7 +20,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.UploadImageAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.UploadImageAdapter;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.AddressPickerUtil;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -31,7 +32,8 @@ import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
-import com.orhanobut.logger.Logger;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -294,7 +296,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             showProgressDialog("小区封面上传中...");
             NetService.getInstance().uploadFile(this, logoFile.get(0), new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images) {
+                public void uploadSuccess(List<String> images, List<String> hash,JSONObject response) {
+                    LogUtils.e(images,hash,response);
                     if (images != null && images.size() > 0) {
                         logoResult = images.get(0);
                         dealImages();
@@ -323,7 +326,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             showProgressDialog("小区照片上传中...");
             NetService.getInstance().uploadFiles(this, imageFiles, new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images) {
+                public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
+                    LogUtils.e(images,hash,response);
                     if (images != null && images.size() == imageFiles.size()) {
                         try {
                             List<String> results = new ArrayList<>();

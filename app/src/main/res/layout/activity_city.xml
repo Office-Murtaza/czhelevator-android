@@ -19,7 +19,7 @@
         android:layout_marginLeft="@dimen/spacing_default"
         android:layout_marginRight="@dimen/spacing_default"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_search_small"
+        android:background="@mipmap/bg_search_area"
         android:drawableLeft="@drawable/ic_homepage_search"
         android:drawablePadding="@dimen/spacing_small"
         android:gravity="center_vertical"

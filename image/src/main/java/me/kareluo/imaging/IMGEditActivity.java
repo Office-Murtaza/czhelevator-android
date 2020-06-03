@@ -31,10 +31,12 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
 
     public static final String EXTRA_IMAGE_SAVE_PATH = "IMAGE_SAVE_PATH";
+    public int number;
 
     @Override
     public void onCreated() {
-
+        Intent intent = getIntent();
+        number = intent.getIntExtra("number",0);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         }
 
         Uri uri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
+
         if (uri == null) {
             return null;
         }
@@ -129,6 +132,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     @Override
     public void onDoneClick() {
         String path = getIntent().getStringExtra(EXTRA_IMAGE_SAVE_PATH);
+        number = getIntent().getIntExtra("number",0);
         if (!TextUtils.isEmpty(path)) {
             Bitmap bitmap = mImgView.saveBitmap();
             if (bitmap != null) {
@@ -149,6 +153,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 }
                 Intent intent = new Intent();
                 intent.putExtra(EXTRA_IMAGE_SAVE_PATH, path);
+                intent.putExtra("number", number);
                 setResult(RESULT_OK, intent);
                 finish();
                 return;

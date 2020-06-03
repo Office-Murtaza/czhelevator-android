@@ -54,14 +54,17 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.guyj.BidirectionalSeekBar;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.utilstwo.VideoUtils;
 import com.kingyon.elevator.videocrop.video.RangeSeekBar;
 import com.kingyon.elevator.view.ColorBar;
 import com.lansosdk.videoeditor.LanSoEditor;
@@ -118,6 +121,9 @@ import butterknife.BindView;
 import cn.bar.DoubleHeadedDragonBar;
 import io.reactivex.disposables.Disposable;
 
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_RELEASETY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
 import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
 import static com.zhaoss.weixinrecorded.activity.CutTimeActivity.dateToStamp;
 
@@ -773,6 +779,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 if(succ){
                     return frameDir;
                 }else{
+                    LogUtils.e("111111111111");
                     return "";
                 }
             }
@@ -873,121 +880,142 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
     }
     private void finishVideo() {
         final boolean isSpeed = videoSpeed != 1;
-            mMediaPlayer.stop();
-        handler.postDelayed(runnable,500); // 开始Timer
-        String videoPath = "/storage/emulated/0/PDD/voide1.mp4";
-        String outfilePath = "/storage/emulated/0/PDD/voide2.mp4";
-        editorTextView = showProgressDialog();
-         float videoSpeed1 = Float.parseFloat(tv_speed.getText().toString());
-        if(isSpeed){
-            EpEditor.changePTS(path, outfilePath, videoSpeed1, EpEditor.PTS.ALL, new OnEditorListener() {
-                @Override
-                public void onSuccess() {
-                    try {
-                    EpVideo epVideo = new EpVideo(outfilePath);
-                    EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-                    epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
-                    EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
-                                mMediaPlayer.getVideoWidth(),
-                                mMediaPlayer.getVideoHeight(),false);
-                    epVideo.addDraw(epDraw);
-                    EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
-                        @Override
-                        public void onSuccess() {
-                            LogUtils.e("成功");
-                            startMediaCodec(videoPath);
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            closeProgressDialog();
-                            LogUtils.e("失败");
-                        }
-
-                        @Override
-                        public void onProgress(float progress) {
-                            LogUtils.e("onProgress=="+progress);
-                            progress2 = (int) (progress1+(progress/2)*100);
-                            LogUtils.e("onProgress=="+progress,progress2);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (String.valueOf(Math.floor(progress2)).length()<=6&&Math.floor(progress2)<=100) {
-                                        editorTextView.setText("视频编辑中" + (int) Math.floor(progress2) + "%");
-                                    }else {
-                                        editorTextView.setText("视频编辑中51%");
-                                    }
-                                }
-                            });
-                        }
-                    });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                @Override
-                public void onFailure() {
-                    closeProgressDialog();
-                    ToastUtils.showShort("视频编辑失败，请稍后再试");
-                }
-                @Override
-                public void onProgress(float progress) {
-                    progress1 = (int)((progress/2)*100);
-                    LogUtils.e("onProgress=="+progress,progress1);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (String.valueOf(Math.floor(progress1)).length()<=6) {
-                                editorTextView.setText("视频编辑中" + (int) Math.floor(progress1) + "%");
-                            }
-                        }
-                    });
-                }
-            });
-
+        /*临时不编辑*/
+        if (fromType==ACCESS_VOIDE_CODE) {
+            ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY,"videoPath",path);
+            finish();
+        }else if (fromType==ACCESS_VOIDE_RELEASETY){
+            Intent intent = new Intent();
+            intent.putExtra("videoPath", path);
+            setResult(RESULT_OK, intent);
+            finish();
         }else {
-            try {
-            EpVideo epVideo = new EpVideo(path);
-            EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-            epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
-            EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
-                        mMediaPlayer.getVideoWidth(),
-                        mMediaPlayer.getVideoHeight(),false);
-            epVideo.addDraw(epDraw);
-            EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
-                @Override
-                public void onSuccess() {
-                    LogUtils.e("成功");
-                    startMediaCodec(videoPath);
-                }
-                @Override
-                public void onFailure() {
-                    closeProgressDialog();
-                    ToastUtils.showShort("视频编辑失败，请稍后再试");
-                }
+            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, path, getVideoDuration(path), fromType);
 
-                @Override
-                public void onProgress(float progress) {
-                    LogUtils.e("onProgress=="+progress);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (String.valueOf(Math.floor(progress*100)).length()<=6) {
-                                if (Math.floor(progress*100)>100){
-                                    editorTextView.setText("视频编辑中99%");
-                                }else {
-                                    editorTextView.setText("视频编辑中" + (int) Math.floor(progress * 100) + "%");
-                                }
-                            }
-                        }
-                    });
-
-                }
-            });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+
+        /*打开编辑*/
+//        if (mMediaPlayer!=null){
+//            mMediaPlayer.stop();
+//            handler.postDelayed(runnable, 500); // 开始Timer
+//            String videoPath = "/storage/emulated/0/PDD/voide1.mp4";
+//            String outfilePath = "/storage/emulated/0/PDD/voide2.mp4";
+//            editorTextView = showProgressDialog();
+//            float videoSpeed1 = Float.parseFloat(tv_speed.getText().toString());
+//            if (isSpeed) {
+//                EpEditor.changePTS(path, outfilePath, videoSpeed1, EpEditor.PTS.ALL, new OnEditorListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        try {
+//                            EpVideo epVideo = new EpVideo(outfilePath);
+//                            EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
+//                            epVideo.clip(seekBar.getSelectedMinValue(), (seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()));
+//                            EpDraw epDraw = new EpDraw(mergeImage1(), 0, 0,
+//                                    mMediaPlayer.getVideoWidth(),
+//                                    mMediaPlayer.getVideoHeight(), false);
+//                            epVideo.addDraw(epDraw);
+//                            EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
+//                                @Override
+//                                public void onSuccess() {
+//                                    LogUtils.e("成功");
+//                                    startMediaCodec(videoPath);
+//                                }
+//
+//                                @Override
+//                                public void onFailure() {
+//                                    closeProgressDialog();
+//                                    LogUtils.e("失败");
+//                                }
+//
+//                                @Override
+//                                public void onProgress(float progress) {
+//                                    LogUtils.e("onProgress==" + progress);
+//                                    progress2 = (int) (progress1 + (progress / 2) * 100);
+//                                    LogUtils.e("onProgress==" + progress, progress2);
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            if (String.valueOf(Math.floor(progress2)).length() <= 6 && Math.floor(progress2) <= 100) {
+//                                                editorTextView.setText("视频编辑中" + (int) Math.floor(progress2) + "%");
+//                                            } else {
+//                                                editorTextView.setText("视频编辑中51%");
+//                                            }
+//                                        }
+//                                    });
+//                                }
+//                            });
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure() {
+//                        closeProgressDialog();
+//                        ToastUtils.showShort("视频编辑失败，请稍后再试");
+//                    }
+//
+//                    @Override
+//                    public void onProgress(float progress) {
+//                        progress1 = (int) ((progress / 2) * 100);
+//                        LogUtils.e("onProgress==" + progress, progress1);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (String.valueOf(Math.floor(progress1)).length() <= 6) {
+//                                    editorTextView.setText("视频编辑中" + (int) Math.floor(progress1) + "%");
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
+//
+//            } else {
+//                try {
+//                    EpVideo epVideo = new EpVideo(path);
+//                    EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
+//                    epVideo.clip(seekBar.getSelectedMinValue(), (seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()));
+//                    EpDraw epDraw = new EpDraw(mergeImage1(), 0, 0,
+//                            mMediaPlayer.getVideoWidth(),
+//                            mMediaPlayer.getVideoHeight(), false);
+//                    epVideo.addDraw(epDraw);
+//                    EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
+//                        @Override
+//                        public void onSuccess() {
+//                            LogUtils.e("成功");
+//                            startMediaCodec(videoPath);
+//                        }
+//
+//                        @Override
+//                        public void onFailure() {
+//                            closeProgressDialog();
+//                            ToastUtils.showShort("视频编辑失败，请稍后再试");
+//                        }
+//
+//                        @Override
+//                        public void onProgress(float progress) {
+//                            LogUtils.e("onProgress==" + progress);
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (String.valueOf(Math.floor(progress * 100)).length() <= 6) {
+//                                        if (Math.floor(progress * 100) > 100) {
+//                                            editorTextView.setText("视频编辑中99%");
+//                                        } else {
+//                                            editorTextView.setText("视频编辑中" + (int) Math.floor(progress * 100) + "%");
+//                                        }
+//                                    }
+//                                }
+//                            });
+//
+//                        }
+//                    });
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
     }
 
     //更改界面模式
@@ -1408,7 +1436,12 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath), fromType);
+                              if (fromType==ACCESS_VOIDE_CODE) {
+                                  ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY,"videoPath",outputPath);
+                                  finish();
+                              }else {
+                                  MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath), fromType);
+                              }
                             }
                         });
                     }

@@ -13,6 +13,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -183,6 +184,21 @@ public class GlideUtils {
         GlideApp.with(context)
                 .load(url)
                 .apply(RequestOptions.bitmapTransform(new GlideRoundTransform(url, dp)))
+                .placeholder(R.drawable.img_loading)
+                .error(R.drawable.img_loading)
+                .into(imageView);
+    }
+    /***
+     * 加载圆角图片
+     * */
+    public static void loadRoundCornersImage(Context context, String url, ImageView imageView, int Corners){
+        //设置图片圆角角度
+        RoundedCorners roundedCorners= new RoundedCorners(Corners);
+//通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+        RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+        GlideApp.with(context)
+                .load(url)
+                .apply(options)
                 .placeholder(R.drawable.img_loading)
                 .error(R.drawable.img_loading)
                 .into(imageView);

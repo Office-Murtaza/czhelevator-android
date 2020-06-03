@@ -51,7 +51,7 @@ public class NetUpload {
                 .subscribe(new CustomApiCallback<UploadParamsEnitty>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        uploadCallback(baseActivity, onUploadCompletedListener, null, ex);
+                        uploadCallback(baseActivity, onUploadCompletedListener, null,null,null, ex);
                     }
 
                     @Override
@@ -87,7 +87,7 @@ public class NetUpload {
                 .subscribe(new CustomApiCallback<UploadParamsEnitty>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        uploadCallbackNoActivity(onUploadCompletedListener, null, ex);
+                        uploadCallbackNoActivity(onUploadCompletedListener, null, null,null,ex);
                     }
 
                     @Override
@@ -125,12 +125,12 @@ public class NetUpload {
                 .subscribe(new CustomApiCallback<UploadParamsEnitty>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        uploadCallback(baseActivity, onUploadCompletedListener, null, ex);
+                        LogUtils.e(ex.getDisplayMessage(),"1111111111111",ex.getCode());
+                        uploadCallback(baseActivity, onUploadCompletedListener, null,null,null, ex);
                     }
-
                     @Override
                     public void onNext(UploadParamsEnitty enitty) {
-                        LogUtils.e("文件上传=请求得到参数=",enitty.getToken(),enitty.getDomain());
+                        LogUtils.e("文件上传=请求得到参数=",enitty.getToken(),enitty.getDomain(),files,needCompress,files.size());
                         if (files == null || files.size() < 1) {
                             throw new ResultException(205, "LuBanUtils compress image error");
                         }
@@ -141,14 +141,18 @@ public class NetUpload {
                                     if (srcfile == null || !srcfile.exists() || srcfile.isDirectory() || srcfile.length() <= 0) {
                                         throw new ResultException(205, "LuBanUtils compress image error");
                                     }
+                                     LogUtils.e(srcfile);
                                     File dstFile = Luban.with(baseActivity).load(srcfile).get();
+                                    LogUtils.e(dstFile);
                                     dstFiles.add(dstFile);
                                 }
+                                LogUtils.e(enitty.getToken(), enitty.getDomain(), dstFiles);
                                 uploadByQiNiu(baseActivity, enitty.getToken(), enitty.getDomain(), dstFiles, onUploadCompletedListener);
                             } catch (IOException e) {
                                 throw new ResultException(205, "LuBanUtils compress image error");
                             }
                         } else {
+                            LogUtils.e("1111",enitty.getToken(), enitty.getDomain(), files);
                             uploadByQiNiu(baseActivity, enitty.getToken(), enitty.getDomain(), files, onUploadCompletedListener);
                         }
                     }
@@ -156,13 +160,13 @@ public class NetUpload {
     }
 
 
-    private void uploadCallbackNoActivity(final OnUploadCompletedListener onUploadCompletedListener, final List<String> images, final ApiException ex) {
+    private void uploadCallbackNoActivity(final OnUploadCompletedListener onUploadCompletedListener, final List<String> images,final List<String> hash,JSONObject response , final ApiException ex) {
         if (onUploadCompletedListener != null) {
             try {
                 if (images != null && images.size() > 0) {
                     Collections.sort(images);
                     Logger.d("结束上传(成功) --> " + images);
-                    onUploadCompletedListener.uploadSuccess(images);
+                    onUploadCompletedListener.uploadSuccess(images,hash,response);
                 } else {
                     Logger.d("结束上传(失败) --> " + ex.getDisplayMessage());
                     onUploadCompletedListener.uploadFailed(ex);
@@ -173,7 +177,7 @@ public class NetUpload {
         }
     }
 
-    private void uploadCallback(BaseActivity baseActivity, final OnUploadCompletedListener onUploadCompletedListener, final List<String> images, final ApiException ex) {
+    private void uploadCallback(BaseActivity baseActivity, final OnUploadCompletedListener onUploadCompletedListener, final List<String> images,List<String> uploadHash, JSONObject response,final ApiException ex) {
         LogUtils.e("文件上传=七牛上传成功返回2=",onUploadCompletedListener,images,ex);
         if (onUploadCompletedListener != null) {
             try {
@@ -183,7 +187,7 @@ public class NetUpload {
                         @Override
                         public void run() {
                             Logger.d("结束上传(成功) --> " + images);
-                            onUploadCompletedListener.uploadSuccess(images);
+                            onUploadCompletedListener.uploadSuccess(images,uploadHash,response);
                         }
                     });
                 } else {
@@ -236,19 +240,21 @@ public class NetUpload {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 List<String> resultImages = new ArrayList<>();
+                List<String> resultHash = new ArrayList<>();
                 if (info.isOK()) {
                     LogUtils.e("文件上传=七牛上传成功返回2=",key,info,response);
                     try {
                         resultImages.add(getDomain(domain) + response.getString("key"));
-                        uploadCallback(baseActivity, onUploadCompletedListener, resultImages, null);
+                        resultHash.add(response.getString("hash"));
+                        uploadCallback(baseActivity, onUploadCompletedListener, resultImages, resultHash,response,null);
                     } catch (JSONException e) {
                         Logger.d(e);
-                        uploadCallback(baseActivity, onUploadCompletedListener, resultImages, new ApiException(e, 9001, "数据解析错误"));
+                        uploadCallback(baseActivity, onUploadCompletedListener, resultImages, resultHash,response,new ApiException(e, 9001, "数据解析错误"));
                     }
                 } else {
                     Throwable throwable = new Throwable(info.error);
                     Logger.d(throwable);
-                    uploadCallback(baseActivity, onUploadCompletedListener, resultImages, new ApiException(throwable, 9001, info.error));
+                    uploadCallback(baseActivity, onUploadCompletedListener, resultImages,resultHash,response, new ApiException(throwable, 9001, info.error));
                 }
             }
         }, null);
@@ -264,6 +270,7 @@ public class NetUpload {
     private void uploadByQiNiu(final BaseActivity baseActivity, String token, final String domain, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener) {
         LogUtils.e("文件上传=1=",token,domain,files);
         final List<String> uploadResponse = new ArrayList<>();
+        final List<String> uploadHash = new ArrayList<>();
         String uuid = String.valueOf(UUID.randomUUID());
         for (int i = 0; i < files.size(); i++) {
             File file = files.get(i);
@@ -280,15 +287,16 @@ public class NetUpload {
                         LogUtils.e("文件上传=七牛上传成功返回=",key,info,response);
                         try {
                             uploadResponse.add(getDomain(domain) + response.getString("key"));
+                            uploadHash.add(response.getString("hash"));
                             if (uploadResponse.size() == files.size()) {
-                                uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse, null);
+                                uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse,uploadHash, response,null);
                             }
                         } catch (JSONException e) {
-                            uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse, new ApiException(e, 9001, "数据解析错误"));
+                            uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse, uploadHash,response,new ApiException(e, 9001, "数据解析错误"));
                         }
                     } else {
                         Throwable throwable = new Throwable(info.error);
-                        uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse, new ApiException(throwable, 9001, info.error));
+                        uploadCallback(baseActivity, onUploadCompletedListener, uploadResponse,uploadHash,response, new ApiException(throwable, 9001, info.error));
                     }
                 }
             }, null);
@@ -298,6 +306,7 @@ public class NetUpload {
 
     private void uploadByQiNiuNoActivity(String token, final String domain, final List<File> files, final OnUploadCompletedListener onUploadCompletedListener) {
         final List<String> uploadResponse = new ArrayList<>();
+        final List<String> uploadHash = new ArrayList<>();
         String uuid = String.valueOf(UUID.randomUUID());
         for (int i = 0; i < files.size(); i++) {
             File file = files.get(i);
@@ -314,15 +323,16 @@ public class NetUpload {
                         LogUtils.e("文件上传=订单请求成功=",key,info,response);
                         try {
                             uploadResponse.add(getDomain(domain) + response.getString("key"));
+                            uploadHash.add(response.getString("hash"));
                             if (uploadResponse.size() == files.size()) {
-                                uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, null);
+                                uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse,uploadHash,response, null);
                             }
                         } catch (JSONException e) {
-                            uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, new ApiException(e, 9001, "数据解析错误"));
+                            uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse,uploadHash, response,new ApiException(e, 9001, "数据解析错误"));
                         }
                     } else {
                         Throwable throwable = new Throwable(info.error);
-                        uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, new ApiException(throwable, 9001, info.error));
+                        uploadCallbackNoActivity(onUploadCompletedListener, uploadResponse, uploadHash,response,new ApiException(throwable, 9001, info.error));
                     }
                 }
             }, null);
@@ -356,7 +366,7 @@ public class NetUpload {
     }
 
     public interface OnUploadCompletedListener {
-        void uploadSuccess(List<String> images);
+        void uploadSuccess(List<String> images,List<String> hash,JSONObject response);
 
         void uploadFailed(ApiException ex);
     }

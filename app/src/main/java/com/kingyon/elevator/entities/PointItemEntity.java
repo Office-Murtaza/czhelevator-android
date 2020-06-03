@@ -39,7 +39,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
     private String build;
     private long buildId;
     private String unit;
-    private long unitId;
+//    private long unitId;
     private String liftNo;
     private String lift;
     private long liftId;
@@ -51,6 +51,32 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
     private String liveAddress;
     private long netTime;
     private long installTime;
+
+    @Override
+    public String toString() {
+        return "PointItemEntity{" +
+                "occupyTimes=" + occupyTimes +
+                ", deliverState='" + deliverState + '\'' +
+                ", objectId=" + objectId +
+                ", cellName='" + cellName + '\'' +
+                ", cellAddress='" + cellAddress + '\'' +
+                ", cellId=" + cellId +
+                ", build='" + build + '\'' +
+                ", buildId=" + buildId +
+                ", unit='" + unit + '\'' +
+                ", liftNo='" + liftNo + '\'' +
+                ", lift='" + lift + '\'' +
+                ", liftId=" + liftId +
+                ", device='" + device + '\'' +
+                ", deviceNo='" + deviceNo + '\'' +
+                ", deviceType='" + deviceType + '\'' +
+                ", status='" + status + '\'' +
+                ", adStatus='" + adStatus + '\'' +
+                ", liveAddress='" + liveAddress + '\'' +
+                ", netTime=" + netTime +
+                ", installTime=" + installTime +
+                '}';
+    }
 
     public List<Long> getOccupyTimes() {
         return occupyTimes;
@@ -148,13 +174,13 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
         this.unit = unit;
     }
 
-    public long getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(long unitId) {
-        this.unitId = unitId;
-    }
+//    public long getUnitId() {
+//        return unitId;
+//    }
+//
+//    public void setUnitId(long unitId) {
+//        this.unitId = unitId;
+//    }
 
     public String getLiftNo() {
         return liftNo;
@@ -244,7 +270,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
         dest.writeString(this.build);
         dest.writeLong(this.buildId);
         dest.writeString(this.unit);
-        dest.writeLong(this.unitId);
+//        dest.writeLong(this.unitId);
         dest.writeString(this.liftNo);
         dest.writeString(this.lift);
         dest.writeLong(this.liftId);
@@ -269,7 +295,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
         this.build = in.readString();
         this.buildId = in.readLong();
         this.unit = in.readString();
-        this.unitId = in.readLong();
+//        this.unitId = in.readLong();
         this.liftNo = in.readString();
         this.lift = in.readString();
         this.liftId = in.readLong();

@@ -3,6 +3,7 @@ package com.kingyon.elevator.application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -35,9 +36,11 @@ import com.umeng.commonsdk.UMConfigure;
 import org.litepal.LitePalApplication;
 
 import java.io.File;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.OkHttpClient;
 
 /**
@@ -52,6 +55,7 @@ public class App extends LitePalApplication {
     public static RefWatcher getRefWatcher() {
         return App.refWatcher;
     }
+    public Handler mHandler = new Handler();
 
     static {
         //设置全局的Header构建器
@@ -82,6 +86,8 @@ public class App extends LitePalApplication {
         FileUtils.createFile("PDD");
         okgoinit();
     }
+
+
 
     private void okgoinit() {
         //okGo网络框架初始化和全局配置

@@ -13,8 +13,8 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.CouponDetailsActivity;
 import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
-import com.kingyon.elevator.uis.adapters.MyCouponsInvalidAdapter;
-import com.kingyon.elevator.uis.adapters.MyCouponsNormalAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.MyCouponsInvalidAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.MyCouponsNormalAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
@@ -171,4 +171,6 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
     protected void dealLeackCanary() {
         LeakCanaryUtils.watchLeakCanary(this);
     }
+
+
 }

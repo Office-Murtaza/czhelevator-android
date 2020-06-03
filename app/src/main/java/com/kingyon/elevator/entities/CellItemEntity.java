@@ -32,6 +32,8 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
      * cellLogo : http://gc.zbj.com/upimg/6/2015/1025/20151025204911_14101.jpg
      */
 
+
+
     private String regionName;
     private int totalScreenNum;
     private int choosedScreenNum;

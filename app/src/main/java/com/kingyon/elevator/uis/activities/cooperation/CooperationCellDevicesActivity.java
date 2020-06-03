@@ -10,7 +10,7 @@ import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.adapters.CooperationCellDevicesAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.CooperationCellDevicesAdapter;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;

@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="66dp"
-    android:layout_height="20dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:background="@color/white"
+    android:padding="@dimen/dp5"
     android:orientation="horizontal">
 
     <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
         android:id="@+id/img_decrease"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_edit_countoperate"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@mipmap/btn_reduce"
         app:proporty="1">
-
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_decrease_shape" />
     </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
 
     <EditText
         android:id="@+id/ed_input"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_40"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@null"
         android:gravity="center"
         android:inputType="number"
@@ -36,21 +31,10 @@
 
     <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
         android:id="@+id/img_increase"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_edit_countoperate"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@mipmap/btn_add"
         app:proporty="1">
 
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_decrease_shape" />
-
-        <ImageView
-            android:layout_width="1dp"
-            android:layout_height="11dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_increase_shape" />
     </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
@@ -18,6 +19,7 @@ import com.baidu.ocr.sdk.model.IDCardResult;
 import com.baidu.ocr.ui.camera.CameraActivity;
 import com.baidu.ocr.ui.camera.CameraNativeHelper;
 import com.baidu.ocr.ui.camera.CameraView;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.utils.OCRUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -33,6 +35,8 @@ import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +47,13 @@ import me.nereo.multi_image_selector.MultiImageSelector;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
+
 /**
  * Created by GongLi on 2019/1/9.
  * Email：lc824767150@163.com
  */
-
+@Route(path = ACTIVITY_IDENTITY_INFO)
 public class IdentityPersonActivity extends BaseStateLoadingActivity {
     @BindView(R.id.tv_reason)
     TextView tvReason;
@@ -333,7 +339,8 @@ public class IdentityPersonActivity extends BaseStateLoadingActivity {
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().uploadFile(this, new File(backPath), new NetUpload.OnUploadCompletedListener() {
             @Override
-            public void uploadSuccess(List<String> images) {
+            public void uploadSuccess(List<String> images, List<String> hash,JSONObject response) {
+                LogUtils.e(images,hash,response);
                 if (images != null && images.size() > 0) {
                     String backUrl = images.get(0);
                     flBack.setTag(backUrl);
@@ -359,7 +366,8 @@ public class IdentityPersonActivity extends BaseStateLoadingActivity {
         recIDCard(IDCardParams.ID_CARD_SIDE_FRONT, facePath);
         NetService.getInstance().uploadFile(this, new File(facePath), new NetUpload.OnUploadCompletedListener() {
             @Override
-            public void uploadSuccess(List<String> images) {
+            public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
+                LogUtils.e(images,hash,response);
                 if (images != null && images.size() > 0) {
                     String faceUrl = images.get(0);
                     flFace.setTag(faceUrl);

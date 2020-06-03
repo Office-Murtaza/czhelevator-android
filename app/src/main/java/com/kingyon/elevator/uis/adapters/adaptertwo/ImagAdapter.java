@@ -10,6 +10,9 @@ import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.czh.myversiontwo.R;
+import com.leo.afbaselibrary.utils.GlideUtils;
+
+import java.util.List;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
 
@@ -21,10 +24,10 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAIL
  */
 public class ImagAdapter extends RecyclerView.Adapter<ImagAdapter.ViewHolder> {
     Context context;
-    int data;
-    public ImagAdapter(Context context,int data){
+    List<Object> list;
+    public ImagAdapter(Context context,  List<Object> list){
         this.context = context;
-        this.data = data;
+        this.list = list;
     }
 
     @NonNull
@@ -37,17 +40,18 @@ public class ImagAdapter extends RecyclerView.Adapter<ImagAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build(ACTIVITY_MAIN2_ARTICLE_DRTAILS).navigation();
-            }
-        });
+        GlideUtils.loadRoundCornersImage(context, String.valueOf(list.get(position)),holder.imageView,20);
+//        holder.imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                ARouter.getInstance().build(ACTIVITY_MAIN2_ARTICLE_DRTAILS).navigation();
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return data;
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

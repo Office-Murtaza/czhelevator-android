@@ -42,7 +42,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:id="@+id/ll_authing"
@@ -171,7 +173,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_apply"
+
                             android:layout_width="match_parent"
                             android:layout_height="46dp"
                             android:layout_marginBottom="@dimen/spacing_default"
@@ -187,4 +189,37 @@
             </LinearLayout>
         </FrameLayout>
     </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bj">
+        </ImageView>
+
+
+        <TextView
+            android:id="@+id/tv_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@mipmap/btn_common_normal"
+            android:text="申请合伙人"
+            android:textColor="#ffffffff"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

@@ -10,6 +10,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -94,7 +95,7 @@ public class ModifyPhoneSecondActivity extends BaseSwipeBackActivity {
                         showToast("操作成功");
                         DataSharedPreferences.saveLoginName(CommonUtil.getEditText(etMobile));
                         hideProgress();
-                        startActivity(LoginActivity.class);
+                        startActivity(LoginActiivty.class);
                         ActivityUtil.finishAllNotLogin();
                     }
                 });

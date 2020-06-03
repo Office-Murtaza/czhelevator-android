@@ -16,7 +16,7 @@ import com.kingyon.elevator.entities.DeviceNumberInfo;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.devices.DeviceEditActivity;
-import com.kingyon.elevator.uis.adapters.CooperationDeviceNumberAdapter;
+import com.kingyon.elevator.uis.adapters.adapterone.CooperationDeviceNumberAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;

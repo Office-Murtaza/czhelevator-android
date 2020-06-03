@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
@@ -18,25 +17,17 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.actiivty2.login.CodeActivity;
 import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.actiivty2.login.UserLoginActiivty;
-import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.uis.actiivty2.main.CommunityReleasetyActivity;
 import com.kingyon.elevator.utils.JumpUtils;
-import com.leo.afbaselibrary.nets.entities.ResultEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import static com.czh.myversiontwo.activity.ActivityUtils.setActivity;
-import static com.czh.myversiontwo.nets.NetApiTwo.MAIN_CODE;
 import static com.czh.myversiontwo.utils.CodeType.QQ;
 import static com.czh.myversiontwo.utils.CodeType.WX;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CODE;
-import static com.czh.myversiontwo.nets.NetApiTwo.MAIN_LOGIN;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_PASSSWORD_SETTING;
 import static com.kingyon.elevator.constants.Constants.LoginType.ALI;
 
@@ -51,13 +42,14 @@ public class OrdinaryActivity {
     public static LoginActiivty loginActiivty =null;
     public static CodeActivity codeActivity =null;
     public static UserLoginActiivty userLoginActiivty =null;
+    public static CommunityReleasetyActivity communityReleasetyActivity = null;
+
 
     /**
      * 验证码跳转
      * */
     public static void CodeActivity(BaseActivity activity, String type, String phone,String unique, String avatar, String nickName ,String isbinding) {
         activity.showProgressDialog(activity.getString(R.string.wait));
-        LogUtils.e(MAIN_CODE + "?type=" + type + "&phone=" + phone);
             NetService.getInstance().setSendCheckConde(type, phone)
                     .compose(activity.bindLifeCycle())
                     .subscribe(new CustomApiCallback<String>() {
@@ -82,7 +74,6 @@ public class OrdinaryActivity {
      * */
     public static void CodeTextviewActivity(BaseActivity activity, String type, String phone, TextView textView){
         activity.showProgressDialog(activity.getString(R.string.wait));
-        LogUtils.e(MAIN_CODE+"?type="+type+"&phone="+phone);
         NetService.getInstance().setSendCheckConde(type,phone)
                 .compose(activity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -150,6 +141,29 @@ public class OrdinaryActivity {
                         baseActivity.hideProgress();
                         ToastUtils.showToast(baseActivity,ex.getDisplayMessage(),1000);
                         LogUtils.e(ex.getCode());
+                        if (ex.getCode()==100106){
+                            if (way.equals(WX)) {
+                                ToastUtils.showToast(baseActivity, "请绑定手机号", 1000);
+                                if (llSf != null) {
+                                    llSf.setVisibility(View.GONE);
+                                    tvLoginUser.setVisibility(View.GONE);
+                                }
+                            } else if (way.equals(QQ)) {
+                                ToastUtils.showToast(baseActivity, "请绑定手机号", 1000);
+                                if (llSf != null) {
+                                    llSf.setVisibility(View.GONE);
+                                    tvLoginUser.setVisibility(View.GONE);
+                                }
+                            } else if (way.equals(ALI)) {
+                                ToastUtils.showToast(baseActivity, "请绑定手机号", 1000);
+                                if (llSf != null) {
+                                    llSf.setVisibility(View.GONE);
+                                    tvLoginUser.setVisibility(View.GONE);
+                                }
+                            }
+                        }else if (ex.getCode()==100107){
+                            ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
+                        }
                     }
                     @Override
                     public void onNext(CodeEntity codeEntity) {
@@ -186,6 +200,7 @@ public class OrdinaryActivity {
                                 UserEntity userEntity = codeEntity.getUser();
                                 DataSharedPreferences.saveLoginName(phone);
                                 DataSharedPreferences.saveUserBean(userEntity);
+                                DataSharedPreferences.saveCreatateAccount(userEntity.getAccount());
                                 DataSharedPreferences.saveToken(codeEntity.getToken());
                                 Net.getInstance().setToken(DataSharedPreferences.getToken());
                                 JumpUtils.getInstance().jumpToRoleMain(baseActivity, AppContent.getInstance().getMyUserRole());
@@ -274,6 +289,52 @@ public class OrdinaryActivity {
                 });
     }
 
+    /***
+     * 内容发布
+     *
+     */
 
+    public static void httpContentPublish(BaseActivity baseActivity, String title, String content,
+                                          String image, String video, String type , String combination ,
+                                          String topicId , String atAccount,int videoSize,
+                                          String videoCover,long playTime, int videoHorizontalVertical){
+        LogUtils.e(title,content,image,video,type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical);
 
+        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait));
+        NetService.getInstance().setContentPublish(title,content,image,video,type,
+                combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical)
+                .compose(baseActivity.bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        ToastUtils.showToast(baseActivity,ex.getDisplayMessage(),1000);
+                        baseActivity.hideProgress();
+                    }
+                    @Override
+                    public void onNext(String s) {
+                    baseActivity.hideProgress();
+                    LogUtils.e(s);
+                    baseActivity.finish();
+                        ToastUtils.showToast(baseActivity,"发布成功",1000);
+
+                    }
+                });
+
+    }
+
+        /**
+         * 未登录或者token失效
+         * */
+
+    public static void notLogin(){
+
+    }
+
+    /**
+     * 关闭刷新
+     * */
+    public static void closeRefresh(SmartRefreshLayout smartRefreshLayout) {
+        smartRefreshLayout.finishRefresh();
+        smartRefreshLayout.finishLoadMore();
+    }
 }
