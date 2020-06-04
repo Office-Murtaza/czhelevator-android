@@ -35,12 +35,12 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
     TextView tvDiscount;
     @BindView(R.id.tv_pay_sum)
     TextView tvPaySum;
-    private OrderDetailsEntity detailsEntity;
+//    private OrderDetailsEntity detailsEntity;
     private String payType;
 
     @Override
     protected String getTitleText() {
-        detailsEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
+//        detailsEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
         payType = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
         return "支付成功";
     }
@@ -52,7 +52,7 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntity.getPayTime()));
+//        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntity.getPayTime()));
 //        switch (payType) {
 //            case Constants.PayType.ALI_PAY:
 //                tvPayType.setText("支付宝");
@@ -77,8 +77,8 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
 //                break;
 //        }
         tvPayType.setText(FormatUtils.getInstance().getPayWay(payType));
-        tvDiscount.setText(String.format("￥%s", CommonUtil.getTwoFloat(detailsEntity.getCouponPrice())));
-        tvPaySum.setText(String.format("￥%s", CommonUtil.getTwoFloat(detailsEntity.getRealPrice())));
+//        tvDiscount.setText(""+detailsEntity.getOrderSn());
+//        tvPaySum.setText(String.format("￥%s", CommonUtil.getTwoFloat(detailsEntity.getRealPrice())));
     }
 
     @OnClick({R.id.tv_order, R.id.tv_homepage})
@@ -86,7 +86,7 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
         switch (view.getId()) {
             case R.id.tv_order:
                 Bundle bundle = new Bundle();
-                bundle.putLong(CommonUtil.KEY_VALUE_1, detailsEntity.getObjctId());
+//                bundle.putLong(CommonUtil.KEY_VALUE_1, detailsEntity.getObjctId());
                 startActivity(OrderDetailsActivity.class, bundle);
                 finish();
                 break;

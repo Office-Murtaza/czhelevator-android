@@ -66,6 +66,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
         setContentView(R.layout.activity_fragment_container);
         ButterKnife.bind(this);
         type = getIntent().getStringExtra("tag");
+        LogUtils.e(type);
         fragmentManager = getSupportFragmentManager();
         setContent();
     }

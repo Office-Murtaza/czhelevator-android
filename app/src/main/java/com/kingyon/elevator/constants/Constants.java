@@ -63,6 +63,7 @@ public interface Constants {
         String ALI_PAY = "ALI";
         String WX_PAY = "WECHAT";
         String BALANCE_PAY = "BALANCE";
+        String FINGERPRINT_PAY = "FINGERPRINT_PAY";
         String FREE = "FREE";//免费订单
         String APPLY = "APPLY";//内购
         String OFFLINE = "OFFLINE";//线下支付

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.date.DateUtils;
@@ -28,24 +29,35 @@ import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.presenter.ConfirmOrderPresenter;
 import com.kingyon.elevator.uis.activities.advertising.NetVideoPlayActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderCouponsActivity;
 import com.kingyon.elevator.uis.activities.user.IdentityInfoActivity;
+import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;
 import com.kingyon.elevator.uis.dialogs.ImageDialog;
 import com.kingyon.elevator.uis.dialogs.OrderIdentityDialog;
+import com.kingyon.elevator.uis.dialogs.PayDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.ConfirmOrderView;
+import com.kingyon.paylibrary.alipay.AliPayUtils;
+import com.kingyon.paylibrary.wechatpay.WxPayUtils;
+import com.leo.afbaselibrary.nets.entities.WxPayEntity;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.leo.afbaselibrary.nets.exceptions.PayApiException;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +66,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
 
 import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE1;
 import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE2;
@@ -117,7 +130,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     private double couponsPrice = 0;/*使用优惠券的金额*/
     private double zheKouPrice = 0;/*使用折扣的金额*/
     private double realPayPrice = 0;/*实际付款的钱*/
-
+    private Subscription countDownSubscribe;
+    private AliPayUtils aliPayUtils;
+    private WxPayUtils wxPayUtils;
+    private Subscription delaySubscribe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +195,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     setMyAdData();
                 } else {
                     mediaPath = getIntent().getStringExtra("path");
-                    GlideUtils.loadImage(this, mediaPath, ad_img_preview);
+                    GlideUtils.loadRoundCornersImage(this, mediaPath, ad_img_preview,20);
                 }
             } else {
                 initDiyAndBussines();
@@ -189,7 +205,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     setMyAdData();
                 } else {
                     mediaPath = getIntent().getStringExtra("path");
-                    GlideUtils.loadImage(this, mediaPath, ad_img_preview);
+                    GlideUtils.loadRoundCornersImage(this, mediaPath, ad_img_preview,20);
                 }
             }
             tvTotalDay.setText(String.format("共%d天", FormatUtils.getInstance().getTimeDays(goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime())));
@@ -503,10 +519,24 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     @Override
     public void orderCommitSuccess(CommitOrderEntiy orderEntiy) {
         Bundle bundle = new Bundle();
-        if (orderEntiy.getPayMoney() > 0) {
-            bundle.putLong(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
-            MyActivityUtils.goActivity(this, OrderPayActivity.class, bundle);
-        } else {
+//        if (orderEntiy.getPayMoney() > 0) {
+//            bundle.putLong(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
+//            MyActivityUtils.goActivity(this, OrderPayActivity.class, bundle);
+//        } else {
+
+//        }
+//        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.AdPublishSuccess, null));
+//        finish();
+
+        LogUtils.e(orderEntiy.toString());
+        if (orderEntiy.getPayMoney()>0){
+            /*金额大于0跳支付*/
+            PayDialog payDialog = new PayDialog(this,orderEntiy);
+            payDialog.show();
+
+        }else {
+            /*跳成功*/
+            LogUtils.e("下单成功");
             OrderDetailsEntity detailsEntity = new OrderDetailsEntity();
             detailsEntity.setObjctId(orderEntiy.getOrderId());
             detailsEntity.setCouponPrice(getAllMoney());
@@ -517,8 +547,20 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             MyActivityUtils.goActivity(this, PaySuccessActivity.class, bundle);
             EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
         }
-        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.AdPublishSuccess, null));
-        finish();
+
+
+
+
+
+    }
+
+    private void setPayEnable() {
+        if (delaySubscribe != null && !delaySubscribe.isUnsubscribed()) {
+            delaySubscribe.unsubscribe();
+        }
+//        tvAliPay.setEnabled(true);
+//        tvWxPay.setEnabled(true);
+//        tvBalancePay.setEnabled(true);
     }
 
     @Override
@@ -557,32 +599,42 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 CellItemEntity cellItemEntity = goPlaceAnOrderEntity.getCellItemEntityArrayList().get(i);
                 allMoney += (cellItemEntity.getOriginalDiyAdPrice() - cellItemEntity.getDiyAdPrice()) * cellItemEntity.getChoosedScreenNum();
             }
-            return "立减" + allMoney * goPlaceAnOrderEntity.getTotalDayCount() + "元";
+            BigDecimal bg3 = new BigDecimal(allMoney);
+            double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return "立减" + f3 * goPlaceAnOrderEntity.getTotalDayCount() + "元";
         } else if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.BUSINESS)) {
             for (int i = 0; i < goPlaceAnOrderEntity.getCellItemEntityArrayList().size(); i++) {
                 CellItemEntity cellItemEntity = goPlaceAnOrderEntity.getCellItemEntityArrayList().get(i);
                 allMoney += (cellItemEntity.getOriginalBusinessAdPrice() - cellItemEntity.getBusinessAdPrice()) * cellItemEntity.getChoosedScreenNum();
             }
-            return "立减" + allMoney * goPlaceAnOrderEntity.getTotalDayCount() + "元";
+            BigDecimal bg3 = new BigDecimal(allMoney);
+            double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return "立减" + f3 * goPlaceAnOrderEntity.getTotalDayCount() + "元";
         } else {
             return "便民信息无促销活动";
         }
     }
 
     private double getAllMoney() {
-        double allMoney = 0;
+        float allMoney = 0;
+        BigDecimal pricePartner = new BigDecimal(allMoney * 0.49 * (1 - allMoney / 100)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
         if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.DIY)) {
             for (int i = 0; i < goPlaceAnOrderEntity.getCellItemEntityArrayList().size(); i++) {
                 CellItemEntity cellItemEntity = goPlaceAnOrderEntity.getCellItemEntityArrayList().get(i);
                 allMoney += cellItemEntity.getDiyAdPrice() * cellItemEntity.getChoosedScreenNum();
             }
-            return allMoney * goPlaceAnOrderEntity.getTotalDayCount();
+            BigDecimal bg3 = new BigDecimal(allMoney);
+            double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return f3 * goPlaceAnOrderEntity.getTotalDayCount();
         } else if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.BUSINESS)) {
             for (int i = 0; i < goPlaceAnOrderEntity.getCellItemEntityArrayList().size(); i++) {
                 CellItemEntity cellItemEntity = goPlaceAnOrderEntity.getCellItemEntityArrayList().get(i);
-                allMoney += cellItemEntity.getBusinessAdPrice() * cellItemEntity.getChoosedScreenNum();
+                allMoney +=  cellItemEntity.getBusinessAdPrice() * cellItemEntity.getChoosedScreenNum();
+                LogUtils.e(allMoney,cellItemEntity.getChoosedScreenNum(),cellItemEntity.getBusinessAdPrice(),cellItemEntity.getChoosedScreenNum()*cellItemEntity.getBusinessAdPrice());
             }
-            return allMoney * goPlaceAnOrderEntity.getTotalDayCount();
+            BigDecimal bg3 = new BigDecimal(allMoney);
+            double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return f3 * goPlaceAnOrderEntity.getTotalDayCount();
         } else {
             return allMoney * goPlaceAnOrderEntity.getTotalDayCount();
         }

@@ -8,16 +8,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:background="@drawable/shape_finger_check_bg">
+        android:background="@drawable/bg_bj">
 
 
         <ImageView
-            android:id="@+id/cancel_finger_check"
+
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:padding="14dp"
-            android:src="@mipmap/zhiwenshibie_shangchutubiao" />
+            android:src="@mipmap/zhiwenshibie_shangchutubiao"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_password"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/dp10"
+            android:textColor="#ff2d6ef2"
+            android:textSize="14sp"
+            android:text="使用密码支付"/>
 
 
         <ImageView
@@ -25,19 +37,33 @@
             android:layout_width="62dp"
             android:layout_height="62dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/zhiwenshibie_zhiwenwenzi" />
+            android:src="@mipmap/im_fingerprint_pay" />
 
         <TextView
             android:id="@+id/tv_check_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/finger_img"
+            android:layout_above="@+id/finger_img"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:text="请验证已录入指纹"
             android:textColor="#ff7f7f7f"
             android:textSize="19sp" />
 
+
+        <TextView
+            android:id="@+id/cancel_finger_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="#ff666666"
+            android:layout_marginTop="@dimen/dp20"
+            android:layout_below="@+id/finger_img"
+            android:gravity="center"
+            android:padding="@dimen/dp20"
+            android:layout_centerHorizontal="true"
+            android:textSize="15sp"
+            />
 
         <TextView
             android:id="@+id/error_hint_msg"

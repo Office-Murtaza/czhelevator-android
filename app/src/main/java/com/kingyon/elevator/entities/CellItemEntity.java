@@ -64,6 +64,40 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
     private double originalDiyAdPrice;
     private double originalInformationAdPrice;
 
+    @Override
+    public String toString() {
+        return "CellItemEntity{" +
+                "regionName='" + regionName + '\'' +
+                ", totalScreenNum=" + totalScreenNum +
+                ", choosedScreenNum=" + choosedScreenNum +
+                ", canEdit=" + canEdit +
+                ", planPosition=" + planPosition +
+                ", collectTime=" + collectTime +
+                ", points=" + points +
+                ", allPoints=" + allPoints +
+                ", targetScreenNum=" + targetScreenNum +
+                ", deleteCache=" + deleteCache +
+                ", planTypeCache='" + planTypeCache + '\'' +
+                ", objctId=" + objctId +
+                ", cellName='" + cellName + '\'' +
+                ", address='" + address + '\'' +
+                ", liftNum=" + liftNum +
+                ", unitNum=" + unitNum +
+                ", distance=" + distance +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", enterTime=" + enterTime +
+                ", cellType='" + cellType + '\'' +
+                ", humanTraffic=" + humanTraffic +
+                ", businessAdPrice=" + businessAdPrice +
+                ", diyAdPrice=" + diyAdPrice +
+                ", informationAdPrice=" + informationAdPrice +
+                ", cellLogo='" + cellLogo + '\'' +
+                ", originalBusinessAdPrice=" + originalBusinessAdPrice +
+                ", originalDiyAdPrice=" + originalDiyAdPrice +
+                ", originalInformationAdPrice=" + originalInformationAdPrice +
+                '}';
+    }
 
     public String getRegionName() {
         return regionName;

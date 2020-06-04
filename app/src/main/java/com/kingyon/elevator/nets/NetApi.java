@@ -42,6 +42,7 @@ public interface NetApi {
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
     String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
@@ -255,7 +256,7 @@ public interface NetApi {
     /*2.0我的广告列表*/
     @POST("ad/adlist")
     @FormUrlEncoded
-    Observable<PageListEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
+    Observable<ConentEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
 
     /*2.0创建编辑广告*/
     @POST("ad/createOrEidtAd")
@@ -518,7 +519,7 @@ public interface NetApi {
     /*2.0订单支付*/
     @POST("order/orderPay")
     @FormUrlEncoded
-    Observable<WxPayEntity> orderPay(@Field("orderId") long orderId, @Field("way") String way);
+    Observable<WxPayEntity> orderPay(@Field("preOrderSn") long orderId, @Field("way") String way,@Field("payPwd") String payPwd );
 
     /*2.0订单详情*/
     @POST("order/orderList")
@@ -548,7 +549,7 @@ public interface NetApi {
 
     @POST("ad/getPicAdTemplet")
     @FormUrlEncoded
-    Observable<PageListEntity<AdTempletEntity>> getPicAdTemplet(@Field("screenSplit") String screenSplit
+    Observable<ConentEntity<AdTempletEntity>> getPicAdTemplet(@Field("screenSplit") String screenSplit
             , @Field("sort") String sort, @Field("type") Long type, @Field("page") int page);
 
 

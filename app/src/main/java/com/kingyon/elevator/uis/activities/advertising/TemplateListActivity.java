@@ -14,6 +14,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.AdTempletEntity;
 import com.kingyon.elevator.entities.NormalElemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adapterone.TemplateListAdapter;
@@ -96,8 +97,8 @@ public class TemplateListActivity extends BaseStateRefreshingLoadingActivity<Obj
         NetService.getInstance().getPicAdTemplet(splitScreen ? Constants.MATERIAL_SCREEN_TYPE.SPLIT : Constants.MATERIAL_SCREEN_TYPE.FULL
                 , Constants.TEMPLATE_SORT.NEWEST
                 , type != null ? type.getObjectId() : null, page)
-                .compose(this.<PageListEntity<AdTempletEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<AdTempletEntity>>() {
+                .compose(this.<ConentEntity<AdTempletEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<AdTempletEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -105,7 +106,7 @@ public class TemplateListActivity extends BaseStateRefreshingLoadingActivity<Obj
                     }
 
                     @Override
-                    public void onNext(PageListEntity<AdTempletEntity> adTempletEntityPageListEntity) {
+                    public void onNext(ConentEntity<AdTempletEntity> adTempletEntityPageListEntity) {
                         if (adTempletEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

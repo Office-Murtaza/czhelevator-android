@@ -210,7 +210,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
         tvWxPay.setEnabled(false);
         showProgressDialog(getString(R.string.wait));
         setPayEnableDelay();
-        NetService.getInstance().orderPay(orderId, payType)
+        NetService.getInstance().orderPay(orderId, payType,"")
                 .compose(this.<WxPayEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<WxPayEntity>() {
                     @Override

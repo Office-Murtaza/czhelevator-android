@@ -6,30 +6,30 @@ package com.kingyon.elevator.entities;
  */
 
 public class CommitOrderEntiy {
-    private long orderId;
-    private float payMoney;
+    private long orderSn;
+    private float priceActual;
 
     @Override
     public String toString() {
         return "CommitOrderEntiy{" +
-                "orderId=" + orderId +
-                ", payMoney=" + payMoney +
+                "orderId=" + orderSn +
+                ", payMoney=" + priceActual +
                 '}';
     }
 
     public long getOrderId() {
-        return orderId;
+        return orderSn;
     }
 
     public void setOrderId(long orderId) {
-        this.orderId = orderId;
+        this.orderSn = orderId;
     }
 
     public float getPayMoney() {
-        return payMoney;
+        return priceActual;
     }
 
     public void setPayMoney(float payMoney) {
-        this.payMoney = payMoney;
+        this.priceActual = payMoney;
     }
 }

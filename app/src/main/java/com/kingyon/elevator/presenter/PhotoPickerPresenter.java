@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.FolderEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -72,7 +73,7 @@ public class PhotoPickerPresenter extends BasePresenter<PhotoPickerView> {
 
     public void loadAdInfo() {
         NetService.getInstance().myAdList("", 1)
-                .subscribe(new CustomApiCallback<PageListEntity<ADEntity>>() {
+                .subscribe(new CustomApiCallback<ConentEntity<ADEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
@@ -82,7 +83,7 @@ public class PhotoPickerPresenter extends BasePresenter<PhotoPickerView> {
                     }
 
                     @Override
-                    public void onNext(PageListEntity<ADEntity> adEntityPageListEntity) {
+                    public void onNext(ConentEntity<ADEntity> adEntityPageListEntity) {
                         if (isViewAttached()) {
                             if (adEntityPageListEntity == null || adEntityPageListEntity.getContent() == null) {
                                 getView().loadAdInfoFailed();

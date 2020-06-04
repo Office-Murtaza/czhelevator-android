@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_white_5dp_corner_bg"
+    android:background="@drawable/bg_bj"
     android:orientation="vertical"
     android:paddingTop="19dp"
     android:paddingBottom="19dp">
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:text="明细"
+        android:visibility="gone"
         android:textColor="#ff404040"
         android:textSize="19sp" />
 
@@ -20,6 +21,7 @@
         android:layout_height="0.5dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="7dp"
+        android:visibility="gone"
         android:background="#BFBFBF" />
 
     <RelativeLayout
@@ -33,8 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="广告费"
+            android:text="  广告费"
             android:textColor="#ff404040"
+            android:drawableLeft="@mipmap/ic_line_red_s"
             android:textSize="15sp" />
 
 
@@ -53,7 +56,7 @@
     <ListView
         android:id="@+id/housing_list_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:dividerHeight="0dp"
         android:listSelector="@color/transparent"
@@ -78,8 +81,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="优惠"
+            android:text="  优惠"
             android:textColor="#ff404040"
+            android:drawableLeft="@mipmap/ic_line_red_s"
             android:textSize="15sp" />
 
 
@@ -99,6 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginStart="27dp"
+        android:visibility="gone"
         android:layout_marginEnd="27dp">
 
         <TextView
@@ -167,7 +172,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="总价"
-            android:textColor="#EB7A12"
+            android:textColor="#333333"
             android:textSize="15sp" />
 
         <TextView
@@ -177,7 +182,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="¥ 0"
-            android:textColor="#EB7A12"
+            android:textColor="#FF3049"
             android:textSize="15sp" />
 
     </RelativeLayout>

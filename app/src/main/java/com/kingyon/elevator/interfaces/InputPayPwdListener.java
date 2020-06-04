@@ -7,5 +7,4 @@ package com.kingyon.elevator.interfaces;
 public interface InputPayPwdListener {
 
     void userInputPassWord(String password);
-
 }

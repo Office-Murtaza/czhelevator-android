@@ -78,7 +78,7 @@ public class PayPasswordEditView extends LinearLayout {
                 if (length > 0) {
                     switch (length) {
                         case 1:
-                            tv_pwd1.setText("*");
+                            tv_pwd1.setText("·");
                             tv_pwd2.setText("");
                             tv_pwd3.setText("");
                             tv_pwd4.setText("");
@@ -86,44 +86,44 @@ public class PayPasswordEditView extends LinearLayout {
                             tv_pwd6.setText("");
                             break;
                         case 2:
-                            tv_pwd1.setText("*");
-                            tv_pwd2.setText("*");
+                            tv_pwd1.setText("·");
+                            tv_pwd2.setText("·");
                             tv_pwd3.setText("");
                             tv_pwd4.setText("");
                             tv_pwd5.setText("");
                             tv_pwd6.setText("");
                             break;
                         case 3:
-                            tv_pwd1.setText("*");
-                            tv_pwd2.setText("*");
-                            tv_pwd3.setText("*");
+                            tv_pwd1.setText("·");
+                            tv_pwd2.setText("·");
+                            tv_pwd3.setText("·");
                             tv_pwd4.setText("");
                             tv_pwd5.setText("");
                             tv_pwd6.setText("");
                             break;
                         case 4:
-                            tv_pwd1.setText("*");
-                            tv_pwd2.setText("*");
-                            tv_pwd3.setText("*");
-                            tv_pwd4.setText("*");
+                            tv_pwd1.setText("·");
+                            tv_pwd2.setText("·");
+                            tv_pwd3.setText("·");
+                            tv_pwd4.setText("·");
                             tv_pwd5.setText("");
                             tv_pwd6.setText("");
                             break;
                         case 5:
-                            tv_pwd1.setText("*");
-                            tv_pwd2.setText("*");
-                            tv_pwd3.setText("*");
-                            tv_pwd4.setText("*");
-                            tv_pwd5.setText("*");
+                            tv_pwd1.setText("·");
+                            tv_pwd2.setText("·");
+                            tv_pwd3.setText("·");
+                            tv_pwd4.setText("·");
+                            tv_pwd5.setText("·");
                             tv_pwd6.setText("");
                             break;
                         case 6:
-                            tv_pwd1.setText("*");
-                            tv_pwd2.setText("*");
-                            tv_pwd3.setText("*");
-                            tv_pwd4.setText("*");
-                            tv_pwd5.setText("*");
-                            tv_pwd6.setText("*");
+                            tv_pwd1.setText("·");
+                            tv_pwd2.setText("·");
+                            tv_pwd3.setText("·");
+                            tv_pwd4.setText("·");
+                            tv_pwd5.setText("·");
+                            tv_pwd6.setText("·");
                             //触发监听事件
                             if (payPasswordListener != null) {
                                 payPasswordListener.passwordIsInputDown(et_input_password.getText().toString());

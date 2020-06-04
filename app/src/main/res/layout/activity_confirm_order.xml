@@ -44,7 +44,7 @@
                     <include layout="@layout/layout_order_choose"/>
 
 
-                    <include layout="@layout/layout_instructions"/>
+                    <include layout="@layout/layout_instructions" />
 
 
                 </LinearLayout>

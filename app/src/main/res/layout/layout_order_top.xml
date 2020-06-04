@@ -25,14 +25,32 @@
             android:textSize="14sp" />
 
 
+        <RelativeLayout
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_alignParentEnd="true">
+
         <ImageView
             android:id="@+id/ad_img_preview"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_alignParentEnd="true"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="@dimen/dp10"
+            android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:text="预览"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffffff"
+                android:gravity="center"
+                android:textSize="@dimen/sp_12"
+                android:background="@drawable/ad_preview"
+                />
+
+        </RelativeLayout>
     </LinearLayout>
 
 

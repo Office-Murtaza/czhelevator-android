@@ -24,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+
                 android:background="@color/white_normal"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -34,12 +34,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_default"
                     android:layout_marginTop="@dimen/spacing_twenty_four"
-                    android:src="@drawable/img_order_pay" />
+                    android:src="@mipmap/bg_list_pay_success" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="订单支付成功"
+                    android:text="下单成功！"
                     android:textColor="#ff333333"
                     android:textSize="@dimen/txt_title" />
 
@@ -66,7 +66,7 @@
                         android:paddingRight="30dp"
                         android:paddingTop="@dimen/spacing_small"
                         android:text="查看订单"
-                        android:textColor="#ff999999"
+                        android:textColor="#FF3049"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                         android:paddingRight="30dp"
                         android:paddingTop="@dimen/spacing_small"
                         android:text="回到首页"
-                        android:textColor="#808080"
+                        android:textColor="#FF3049"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -93,6 +93,36 @@
                         android:layout_width="0dp"
                         android:layout_height="1px"
                         android:layout_weight="1" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/spacing_default"
+                    android:paddingRight="@dimen/spacing_default">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/spacing_twelve"
+                        android:gravity="center_vertical"
+                        android:text="订单编号"
+                        android:textColor="#ABABAB"
+                        android:textSize="@dimen/txt_normal_content"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_discount"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/txt_normal_content"
+                        android:textStyle="bold"
+                        tools:text="DSKGJ453405FGKL463454" />
                 </LinearLayout>
 
                 <View
@@ -168,34 +198,7 @@
                     android:layout_height="@dimen/spacing_one"
                     android:background="@drawable/white_margin_sixteen_divider" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/spacing_default"
-                    android:paddingRight="@dimen/spacing_default">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/spacing_twelve"
-                        android:gravity="center_vertical"
-                        android:text="折扣金额"
-                        android:textColor="#ABABAB"
-                        android:textSize="@dimen/txt_normal_content"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_discount"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="right|center_vertical"
-                        android:textColor="#333333"
-                        android:textSize="@dimen/txt_normal_content"
-                        android:textStyle="bold"
-                        tools:text="￥0.00" />
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"

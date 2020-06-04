@@ -788,8 +788,8 @@ public class NetService {
     }
 
     /*2.0订单支付*/
-    public Observable<WxPayEntity> orderPay(long orderId, String way) {
-        Observable<WxPayEntity> zip = Observable.zip(getApi().orderPay(orderId, way), Observable.just(way), new Func2<WxPayEntity, String, WxPayEntity>() {
+    public Observable<WxPayEntity> orderPay(long orderId, String way,String payPwd ) {
+        Observable<WxPayEntity> zip = Observable.zip(getApi().orderPay(orderId, way,payPwd), Observable.just(way), new Func2<WxPayEntity, String, WxPayEntity>() {
             @Override
             public WxPayEntity call(WxPayEntity wxPayEntity, String s) {
                 if (wxPayEntity == null) {
@@ -946,7 +946,7 @@ public class NetService {
         return addSchedulers(observable);
     }
     /*2.0我的广告列表*/
-    public Observable<PageListEntity<ADEntity>> myAdList(String planType, int page) {
+    public Observable<ConentEntity<ADEntity>> myAdList(String planType, int page) {
         return addSchedulers(getApi().myAdList(planType, page));
     }
     /*2.0广告删除*/
@@ -954,7 +954,7 @@ public class NetService {
         return addSchedulers(getApi().deleteAd(objectId));
     }
 
-    public Observable<PageListEntity<AdTempletEntity>> getPicAdTemplet(String screenSplit, String sort
+    public Observable<ConentEntity<AdTempletEntity>> getPicAdTemplet(String screenSplit, String sort
             , Long type, int page) {
         return addSchedulers(getApi().getPicAdTemplet(screenSplit, sort, type, page));
     }

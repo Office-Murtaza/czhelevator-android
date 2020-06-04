@@ -121,6 +121,7 @@ public class FingerprintImplForAndrM implements IFingerprint {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
+            LogUtils.e(result.getCryptoObject().getSignature(),result.getCryptoObject().getMac(),result.getCryptoObject().getCipher());
             DialogUtils.getInstance().setFingerTips(context.getString(R.string.biometricprompt_verify_success), R.color.biometricprompt_color_82C785);
             fingerprintCallback.onSucceeded();
             DialogUtils.getInstance().hideFingerCheckDailog();

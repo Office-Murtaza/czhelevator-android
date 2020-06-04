@@ -39,9 +39,9 @@ public class RecommendHouseEntiy {
         public String stayIn;
         public String type;
         public int numberTraffic;
-        public int priceBusiness;
-        public int priceDiy;
-        public int priceText;
+        public double priceBusiness;
+        public double priceDiy;
+        public double priceText;
         public String urlCover;
         public int distanceM;
         public String urlHousing;

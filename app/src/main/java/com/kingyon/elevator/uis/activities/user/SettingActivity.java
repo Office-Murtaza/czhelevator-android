@@ -91,7 +91,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
 
     }
 
-    @OnClick({R.id.ll_cache, R.id.tv_feed_bak, R.id.ll_version, R.id.tv_logout, R.id.ll_user_privacy,
+    @OnClick({R.id.ll_cache, R.id.tv_logout,
             R.id.security_setting,R.id.tv_account_binding, R.id.tv_font, R.id.tv_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -106,9 +106,9 @@ public class SettingActivity extends BaseSwipeBackActivity {
                     showExitDialog();
                 }
                 break;
-            case R.id.ll_user_privacy:
-                AgreementActivity.start(this, "用户隐私政策", Constants.AgreementType.USER_RULE.getValue());
-                break;
+//            case R.id.ll_user_privacy:
+//                AgreementActivity.start(this, "用户隐私政策", Constants.AgreementType.USER_RULE.getValue());
+//                break;
             case R.id.security_setting:
                 if (DataSharedPreferences.getUserBean() == null) {
                     try {

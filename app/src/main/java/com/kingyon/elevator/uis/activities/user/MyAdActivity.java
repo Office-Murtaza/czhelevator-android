@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.advertising.AdEditActivity;
@@ -205,8 +206,8 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().myAdList(type, page)
-                .compose(this.<PageListEntity<ADEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<ADEntity>>() {
+                .compose(this.<ConentEntity<ADEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<ADEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -214,7 +215,7 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
                     }
 
                     @Override
-                    public void onNext(PageListEntity<ADEntity> adEntityPageListEntity) {
+                    public void onNext(ConentEntity<ADEntity> adEntityPageListEntity) {
                         if (adEntityPageListEntity == null || adEntityPageListEntity.getContent() == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
