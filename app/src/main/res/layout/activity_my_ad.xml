@@ -76,6 +76,7 @@
         android:background="@drawable/bg_six_btn"
         android:gravity="center"
         android:text="创建广告"
+        android:visibility="gone"
         android:textColor="#ffffffff"
         android:textSize="@dimen/txt_big_content"
         android:textStyle="bold" />

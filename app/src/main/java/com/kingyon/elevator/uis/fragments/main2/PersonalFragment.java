@@ -47,6 +47,7 @@ import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
 
 /**
@@ -229,7 +230,13 @@ public class PersonalFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.img_code, R.id.img_placeholder, R.id.tv_name, R.id.img_certification, R.id.tv_grade, R.id.ll_portrait, R.id.tv_t_currency, R.id.tv_integral, R.id.ll_amount, R.id.tv_dynamic_number, R.id.ll_dynamic, R.id.tv_attention_number, R.id.ll_attention, R.id.tv_fan_number, R.id.ll_fan, R.id.tv_card_number, R.id.ll_card, R.id.ll_statistical, R.id.ll_order, R.id.ll_collect, R.id.ll_advertisi, R.id.ll_activity, R.id.ll_function, R.id.image_banner, R.id.ll_wallet, R.id.ll_invoice, R.id.ll_task, R.id.ll_partner, R.id.ll_installation, R.id.ll_business, R.id.ll_property, R.id.ll_invite, R.id.ll_customer, R.id.ll_system, R.id.ll_persona})
+    @OnClick({R.id.img_code, R.id.img_placeholder, R.id.tv_name, R.id.img_certification, R.id.tv_grade,
+            R.id.ll_portrait, R.id.tv_t_currency, R.id.tv_integral, R.id.ll_amount, R.id.tv_dynamic_number,
+            R.id.ll_dynamic, R.id.tv_attention_number, R.id.ll_attention, R.id.tv_fan_number, R.id.ll_fan,
+            R.id.tv_card_number, R.id.ll_card, R.id.ll_statistical, R.id.ll_order, R.id.ll_collect, R.id.ll_advertisi,
+            R.id.ll_activity, R.id.ll_function, R.id.image_banner, R.id.ll_wallet, R.id.ll_invoice, R.id.ll_task,
+            R.id.ll_partner, R.id.ll_installation, R.id.ll_business, R.id.ll_property, R.id.ll_invite, R.id.ll_customer,
+            R.id.ll_system, R.id.ll_persona})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_code:
@@ -282,6 +289,7 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.tv_t_currency:
                 /*T币*/
+//                startActivity(MyWalletActivity.class);
                 break;
             case R.id.tv_integral:
                 /*积分*/
@@ -294,16 +302,19 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_dynamic:
                 /*动态*/
+
                 break;
             case R.id.tv_attention_number:
                 break;
             case R.id.ll_attention:
                 /*关注*/
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
                 break;
             case R.id.tv_fan_number:
                 break;
             case R.id.ll_fan:
                 /*粉丝*/
+                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
                 break;
             case R.id.tv_card_number:
                 break;

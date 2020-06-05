@@ -15,6 +15,8 @@ import com.kingyon.elevator.utils.DialogUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_SETTING;
+
 /**
  * Created By SongPeng  on 2019/11/28
  * Email : 1531603384@qq.com
@@ -32,11 +34,12 @@ public class FingerCheckDailog extends MyBaseBottomDialog {
     TextView tvPassword;
     private Context context;
     FingerCheckListener fingerCheckListener;
+    String type;
 
-
-    public FingerCheckDailog(@NonNull Context context, FingerCheckListener fingerCheckListener) {
+    public FingerCheckDailog(@NonNull Context context, String type,FingerCheckListener fingerCheckListener) {
         super(context);
         this.context = context;
+        this.type = type;
         this.fingerCheckListener = fingerCheckListener;
     }
 
@@ -45,6 +48,9 @@ public class FingerCheckDailog extends MyBaseBottomDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.finger_check_dialog_layout);
         ButterKnife.bind(this);
+        if (type.equals(KEYBOARD_SETTING)){
+            tvPassword.setVisibility(View.GONE);
+        }
         cancel_finger_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +62,7 @@ public class FingerCheckDailog extends MyBaseBottomDialog {
                 DialogUtils.getInstance().hideFingerCheckDailog();
             }
         });
+
         tvPassword.setOnClickListener(v -> {
             //关闭指纹识别，弹出密码输入框
             DialogUtils.getInstance().hideFingerCheckDailog();

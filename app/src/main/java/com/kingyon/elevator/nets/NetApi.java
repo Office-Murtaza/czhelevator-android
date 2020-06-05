@@ -564,9 +564,10 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<List<CouponItemEntity>> getMeetCoupons(@Field("price") float price, @Field("type") String type);
 
+    /*2.0获取我的优惠卷*/
     @POST("user/getCoupons")
     @FormUrlEncoded
-    Observable<PageListEntity<CouponItemEntity>> getCoupons(@Field("status") String status, @Field("page") int page);
+    Observable<ConentEntity<CouponItemEntity>> getCoupons(@Field("status") String status, @Field("page") int page);
 
     @POST("user/donateCoupons")
     @FormUrlEncoded
@@ -600,9 +601,11 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<PageListEntity<WalletRecordEntity>> myWalletRecords(@Field("page") int page);
 
-    @POST("user/rechageWallet")
+    /*2.0充值*/
+    @POST("user/rechargeWallet")
     @FormUrlEncoded
     Observable<WxPayEntity> rechageWallet(@Field("way") String way, @Field("amount") float amount);
+
 
     @POST("user/invoiceInfo")
     Observable<InvoiceInfoEntity> invoiceInfo();

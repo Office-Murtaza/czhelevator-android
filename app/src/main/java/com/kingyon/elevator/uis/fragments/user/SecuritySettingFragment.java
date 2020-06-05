@@ -33,6 +33,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_SETTING;
+
 /**
  * 安全设置界面
  */
@@ -118,7 +121,7 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
         FingerprintVerifyManager.Builder builder = new FingerprintVerifyManager.Builder(getActivity());
         builder.callback(fingerprintCallback)
                 .fingerprintColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary))
-                .build();
+                .build(KEYBOARD_SETTING);
     }
 
 
@@ -177,7 +180,7 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
     @Override
     public void checkPayPwdIsInit(Boolean isInit) {
         if (isInit) {
-            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), password -> {
+            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_SETTING, password -> {
                 DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                 presenter.checkPayPasswordIsRight(password);
             });

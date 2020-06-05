@@ -697,6 +697,10 @@
         <activity android:name=".uis.actiivty2.user.RECodeActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0交易明细-->
+        <activity android:name=".uis.activities.user.MyWalletDetailsActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

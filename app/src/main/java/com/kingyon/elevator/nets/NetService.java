@@ -972,7 +972,7 @@ public class NetService {
         return addSchedulers(getApi().getMeetCoupons(price, type));
     }
 
-    public Observable<PageListEntity<CouponItemEntity>> getCoupons(String status, int page) {
+    public Observable<ConentEntity<CouponItemEntity>> getCoupons(String status, int page) {
         return addSchedulers(getApi().getCoupons(status, page));
     }
 
@@ -1028,7 +1028,7 @@ public class NetService {
         }
         return addSchedulers(observable);
     }
-
+/*2.0充值接口*/
     public Observable<WxPayEntity> rechageWallet(String way, float amount) {
         Observable<WxPayEntity> zip = Observable.zip(getApi().rechageWallet(way, amount), Observable.just(way)
                 , new Func2<WxPayEntity, String, WxPayEntity>() {

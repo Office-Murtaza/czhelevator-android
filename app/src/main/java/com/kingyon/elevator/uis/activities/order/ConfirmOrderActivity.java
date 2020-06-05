@@ -721,8 +721,8 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             tv_discount_money.setText("已优惠" + couponsSum + "元");
 //            tv_order_money.setText("¥" + resultPrice + "元");
             tv_order_money.setText( Html.fromHtml(String.format(STRING_PRICE2,resultPrice)));
-//            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
-            if (autoCalculationDiscountEntity.getCons().size() > 0) {
+            if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
+//            if (autoCalculationDiscountEntity.getCons().size() > 0) {
                 autoCalculationDiscountEntity.setHasMore(true);
             } else {
                 autoCalculationDiscountEntity.setHasMore(false);

@@ -52,6 +52,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
+
 /**
  * Created by GongLi on 2019/1/14.
  * Email：lc824767150@163.com
@@ -216,7 +218,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     }
 
     private void showPayPwdDialog() {
-        DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this, password -> {
+        DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this,KEYBOARD_PAY, password -> {
             DialogUtils.getInstance().hideInputPayPwdToCashDailog();
             checkPayPasswordIsRight(password);
         });
@@ -250,7 +252,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         FingerprintVerifyManager.Builder builder = new FingerprintVerifyManager.Builder(this);
         builder.callback(fingerprintCallback)
                 .fingerprintColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .build();
+                .build(KEYBOARD_PAY);
     }
 
 

@@ -98,5 +98,13 @@ public class CodeType {
  public static final String ADV_BUSINESS = "BUSINESS";
  public static final String ADV_INFORMATION = "INFORMATION";
 
+ /**
+  * 键盘弹框
+  * pay 支付
+  * setting 设置
+  * */
+ public static final String KEYBOARD_PAY = "KEYBOARD_PAY";
+ public static final String KEYBOARD_SETTING = "KEYBOARD_SETTING";
+
 
 }

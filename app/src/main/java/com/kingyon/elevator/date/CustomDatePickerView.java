@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.entities.DateGridEntity;
 import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.uis.adapters.adapterone.HorizontalSelectDateAdapter;
@@ -40,7 +41,7 @@ public class CustomDatePickerView extends View {
     /**
      * 在开始和结束日期之间的日期的行背景颜色
      */
-    private int betweenStartAndEndDateLineBg = Color.parseColor("#F8DABE");
+    private int betweenStartAndEndDateLineBg = Color.parseColor("#FF3049");
 
     /**
      * 选中日期的文字颜色
@@ -60,18 +61,18 @@ public class CustomDatePickerView extends View {
     /**
      * 选中的开始和结束日期背景颜色
      */
-    private int startAndEndDateViewBg = Color.parseColor("#FF8003");
+    private int startAndEndDateViewBg = Color.parseColor("#FF3049");
 
     /**
      * 总共多少天的文字颜色
      */
-    private int totalCountTextColor = Color.parseColor("#EB7A12");
+    private int totalCountTextColor = Color.parseColor("#ffffff");
 
 
     /**
      * 总共多少天的分割线颜色
      */
-    private int totalCountLineColor = Color.parseColor("#FF8003");
+    private int totalCountLineColor = Color.parseColor("#00000000");
 
     // 日期字体大小
     private int dateTextSize = 14;
@@ -247,13 +248,14 @@ public class CustomDatePickerView extends View {
         paint.setColor(totalCountTextColor);
         paint.setTextSize(10 * displayMetrics.scaledDensity);
         selectedBgCircleR = (float) (columnWidth / 2 * 0.7);
-        int startX = (int) (columnWidth * column + (columnWidth - (columnWidth - selectedBgCircleR * 2) / 2 - paint.measureText("共计" + getDiffDay() + "天")));
+        int startX = (int) (columnWidth * column + (columnWidth - (columnWidth - selectedBgCircleR * 2) / 2 - paint.measureText("共" + getDiffDay() + "天")));
         int startY = (int) (rowHeight * row + rowHeight - (paint.ascent() + paint.descent()));
         // 设置画笔颜色
-        canvas.drawText("共计" + getDiffDay() + "天" + "", startX, startY, paint);
+        canvas.drawText("共" + getDiffDay() + "天" + "", startX-20, startY-50, paint);
         int startLineX = (int) (columnWidth * (column + 1));
         int startLineY = (int) (rowHeight * row);
         paint.setColor(totalCountLineColor);
+
         canvas.drawLine(startLineX, startLineY, startLineX + lineWidth, startLineY + rowHeight, paint);
     }
 

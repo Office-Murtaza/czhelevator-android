@@ -91,7 +91,8 @@ public class PhotoPickerAdapter extends BaseAdapter {
             holder.video_time.setText("");
         }
         if (mediaData.getOriginalPath() != null) {
-            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
+//            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
+            holder.iv_preview.setImageResource(R.drawable.lock);
         } else {
             holder.iv_preview.setImageResource(R.drawable.mis_default_error);
         }

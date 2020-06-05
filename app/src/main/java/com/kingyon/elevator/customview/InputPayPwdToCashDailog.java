@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
@@ -21,6 +22,8 @@ import com.leo.afbaselibrary.utils.ToastUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_SETTING;
+
 /**
  * Created By SongPeng  on 2019/11/28
  * Email : 1531603384@qq.com
@@ -35,14 +38,15 @@ public class InputPayPwdToCashDailog extends MyBaseBottomDialog {
     @BindView(R.id.tv_forget_fingerprint)
     TextView tvForgetFingerprint;
     private Context context;
-
+    String type;
 
     private InputPayPwdListener inputPayPwdListener;
 
-    public InputPayPwdToCashDailog(@NonNull Context context, InputPayPwdListener inputPayPwdListener) {
+    public InputPayPwdToCashDailog(@NonNull Context context,String type, InputPayPwdListener inputPayPwdListener) {
         super(context);
         this.context = context;
         this.inputPayPwdListener = inputPayPwdListener;
+        this.type = type;
     }
 
     @Override
@@ -50,6 +54,9 @@ public class InputPayPwdToCashDailog extends MyBaseBottomDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cash_input_pay_pwd_dialog_layout);
         ButterKnife.bind(this);
+        if (type.equals(KEYBOARD_SETTING)){
+            tvForgetFingerprint.setVisibility(View.GONE);
+        }
         pay_password_input_view.setPayPasswordListener(pwd -> {
                     KeyboardUtils.hideSoftInput(pay_password_input_view.getEt_input_password());
                     inputPayPwdListener.userInputPassWord(pwd);

@@ -136,11 +136,13 @@ public class PutcastAdvertisFragment extends BaseFragment {
         StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
         addCellToPlanPresenter = new AddCellToPlanPresenter((BaseActivity) getActivity());
         LocationEntity entity = AppContent.getInstance().getLocation();
-        latitude = String.valueOf(entity.getLatitude());
-        longitude = String.valueOf(entity.getLongitude());
-        tvPlace.setText(entity.getCity() + "");
-        cityCode = String.valueOf(520100) ;
-        cityId = 520100;
+        if (entity!=null) {
+            latitude = String.valueOf(entity.getLatitude());
+            longitude = String.valueOf(entity.getLongitude());
+            tvPlace.setText(entity.getCity() + "");
+            cityCode = String.valueOf(520100);
+            cityId = 520100;
+        }
         initRefresh();
 //        CityUtils.getCityCode(getActivity(), entity.getCity(), new CityUtils.CityCode() {
 //            @Override

@@ -37,7 +37,10 @@ public class FingerprintImplForAndrM implements IFingerprint {
     //Android 6.0 指纹管理
     private FingerprintManagerCompat fingerprintManagerCompat;
     private int checkCount = 0;//当前验证次数
-
+    String type;
+    public FingerprintImplForAndrM( String type){
+        this.type = type;
+    }
     @Override
     public void authenticate(Activity context, VerificationDialogStyleBean bean, FingerprintCallback callback) {
 
@@ -55,7 +58,7 @@ public class FingerprintImplForAndrM implements IFingerprint {
 
         //调起指纹验证
         fingerprintManagerCompat.authenticate(cryptoObject, 0, cancellationSignal, authenticationCallback, null);
-        DialogUtils.getInstance().showFingerCheckDailog(context, new FingerCheckListener() {
+        DialogUtils.getInstance().showFingerCheckDailog(context,type, new FingerCheckListener() {
             @Override
             public void onUsepwd() {
                 if (fingerprintCallback != null)
@@ -79,11 +82,11 @@ public class FingerprintImplForAndrM implements IFingerprint {
         });
     }
 
-    public static FingerprintImplForAndrM newInstance() {
+    public static FingerprintImplForAndrM newInstance(String type) {
         if (fingerprintImplForAndrM == null) {
             synchronized (FingerprintImplForAndrM.class) {
                 if (fingerprintImplForAndrM == null) {
-                    fingerprintImplForAndrM = new FingerprintImplForAndrM();
+                    fingerprintImplForAndrM = new FingerprintImplForAndrM(type);
                 }
             }
         }

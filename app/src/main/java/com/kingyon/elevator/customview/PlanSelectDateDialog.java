@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.HorizontalSelectDateEntity;
@@ -94,6 +95,7 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
         tv_current_date.setText(DateUtils.getCurrentYear() + "年" + DateUtils.getCurrentMonth() + "月");
         date_grid_view.setAdapter(horizontalSelectDateAdapter);
         date_grid_view.setOnPagerChageListener(position -> {
+            LogUtils.e(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
             tv_current_date.setText(horizontalSelectDateEntityList.get(position).getCurrentYearAndMonth());
         });
         date_grid_view.setOnPagerPosition(0);

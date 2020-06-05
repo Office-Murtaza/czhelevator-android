@@ -219,12 +219,12 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showInputPayPwdToCashDailog(Context context, InputPayPwdListener inputPayPwdListener) {
+    public void showInputPayPwdToCashDailog(Context context,String type, InputPayPwdListener inputPayPwdListener) {
         if (inputPayPwdToCashDailog != null && inputPayPwdToCashDailog.isShowing()) {
             inputPayPwdToCashDailog.dismiss();
             inputPayPwdToCashDailog = null;
         }
-        inputPayPwdToCashDailog = new InputPayPwdToCashDailog(context, inputPayPwdListener);
+        inputPayPwdToCashDailog = new InputPayPwdToCashDailog(context,type, inputPayPwdListener);
         inputPayPwdToCashDailog.setCancelable(true);
         inputPayPwdToCashDailog.show();
     }
@@ -246,12 +246,12 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showFingerCheckDailog(Context context, FingerCheckListener fingerCheckListener) {
+    public void showFingerCheckDailog(Context context,String type, FingerCheckListener fingerCheckListener) {
         if (fingerCheckDailog != null && fingerCheckDailog.isShowing()) {
             fingerCheckDailog.dismiss();
             fingerCheckDailog = null;
         }
-        fingerCheckDailog = new FingerCheckDailog(context, fingerCheckListener);
+        fingerCheckDailog = new FingerCheckDailog(context,type, fingerCheckListener);
         fingerCheckDailog.setCancelable(false);
         fingerCheckDailog.show();
     }

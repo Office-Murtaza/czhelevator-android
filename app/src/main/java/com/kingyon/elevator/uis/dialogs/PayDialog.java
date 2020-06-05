@@ -35,6 +35,7 @@ import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.uis.activities.order.PaySuccessActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
+import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.utilstwo.CountDownTimerUtils;
 import com.kingyon.elevator.utils.utilstwo.PayTimerUtils;
 import com.kingyon.paylibrary.PayListener;
@@ -59,12 +60,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
+import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
 import static com.kingyon.elevator.photopicker.UtilsHelper.getString;
 import static com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils.hideInput;
 
@@ -74,7 +80,7 @@ import static com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils.hideInput;
  * @Author:Mrczh
  * @Instructions:
  */
-public class PayDialog extends Dialog implements IWeakHandler {
+public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperatClickListener<Double> {
     CommitOrderEntiy orderEntiy;
 
     @BindView(R.id.tv_title)
@@ -104,6 +110,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
     private AliPayUtils aliPayUtils;
     private WxPayUtils wxPayUtils;
     private MvpBaseActivity context;
+    private Subscription delaySubscribe;
     private OrderDetailsEntity detailsEntity;
     private Float myWallet;
     public PayDialog(@NonNull MvpBaseActivity context, CommitOrderEntiy orderEntiy) {
@@ -121,9 +128,35 @@ public class PayDialog extends Dialog implements IWeakHandler {
             window.setWindowAnimations(com.kingyon.library.social.R.style.dialog_show_anim);
             window.setGravity(Gravity.BOTTOM);
         }
+
         httpWallet();
     }
 
+    private void setPayEnableDelay() {
+        delaySubscribe = Observable.just("")
+                .delay(2000, TimeUnit.MILLISECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        llWechat.setEnabled(true);
+                        tvAlipay.setEnabled(true);
+                    }
+
+                    @Override
+                    protected void onResultError(ApiException ex) {
+
+                    }
+                });
+    }
+    private void setPayEnable() {
+        if (delaySubscribe != null && !delaySubscribe.isUnsubscribed()) {
+            delaySubscribe.unsubscribe();
+        }
+        tvAlipay.setEnabled(true);
+        llBalance.setEnabled(true);
+        llWechat.setEnabled(true);
+    }
     private void httpWallet() {
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {
@@ -183,7 +216,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        EventBus.getDefault().register(this);
         imgBalance.setSelected(true);
         tvTitle.setText(orderEntiy.getPayMoney()+"");
         PayTimerUtils payTimerUtils = new PayTimerUtils(tvPayTime, 60000, 1000);
@@ -233,7 +266,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
                         if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)){
                             fingerprintInit();
                         }else {
-                            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), password -> {
+                            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
                                 DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                                 LogUtils.e(password);
                                 if (password.equals("susser")){
@@ -264,7 +297,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
         FingerprintVerifyManager.Builder builder = new FingerprintVerifyManager.Builder((Activity) context);
         builder.callback(fingerprintCallback)
                 .fingerprintColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .build();
+                .build(KEYBOARD_PAY);
     }
 
 
@@ -282,7 +315,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
         public void onUsepwd() {
             LogUtils.e("onUsepwd");
 
-            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), password -> {
+            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
                 DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                 LogUtils.e(password);
                 if (password.equals("susser")){
@@ -316,7 +349,10 @@ public class PayDialog extends Dialog implements IWeakHandler {
     };
 
     private void httpPatment(String type,String payPwd) {
+        tvAlipay.setEnabled(false);
+        llWechat.setEnabled(false);
         context.showProgressDialog("请稍候...", false);
+        setPayEnableDelay();
         NetService.getInstance().orderPay(orderEntiy.getOrderId(),type,payPwd)
                 .subscribe(new CustomApiCallback<WxPayEntity>() {
                     @Override
@@ -396,11 +432,12 @@ public class PayDialog extends Dialog implements IWeakHandler {
                     }
                 });
 
+
     }
 
     @Override
     public void handleMessage(Message msg) {
-        LogUtils.e(msg);
+        LogUtils.e(msg.obj,msg.arg1,msg.arg2,msg.replyTo,msg.toString());
         if (msg.what == AliPayUtils.SDK_PAY_FLAG) {
             aliPayUtils.checkResult((Map<String, String>) msg.obj, new PayListener() {
                 @Override
@@ -415,7 +452,7 @@ public class PayDialog extends Dialog implements IWeakHandler {
                         startActivity(PaySuccessActivity.class, bundle);
 //                    }
                     EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
-//                    setPayEnable();
+                    setPayEnable();
                     context.finish();
                     LogUtils.e(payWay.toString());
                 }
@@ -423,14 +460,14 @@ public class PayDialog extends Dialog implements IWeakHandler {
                 @Override
                 public void onPayFailure(PayWay payWay, String reason) {
                     ToastUtils.showToast(context,TextUtils.isEmpty(reason) ? getString(R.string.pay_failed) : reason,1000);
-//                    setPayEnable();
+                    setPayEnable();
                     LogUtils.e(payWay.toString(),reason);
                 }
 
                 @Override
                 public void onPayCancel(PayWay payWay) {
                     ToastUtils.showToast(context,getString(R.string.pay_canceled),1000);
-//                    setPayEnable();
+                    setPayEnable();
                     LogUtils.e(payWay.toString());
                 }
 
@@ -442,7 +479,54 @@ public class PayDialog extends Dialog implements IWeakHandler {
                     Bundle bundle = new Bundle();
                     bundle.putLong(CommonUtil.KEY_VALUE_1,orderEntiy.getOrderId() );
                     startActivity(OrderDetailsActivity.class, bundle);
-//                    setPayEnable();
+                    setPayEnable();
+                    context.finish();
+                }
+            });
+        }
+    }
+
+    @Subscribe
+    public void onWxPayResult(WxPayStatusEntity wxPayStatusEntity) {
+        LogUtils.e(wxPayStatusEntity.getCode()+"=========");
+        if (wxPayStatusEntity != null) {
+            wxPayUtils.checkResult(wxPayStatusEntity, new PayListener() {
+                @Override
+                public void onPaySuccess(PayWay payWay) {
+//                    showToast(getString(R.string.pay_Success));
+                    EventBus.getDefault().post(new FreshOrderEntity());
+//                    if (detailsEntity != null) {
+                        Bundle bundle = new Bundle();
+//                        detailsEntity.setPayTime(System.currentTimeMillis());
+                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, detailsEntity);
+                        bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.WX_PAY);
+                        startActivity(PaySuccessActivity.class, bundle);
+//                    }
+                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
+                    setPayEnable();
+                    context.finish();
+                }
+
+                @Override
+                public void onPayFailure(PayWay payWay, String reason) {
+//                    showToast(TextUtils.isEmpty(reason) ? getString(R.string.pay_failed) : reason);
+                    setPayEnable();
+                }
+
+                @Override
+                public void onPayCancel(PayWay payWay) {
+//                    showToast(getString(R.string.pay_canceled));
+                    setPayEnable();
+                }
+
+                @Override
+                public void onPayConfirm(PayWay payWay) {
+//                    showToast(getString(R.string.pay_on_ensure));
+                    EventBus.getDefault().post(new FreshOrderEntity());
+                    Bundle bundle = new Bundle();
+                    bundle.putLong(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
+                    startActivity(OrderDetailsActivity.class, bundle);
+                    setPayEnable();
                     context.finish();
                 }
             });
@@ -458,4 +542,13 @@ public class PayDialog extends Dialog implements IWeakHandler {
         }
     }
 
+    @Override
+    public void onEnsureClick(Double param) {
+        httpPatment("BALANCE","");
+    }
+
+    @Override
+    public void onCancelClick(Double param) {
+
+    }
 }

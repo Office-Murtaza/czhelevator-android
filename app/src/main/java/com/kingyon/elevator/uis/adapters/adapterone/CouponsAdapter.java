@@ -50,7 +50,11 @@ public class CouponsAdapter extends MultiItemTypeAdapter<Object> {
             holder.setTextSize(R.id.tv_discounts_2, discount ? 14 : 32);
             holder.setTextNotHide(R.id.tv_condition, String.format("满%s可用", CommonUtil.getMayTwoFloat(item.getCouponCondition())));
             holder.setTextNotHide(R.id.tv_name, discount ? "折扣券" : "代金券");
-
+            if (discount){
+                holder.setBackgroundRes(R.id.ll_style,R.mipmap.bg_wallet_discount);
+            }else {
+                holder.setBackgroundRes(R.id.ll_style,R.mipmap.bg_wallet_voucher);
+            }
             String adType = item.getAdType() != null ? item.getAdType() : "";
             boolean business = adType.contains(Constants.PLAN_TYPE.BUSINESS);
             boolean diy = adType.contains(Constants.PLAN_TYPE.DIY);
@@ -93,8 +97,9 @@ public class CouponsAdapter extends MultiItemTypeAdapter<Object> {
         public void convert(CommonHolder holder, Object o, int position) {
             String couponType = o.toString();
             boolean voucher = TextUtils.equals(Constants.CouponType.VOUCHER, couponType);
-            holder.setTextNotHide(R.id.tv_name, voucher ? "代金券" : "折扣券");
-            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.drawable.ic_coupon_voucher : R.drawable.ic_coupon_discount);
+            holder.setVisible(R.id.tv_name,false);
+//            holder.setTextNotHide(R.id.tv_name, voucher ? "代金券" : "折扣券");
+//            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.drawable.ic_coupon_voucher : R.drawable.ic_coupon_discount);
         }
     }
 }

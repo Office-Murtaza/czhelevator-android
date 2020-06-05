@@ -9,6 +9,7 @@ import android.view.View;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CouponItemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.CouponDetailsActivity;
@@ -97,8 +98,8 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
 //            choosedCoupons = null;
 //        }
         NetService.getInstance().getCoupons(status, page)
-                .compose(this.<PageListEntity<CouponItemEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<CouponItemEntity>>() {
+                .compose(this.<ConentEntity<CouponItemEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<CouponItemEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -106,7 +107,7 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
                     }
 
                     @Override
-                    public void onNext(PageListEntity<CouponItemEntity> couponItemEntityPageListEntity) {
+                    public void onNext(ConentEntity<CouponItemEntity> couponItemEntityPageListEntity) {
                         if (couponItemEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

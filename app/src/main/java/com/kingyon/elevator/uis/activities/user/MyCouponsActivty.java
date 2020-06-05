@@ -76,6 +76,7 @@ public class MyCouponsActivty extends BaseTabActivity<TabPagerEntity> {
     @Override
     protected void initTabView() {
         mTabLayout.setTextSize(ScreenUtil.sp2px(16));
+
     }
 
     public void resultNumber(String type, long number) {

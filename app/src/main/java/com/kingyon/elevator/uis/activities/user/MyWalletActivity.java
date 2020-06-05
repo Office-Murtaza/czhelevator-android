@@ -1,28 +1,26 @@
 package com.kingyon.elevator.uis.activities.user;
 
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.MyWalletInfo;
-import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.adapterone.MyWalletAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
+import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
-import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
-import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
-
-import java.lang.reflect.Field;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -30,130 +28,89 @@ import butterknife.OnClick;
  * Email：lc824767150@163.com
  */
 
-public class MyWalletActivity extends BaseStateRefreshingLoadingActivity<Object> {
+public class MyWalletActivity extends BaseActivity {
     @BindView(R.id.tv_balance)
     TextView tvBalance;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
+    @BindView(R.id.tv_recharge)
+    TextView tvRecharge;
     @BindView(R.id.ll_wallet)
     LinearLayout llWallet;
-    @BindView(R.id.tv_wallet_records_tip)
-    TextView tvWalletRecordsTip;
-
-    private boolean fixation = true;
-
-    @Override
-    protected String getTitleText() {
-        return "我的钱包";
-    }
-
+    @BindView(R.id.ll_shopping)
+    LinearLayout llShopping;
+    @BindView(R.id.ll_activity)
+    LinearLayout llActivity;
+    @BindView(R.id.ll_academy)
+    LinearLayout llAcademy;
+    @BindView(R.id.image_banner)
+    ImageView imageBanner;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
+    private Float myWallet;
     @Override
     public int getContentViewId() {
         return R.layout.activity_my_wallet;
     }
 
     @Override
-    protected MultiItemTypeAdapter<Object> getAdapter() {
-        return new MyWalletAdapter(this, mItems);
-    }
+    public void init(Bundle savedInstanceState) {
 
-    @Override
-    protected void loadData(final int page) {
-        NetService.getInstance().myWalletInfo(page)
-                .compose(this.<MyWalletInfo>bindLifeCycle())
-                .subscribe(new CustomApiCallback<MyWalletInfo>() {
+        NetService.getInstance().myWallet()
+                .subscribe(new CustomApiCallback<DataEntity<Float>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        showToast(ex.getDisplayMessage());
-                        loadingComplete(false, 100000);
+//                        showToast(ex.getDisplayMessage());
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
                     }
 
                     @Override
-                    public void onNext(MyWalletInfo myWalletInfo) {
-                        PageListEntity<WalletRecordEntity> recordPage = myWalletInfo.getRecordPage();
-                        if (recordPage == null) {
-                            throw new ResultException(9001, "返回参数异常");
+                    public void onNext(DataEntity<Float> floatDataEntity) {
+                        if (floatDataEntity == null) {
+                            throw new ResultException(9001, "没有获取到钱包余额");
                         }
-                        if (FIRST_PAGE == page) {
-                            mItems.clear();
-                            Float balance = myWalletInfo.getBalance();
-                            if (balance == null) {
-                                throw new ResultException(9001, "返回参数异常");
-                            }
-                            if (fixation) {
-                                llWallet.setVisibility(View.VISIBLE);
-                                tvBalance.setText(CommonUtil.getMayTwoFloat(balance));
-                                if (recordPage.getContent() != null && recordPage.getContent().size() > 0) {
-                                    tvWalletRecordsTip.setVisibility(View.VISIBLE);
-                                } else {
-                                    tvWalletRecordsTip.setVisibility(View.GONE);
-                                }
-                            } else {
-                                llWallet.setVisibility(View.GONE);
-                                tvWalletRecordsTip.setVisibility(View.GONE);
-                                mItems.add(balance);
-                                if (recordPage.getContent() != null && recordPage.getContent().size() > 0) {
-                                    mItems.add("钱包流水");
-                                }
-                            }
-                        }
-                        if (recordPage.getContent() != null) {
-                            mItems.addAll(recordPage.getContent());
-                        }
-                        loadingComplete(true, recordPage.getTotalPages());
+                        myWallet = floatDataEntity.getData();
+                        tvBalance.setText(String.format("￥%s", CommonUtil.getMayTwoFloat(myWallet != null ? myWallet : 0)));
                     }
                 });
-    }
 
-    protected void initState(boolean loadSuccess) {
-        if (loadSuccess) {
-            stateLayout.showContentView();
-        } else {
-            if (mCurrPage == FIRST_PAGE) {
-                stateLayout.showErrorView(getString(R.string.error));
-            }
-        }
     }
 
     @Override
-    public void onItemClick(View view, RecyclerView.ViewHolder holder, Object item, int position) {
-        super.onItemClick(view, holder, item, position);
-        if (view.getId() == R.id.tv_recharge) {
-            startActivityForResult(RechargeActivity.class, CommonUtil.REQ_CODE_1);
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
-    @Override
-    protected boolean isShowDivider() {
-        return false;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (RESULT_OK == resultCode && CommonUtil.REQ_CODE_1 == requestCode) {
-            autoRefresh();
-        }
-    }
-
-    @OnClick(R.id.tv_recharge)
-    public void onViewClicked() {
-        startActivityForResult(RechargeActivity.class, CommonUtil.REQ_CODE_1);
-    }
-
-    @Override
-    protected void setupRefreshAndLoadMore() {
-        mSwipeRefreshHelper = new SwipeRefreshHelper(mLayoutRefresh);
-        try {
-            Field field = mSwipeRefreshHelper.getClass().getDeclaredField("mContentView");
-            field.setAccessible(true);
-            field.set(mSwipeRefreshHelper, mRecyclerView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mSwipeRefreshHelper.setOnSwipeRefreshListener(this);
-        mSwipeRefreshHelper.setOnLoadMoreListener(this);
-
-        if (isAutoRefresh()) {
-            autoRefresh();
+    @OnClick({R.id.pre_v_back, R.id.tv_right, R.id.tv_recharge, R.id.ll_wallet, R.id.ll_shopping, R.id.ll_activity, R.id.ll_academy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.pre_v_back:
+                finish();
+                break;
+            case R.id.tv_right:
+                /*明细*/
+                startActivity(MyWalletDetailsActivity.class);
+                break;
+            case R.id.tv_recharge:
+                /*充值*/
+                startActivityForResult(RechargeActivity.class, CommonUtil.REQ_CODE_1);
+                break;
+            case R.id.ll_wallet:
+                break;
+            case R.id.ll_shopping:
+                break;
+            case R.id.ll_activity:
+                break;
+            case R.id.ll_academy:
+                /*优惠卷*/
+                startActivity(MyCouponsActivty.class);
+                break;
         }
     }
 }

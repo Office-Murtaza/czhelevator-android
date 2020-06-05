@@ -60,6 +60,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
      * @param adType 广告类型
      */
     public void loadCouponsInfo(double amount, String adType, Boolean isManual, String consIds) {
+        getView().showProgressDialog("请稍等..",false);
         NetService.getInstance().getCouponsInfo(amount, adType, isManual, consIds)
                 .subscribe(new CustomApiCallback<AutoCalculationDiscountEntity>() {
                     @Override
@@ -67,6 +68,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
 //                            getView().showErrorView();
+                            getView().hideProgressDailog();
                         }
                     }
 
@@ -75,6 +77,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         if (isViewAttached()) {
                             getView().showCouponsInfo(autoCalculationDiscountEntity);
                             getView().showContentView();
+                            getView().hideProgressDailog();
                         }
                     }
                 });

@@ -14,12 +14,12 @@ import com.kingyon.elevator.finger.uitls.AndrVersionUtil;
  */
 public class FingerprintVerifyManager {
 
-    public FingerprintVerifyManager(Builder builder) {
+    public FingerprintVerifyManager(Builder builder,String type) {
         IFingerprint fingerprint;
         if (AndrVersionUtil.isAboveAndrP()) {
-            fingerprint = FingerprintImplForAndrM.newInstance();
+            fingerprint = FingerprintImplForAndrM.newInstance(type);
         } else if (AndrVersionUtil.isAboveAndrM()) {
-            fingerprint = FingerprintImplForAndrM.newInstance();
+            fingerprint = FingerprintImplForAndrM.newInstance(type);
         } else {//Android 6.0 以下官方未开放指纹识别，某些机型自行支持的情况暂不做处理
             builder.callback.onHwUnavailable();
             return;
@@ -182,8 +182,8 @@ public class FingerprintVerifyManager {
          *
          * @return
          */
-        public FingerprintVerifyManager build() {
-            return new FingerprintVerifyManager(this);
+        public FingerprintVerifyManager build(String type) {
+            return new FingerprintVerifyManager(this,type);
         }
     }
 

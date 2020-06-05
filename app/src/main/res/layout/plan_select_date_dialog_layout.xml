@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="490dp"
-    android:background="@color/white">
+    android:background="@drawable/bg_bj">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:text="选择投放时间"
         android:textColor="#ff404040"
@@ -117,34 +117,43 @@
     <com.kingyon.elevator.customview.HorizontalRecyclerView
         android:id="@+id/date_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="310dp"
         android:layout_below="@+id/week_container"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/cancel_date"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@+id/confirm_date"
+        android:background="@drawable/ad_pay_cancel"
+        android:paddingRight="@dimen/dp_40"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp5"
+        android:paddingTop="@dimen/dp5"
         android:gravity="center"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginBottom="5dp"
         android:text="取消"
         android:textColor="#ff404040"
         android:textSize="19sp" />
 
     <TextView
         android:id="@+id/confirm_date"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:layout_marginRight="@dimen/dp20"
+        android:background="@drawable/ad_pay_payment"
+        android:paddingRight="@dimen/dp_40"
+        android:paddingLeft="@dimen/dp_40"
+        android:layout_marginBottom="5dp"
+        android:paddingBottom="@dimen/dp5"
+        android:paddingTop="@dimen/dp5"
         android:text="确定"
-        android:textColor="#ff404040"
+        android:textColor="#ffffff"
         android:textSize="19sp" />
 
 </RelativeLayout>
