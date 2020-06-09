@@ -142,7 +142,7 @@ public class AdPointDetailsActivity extends BaseActivity {
         vpPoindetails.setOffscreenPageLimit(adapter.getCount());
         viewpagertab.setViewPager(vpPoindetails);
         List<Object> list = new ArrayList<>();
-        list.add(cellEntity.getCellBanner());
+//        list.add(cellEntity.getCellBanner());
         ContentImageAdapter contentImageAdapter = new ContentImageAdapter(this, list);
         rvImage.setLayoutManager(new LinearLayoutManager(this));
         rvImage.setAdapter(contentImageAdapter);

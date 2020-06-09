@@ -105,6 +105,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         if (isViewAttached()) {
                             getView().setIdentityInfo(orderIdentityEntity);
                         }
+                        LogUtils.e(amount, adType, isManual, consIds);
                         loadCouponsInfo(amount, adType, isManual, consIds);
                     }
                 });

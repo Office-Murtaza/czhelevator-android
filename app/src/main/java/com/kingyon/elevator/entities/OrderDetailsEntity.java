@@ -43,7 +43,7 @@ public class OrderDetailsEntity implements Parcelable {
     private String name;
     private long payTime;
     private long remainTime;
-    private long objctId;
+    private String objctId;
     private long createTime;
     private String orderStatus;
     private UserEntity creator;
@@ -166,11 +166,11 @@ public class OrderDetailsEntity implements Parcelable {
         this.remainTime = remainTime;
     }
 
-    public long getObjctId() {
+    public String getObjctId() {
         return objctId;
     }
 
-    public void setObjctId(long objctId) {
+    public void setObjctId(String objctId) {
         this.objctId = objctId;
     }
 
@@ -359,7 +359,7 @@ public class OrderDetailsEntity implements Parcelable {
         dest.writeString(this.name);
         dest.writeLong(this.payTime);
         dest.writeLong(this.remainTime);
-        dest.writeLong(this.objctId);
+        dest.writeString(this.objctId);
         dest.writeLong(this.createTime);
         dest.writeString(this.orderStatus);
         dest.writeParcelable(this.creator, flags);
@@ -391,7 +391,7 @@ public class OrderDetailsEntity implements Parcelable {
         this.name = in.readString();
         this.payTime = in.readLong();
         this.remainTime = in.readLong();
-        this.objctId = in.readLong();
+        this.objctId = in.readString();
         this.createTime = in.readLong();
         this.orderStatus = in.readString();
         this.creator = in.readParcelable(UserEntity.class.getClassLoader());

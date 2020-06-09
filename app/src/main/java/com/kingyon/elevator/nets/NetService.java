@@ -780,7 +780,7 @@ public class NetService {
                 , coupons, adIndustry));
     }
     /*2.0订单详情*/
-    public Observable<OrderDetailsEntity> orderDetatils(long orderId) {
+    public Observable<OrderDetailsEntity> orderDetatils(String orderId) {
         return addSchedulers(getApi().orderDetatils(orderId));
     }
     /*2.0获取订单身份认证信息*/
@@ -789,7 +789,7 @@ public class NetService {
     }
 
     /*2.0订单支付*/
-    public Observable<WxPayEntity> orderPay(long orderId, String way,String payPwd ) {
+    public Observable<WxPayEntity> orderPay(String orderId, String way,String payPwd ) {
         Observable<WxPayEntity> zip = Observable.zip(getApi().orderPay(orderId, way,payPwd), Observable.just(way), new Func2<WxPayEntity, String, WxPayEntity>() {
             @Override
             public WxPayEntity call(WxPayEntity wxPayEntity, String s) {
@@ -828,12 +828,12 @@ public class NetService {
         return addSchedulers(getApi().downAdTags());
     }
     /*2.0取消订单*/
-    public Observable<String> orderCancel(long orderId) {
+    public Observable<String> orderCancel(String orderId) {
         return addSchedulers(getApi().orderCancel(orderId));
     }
 
     /*2.0删除订单*/
-    public Observable<String> orderDelete(long orderId) {
+    public Observable<String> orderDelete(String orderId) {
         return addSchedulers(getApi().orderDelete(orderId));
     }
 

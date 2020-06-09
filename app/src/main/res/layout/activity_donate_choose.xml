@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+
+    >
 
     <include layout="@layout/layout_header" />
 
@@ -36,10 +38,14 @@
     <TextView
         android:id="@+id/tv_ensure"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_normal_btn"
         android:gravity="center"
+        android:padding="@dimen/dp10"
         android:text="下一步"
+        android:layout_marginRight="@dimen/dp50"
+        android:layout_marginLeft="@dimen/dp50"
+        android:layout_marginBottom="@dimen/dp20"
         android:textColor="#ffffffff"
         android:textSize="@dimen/txt_big_content"
         android:textStyle="bold" />

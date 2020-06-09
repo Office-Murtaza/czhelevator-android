@@ -14,12 +14,12 @@ import com.kingyon.paylibrary.entitys.PayWay;
 /**
  * Created by Leo on 2015/11/17
  */
-public class PayDialog extends Dialog {
+class PayDialog1 extends Dialog {
     private TextView tvTips;
     private Context mContext;
     private PayWayInterface payWayInterface;
 
-    public PayDialog(Context context) {
+    public PayDialog1(Context context) {
         super(context, R.style.AvatarTransDialog);
         this.mContext = context;
         setContentView(R.layout.view_pay_interface);

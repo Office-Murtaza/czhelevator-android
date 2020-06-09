@@ -70,7 +70,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
     @BindView(R.id.tv_balance_pay)
     TextView tvBalancePay;
 
-    private long orderId;
+    private String orderId;
     private boolean fromEdit;
 
     private OrderDetailsEntity detailsEntity;
@@ -85,7 +85,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         fromEdit = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_2, false);
         return "支付订单";
     }
@@ -150,7 +150,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                             }
                         } else {
                             Bundle bundle = new Bundle();
-                            bundle.putLong(CommonUtil.KEY_VALUE_1, orderId);
+                            bundle.putString(CommonUtil.KEY_VALUE_1, orderId);
                             startActivity(OrderDetailsActivity.class, bundle);
                             finish();
                         }
@@ -371,7 +371,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                     showToast(getString(R.string.pay_on_ensure));
                     EventBus.getDefault().post(new FreshOrderEntity());
                     Bundle bundle = new Bundle();
-                    bundle.putLong(CommonUtil.KEY_VALUE_1, orderId);
+                    bundle.putString(CommonUtil.KEY_VALUE_1, orderId);
                     startActivity(OrderDetailsActivity.class, bundle);
                     setPayEnable();
                     finish();
@@ -417,7 +417,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
                     showToast(getString(R.string.pay_on_ensure));
                     EventBus.getDefault().post(new FreshOrderEntity());
                     Bundle bundle = new Bundle();
-                    bundle.putLong(CommonUtil.KEY_VALUE_1, orderId);
+                    bundle.putString(CommonUtil.KEY_VALUE_1, orderId);
                     startActivity(OrderDetailsActivity.class, bundle);
                     setPayEnable();
                     finish();
@@ -439,7 +439,7 @@ public class OrderPayActivity extends BaseStateRefreshingActivity implements IWe
     public void onBackPressed() {
         if (fromEdit) {
             Bundle bundle = new Bundle();
-            bundle.putLong(CommonUtil.KEY_VALUE_1, orderId);
+            bundle.putString(CommonUtil.KEY_VALUE_1, orderId);
             startActivity(OrderDetailsActivity.class, bundle);
         }
         super.onBackPressed();

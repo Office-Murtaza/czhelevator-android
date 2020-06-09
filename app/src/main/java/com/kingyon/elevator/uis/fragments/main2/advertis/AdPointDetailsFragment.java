@@ -65,10 +65,10 @@ public class AdPointDetailsFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        tvAttribute.setText(cellDetailsEntity.getCellType());
-        tvOccupancy.setText(cellDetailsEntity.getCellType());
-        tvPrice.setText(cellDetailsEntity.getBusinessAdPrice()+"");
-        tvTime.setText(cellDetailsEntity.getEnterTime()+"");
+//        tvAttribute.setText(cellDetailsEntity.getCellType());
+//        tvOccupancy.setText(cellDetailsEntity.getCellType());
+//        tvPrice.setText(cellDetailsEntity.getBusinessAdPrice()+"");
+//        tvTime.setText(cellDetailsEntity.getEnterTime()+"");
         switch (type) {
             case "1":
                 tvTitle.setText("广告时长30秒，以轮流播放的形式投放，经济实惠");

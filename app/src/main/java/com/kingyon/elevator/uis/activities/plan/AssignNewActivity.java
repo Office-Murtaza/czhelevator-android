@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.PlanPointGroup;
@@ -99,6 +100,9 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                     });
                     DealScrollRecyclerView.getInstance().dealAdapter(childrenAdapter, rvPoints, new FullyLinearLayoutManager(mContext));
                 }
+
+
+
                 childrenAdapter.refreshDatas(item.getPoints());
                 holder.setVisible(R.id.rv_points, item.isExpand());
                 holder.setVisible(R.id.v_line, item.isExpand());
@@ -148,6 +152,7 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                     showToast("设备维修中");
                     break;
                 case Constants.DELIVER_STATE.OCCUPY:
+                    LogUtils.e(entity.getOccupyTimes());
                     showOccupyDialog(entity.getOccupyTimes());
                     break;
                 default:

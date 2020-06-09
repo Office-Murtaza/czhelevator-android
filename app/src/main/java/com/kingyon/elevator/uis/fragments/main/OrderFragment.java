@@ -185,7 +185,7 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
         super.onItemClick(view, holder, item, position);
         if (item != null) {
             Bundle bundle = new Bundle();
-            bundle.putLong(CommonUtil.KEY_VALUE_1, item.getObjctId());
+            bundle.putString(CommonUtil.KEY_VALUE_1, item.getObjctId());
             startActivity(OrderDetailsActivity.class, bundle);
         }
     }
@@ -194,7 +194,7 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
         switch (entity.getOrderStatus()) {
             case Constants.OrderStatus.WAIT_PAY:
                 Bundle bundle = new Bundle();
-                bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getObjctId());
+                bundle.putString(CommonUtil.KEY_VALUE_1, entity.getObjctId());
                 startActivity(OrderPayActivity.class, bundle);
 //                cancelOrder(entity);
                 break;

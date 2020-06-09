@@ -73,6 +73,8 @@ public class Constance {
     public static final String ACTIVITY_ACCOUNT_BINDING = "/app/activity/accountbinding";
     /**关于*/
     public static final String ACTIVITY_USER_ABOUT = "/app/activity/about";
+    /**订单支付成功*/
+    public static final String ACTIVITY_PAY_SUCCESS = "/app/activity/paysuccess";
 
 
 

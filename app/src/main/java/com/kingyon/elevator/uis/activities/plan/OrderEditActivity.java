@@ -396,7 +396,7 @@ public class OrderEditActivity extends BaseStateLoadingActivity {
                         hideProgress();
                         Bundle bundle = new Bundle();
                         if (orderEntiy.getPayMoney() > 0) {
-                            bundle.putLong(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
+                            bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
                             startActivity(OrderPayActivity.class, bundle);
                         } else {
                             OrderDetailsEntity detailsEntity = new OrderDetailsEntity();

@@ -6,7 +6,7 @@ package com.kingyon.elevator.entities;
  */
 
 public class CommitOrderEntiy {
-    private long orderSn;
+    private String orderSn;
     private float priceActual;
 
     @Override
@@ -17,11 +17,11 @@ public class CommitOrderEntiy {
                 '}';
     }
 
-    public long getOrderId() {
+    public String getOrderId() {
         return orderSn;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(String orderId) {
         this.orderSn = orderId;
     }
 

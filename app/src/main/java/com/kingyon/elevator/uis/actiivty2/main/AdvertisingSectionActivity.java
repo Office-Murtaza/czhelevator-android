@@ -50,18 +50,30 @@ public class AdvertisingSectionActivity extends MvpBaseActivity<AdvertisingSecti
 
     private void initData() {
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 6);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
                 LogUtils.e(i);
-//                return (i%2) == 0? 2 : 1;
-//                if (i%2==0){
-//                    return 2;
-//                }else {
-//                    return 1;
-//                }
-                return (2 - i % 2);
+                int span = 1;
+
+                switch (i % 6){
+                    case 0:
+                        span = 6;
+                        break;
+                    case 1:
+                    case 2:
+                        span = 3;
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        span = 2;
+                        break;
+                }
+
+                return span;
+//                return (4 - i % 4);
             }
         });
         rvList.setLayoutManager(gridLayoutManager);

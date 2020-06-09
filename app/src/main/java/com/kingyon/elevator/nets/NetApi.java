@@ -308,7 +308,7 @@ public interface NetApi {
     Observable<String> downAd(@Query("orderId") long orderId, @Query("tagReasonId") long tagReasonId
             , @Query("undercastRemarks") String undercastRemarks);
 
-    /*2.0获取=播原因*/
+    /*2.0获取下播原因*/
     @POST("order/downAdTags")
     Observable<List<NormalElemEntity>> downAdTags();
 
@@ -515,13 +515,13 @@ public interface NetApi {
     /*2.0订单详情*/
     @POST("order/orderDetatils")
     @FormUrlEncoded
-    Observable<OrderDetailsEntity> orderDetatils(@Field("orderId") long orderId);
+    Observable<OrderDetailsEntity> orderDetatils(@Field("orderSn") String orderId);
 
 
     /*2.0订单支付*/
     @POST("order/orderPay")
     @FormUrlEncoded
-    Observable<WxPayEntity> orderPay(@Field("preOrderSn") long orderId, @Field("way") String way,@Field("payPwd") String payPwd );
+    Observable<WxPayEntity> orderPay(@Field("preOrderSn") String orderId, @Field("way") String way,@Field("payPwd") String payPwd );
 
     /*2.0订单详情*/
     @POST("order/orderList")
@@ -538,12 +538,12 @@ public interface NetApi {
     /*2.0取消订单*/
     @POST("order/orderCancel")
     @FormUrlEncoded
-    Observable<String> orderCancel(@Field("orderId") long orderId);
+    Observable<String> orderCancel(@Field("orderId") String orderId);
 
     /*2.0删除订单*/
     @POST("order/orderDelete")
     @FormUrlEncoded
-    Observable<String> orderDelete(@Field("orderId") long orderId);
+    Observable<String> orderDelete(@Field("orderId") String orderId);
 
 
 

@@ -5,7 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@drawable/bg_bj"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,21 +14,34 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="#CFCFCF"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:textColor="@color/black_normal"
+            android:textSize="16sp" />
+
         <ImageView
             android:id="@+id/img_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:padding="@dimen/spacing_twelve"
+            android:visibility="gone"
             android:src="@drawable/ic_dialog_close" />
 
         <TextView
             android:id="@+id/tv_content"
+            android:padding="@dimen/dp10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="以下时间已经被占用"
-            android:textColor="#ff333333"
-            android:textSize="@dimen/txt_sub_title"
+            android:text="该点位在以下时段内被占用"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_14"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -43,4 +56,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.kingyon.elevator.uis.widgets.MaxHeightView>
+
+
+    <TextView
+        android:id="@+id/share_btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_ad_qx"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="取消"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
 </LinearLayout>

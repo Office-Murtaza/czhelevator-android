@@ -153,7 +153,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     @BindView(R.id.tv_ad_name)
     TextView tvAdName;
 
-    private long orderId;
+    private String orderId;
 
     private OrderDetailsEntity orderDetails;
     private View[] headViews;
@@ -165,7 +165,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         return "订单详情";
     }
 
@@ -418,7 +418,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
         switch (view.getId()) {
             case R.id.ll_devices:
                 Bundle bundle3 = new Bundle();
-                bundle3.putLong(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle3.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
                 startActivity(OrderDevicesActivity.class, bundle3);
                 break;
             case R.id.tv_authfailed_modify:
@@ -430,7 +430,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     return;
                 }
                 Bundle bundle5 = new Bundle();
-                bundle5.putLong(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
                 bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
                 startActivity(OrderMonitActivity.class, bundle5);
                 break;
@@ -449,12 +449,12 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 break;
             case R.id.tv_waitpay_pay:
                 Bundle bundle1 = new Bundle();
-                bundle1.putLong(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle1.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
                 startActivity(OrderPayActivity.class, bundle1);
                 break;
             case R.id.tv_release_down:
                 Bundle bundle2 = new Bundle();
-                bundle2.putLong(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
                 startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
                 break;
             case R.id.tv_release_monit:
@@ -463,7 +463,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     return;
                 }
                 Bundle bundle4 = new Bundle();
-                bundle4.putLong(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle4.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
                 bundle4.putBoolean(CommonUtil.KEY_VALUE_2, false);
                 startActivity(OrderMonitActivity.class, bundle4);
                 break;

@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.adapters.adapterone.OccupyAdapter;
@@ -37,11 +39,12 @@ public class OccupyDialog extends Dialog {
         super(context, R.style.normal_dialog_small);
         mContext = context;
         setContentView(R.layout.dialog_occupy);
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        int screenWidth = (int) (metrics.widthPixels * 0.72f);
         Window window = getWindow();
         if (window != null) {
-            window.setLayout(screenWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setWindowAnimations(com.kingyon.library.social.R.style.dialog_show_anim);
+            window.setGravity(Gravity.BOTTOM);
         }
     }
 
@@ -67,7 +70,7 @@ public class OccupyDialog extends Dialog {
         occupyAdapter.refreshDatas(dates);
     }
 
-    @OnClick(R.id.img_close)
+    @OnClick(R.id.share_btn_cancel)
     public void onViewClicked() {
         dismiss();
     }

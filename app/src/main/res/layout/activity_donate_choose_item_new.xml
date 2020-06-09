@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/dp10"
     android:background="@color/white_normal">
 
     <LinearLayout
@@ -11,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="-10dp"
         android:layout_marginBottom="-10dp"
-        android:background="@drawable/bg_coupon_item"
+        android:background="@mipmap/bg_wallet_ticket"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -20,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="269"
             android:gravity="center"
+            android:background="@mipmap/bg_wallet_voucher"
             android:orientation="vertical">
 
             <LinearLayout
@@ -80,7 +83,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_big_content"
                     android:textStyle="bold"
                     tools:text="满减卷" />
@@ -91,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_four"
                     android:layout_marginBottom="@dimen/spacing_four"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_tips"
                     tools:text="适用：仅商业广告可用" />
 
@@ -99,7 +102,7 @@
                     android:id="@+id/tv_expier_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_tips"
                     tools:text="过期时间：2019-01-02" />
             </LinearLayout>
@@ -117,11 +120,42 @@
             <!--android:text="×4"-->
             <!--android:textColor="#ffec7a12"-->
             <!--android:textSize="30sp" />-->
-            <com.kingyon.elevator.uis.widgets.EditCountViewIntUpDown
-                android:id="@+id/ecv_count"
-                android:layout_marginLeft="@dimen/spacing_twelve"
-                android:layout_width="wrap_content"
-                android:layout_height="26dp" />
+
         </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"
+        android:background="@mipmap/bg_coupon_count"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="赠送数量"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="#ff333333"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.kingyon.elevator.uis.widgets.EditCountViewIntUpDown
+            android:id="@+id/ecv_count"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginLeft="@dimen/spacing_twelve"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

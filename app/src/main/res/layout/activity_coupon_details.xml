@@ -13,7 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_small"
-        android:layout_marginTop="@dimen/spacing_small" />
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -23,7 +26,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white_normal"
+            android:background="@mipmap/bg_coupon_detail"
+            android:layout_margin="@dimen/dp5"
+            android:padding="@dimen/dp5"
             android:orientation="vertical">
 
             <LinearLayout
@@ -83,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:minWidth="65dp"
-                        android:text="数量"
+                        android:text="持券数量："
                         android:textColor="#ff333333"
                         android:textSize="@dimen/txt_big_content" />
 
@@ -120,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minWidth="65dp"
-                    android:text="使用条件"
+                    android:text="使用条件："
                     android:textColor="#ff333333"
                     android:textSize="@dimen/txt_big_content" />
 
@@ -156,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minWidth="65dp"
-                    android:text="适用"
+                    android:text="适用范围："
                     android:textColor="#ff333333"
                     android:textSize="@dimen/txt_big_content" />
 
@@ -192,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minWidth="65dp"
-                    android:text="过期时间"
+                    android:text="过期时间："
                     android:textColor="#ff333333"
                     android:textSize="@dimen/txt_big_content" />
 
@@ -216,6 +221,7 @@
         android:background="@drawable/bg_normal_btn"
         android:gravity="center"
         android:text="立即使用"
+        android:visibility="gone"
         android:textColor="@color/white_normal"
         android:textSize="@dimen/txt_sub_title" />
 </LinearLayout>

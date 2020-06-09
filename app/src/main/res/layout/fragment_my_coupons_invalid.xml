@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="@dimen/spacing_small"
-        android:background="@drawable/bg_coupon_invalid"
+        android:background="@mipmap/bg_wallet_ticket"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="269"
             android:gravity="center"
+            android:background="@mipmap/bg_wallet_dislabed"
             android:orientation="vertical">
 
             <LinearLayout
@@ -85,7 +86,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_big_content"
                     android:textStyle="bold"
                     tools:text="满减卷" />
@@ -96,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_four"
                     android:layout_marginTop="@dimen/spacing_four"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_tips"
                     tools:text="适用：仅商业广告可用" />
 
@@ -104,7 +105,7 @@
                     android:id="@+id/tv_expier_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ffffffff"
+                    android:textColor="#333333"
                     android:textSize="@dimen/txt_tips"
                     tools:text="过期时间：2019-01-02" />
             </LinearLayout>
