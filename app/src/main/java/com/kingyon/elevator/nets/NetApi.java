@@ -454,6 +454,8 @@ public interface NetApi {
     @POST("cell/cityCellNums")
     Observable<List<CityCellEntity>> cityCellNums();
 
+    /*2.0小区详情*/
+
     @POST("cell/cellDetails")
     @FormUrlEncoded
     Observable<CellDetailsEntity> cellDetails(@Field("objectId") long objectId);

@@ -580,7 +580,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
                 break;
             case R.id.ll_point:
-
+                LogUtils.e(planId);
                 ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(planId));
                 break;
                 default:

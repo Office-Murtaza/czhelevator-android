@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 
 import butterknife.BindView;
@@ -48,9 +49,11 @@ public class AdPointDetailsFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    private CellDetailsEntity cellDetailsEntity;
     private String type;
 
-    public AdPointDetailsFragment setIndex(String type) {
+    public AdPointDetailsFragment setIndex(CellDetailsEntity cellDetailsEntity,String type) {
+        this.cellDetailsEntity = cellDetailsEntity;
         this.type = type;
         return (this);
     }
@@ -62,6 +65,10 @@ public class AdPointDetailsFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        tvAttribute.setText(cellDetailsEntity.getCellType());
+        tvOccupancy.setText(cellDetailsEntity.getCellType());
+        tvPrice.setText(cellDetailsEntity.getBusinessAdPrice()+"");
+        tvTime.setText(cellDetailsEntity.getEnterTime()+"");
         switch (type) {
             case "1":
                 tvTitle.setText("广告时长30秒，以轮流播放的形式投放，经济实惠");

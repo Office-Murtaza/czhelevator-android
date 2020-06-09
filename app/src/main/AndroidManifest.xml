@@ -701,6 +701,9 @@
         <activity android:name=".uis.activities.user.MyWalletDetailsActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0广告专区-->
+        <activity android:name=".uis.actiivty2.main.AdvertisingSectionActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

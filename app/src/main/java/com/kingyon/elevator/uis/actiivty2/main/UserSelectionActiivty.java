@@ -29,7 +29,7 @@ import static com.czh.myversiontwo.utils.CodeType.ATTENTION;
  * @Created By Admin  on 2020/5/19
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:用户选择
  */
 public class UserSelectionActiivty extends BaseActivity {
     @BindView(R.id.edit_search)

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
@@ -78,7 +79,7 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
             holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    LogUtils.e(data.id);
                     ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(data.id));
                 }
             });

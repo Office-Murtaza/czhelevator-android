@@ -16,6 +16,6 @@ public class StringContent {
 
     public static String STRING_PRICE2 = "<span style=\"color: #333; font-size: 14px;\">合计:</span>¥ <span style=\"color: #ff3049; font-size: 14px;\"><big>%s</big></span> 元";
 
-
+    public static String AD_ZQSTRING = "%s 点赞    %s 评论    %s播放";
 
 }

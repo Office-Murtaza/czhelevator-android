@@ -25,7 +25,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_SEARCH;
  * Created By Admin  on 2020/4/15
  * Email : 163235610@qq.com
  * @Author:Mrczh
- * Instructions:
+ * Instructions:搜索
  */
 @Route(path = ACTIVITY_MAIN2_SEARCH)
 public class SearchActivity extends BaseActivity {

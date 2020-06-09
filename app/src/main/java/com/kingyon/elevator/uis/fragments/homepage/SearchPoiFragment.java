@@ -10,6 +10,7 @@ import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
@@ -76,6 +77,10 @@ public class SearchPoiFragment extends BaseStateRefreshLoadingFragment<Object> i
         if (item instanceof PoiItem) {
             FragmentActivity activity = getActivity();
             if (activity instanceof SearchHistoryActivity) {
+                LogUtils.e(((PoiItem) item).getLatLonPoint().getLatitude(),
+                        ((PoiItem) item).getLatLonPoint().getLongitude(),
+                        ((PoiItem) item).getTitle());
+
                 ((SearchHistoryActivity) activity).realSearch(((PoiItem) item).getTitle());
             }
         }

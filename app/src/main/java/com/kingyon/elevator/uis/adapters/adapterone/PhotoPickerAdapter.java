@@ -82,7 +82,7 @@ public class PhotoPickerAdapter extends BaseAdapter {
         if (showType == 1) {
             holder.video_time.setVisibility(View.VISIBLE);
 //            holder.video_time.setText(TimeUtils.getRemainingTimeFormat(mediaData.getDuration()));(int) (getVideoDuration(outputPath)/1000)
-            holder.video_time.setText(TimeUtils.secondToTime( (int) (getVideoDuration(mediaData.getOriginalPath()))/1000));
+            holder.video_time.setText(TimeUtils.secondToTime( (int) mediaData.getDuration()/1000));
 
 //            holder.video_time.setText(TimeUtils.getRemainingTimeFormat((getVideoDuration(mediaData.getOriginalPath()))));
 
@@ -91,7 +91,7 @@ public class PhotoPickerAdapter extends BaseAdapter {
             holder.video_time.setText("");
         }
         if (mediaData.getOriginalPath() != null) {
-//            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
+            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
             holder.iv_preview.setImageResource(R.drawable.lock);
         } else {
             holder.iv_preview.setImageResource(R.drawable.mis_default_error);

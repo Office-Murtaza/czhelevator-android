@@ -656,6 +656,7 @@ public class NetService {
         return addSchedulers(getApi().cityCellNums());
     }
 
+    /*2.0小区详情*/
     public Observable<CellDetailsEntity> cellDetails(long objectId) {
         return addSchedulers(getApi().cellDetails(objectId));
     }

@@ -49,6 +49,8 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.kingyon.elevator.uis.activities.PhotoPickerActivity.photoPickerActivity;
+
 /**
  * Created by GongLi on 2019/1/21.
  * Email：lc824767150@163.com
@@ -132,6 +134,7 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
 //                finish();
                 RuntimeUtils.adEntity = item;
                 MyActivityUtils.goConfirmOrderActivity(MyAdActivity.this, Constants.FROM_TYPE.MYAD, item.getImageUrl(), "");
+                photoPickerActivity.finish();
                 finish();
             } else {
                 JumpUtils.getInstance().jumpToAdPreview(this, item);

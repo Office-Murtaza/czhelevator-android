@@ -115,7 +115,7 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
 
     }
 
-    private void httpAdd(String type) {
+    public void httpAdd(String type) {
         LogUtils.e(planId,planName,type);
         NetService.getInstance().plansAddCells(type, String.valueOf(planId))
                 .compose(mContext.bindLifeCycle())

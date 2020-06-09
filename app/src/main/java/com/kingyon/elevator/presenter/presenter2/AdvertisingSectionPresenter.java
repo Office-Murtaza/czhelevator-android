@@ -14,4 +14,7 @@ public class AdvertisingSectionPresenter extends BasePresenter {
     public AdvertisingSectionPresenter(Context mContext) {
         super(mContext);
     }
+
+
+
 }

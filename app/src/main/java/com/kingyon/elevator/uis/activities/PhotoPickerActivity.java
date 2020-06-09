@@ -76,11 +76,12 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
     private String planType = "";
     Drawable openFolderDrawable;
     Drawable closeFolderDrawable;
-
+    public static PhotoPickerActivity photoPickerActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
+        photoPickerActivity = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         fromType = getIntent().getIntExtra("fromType", 1001);

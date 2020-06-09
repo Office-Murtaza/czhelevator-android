@@ -29,6 +29,36 @@ public class CellDetailsEntity {
      * isCollect : 1
      */
 
+    /**
+     *
+     "objctId": 100042,
+     "cellName": "梯联网观光小区",
+     "address": "贵州省贵阳市观山湖区金岭社区服务中心都匀路金利大厦(百挑路)",
+     "liftNum": 3,
+     "unitNum": 1,
+     "distance": 0,
+     "longitude": 106.648306,
+     "latitude": 26.616736,
+     "enterTime": 1562256000000,
+     "cellType": "OFFICE_BUILD",
+     "humanTraffic": 6000,
+     "businessAdPrice": 10,
+     "diyAdPrice": 200,
+     "informationAdPrice": 0,
+     "cellLogo": "http:\/\/cdn.tlwgz.com\/\/276d5343-812f-4f92-924d-9e6d700bbff4.jpg",
+     "isCollect": false,
+     "cellBanner": [
+     "http:\/\/cdn.tlwgz.com\/\/979aa122-60f7-401c-878e-0f6617a52624.jpg"
+     ],
+     "regionCode": 520115,
+     "regionName": "贵州省贵阳市观山湖区",
+     "businessIntro": null,
+     "diyIntro": null,
+     "informationIntro": null,
+     "collect": false
+     *
+     * */
+
     private String businessIntro;
     private String diyIntro;
     private String informationIntro;
@@ -51,6 +81,34 @@ public class CellDetailsEntity {
     private String cellLogo;
     private boolean isCollect;
     private List<String> cellBanner;
+
+    @Override
+    public String toString() {
+        return "CellDetailsEntity{" +
+                "businessIntro='" + businessIntro + '\'' +
+                ", diyIntro='" + diyIntro + '\'' +
+                ", informationIntro='" + informationIntro + '\'' +
+                ", regionCode=" + regionCode +
+                ", regionName='" + regionName + '\'' +
+                ", objctId=" + objctId +
+                ", cellName='" + cellName + '\'' +
+                ", address='" + address + '\'' +
+                ", liftNum=" + liftNum +
+                ", unitNum=" + unitNum +
+                ", distance=" + distance +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", enterTime=" + enterTime +
+                ", cellType='" + cellType + '\'' +
+                ", humanTraffic=" + humanTraffic +
+                ", businessAdPrice=" + businessAdPrice +
+                ", diyAdPrice=" + diyAdPrice +
+                ", informationAdPrice=" + informationAdPrice +
+                ", cellLogo='" + cellLogo + '\'' +
+                ", isCollect=" + isCollect +
+                ", cellBanner=" + cellBanner +
+                '}';
+    }
 
     public String getBusinessIntro() {
         return businessIntro;
