@@ -30,19 +30,34 @@ public class TokenUtils {
     }
 
     public static boolean isCreateAccount(String CreatateAccount){
-        if (DataSharedPreferences.getCreatateAccount().equals(CreatateAccount)) {
-            return true;
+        if (DataSharedPreferences.getCreatateAccount()!=null){
+            if (DataSharedPreferences.getCreatateAccount().equals(CreatateAccount)) {
+                return true;
+            }else {
+                return false;
+            }
         }else {
             return false;
         }
+
     }
 
     public static boolean isCertification(){
         UserEntity user = DataSharedPreferences.getUserBean();
-        if (user.getAuthStatus().equals(Constants.IDENTITY_STATUS.AUTHED)){
-            return false;
+        if (user.getAuthStatus()!=null) {
+            if (user.getAuthStatus().equals(Constants.IDENTITY_STATUS.AUTHED)) {
+                return false;
+            } else {
+                return true;
+            }
         }else {
             return true;
+        }
+    }
+
+    public static void isLogin(int eree){
+        if (eree==100200){
+            ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
         }
     }
 

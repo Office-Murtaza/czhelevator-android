@@ -27,6 +27,7 @@ import static com.czh.myversiontwo.utils.DistanceUtils.distance;
 import static com.czh.myversiontwo.utils.StringContent.STRING_COMMUNITY_CODE;
 import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/5/22
@@ -67,13 +68,14 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
 //                        onItemClickListener.onItemClick(v, position);
 //                        new AdvertisPutDialog(context,data.id,data.name);
 //                    }
-                    if (isCertification()){
-                        DialogUtils.shwoCertificationDialog(context);
-                    }else {
-                        AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name);
-                        advertisPutDialog.show();
+                    if (isToken(context)){
+                        if (isCertification()){
+                            DialogUtils.shwoCertificationDialog(context);
+                        }else {
+                            AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name);
+                            advertisPutDialog.show();
+                        }
                     }
-
                 }
             });
             holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {

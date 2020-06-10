@@ -140,8 +140,10 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     public void init(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
         LocationEntity entity = AppContent.getInstance().getLocation();
-        latitude = entity.getLatitude();
-        longitude = entity.getLongitude();
+        if (entity!=null) {
+            latitude = entity.getLatitude();
+            longitude = entity.getLongitude();
+        }
         /*地图*/
          initMap();
          /*标点*/

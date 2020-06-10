@@ -135,17 +135,6 @@ public class ArticleDetailsActivity extends BaseActivity {
         recommendEntity = gson.fromJson(conentEntity, QueryRecommendEntity.class);
         tvName.setText(recommendEntity.nickname + "");
         GlideUtils.loadRoundImage(this, recommendEntity.photo, imgPortrait, 20);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
-//        mHandler.postDelayed(runnable, 100);
 
         ConentUtils.httpAddBrowse(ArticleDetailsActivity.this, recommendEntity.id);
 
@@ -169,8 +158,8 @@ public class ArticleDetailsActivity extends BaseActivity {
         } else {
             tvOriginal.setText("转载");
         }
-        webview.loadDataWithBaseURL(null,
-                getHtmlData(recommendEntity.content), "text/html", "utf-8", null);
+        webview.loadDataWithBaseURL(null, getHtmlData(recommendEntity.content), "text/html", "utf-8", null);
+        LogUtils.e( getHtmlData(recommendEntity.content));
         httpComment(page, recommendEntity.id);
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override

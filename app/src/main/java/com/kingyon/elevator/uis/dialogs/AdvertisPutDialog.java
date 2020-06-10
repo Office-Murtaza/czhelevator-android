@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
@@ -23,6 +24,7 @@ import java.util.List;
 import static com.czh.myversiontwo.utils.CodeType.ADV_BUSINESS;
 import static com.czh.myversiontwo.utils.CodeType.ADV_DAY;
 import static com.czh.myversiontwo.utils.CodeType.ADV_INFORMATION;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isLogin;
 
 /**
  * Created By Admin  on 2020/4/16
@@ -123,12 +125,14 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
                     @Override
                     protected void onResultError(ApiException ex) {
                         ToastUtils.showToast(mContext,ex.getDisplayMessage(),1000);
+                        isLogin(ex.getCode());
                     }
 
                     @Override
                     public void onNext(String s) {
                         ToastUtils.showToast(mContext,"添加成功",1000);
                         dismiss();
+                        AdUtils.httpPlannuber();
                     }
                 });
 

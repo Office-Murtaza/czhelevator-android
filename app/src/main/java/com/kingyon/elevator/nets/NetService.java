@@ -95,6 +95,7 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
@@ -190,8 +191,8 @@ public class NetService {
         return addSchedulers(getApi().getPassswordSetting(phone,password,inviter));
     }
     /*2.0绑定手机*/
-    public Observable<CodeEntity> setBindPhone(String phone, String verifyCode,String unique,String avatar, String nickName){
-        return addSchedulers(getApi().getBindPhone(phone,verifyCode,unique,avatar,nickName));
+    public Observable<CodeEntity> setBindPhone(String phone, String verifyCode,String unique,String avatar, String nickName,String way){
+        return addSchedulers(getApi().getBindPhone(phone,verifyCode,unique,avatar,nickName,way));
     }
     /*2.0验证码验证*/
     public Observable<CodeEntity> setCheckVerifyCode(String phone, String verifyCode){
@@ -802,7 +803,7 @@ public class NetService {
         });
         return addSchedulers(zip);
     }
-    /*2.0订单详情*/
+    /*2.0订单列表*/
     public Observable<PageListEntity<OrderDetailsEntity>> orderList(String status, int page) {
         return addSchedulers(getApi().orderList(status, page));
     }
@@ -890,6 +891,12 @@ public class NetService {
             }
         });
     }
+
+    /*2.获取计划单数*/
+    public Observable<PlanNumberEntiy> setAdPlan(){
+        return addSchedulers(getApi().getAdPlan());
+    }
+
 
     public Observable<Long> getAvInfoDuration(String url) {
         return Observable.just(url)

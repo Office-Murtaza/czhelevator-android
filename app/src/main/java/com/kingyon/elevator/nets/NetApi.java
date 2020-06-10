@@ -10,6 +10,7 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
@@ -57,8 +58,7 @@ public interface NetApi {
     /*2.0登录*/
     @POST("userSecurity/login")
     @FormUrlEncoded
-    Observable<
-            CodeEntity> getLogin(@Field("phone") String phone,@Field("password") String password
+    Observable<CodeEntity> getLogin(@Field("phone") String phone,@Field("password") String password
             ,@Field("way")String way,@Field("unique")String unique,@Field("avatar") String avatar,@Field("nickName") String nickName);
 
     /*2.0设置密码*/
@@ -67,11 +67,11 @@ public interface NetApi {
     Observable<CodeEntity> getPassswordSetting(@Field("phone") String phone,@Field("password") String password,@Field("inviter") String inviter);
 
     /*2.0绑定手机*/
-    @POST("userSecurity/bindPhone")
+    @POST("userSecurity/bindThirdParty")
     @FormUrlEncoded
     Observable<CodeEntity> getBindPhone(@Field("phone") String phone, @Field("verifyCode") String verifyCode,
                                     @Field("unique") String unique, @Field("avatar") String avatar,
-                                    @Field("nickName") String nickName);
+                                    @Field("nickName") String nickName,@Field("way") String way);
     /*2.0验证码验证*/
     @POST("userSecurity/checkVerifyCode")
     @FormUrlEncoded
@@ -316,6 +316,11 @@ public interface NetApi {
     @POST("order/downloadContract")
     Observable<DataEntity<String>> downloadContract();
 
+    /*2.0获取计划数*/
+    @POST("throwIn/getAdPlan")
+    Observable<PlanNumberEntiy> getAdPlan();
+
+
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -523,10 +528,12 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<WxPayEntity> orderPay(@Field("preOrderSn") String orderId, @Field("way") String way,@Field("payPwd") String payPwd );
 
-    /*2.0订单详情*/
-    @POST("order/orderList")
+    /*2.0订单列表*/
+    @POST("myOrder/orderList")
     @FormUrlEncoded
-    Observable<PageListEntity<OrderDetailsEntity>> orderList(@Field("status") String status, @Field("page") int page);
+    Observable<PageListEntity<OrderDetailsEntity>> orderList(@Field("orderStatus") String status,
+                                                             @Field("auditStatus") String auditStatus,
+                                                             @Field("page") int page);
 
 
     /*2.0查看订单点位列表*/

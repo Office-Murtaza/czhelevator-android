@@ -66,6 +66,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADVERTIS_STYLE;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/5/13
@@ -337,9 +338,12 @@ public class PutcastAdvertisFragment extends BaseFragment {
             case R.id.ll_tj:
                 break;
             case R.id.ll_view_schedule:
-                startActivity(PlanNewFragment.class);
+                if (isToken(getActivity())) {
+                    startActivity(PlanNewFragment.class);
+                }
                 break;
             case R.id.rl_error:
+
                 httpAdcertis(provinceCode, cityCode, countyCode);
                 httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
 

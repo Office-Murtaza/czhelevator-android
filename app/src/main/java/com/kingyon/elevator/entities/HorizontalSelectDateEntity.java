@@ -19,6 +19,16 @@ public class HorizontalSelectDateEntity {
     private int month;
     private int startPosition;//一号是星期几的位置
 
+    @Override
+    public String toString() {
+        return "HorizontalSelectDateEntity{" +
+                "currentYearAndMonth='" + currentYearAndMonth + '\'' +
+                ", dayCount=" + dayCount +
+                ", year=" + year +
+                ", month=" + month +
+                ", startPosition=" + startPosition +
+                '}';
+    }
 
     public HorizontalSelectDateEntity(int year, int month, Date date) {
         this.year = year;

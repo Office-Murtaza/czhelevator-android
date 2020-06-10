@@ -17,16 +17,13 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
-import com.kingyon.paylibrary.ALiLoginUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.library.social.AuthorizeUser;
 import com.kingyon.library.social.AuthorizeUtils;
+import com.kingyon.paylibrary.ALiLoginUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,9 +81,11 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
     LinearLayout llThird;
     @BindView(R.id.ll_sf)
     LinearLayout llSf;
+    @BindView(R.id.tv_yszc)
+    TextView tvYszc;
     private AuthorizeUtils authorizeUtils;
     boolean istyxi = false;
-    private String unique,avatar,nickName;
+    private String unique, avatar, nickName, loginType;
 
     @Override
     public int getContentViewId() {
@@ -100,6 +99,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
             @Override
             public void run() {
                 tvDjyhxy.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+                tvYszc.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
                 tvLoginNext.setClickable(false);
                 etPhone.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -135,7 +135,8 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
         OrdinaryActivity.loginActiivty = this;
     }
 
-    @OnClick({R.id.img_top_back, R.id.tv_dl, R.id.img_yesyhxy, R.id.tv_login_next, R.id.img_wx, R.id.img_qq, R.id.img_wb, R.id.tv_djyhxy, R.id.tv_login_user})
+    @OnClick({R.id.img_top_back, R.id.tv_dl, R.id.img_yesyhxy, R.id.tv_login_next,
+            R.id.img_wx, R.id.img_qq, R.id.img_wb, R.id.tv_djyhxy, R.id.tv_login_user,R.id.tv_yszc})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
@@ -182,9 +183,10 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                         unique = unique1;
                         avatar = "";
                         nickName = "";
+                        loginType = ALI;
                         OrdinaryActivity.httpLogin(LoginActiivty.this,
                                 "", "", ALI, unique1, "", ""
-                                ,llSf,tvLoginUser);
+                                , llSf, tvLoginUser);
                     }
                 };
                 aLiLogin.authV2();
@@ -194,6 +196,9 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                 break;
             case R.id.tv_login_user:
                 setActivity(ACTIVITY_MAIN2_USER_LOGIN);
+                break;
+            case R.id.tv_yszc:
+                AgreementActivity.start(this, "隐私协议", Constants.AgreementType.SERVICE_TERMS.getValue());
                 break;
             default:
         }
@@ -205,10 +210,10 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
         } else if (!istyxi) {
             ToastUtils.showToast(this, "请同意用户协议", 1000);
         } else {
-            if (unique==null) {
-                OrdinaryActivity.CodeActivity(this, REGISTER, etPhone.getText().toString(), unique, avatar, nickName,"1");
-            }else {
-                OrdinaryActivity.CodeActivity(this, REGISTER, etPhone.getText().toString(), unique, avatar, nickName,"2");
+            if (unique == null) {
+                OrdinaryActivity.CodeActivity(this, REGISTER, etPhone.getText().toString(), unique, avatar, nickName, "1", loginType);
+            } else {
+                OrdinaryActivity.CodeActivity(this, REGISTER, etPhone.getText().toString(), unique, avatar, nickName, "2", loginType);
             }
         }
     }
@@ -238,20 +243,22 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                                     LogUtils.e(Constants.LoginType.WX, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     OrdinaryActivity.httpLogin(LoginActiivty.this,
                                             "", "", WX, user.getUsername(), user.getHeadimgurl(), user.getNickname()
-                                            ,llSf,tvLoginUser);
+                                            , llSf, tvLoginUser);
                                     unique = user.getUsername();
                                     avatar = user.getHeadimgurl();
                                     nickName = user.getNickname();
+                                    loginType = WX;
                                     break;
                                 case "TENCENT_QQ":
                                     hideProgress();
                                     LogUtils.e(QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     OrdinaryActivity.httpLogin(LoginActiivty.this,
                                             "", "", QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname()
-                                            ,llSf,tvLoginUser);
+                                            , llSf, tvLoginUser);
                                     unique = user.getUsername();
                                     avatar = user.getHeadimgurl();
                                     nickName = user.getNickname();
+                                    loginType = QQ;
                                     break;
                                 case "XINLAN_WEIBO":
                                     hideProgress();

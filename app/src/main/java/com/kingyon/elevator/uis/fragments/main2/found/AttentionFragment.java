@@ -162,7 +162,6 @@ public class AttentionFragment extends FoundFragemtUtils {
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e("onRefresh");
                 page = 1;
                 recommendEntityList.clear();
                 httpQueryAttention(1, "", "");
@@ -208,11 +207,11 @@ public class AttentionFragment extends FoundFragemtUtils {
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        smartRefreshLayout.autoRefresh(100);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        smartRefreshLayout.autoRefresh(100);
+    }
 
     @OnClick({R.id.rl_error, R.id.rl_notlogin})
     public void onViewClicked(View view) {

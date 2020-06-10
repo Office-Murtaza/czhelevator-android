@@ -48,7 +48,7 @@ public class OrdinaryActivity {
     /**
      * 验证码跳转
      * */
-    public static void CodeActivity(BaseActivity activity, String type, String phone,String unique, String avatar, String nickName ,String isbinding) {
+    public static void CodeActivity(BaseActivity activity, String type, String phone,String unique, String avatar, String nickName ,String isbinding,String loginType) {
         activity.showProgressDialog(activity.getString(R.string.wait));
             NetService.getInstance().setSendCheckConde(type, phone)
                     .compose(activity.bindLifeCycle())
@@ -64,7 +64,7 @@ public class OrdinaryActivity {
                         public void onNext(String s) {
                             ToastUtils.showToast(activity, "发送成功", 1000);
                             activity.hideProgress();
-                            setActivity(ACTIVITY_MAIN2_CODE, "phone", phone, "unique", unique, "avatar", avatar, "nickName", nickName,"isbinding",isbinding);
+                            setActivity(ACTIVITY_MAIN2_CODE, "phone", phone, "unique", unique, "avatar", avatar, "nickName", nickName,"isbinding",isbinding,"loginType",loginType);
                         }
                     });
     }
@@ -97,9 +97,9 @@ public class OrdinaryActivity {
     /**
      * 验证码验证
      * */
-    public static void httpCheckVerifyCode(BaseActivity activity, String phone, String verifyCode , String unique,String avatar, String nickName){
+    public static void httpCheckVerifyCode(BaseActivity activity, String phone, String verifyCode , String unique,String avatar, String nickName,String loginType){
         activity.showProgressDialog("请稍等...");
-        NetService.getInstance().setBindPhone(phone,verifyCode,unique,avatar,nickName)
+        NetService.getInstance().setBindPhone(phone,verifyCode,unique,avatar,nickName,loginType)
                 .compose(activity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<CodeEntity>() {
                     @Override

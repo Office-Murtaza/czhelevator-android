@@ -20,6 +20,7 @@ import com.kingyon.elevator.utils.DensityUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,17 @@ public class CustomDatePickerView extends View {
      * 总共多少天的分割线颜色
      */
     private int totalCountLineColor = Color.parseColor("#00000000");
+
+
+    /**
+     *当前日期颜色
+     * */
+    private int totalCountDataBgColor = Color.parseColor("#123456");
+
+    /**
+     *当前日期字体颜色
+     * */
+    private int totalCountDataTextColor = Color.parseColor("#FF3049");
 
     // 日期字体大小
     private int dateTextSize = 14;
@@ -171,61 +183,125 @@ public class CustomDatePickerView extends View {
     private void drawDayText(Canvas canvas) {
         int firstDayPosition = DateUtils.getWeekOfDatePosition(numberOneDate);
         // 写入文字
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String daytwo = year + "-" + month + "-" + day;
+        LogUtils.e(daytwo);
         for (int i = 0; i < dateGridEntities.size(); i++) {
             DateGridEntity dateGridEntity = dateGridEntities.get(i);
+            LogUtils.e(dateGridEntity.getDate());
             //一行中的第几个
             int column = (i + firstDayPosition) % 7;
             //第几行
             int row = (i + firstDayPosition) / 7;
             dateDays[row][column] = dateGridEntities.get(i);
-            paint.setColor(optionalDateTextColor);
-            if (isBeforeDate(dateGridEntity)) {
-                // holder.tv_date_day.setTextColor(Color.parseColor("#E1DFDF"));
-                paint.setColor(notOptionalDateTextColor);
-            } else {
-                // holder.tv_date_day.setTextColor(Color.parseColor("#404040"));
-                if (dateGridEntity.getType() == 1) {
-                    if (horizontalSelectDateAdapter.startSelectDateEntity != null) {
-                        if (horizontalSelectDateAdapter.endSelectDateEntity != null) {
-                            if (isWhetherInInterval(horizontalSelectDateAdapter.startSelectDateEntity
-                                    , horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
-                                drawSelectedBetweenStartAndEndBackground(canvas, row, column);
-                                paint.setColor(selectedDateTextColor);
-                            } else {
-                                if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
-                                    drawSelectedStartDateBackground(canvas, row, column);
-                                    drawSelectedBackground(canvas, row, column);
+            if (dateGridEntity.getDate().equals(daytwo)){
+                paint.setColor(totalCountDataTextColor);
+                if (isBeforeDate(dateGridEntity)) {
+                    // holder.tv_date_day.setTextColor(Color.parseColor("#E1DFDF"));
+                    paint.setColor(notOptionalDateTextColor);
+                } else {
+                    // holder.tv_date_day.setTextColor(Color.parseColor("#404040"));
+                    if (dateGridEntity.getType() == 1) {
+                        if (horizontalSelectDateAdapter.startSelectDateEntity != null) {
+                            if (horizontalSelectDateAdapter.endSelectDateEntity != null) {
+                                if (isWhetherInInterval(horizontalSelectDateAdapter.startSelectDateEntity
+                                        , horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
+                                    drawSelectedBetweenStartAndEndBackground(canvas, row, column);
                                     paint.setColor(selectedDateTextColor);
                                 } else {
-                                    if (isStartTime(horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
-                                        drawSelectedEndDateBackground(canvas, row, column);
+                                    if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
+                                        drawSelectedStartDateBackground(canvas, row, column);
                                         drawSelectedBackground(canvas, row, column);
-                                        //绘制总共多少天
-                                        drawTotalCount(canvas, row, column);
                                         paint.setColor(selectedDateTextColor);
                                     } else {
-                                        paint.setColor(optionalDateTextColor);
+                                        if (isStartTime(horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
+                                            drawSelectedEndDateBackground(canvas, row, column);
+                                            drawSelectedBackground(canvas, row, column);
+                                            //绘制总共多少天
+                                            drawTotalCount(canvas, row, column);
+                                            paint.setColor(selectedDateTextColor);
+                                        } else {
+                                            paint.setColor(totalCountDataTextColor);
+                                        }
                                     }
                                 }
-                            }
-                        } else {
-                            paint.setColor(notOptionalDateTextColor);
-                            if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
-                                // drawSelectedStartDateBackground(canvas, row, column);
-                                drawSelectedBackground(canvas, row, column);
-                                //绘制总共多少天
-                                drawTotalCount(canvas, row, column);
-                                paint.setColor(selectedDateTextColor);
                             } else {
-                                paint.setColor(optionalDateTextColor);
+                                paint.setColor(notOptionalDateTextColor);
+                                if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
+                                    // drawSelectedStartDateBackground(canvas, row, column);
+                                    drawSelectedBackground(canvas, row, column);
+                                    //绘制总共多少天
+                                    drawTotalCount(canvas, row, column);
+                                    paint.setColor(selectedDateTextColor);
+                                } else {
+                                    paint.setColor(totalCountDataTextColor);
+                                }
                             }
+
+                        } else {
+                            paint.setColor(totalCountDataTextColor);
                         }
+
+                    } else {
+                        paint.setColor(totalCountDataTextColor);
+                    }
+                }
+            }else {
+                paint.setColor(optionalDateTextColor);
+                if (isBeforeDate(dateGridEntity)) {
+                    // holder.tv_date_day.setTextColor(Color.parseColor("#E1DFDF"));
+                    paint.setColor(notOptionalDateTextColor);
+                } else {
+                    // holder.tv_date_day.setTextColor(Color.parseColor("#404040"));
+                    if (dateGridEntity.getType() == 1) {
+                        if (horizontalSelectDateAdapter.startSelectDateEntity != null) {
+                            if (horizontalSelectDateAdapter.endSelectDateEntity != null) {
+                                if (isWhetherInInterval(horizontalSelectDateAdapter.startSelectDateEntity
+                                        , horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
+                                    drawSelectedBetweenStartAndEndBackground(canvas, row, column);
+                                    paint.setColor(selectedDateTextColor);
+                                } else {
+                                    if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
+                                        drawSelectedStartDateBackground(canvas, row, column);
+                                        drawSelectedBackground(canvas, row, column);
+                                        paint.setColor(selectedDateTextColor);
+                                    } else {
+                                        if (isStartTime(horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
+                                            drawSelectedEndDateBackground(canvas, row, column);
+                                            drawSelectedBackground(canvas, row, column);
+                                            //绘制总共多少天
+                                            drawTotalCount(canvas, row, column);
+                                            paint.setColor(selectedDateTextColor);
+                                        } else {
+                                            paint.setColor(optionalDateTextColor);
+                                        }
+                                    }
+                                }
+                            } else {
+                                paint.setColor(notOptionalDateTextColor);
+                                if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
+                                    // drawSelectedStartDateBackground(canvas, row, column);
+                                    drawSelectedBackground(canvas, row, column);
+                                    //绘制总共多少天
+                                    drawTotalCount(canvas, row, column);
+                                    paint.setColor(selectedDateTextColor);
+                                } else {
+                                    paint.setColor(optionalDateTextColor);
+                                }
+                            }
+
+                        } else {
+                            paint.setColor(optionalDateTextColor);
+                        }
+
                     } else {
                         paint.setColor(optionalDateTextColor);
                     }
-                } else {
-                    paint.setColor(optionalDateTextColor);
-                }
+            }
             }
             paint.setTextSize(dateTextSize * displayMetrics.scaledDensity);
             int startX = (int) (columnWidth * column + (columnWidth - paint.measureText(dateGridEntity.getTimeDay() + "")) / 2);
@@ -299,6 +375,17 @@ public class CustomDatePickerView extends View {
         canvas.drawRect(rectF, paint);
     }
 
+    private void drawtotalCountDataTextColor(Canvas canvas, int row, int column){
+        paint.setColor(betweenStartAndEndDateLineBg);
+        // 圆心位置
+        selectedBgCircleR = (float) (columnWidth / 2 * 0.7);
+        int left = (int) (columnWidth * column);
+        int top = (int) ((rowHeight * row) + (rowHeight - selectedBgCircleR * 2) / 2);
+        // 圆形半径
+        // 绘制圆形背景
+        RectF rectF = new RectF(left, top, left + columnWidth, top + selectedBgCircleR * 2);
+        canvas.drawRect(rectF, paint);
+    }
 
     /**
      * 绘制再开始日期衔接处矩形背景
@@ -407,33 +494,59 @@ public class CustomDatePickerView extends View {
         }
         if (dateGridEntity.getType() == 1) {
             if (horizontalSelectDateAdapter.startSelectDateEntity == null) {
+                LogUtils.e("1111111111111");
                 if (!isBeforeDate(dateGridEntity)) {
+                    LogUtils.e("2222222");
                     horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                 }
             } else {
+                LogUtils.e("33333333333");
                 if (isStartTime(horizontalSelectDateAdapter.startSelectDateEntity, dateGridEntity)) {
+                    LogUtils.e("444444444444444");
                     if (horizontalSelectDateAdapter.endSelectDateEntity == null) {
+                        LogUtils.e("555555555555555");
+//                        horizontalSelectDateAdapter.startSelectDateEntity = null;
+                        horizontalSelectDateAdapter.endSelectDateEntity = null;
                         horizontalSelectDateAdapter.startSelectDateEntity = null;
+                        horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+
                     }
                 } else {
+                    LogUtils.e("6666666666666666");
                     if (horizontalSelectDateAdapter.endSelectDateEntity == null) {
+                        LogUtils.e("777777777777777");
                         if (isAfterStartDate(dateGridEntity)) {
+                            LogUtils.e("888888888888888888");
                             horizontalSelectDateAdapter.endSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                         } else {
+                            LogUtils.e("99999999999999999");
                             if (!isBeforeDate(dateGridEntity)) {
+                                LogUtils.e("1010101010");
                                 horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                                 // MyToastUtils.showShort("结束日期应大于开始日期");
                             }
                         }
                     } else {
+                        LogUtils.e("qqqqqqqqqqqqqqqqq");
                         if (isStartTime(horizontalSelectDateAdapter.endSelectDateEntity, dateGridEntity)) {
                             //取消选中的结束时间---------
+                            LogUtils.e("wwwwwwwwwwwwwwwwwww");
                             horizontalSelectDateAdapter.endSelectDateEntity = null;
+                            horizontalSelectDateAdapter.startSelectDateEntity = null;
+                            horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                         } else {
+                            LogUtils.e("eeeeeeeeeeeeeeeee");
                             if (isBeforeStartDate(dateGridEntity)) {
+                                LogUtils.e("rrrrrrrrrrrrrrrr");
+                                horizontalSelectDateAdapter.startSelectDateEntity = null;
+                                horizontalSelectDateAdapter.endSelectDateEntity = null;
                                 horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                             } else {
-                                horizontalSelectDateAdapter.endSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+                                LogUtils.e("ttttttttttttt");
+                                horizontalSelectDateAdapter.startSelectDateEntity = null;
+                                horizontalSelectDateAdapter.endSelectDateEntity = null;
+                                horizontalSelectDateAdapter.startSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
+//                                horizontalSelectDateAdapter.endSelectDateEntity = new SelectDateEntity(dateGridEntity.getYear(), dateGridEntity.getMonth(), dateGridEntity.getTimeDay());
                             }
                         }
                     }

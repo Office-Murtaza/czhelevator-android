@@ -16,7 +16,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_200"
-            android:background="@mipmap/im_puton_banner" />
+            android:background="@mipmap/im_plan_banner" />
 
 
         <FrameLayout
@@ -235,8 +235,8 @@
                     android:id="@+id/tv_start_date_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(今天)"
                     android:singleLine="true"
+                    android:text="(今天)"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 

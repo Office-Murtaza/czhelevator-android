@@ -112,7 +112,16 @@
                     android:id="@+id/tv_djyhxy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="《屏多多用户协议及隐私协议》"
+                    android:text="《屏多多用户协议》及 "
+                    android:textColor="#ff999999"
+                    android:layout_gravity="center"
+                    android:textSize="11sp"
+                    />
+                <TextView
+                    android:id="@+id/tv_yszc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《隐私协议》"
                     android:textColor="#ff999999"
                     android:layout_gravity="center"
                     android:textSize="11sp"

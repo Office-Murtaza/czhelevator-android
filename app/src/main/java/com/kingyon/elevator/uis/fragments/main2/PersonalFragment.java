@@ -154,7 +154,7 @@ public class PersonalFragment extends BaseFragment {
                         @Override
                         protected void onResultError(ApiException ex) {
                             showToast(ex.getDisplayMessage());
-                            updateHeadUi(new UserEntity());
+                            updateHeadUi(null);
                         }
 
                         @Override

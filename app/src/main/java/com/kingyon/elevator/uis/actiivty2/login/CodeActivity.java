@@ -81,6 +81,8 @@ public class CodeActivity extends BaseActivity {
     String nickName;
     @Autowired
     String isbinding;
+    @Autowired
+    String loginType;
 
 
     @Override
@@ -136,8 +138,7 @@ public class CodeActivity extends BaseActivity {
                 if (isbinding.equals("1")) {
                     OrdinaryActivity.httpLogin(this, phone, phoneCode, CODE, unique, avatar, nickName, null, null);
                 }else {
-
-                    OrdinaryActivity.httpCheckVerifyCode(this,phone,phoneCode, unique, avatar, nickName);
+                    OrdinaryActivity.httpCheckVerifyCode(this,phone,phoneCode, unique, avatar, nickName,loginType);
                 }
                 break;
         }

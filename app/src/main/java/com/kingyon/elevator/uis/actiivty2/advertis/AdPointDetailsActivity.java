@@ -1,11 +1,14 @@
 package com.kingyon.elevator.uis.actiivty2.advertis;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -14,22 +17,20 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CellDetailsEntity;
+import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ContentImageAdapter;
-import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main2.advertis.AdPointDetailsFragment;
-import com.kingyon.elevator.uis.fragments.main2.advertis.CommercialFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
-import com.kingyon.elevator.utils.utilstwo.StringUtils;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -100,6 +101,23 @@ public class AdPointDetailsActivity extends BaseActivity {
     @Autowired
     String panID;
     String adtype = ADV_BUSINESS;
+    @BindView(R.id.tv_bumber)
+    TextView tvBumber;
+    @BindView(R.id.rl_plan)
+    RelativeLayout rlPlan;
+
+    Handler handler=new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            if (AdUtils.planNumber > 0) {
+                tvBumber.setText(AdUtils.planNumber + "");
+                tvBumber.setVisibility(View.VISIBLE);
+            }
+            handler.postDelayed(this, 500);
+        }
+    };
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_adpoin_details;
@@ -109,6 +127,8 @@ public class AdPointDetailsActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
         httpDetails();
+        AdUtils.httpPlannuber();
+        handler.postDelayed(runnable, 500);
     }
 
     private void httpDetails() {
@@ -119,25 +139,25 @@ public class AdPointDetailsActivity extends BaseActivity {
                 .subscribe(new CustomApiCallback<CellDetailsEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
                     }
 
                     @Override
                     public void onNext(CellDetailsEntity cellDetailsEntity) {
                         LogUtils.e(cellDetailsEntity.toString());
-                        cellEntity  =cellDetailsEntity;
+                        cellEntity = cellDetailsEntity;
                         hideProgress();
                         tvAddress.setText(cellDetailsEntity.getAddress());
                         tvCommunityName.setText(cellDetailsEntity.getCellName());
-                        tvDistance.setText(cellDetailsEntity.getDistance()+"");
+                        tvDistance.setText(cellDetailsEntity.getDistance() + "");
                     }
                 });
 
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity,"1"), "商业广告");
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity,"2"), "DAY广告");
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity,"3"), "便民广告");
+        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "1"), "商业广告");
+        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "2"), "DAY广告");
+        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "3"), "便民广告");
         vpPoindetails.setAdapter(adapter);
         vpPoindetails.setOffscreenPageLimit(adapter.getCount());
         viewpagertab.setViewPager(vpPoindetails);
@@ -151,30 +171,32 @@ public class AdPointDetailsActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         tvType.setText("商业广告");
                         adtype = ADV_BUSINESS;
-                        tvCurrentPrice.setText(cellEntity.getBusinessAdPrice()+"元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getBusinessAdPrice()+"元/台/天");
+                        tvCurrentPrice.setText(cellEntity.getBusinessAdPrice() + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.getBusinessAdPrice() + "元/台/天");
                         break;
                     case 1:
                         adtype = ADV_DAY;
                         tvType.setText("DAY广告");
-                        tvCurrentPrice.setText(cellEntity.getDiyAdPrice()+"元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getDiyAdPrice()+"元/台/天");
+                        tvCurrentPrice.setText(cellEntity.getDiyAdPrice() + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.getDiyAdPrice() + "元/台/天");
                         break;
                     case 2:
                         adtype = ADV_INFORMATION;
                         tvType.setText("便民广告");
-                        tvCurrentPrice.setText(cellEntity.getInformationAdPrice()+"元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getInformationAdPrice()+"元/台/天");
+                        tvCurrentPrice.setText(cellEntity.getInformationAdPrice() + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.getInformationAdPrice() + "元/台/天");
                         break;
                     default:
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -190,7 +212,7 @@ public class AdPointDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.img_top_back, R.id.rl_plan, R.id.tv_conent,R.id.tv_program})
+    @OnClick({R.id.img_top_back, R.id.rl_plan, R.id.tv_conent, R.id.tv_program})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
@@ -205,25 +227,31 @@ public class AdPointDetailsActivity extends BaseActivity {
                 break;
             case R.id.tv_program:
                 /*加入计划*/
-                addPlan(adtype,panID);
+                addPlan(adtype, panID);
                 break;
         }
     }
 
-    private void addPlan(String type,String panID){
+    private void addPlan(String type, String panID) {
         NetService.getInstance().plansAddCells(type, panID)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        ToastUtils.showToast(AdPointDetailsActivity.this,ex.getDisplayMessage(),1000);
+                        ToastUtils.showToast(AdPointDetailsActivity.this, ex.getDisplayMessage(), 1000);
                     }
 
                     @Override
                     public void onNext(String s) {
-                        ToastUtils.showToast(AdPointDetailsActivity.this,"添加成功",1000);
+                        ToastUtils.showToast(AdPointDetailsActivity.this, "添加成功", 1000);
+                        AdUtils.httpPlannuber();
                     }
                 });
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
     }
 }

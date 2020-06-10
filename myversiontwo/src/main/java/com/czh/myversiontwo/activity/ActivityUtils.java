@@ -80,4 +80,18 @@ public class ActivityUtils {
                     .navigation();
         }
     }
+
+    public static void setActivity(String Url,String key1,String value1,String key2,String value2,String key3,String value3 ,String key4,String value4,String key5,String value5,String key6,String value6){
+        if (QuickClickUtils.isFastClick()) {
+            ARouter.getInstance()
+                    .build(Url)
+                    .withString(key1,value1)
+                    .withString(key2,value2)
+                    .withString(key3,value3)
+                    .withString(key4,value4)
+                    .withString(key5,value5)
+                    .withString(key6,value6)
+                    .navigation();
+        }
+    }
 }

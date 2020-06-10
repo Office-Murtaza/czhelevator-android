@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -49,6 +50,7 @@ import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.animationutils.AnimatorPath;
 import com.kingyon.elevator.utils.animationutils.PathEvaluator;
 import com.kingyon.elevator.utils.animationutils.PathPoint;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -74,6 +76,8 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
+
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created by GongLi on 2018/12/27.
@@ -158,6 +162,18 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private double longitude;
     private boolean isconent = true;
     ConentEntity<RecommendHouseEntiy> entiyConentEntity;
+    Handler handler=new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            if (AdUtils.planNumber > 0) {
+                tvBumber.setText(AdUtils.planNumber + "");
+                tvBumber.setVisibility(View.VISIBLE);
+            }
+            handler.postDelayed(this, 500);
+        }
+    };
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_search;
@@ -177,9 +193,12 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        handler.postDelayed(runnable, 500);
         LocationEntity entity = AppContent.getInstance().getLocation();
-        latitude = entity.getLatitude();
-        longitude = entity.getLongitude();
+        if (entity!=null) {
+            latitude = entity.getLatitude();
+            longitude = entity.getLongitude();
+        }
         /*定位请求*/
         httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
         EventBus.getDefault().register(this);
@@ -403,7 +422,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 EventBus.getDefault().post(new ToPlanTab(lastPlanType));
                 break;
             case R.id.rl_plan:
-                startActivity(PlanNewFragment.class);
+                if (isToken(this)) {
+                    startActivity(PlanNewFragment.class);
+                }
                 break;
             case R.id.img_menu:
                 drawerLayout.openDrawer(Gravity.LEFT);
@@ -680,4 +701,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
         ButterKnife.bind(this);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
+    }
 }

@@ -71,6 +71,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isLogin;
 
 /**
  * Created by GongLi on 2019/2/19.
@@ -200,6 +201,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             endTime = simpleDateFormat.parse(endDate).getTime();
             LogUtils.d("刷新选择的时间-------------", startDate, endDate);
             updatePriceUI();
+            autoLoading();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -217,6 +219,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             showToast(ex.getDisplayMessage());
                             loadingComplete(false, 100000);
                             updateBarVisiable();
+                            isLogin(ex.getCode());
                         }
 
                         @Override
