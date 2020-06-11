@@ -81,7 +81,7 @@ public class SearchPoiFragment extends BaseStateRefreshLoadingFragment<Object> i
                         ((PoiItem) item).getLatLonPoint().getLongitude(),
                         ((PoiItem) item).getTitle());
 
-                ((SearchHistoryActivity) activity).realSearch(((PoiItem) item).getTitle());
+                ((SearchHistoryActivity) activity).realSearch(((PoiItem) item).getTitle(),String.valueOf (((PoiItem) item).getLatLonPoint().getLatitude()),String.valueOf (((PoiItem) item).getLatLonPoint().getLongitude()));
             }
         }
     }

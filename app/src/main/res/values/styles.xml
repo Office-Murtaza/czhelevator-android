@@ -143,4 +143,12 @@
         <item name="android:background">@drawable/ad_style_bj</item>
     </style>
 
+
+    <style name="mProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">50dp</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+    </style>
+
 </resources>

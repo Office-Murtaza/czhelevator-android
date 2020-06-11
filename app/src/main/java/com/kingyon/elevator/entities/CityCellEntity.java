@@ -12,6 +12,7 @@ public class CityCellEntity {
      * longitude : 104.07
      * latitude : 30.67
      * cellCount : 5000
+     *
      */
 
     private long cityCode;

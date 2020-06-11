@@ -47,6 +47,40 @@
 
             </LinearLayout>
 
+           <LinearLayout
+               android:id="@+id/ll_fw"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:gravity="center"
+               android:visibility="gone"
+               android:background="@color/white"
+               android:padding="@dimen/dp10"
+               >
+
+               <TextView
+                   android:id="@+id/tv_km"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="范围：1km"
+                   android:textColor="#ff999999"
+                   android:textSize="12sp"
+                   />
+
+               <SeekBar
+                   android:id="@+id/sb_porag"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="@dimen/dp_5"
+                   android:layout_marginRight="@dimen/dp_5"
+                   android:progressDrawable="@mipmap/bg_range_slider1"
+                   android:thumb="@drawable/ic_range_slider"
+                   android:max="50"
+                   android:progress="10"
+                   />
+
+           </LinearLayout>
+
 
             <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
                 android:id="@+id/pfl_cells"

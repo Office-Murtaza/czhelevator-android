@@ -327,7 +327,7 @@
         <activity
             android:name=".uis.activities.user.IdentityInfoActivity"
             android:screenOrientation="portrait" />
-<!--        个人认证-->
+<!--        2.0个人认证-->
         <activity
             android:name=".uis.activities.user.IdentityPersonActivity"
             android:screenOrientation="portrait" />
@@ -704,6 +704,18 @@
         <!--2.0广告专区-->
         <activity android:name=".uis.actiivty2.main.AdvertisingSectionActivity"
             android:screenOrientation="portrait"/>
+        <!--2.0认证选择-->
+        <activity android:name=".uis.actiivty2.user.CertificationActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0提交认证信息-->
+        <activity android:name=".uis.actiivty2.user.IdentityCertificationActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0订单列表-->
+        <activity android:name=".uis.actiivty2.user.order.OrderActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

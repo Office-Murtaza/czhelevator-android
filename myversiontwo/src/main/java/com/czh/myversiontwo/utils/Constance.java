@@ -75,6 +75,12 @@ public class Constance {
     public static final String ACTIVITY_USER_ABOUT = "/app/activity/about";
     /**订单支付成功*/
     public static final String ACTIVITY_PAY_SUCCESS = "/app/activity/paysuccess";
+    /**2.0认证选择*/
+    public static final String ACTIVITY_CERTIFICATION = "/app/activity/certification";
+    /**认证信息提交*/
+    public static final String ACTIVITY_IDENTITY_CERTIFICATION= "/app/activity/identitycertification";
+    /**订单*/
+    public static final String ACTIVITY_ORDER = "/app/activity/order_activity";
 
 
 

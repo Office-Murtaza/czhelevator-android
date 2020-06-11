@@ -804,8 +804,8 @@ public class NetService {
         return addSchedulers(zip);
     }
     /*2.0订单列表*/
-    public Observable<PageListEntity<OrderDetailsEntity>> orderList(String status, int page) {
-        return addSchedulers(getApi().orderList(status, page));
+    public Observable<PageListEntity<OrderDetailsEntity>> orderList(String status,String auditStatus, int page) {
+        return addSchedulers(getApi().orderList(status, auditStatus,page));
     }
     /*2.0合同下载地址*/
     public Observable<DataEntity<String>> downloadContract() {

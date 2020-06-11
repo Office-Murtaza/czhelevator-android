@@ -254,7 +254,7 @@ public interface NetApi {
     Observable<String> plansRemoveCells(@Field("type") String type, @Field("cells") String cells);
 
     /*2.0我的广告列表*/
-    @POST("ad/adlist")
+    @POST("myAd/adList")
     @FormUrlEncoded
     Observable<ConentEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
 
@@ -582,8 +582,10 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> donateCoupons(@Field("phone") String phone, @Field("count") String count, @Field("couponIds") String couponIds);
 
-    @POST("user/getIdentityInformation")
+    /*2.0获取身份信息*/
+    @POST("userSecurity/getIdentityInformation")
     Observable<IdentityInfoEntity> getIdentityInformation();
+
 
     @POST("user/industrys")
     Observable<List<IndustryEntity>> getIndustrys();
@@ -595,6 +597,7 @@ public interface NetApi {
             , @Field("idBack") String idBack, @Field("companyName") String companyName
             , @Field("businessCert") String businessCert);
 
+    /*2.0个人资料*/
     @POST("user/userProfile")
     Observable<UserEntity> userProfile();
 
@@ -603,15 +606,17 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<UserEntity> userEidtProfile(@FieldMap Map<String, String> params);
 
-    @POST("user/myWallet")
+    /*2.0钱包余额*/
+    @POST("myWallet/info")
     Observable<DataEntity<Float>> myWallet();
 
+    /*2.0余额流水*/
     @POST("user/myWalletList")
     @FormUrlEncoded
     Observable<PageListEntity<WalletRecordEntity>> myWalletRecords(@Field("page") int page);
 
     /*2.0充值*/
-    @POST("user/rechargeWallet")
+    @POST("myWallet/recharge")
     @FormUrlEncoded
     Observable<WxPayEntity> rechageWallet(@Field("way") String way, @Field("amount") float amount);
 

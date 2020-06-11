@@ -158,8 +158,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private AnimatorPath path;//声明动画集合
     private String lastPlanType = "";
 
-    private double latitude;
-    private double longitude;
+    private double latitude = 26.578343;
+    private double longitude= 106.713478;
     private boolean isconent = true;
     ConentEntity<RecommendHouseEntiy> entiyConentEntity;
     Handler handler=new Handler();
@@ -204,6 +204,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
         EventBus.getDefault().register(this);
         /*侧滑内容*/
         initData();
+        AdUtils.httpPlannuber();
 
 //        tvSearchTitle.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -311,11 +312,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
 
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        mapFragment = new MapSearchFragment();
         if (isconent) {
-            fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity));
-//        textFragment = TextSearchFragment.newInstance(keyWord, cityEntity, distance, areaIds, cellType);
-//        textFragment = new TextSearchTwoFragment();
+            fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity,latitude,longitude));
         }else {
             fragmentTransaction.add(R.id.fl_content, new TextSearchTwoFragment().newInstance(entiyConentEntity));
         }
@@ -400,7 +398,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
             case R.id.tv_map_title:
                 isconent = true;
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity,entiyConentEntity));
+                fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity,entiyConentEntity,latitude,longitude));
                 fragmentTransaction.commit();
                 tvMagBottom.setVisibility(View.VISIBLE);
                 tvListBottom.setVisibility(View.GONE);
@@ -434,7 +432,6 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 labels2.clearAllSelect();
                 break;
             case R.id.tv_confirm:
-//                drawerLayout.openDrawer(Gravity.LEFT);
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 PointClassicEntiy pointClassicEntiy = new PointClassicEntiy();
                 try {
@@ -556,7 +553,14 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     break;
                 case 8002:
                     keyWord = data.getStringExtra(CommonUtil.KEY_VALUE_1);
+                   String la = data.getStringExtra(CommonUtil.KEY_VALUE_2);
+                    String lo = data.getStringExtra(CommonUtil.KEY_VALUE_3);
                     tvSearchTitle.setText(keyWord != null ? keyWord : "");
+                    longitude = Double.parseDouble(lo);
+                    latitude = Double.parseDouble(la);
+                    if (longitude!=0) {
+                        httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
+                    }
                     updateDatas();
                     break;
             }

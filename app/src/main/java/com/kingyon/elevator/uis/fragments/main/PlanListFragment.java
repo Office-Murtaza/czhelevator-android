@@ -594,6 +594,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             return;
         }
         showProgressDialog(getString(R.string.wait));
+        LogUtils.e(cellIds);
         tvDelete.setEnabled(false);
         NetService.getInstance().plansRemoveCells(planType, cellIds)
                 .compose(this.<String>bindLifeCycle())

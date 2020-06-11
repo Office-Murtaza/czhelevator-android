@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
@@ -101,6 +102,12 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     ImageView imgCurrent;
     @BindView(R.id.img_zoom)
     ImageView imgZoom;
+    @BindView(R.id.tv_km)
+    TextView tvKm;
+    @BindView(R.id.sb_porag)
+    SeekBar sbPorag;
+    @BindView(R.id.ll_fw)
+    LinearLayout llFw;
     private String communityName;
     private int planId;
 
@@ -119,9 +126,12 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     private double longitude;
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private int[] clickPosition = new int[2];
+    boolean isdisplay = true;
 
-    public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2) {
+    public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2, double latitude, double longitude) {
         this.entiyConentEntity = entiyConentEntity2;
+        this.latitude = latitude;
+        this.longitude = longitude;
 //        Bundle args = new Bundle();
 //        MapSearchFragment fragment = new MapSearchFragment();
 //        if (entity != null) {
@@ -139,21 +149,21 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     @Override
     public void init(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
-        LocationEntity entity = AppContent.getInstance().getLocation();
-        if (entity!=null) {
-            latitude = entity.getLatitude();
-            longitude = entity.getLongitude();
-        }
+//        LocationEntity entity = AppContent.getInstance().getLocation();
+//        if (entity!=null) {
+//            latitude = entity.getLatitude();
+//            longitude = entity.getLongitude();
+//        }
         /*地图*/
-         initMap();
-         /*标点*/
+        initMap();
+        /*标点*/
         new Thread(new TimerTask() {
             @Override
             public void run() {
                 for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
                     RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
                     MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
-                    if (markerOptions!=null) {
+                    if (markerOptions != null) {
                         Marker marker = aMap.addMarker(markerOptions);
                         markersMap.put((long) recommendHouseEntiy.id, marker);
                     }
@@ -161,7 +171,26 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             }
         }).start();
 
-        moveMapToPositon(longitude,latitude,cityZoomLevel+3f);
+        moveMapToPositon(longitude, latitude, cityZoomLevel + 3f);
+
+        sbPorag.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvKm.setText("范围"+(progress/10)+"km");
+                moveMapToPositon(longitude, latitude, cityZoomLevel + 5-(progress/10));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
     private void initMap() {
@@ -231,9 +260,6 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     }
 
 
-
-
-
     public void showClickId(long clickCellId) {
         llPoint.setVisibility(View.VISIBLE);
         LogUtils.e(clickCellId, "点击");
@@ -257,14 +283,14 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
     /**
      * 获取小区数量
-     * */
+     */
     private void getCityCellNums() {
         NetService.getInstance().cityCellNums()
                 .compose(this.<List<CityCellEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<CityCellEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-//                        showToast("获取小区数量失败");
+                        showToast("获取小区数量失败");
                     }
 
                     @Override
@@ -417,7 +443,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                     .position(new LatLng(cell.latitude, cell.longitude))
                     .draggable(false)
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-        }catch (Exception e){
+        } catch (Exception e) {
 
             return null;
         }
@@ -560,22 +586,29 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
     }
 
-    @OnClick({R.id.img_menu, R.id.img_current, R.id.img_zoom,R.id.img_add,R.id.ll_point})
+    @OnClick({R.id.img_menu, R.id.img_current, R.id.img_zoom, R.id.img_add, R.id.ll_point})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_menu:
 
                 break;
             case R.id.img_current:
-                moveMapToPositon(longitude,latitude,cityZoomLevel+7f);
+                moveMapToPositon(longitude, latitude, cityZoomLevel + 7f);
                 break;
             case R.id.img_zoom:
-                moveMapToPositon(longitude,latitude,cityZoomLevel+3f);
+                if (isdisplay){
+                    llFw.setVisibility(View.VISIBLE);
+                    isdisplay=false;
+                }else {
+                    llFw.setVisibility(View.GONE);
+                    isdisplay=true;
+                }
+
                 break;
             case R.id.img_add:
-                if (isCertification()){
+                if (isCertification()) {
                     DialogUtils.shwoCertificationDialog(getActivity());
-                }else {
+                } else {
                     AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
                     advertisPutDialog.show();
                 }
@@ -583,9 +616,9 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 break;
             case R.id.ll_point:
                 LogUtils.e(planId);
-                ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(planId));
+                ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS, "panID", String.valueOf(planId));
                 break;
-                default:
+            default:
         }
     }
 }

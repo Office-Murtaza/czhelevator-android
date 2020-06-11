@@ -117,7 +117,7 @@ public class SearchHistoryActivity extends BaseSwipeBackActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String keyWord = etSearch.getText().toString();
                     if (!TextUtils.isEmpty(keyWord)) {
-                        realSearch(keyWord);
+                        realSearch(keyWord,"0","0");
                         return true;
                     }
                 }
@@ -133,10 +133,12 @@ public class SearchHistoryActivity extends BaseSwipeBackActivity {
         }
     }
 
-    public void realSearch(String keyWord) {
+    public void realSearch(String keyWord,String latitude,String longitude) {
         if (fromSearch) {
             Intent intent = new Intent();
             intent.putExtra(CommonUtil.KEY_VALUE_1, keyWord);
+            intent.putExtra(CommonUtil.KEY_VALUE_2, latitude);
+            intent.putExtra(CommonUtil.KEY_VALUE_3, longitude);
             setResult(RESULT_OK, intent);
         } else {
             Bundle bundle = new Bundle();
@@ -200,7 +202,7 @@ public class SearchHistoryActivity extends BaseSwipeBackActivity {
 
     public void onKeywordClick(String s) {
         if (!TextUtils.isEmpty(s)) {
-            realSearch(s);
+            realSearch(s,"0","0");
         } else {
             if (!TextUtils.equals(s, etSearch.getText().toString())) {
                 etSearch.setText(s);

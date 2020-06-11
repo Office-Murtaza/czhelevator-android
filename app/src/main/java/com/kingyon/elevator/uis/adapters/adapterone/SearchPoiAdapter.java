@@ -63,7 +63,7 @@ public class SearchPoiAdapter extends MultiItemTypeAdapter<Object> {
                 return title;
             }
             SpannableString spannableString = new SpannableString(title);
-            spannableString.setSpan(new ForegroundColorSpan(0xFFEC7A12), index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(0xFFFF3049), index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             return spannableString;
         }
     }

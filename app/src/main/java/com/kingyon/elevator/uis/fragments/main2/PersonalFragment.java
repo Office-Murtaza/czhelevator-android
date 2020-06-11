@@ -45,9 +45,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ORDER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
 
 /**
@@ -268,7 +270,8 @@ public class PersonalFragment extends BaseFragment {
                 if (islogin()){
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
                 }else {
-                    ActivityUtils.setActivity(ACTIVITY_IDENTITY_INFO);
+//                    ActivityUtils.setActivity(ACTIVITY_IDENTITY_INFO);
+                    ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
                 }
                 break;
             case R.id.tv_grade:
@@ -325,7 +328,9 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_order:
                 /*订单*/
-                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity("", "全部订单"));
+//                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity("", "全部订单"));
+
+                ActivityUtils.setActivity(ACTIVITY_ORDER);
 
                 break;
             case R.id.ll_collect:
