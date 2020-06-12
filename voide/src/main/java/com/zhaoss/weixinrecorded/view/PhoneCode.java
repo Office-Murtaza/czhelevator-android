@@ -234,4 +234,21 @@ public class PhoneCode extends RelativeLayout {
         }
         return sb.toString();
     }
+
+    public void clearAllText() {
+        tv_code1.setText("");
+        tv_code2.setText("");
+        tv_code3.setText("");
+        tv_code4.setText("");
+        tv_code5.setText("");
+        tv_code6.setText("");
+    }
+
+    public void clearEditText(){
+        et_code.setText("");
+    }
+
+    public EditText getEt_input_password() {
+        return et_code;
+    }
 }

@@ -157,23 +157,10 @@ public class EditLoginPasswordPresenter extends BasePresenter<EditLoginPasswordV
             }
             return;
         }
-        if (newPassword2.length() < 8) {
-            if (isViewAttached()) {
-                getView().showShortToast("密码长度低于8位数，请继续输入");
-            }
-            return;
-        }
-        if (!password1.equals(newPassword2)) {
-            if (isViewAttached()) {
-                getView().showShortToast("两次输入的密码不一致，请重新输入");
-            }
-            return;
-        }
         if (isViewAttached()) {
             getView().showProgressDialog("密码重置中...", false);
         }
-        NetService.getInstance().resetPassword(phone, code
-                , password1)
+        NetService.getInstance().resetPassword(phone, code, password1)
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {

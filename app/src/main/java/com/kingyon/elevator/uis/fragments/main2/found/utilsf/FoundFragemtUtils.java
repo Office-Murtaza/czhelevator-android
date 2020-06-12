@@ -42,6 +42,12 @@ public abstract class FoundFragemtUtils extends BaseFragment {
         isCanLoadData();
     }
 
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
     /**
      * 是否可以加载数据
      * 可以加载数据的条件：

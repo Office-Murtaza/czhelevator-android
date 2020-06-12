@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.czh.myversiontwo.R;
 import com.czh.myversiontwo.activity.ActivityUtils;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 
 /**
@@ -46,7 +47,7 @@ public class DialogUtils {
             @Override
             public void onClick(View v) {
                 /*去认证*/
-                ActivityUtils.setActivity(ACTIVITY_IDENTITY_INFO);
+                ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {

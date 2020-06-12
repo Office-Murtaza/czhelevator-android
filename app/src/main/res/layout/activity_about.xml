@@ -3,13 +3,100 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     >
+
+
+    <ImageView
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_app_logo"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="屏多多"
+        android:gravity="center"
+        android:padding="@dimen/dp10"
+        android:textColor="#ff333333"
+        android:textSize="12sp"
+        />
+
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="给我好评"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawablePadding="@dimen/spacing_small"
+                android:drawableRight="@drawable/ic_user_right"
+                android:gravity="center_vertical"
+                android:textColor="#FF999999" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="分享推荐"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawablePadding="@dimen/spacing_small"
+                android:drawableRight="@drawable/ic_user_right"
+                android:gravity="center_vertical"
+                android:textColor="#FF999999" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_divider"
@@ -59,6 +146,12 @@
                 android:textColor="#333333"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_center_update"
+                />
+
             <TextView
                 android:id="@+id/tv_version"
                 style="@style/text_normal"
@@ -103,7 +196,7 @@
                 android:layout_height="@dimen/spacing_tab_bar"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="用户隐私政策"
+                android:text="用户协议"
                 android:textColor="#333333"
                 android:textStyle="bold" />
 
@@ -123,5 +216,80 @@
             android:layout_marginLeft="@dimen/spacing_default"
             android:layout_marginRight="@dimen/spacing_default"
             android:background="@color/black_divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="隐私协议"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawablePadding="@dimen/spacing_small"
+                android:drawableRight="@drawable/ic_user_right"
+                android:gravity="center_vertical"
+                android:textColor="#FF999999" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_divider"
+            android:layout_marginLeft="@dimen/spacing_default"
+            android:layout_marginRight="@dimen/spacing_default"
+            android:background="@color/black_divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_default"
+            android:paddingRight="@dimen/spacing_default">
+
+            <TextView
+                style="@style/text_big_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="电子邮箱"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawableLeft="@drawable/has_new_version"
+                android:drawablePadding="@dimen/spacing_four"
+                android:gravity="center_vertical"
+                android:text="1234@163.com"
+                android:textColor="#ABABAB"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_tab_bar"
+                android:drawablePadding="@dimen/spacing_small"
+                android:drawableRight="@drawable/ic_user_right"
+                android:gravity="center_vertical"
+                android:textColor="#FF999999" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

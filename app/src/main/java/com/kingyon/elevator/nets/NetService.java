@@ -490,6 +490,7 @@ public class NetService {
         return addSchedulers(getApi().unbindPhone(phone, code, type));
     }
 
+    /*2.0忘记密码*/
     public Observable<String> resetPassword(String phone, String vaildCode, String newPassword) {
         return addSchedulers(getApi().resetPassword(phone, vaildCode, newPassword));
     }
@@ -896,6 +897,10 @@ public class NetService {
     public Observable<PlanNumberEntiy> setAdPlan(){
         return addSchedulers(getApi().getAdPlan());
     }
+    /*2.0支付宝认证*/
+    public Observable<PlanNumberEntiy> setAliIdentityAuth(String cerName,String certNo){
+        return addSchedulers(getApi().getAliIdentityAuth(cerName,certNo));
+    }
 
 
     public Observable<Long> getAvInfoDuration(String url) {
@@ -1015,21 +1020,21 @@ public class NetService {
         return addSchedulers(getApi().myWallet());
     }
 
-    public Observable<MyWalletInfo> myWalletInfo(int page) {
+    public Observable<MyWalletInfo> myWalletInfo(int page,String handleType) {
         Observable<MyWalletInfo> observable;
         if (page == 1) {
-            observable = Observable.zip(getApi().myWalletRecords(page), getApi().myWallet()
-                    , new Func2<PageListEntity<WalletRecordEntity>, DataEntity<Float>, MyWalletInfo>() {
+            observable = Observable.zip(getApi().myWalletRecords(page,handleType), getApi().myWallet()
+                    , new Func2<ConentEntity<WalletRecordEntity>, DataEntity<Float>, MyWalletInfo>() {
                         @Override
-                        public MyWalletInfo call(PageListEntity<WalletRecordEntity> walletRecordEntityPageListEntity, DataEntity<Float> floatDataEntity) {
+                        public MyWalletInfo call(ConentEntity<WalletRecordEntity> walletRecordEntityPageListEntity, DataEntity<Float> floatDataEntity) {
                             return new MyWalletInfo(floatDataEntity.getData(), walletRecordEntityPageListEntity);
                         }
                     });
         } else {
-            observable = getApi().myWalletRecords(page)
-                    .flatMap(new Func1<PageListEntity<WalletRecordEntity>, Observable<MyWalletInfo>>() {
+            observable = getApi().myWalletRecords(page,handleType)
+                    .flatMap(new Func1<ConentEntity<WalletRecordEntity>, Observable<MyWalletInfo>>() {
                         @Override
-                        public Observable<MyWalletInfo> call(PageListEntity<WalletRecordEntity> walletRecordEntityPageListEntity) {
+                        public Observable<MyWalletInfo> call(ConentEntity<WalletRecordEntity> walletRecordEntityPageListEntity) {
                             return Observable.just(new MyWalletInfo(null, walletRecordEntityPageListEntity));
                         }
                     });
@@ -1047,6 +1052,10 @@ public class NetService {
                     }
                 });
         return addSchedulers(zip);
+    }
+    /*2.0认证提交id*/
+    public Observable<String> setAliAuthQuery(String certifyId){
+        return addSchedulers(getApi().setAliAuthQuery(certifyId));
     }
 
     public Observable<InvoiceInfoEntity> invoiceInfo() {

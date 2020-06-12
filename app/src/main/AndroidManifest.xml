@@ -114,7 +114,9 @@
             android:name=".uis.activities.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/BaseTheme" >
+
+        </activity>
 
         <activity
             android:name=".uis.actiivty2.HomeActivity"
@@ -707,13 +709,36 @@
         <!--2.0认证选择-->
         <activity android:name=".uis.actiivty2.user.CertificationActivity"
             android:screenOrientation="portrait"
-            />
+           />
         <!--2.0提交认证信息-->
         <activity android:name=".uis.actiivty2.user.IdentityCertificationActivity"
             android:screenOrientation="portrait"
             />
         <!--2.0订单列表-->
         <activity android:name=".uis.actiivty2.user.order.OrderActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0支付宝认证-->
+        <activity android:name=".uis.actiivty2.user.PayTreasureCertActivity"
+            android:screenOrientation="portrait"
+            >
+            <intent-filter>
+                <!--协议部分，随便设置paytreasurecert://my/activity-->
+                <data android:scheme="paytreasurecert" android:host="my" android:path="/activity" />
+                <!--下面这几行也必须得设置-->
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+        </activity>
+
+        <!--2.0第三方绑定-->
+        <activity android:name=".uis.actiivty2.user.AccountBindingActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0关于-->
+        <activity android:name=".uis.actiivty2.user.AboutActivity"
             android:screenOrientation="portrait"
             />
 

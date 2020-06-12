@@ -64,7 +64,7 @@ public class EditPassWordFragment extends MvpBaseFragment<EditPayPasswordFragmen
     @Override
     public void checkPayPwdIsInit(Boolean isInit) {
         if (isInit) {
-            MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.RemeberPasswordFragment);
+            MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.EditPayPasswordFragment);
         } else {
             showShortToast("当前还未设置支付密码，请先设置支付密码");
             MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.SetPasswordFragment, "setting");

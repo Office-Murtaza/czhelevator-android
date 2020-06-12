@@ -81,6 +81,8 @@ public class Constance {
     public static final String ACTIVITY_IDENTITY_CERTIFICATION= "/app/activity/identitycertification";
     /**订单*/
     public static final String ACTIVITY_ORDER = "/app/activity/order_activity";
+    /**支付宝认证*/
+    public static final String ACTIVITY_PAYTREASURECERT = "/app/activity/paytreasurecert";
 
 
 

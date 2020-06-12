@@ -1,5 +1,6 @@
 package com.kingyon.elevator.entities;
 
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 
 /**
@@ -9,11 +10,19 @@ import com.leo.afbaselibrary.nets.entities.PageListEntity;
 
 public class MyWalletInfo {
     private Float balance;
-    private PageListEntity<WalletRecordEntity> recordPage;
+    private ConentEntity<WalletRecordEntity> recordPage;
 
-    public MyWalletInfo(Float balance, PageListEntity<WalletRecordEntity> recordPage) {
+    public MyWalletInfo(Float balance, ConentEntity<WalletRecordEntity> recordPage) {
         this.balance = balance;
         this.recordPage = recordPage;
+    }
+
+    @Override
+    public String toString() {
+        return "MyWalletInfo{" +
+                "balance=" + balance +
+                ", recordPage=" + recordPage +
+                '}';
     }
 
     public Float getBalance() {
@@ -24,11 +33,11 @@ public class MyWalletInfo {
         this.balance = balance;
     }
 
-    public PageListEntity<WalletRecordEntity> getRecordPage() {
+    public ConentEntity<WalletRecordEntity> getRecordPage() {
         return recordPage;
     }
 
-    public void setRecordPage(PageListEntity<WalletRecordEntity> recordPage) {
+    public void setRecordPage(ConentEntity<WalletRecordEntity> recordPage) {
         this.recordPage = recordPage;
     }
 }

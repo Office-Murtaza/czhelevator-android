@@ -23,6 +23,19 @@ public class WalletRecordEntity {
     private long time;
     private String payType;
 
+    @Override
+    public String toString() {
+        return "WalletRecordEntity{" +
+                "objectId=" + objectId +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", amount=" + amount +
+                ", remarks='" + remarks + '\'' +
+                ", time=" + time +
+                ", payType='" + payType + '\'' +
+                '}';
+    }
+
     public long getObjectId() {
         return objectId;
     }

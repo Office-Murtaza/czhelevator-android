@@ -31,6 +31,9 @@ public class DataSharedPreferences {
     public static final String LAST_AD_TIME = "LAST_AD_TIME";//上一次展示的时间
     public static final String LAST_AD_ID = "LAST_AD_ID";//上一次展示广告的id
 
+    public static final String CERTIFY_ID = "CERTIFY_ID";//*保存认证ID*/
+
+
 
     //是否已经显示过用户隐私政策对话框
     public static final String IS_SHOW_ALREADY_PRIVACY_DIALOG = "IS_SHOW_ALREADY_PRIVACY_DIALOG";
@@ -40,6 +43,14 @@ public class DataSharedPreferences {
     /*保存用户id*/
     public static final String CREATATE_ACCOUNT ="CREATATE_ACCOUNT";
 
+    /*保存认证ID*/
+    public static void saveCertifyId(String certifyId){
+        getPreferences().edit().putString(CERTIFY_ID, certifyId).apply();
+    }
+
+    public static String getCertifyId() {
+        return getPreferences().getString(CERTIFY_ID, "");
+    }
     public static void saveCreatateAccount(String creatateAccount ){
         getPreferences().edit().putString(CREATATE_ACCOUNT, creatateAccount).apply();
     }

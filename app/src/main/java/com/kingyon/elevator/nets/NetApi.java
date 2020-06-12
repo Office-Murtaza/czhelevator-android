@@ -302,7 +302,6 @@ public interface NetApi {
     Observable<PageListEntity<AdDetectingEntity>> adPlayList(@Field("orderId") long orderId
             , @Field("deviceId") long deviceId, @Field("page") int page);
 
-
     /*2.0申请下播*/
     @GET("order/downAd")
     Observable<String> downAd(@Query("orderId") long orderId, @Query("tagReasonId") long tagReasonId
@@ -320,6 +319,11 @@ public interface NetApi {
     @POST("throwIn/getAdPlan")
     Observable<PlanNumberEntiy> getAdPlan();
 
+
+    /*2.0支付宝认证*/
+    @POST("userSecurity/aliIdentityAuth")
+    @FormUrlEncoded
+    Observable<PlanNumberEntiy>getAliIdentityAuth(@Field("cerName") String cerName,@Field("certNo") String certNo);
 
 
     //    1.0
@@ -410,18 +414,21 @@ public interface NetApi {
     Observable<String> unbindPhone(@Field("phone") String phone, @Field("code") String code
             , @Field("type") String type);
 
-    @POST("user/sendCheckCode")
+    /*2.0获取验证码*/
+    @POST("userSecurity/sendCheckCode")
     @FormUrlEncoded
     Observable<String> getVerifyCode(@Field("phone") String phone, @Field("type") String type);
 
-    @POST("user/resetPassword")
+    /*2.0忘记原密码修改*/
+    @POST("userSecurity/resetPasswordByCode")
     @FormUrlEncoded
     Observable<String> resetPassword(@Field("phone") String phone
-            , @Field("vaildCode") String vaildCode, @Field("newPassword") String newPassword);
+            , @Field("verifyCode") String vaildCode, @Field("newPassword") String newPassword);
 
-    @POST("user/changePassword")
+
+    @POST("userSecurity/changePassword")
     @FormUrlEncoded
-    Observable<String> changePassword(@Field("oldPassword") String oldPassword, @Field("newPasswrod") String newPasswrod);
+    Observable<String> changePassword(@Field("oldPassword") String oldPassword, @Field("newPassword") String newPasswrod);
 
     @POST("user/logout")
     Observable<String> logout();
@@ -611,15 +618,19 @@ public interface NetApi {
     Observable<DataEntity<Float>> myWallet();
 
     /*2.0余额流水*/
-    @POST("user/myWalletList")
+    @POST("myWallet/myWalletList")
     @FormUrlEncoded
-    Observable<PageListEntity<WalletRecordEntity>> myWalletRecords(@Field("page") int page);
+    Observable<ConentEntity<WalletRecordEntity>> myWalletRecords(@Field("page") int page,@Field("handleType") String handleType);
 
     /*2.0充值*/
     @POST("myWallet/recharge")
     @FormUrlEncoded
     Observable<WxPayEntity> rechageWallet(@Field("way") String way, @Field("amount") float amount);
 
+    /*2.0认证id提交*/
+    @POST("userSecurity/aliAuthQuery")
+    @FormUrlEncoded
+    Observable<String> setAliAuthQuery(@Field("certifyId") String certifyId);
 
     @POST("user/invoiceInfo")
     Observable<InvoiceInfoEntity> invoiceInfo();

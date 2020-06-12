@@ -20,11 +20,10 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACCOUNT_BINDING;
  * @Created By Admin  on 2020/6/3
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:绑定账户
+ * @Instructions:绑定第三方账户
  */
 @Route(path = ACTIVITY_ACCOUNT_BINDING)
 public class AccountBindingActivity extends BaseActivity {
-
 
     @BindView(R.id.img_top_back)
     ImageView imgTopBack;

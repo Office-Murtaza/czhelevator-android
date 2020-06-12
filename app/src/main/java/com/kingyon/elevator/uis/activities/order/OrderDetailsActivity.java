@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -41,6 +43,7 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,97 +65,116 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     ImageView imgHead;
     @BindView(R.id.tv_waitpay_remain_time)
     TextView tvWaitpayRemainTime;
-    @BindView(R.id.ll_cancel_reason)
-    LinearLayout llCancelReason;
+    @BindView(R.id.ll_order_head_waitpay)
+    LinearLayout llOrderHeadWaitpay;
     @BindView(R.id.tv_cancel_reason)
     TextView tvCancelReason;
+    @BindView(R.id.ll_cancel_reason)
+    LinearLayout llCancelReason;
     @BindView(R.id.tv_cancel_time)
     TextView tvCancelTime;
+    @BindView(R.id.ll_order_head_cancel)
+    LinearLayout llOrderHeadCancel;
+    @BindView(R.id.ll_order_head_authing)
+    LinearLayout llOrderHeadAuthing;
     @BindView(R.id.tv_authfailed_reason)
     TextView tvAuthfailedReason;
+    @BindView(R.id.tv_authfailed_modify)
+    TextView tvAuthfailedModify;
+    @BindView(R.id.ll_order_head_authfailed)
+    LinearLayout llOrderHeadAuthfailed;
+    @BindView(R.id.ll_order_head_waitrelease)
+    LinearLayout llOrderHeadWaitrelease;
     @BindView(R.id.tv_release_info)
     TextView tvReleaseInfo;
+    @BindView(R.id.ll_order_head_releasing)
+    LinearLayout llOrderHeadReleasing;
+    @BindView(R.id.tv_order_completed_title)
+    TextView tvOrderCompletedTitle;
+    @BindView(R.id.tv_completed_monit)
+    TextView tvCompletedMonit;
+    @BindView(R.id.ll_order_head_completed)
+    LinearLayout llOrderHeadCompleted;
     @BindView(R.id.tv_failed_title)
     TextView tvFailedTitle;
     @BindView(R.id.tv_failed_reason)
     TextView tvFailedReason;
+    @BindView(R.id.ll_order_head_failed)
+    LinearLayout llOrderHeadFailed;
     @BindView(R.id.pfl_head)
     ProportionFrameLayout pflHead;
     @BindView(R.id.tv_auth_name)
     TextView tvAuthName;
-    @BindView(R.id.tv_order_type)
-    TextView tvOrderType;
+    @BindView(R.id.rcv_list)
+    RecyclerView rcvList;
+    @BindView(R.id.ll_sq)
+    LinearLayout llSq;
     @BindView(R.id.tv_devices)
     TextView tvDevices;
     @BindView(R.id.ll_devices)
-    LinearLayout llDevices;
-    @BindView(R.id.tv_duration)
-    TextView tvDuration;
-    @BindView(R.id.tv_address)
-    TextView tvAddress;
-    @BindView(R.id.ll_duration)
-    LinearLayout llDuration;
+    TextView llDevices;
     @BindView(R.id.tv_total)
     TextView tvTotal;
-    @BindView(R.id.ll_total)
-    LinearLayout llTotal;
     @BindView(R.id.tv_discount)
     TextView tvDiscount;
-    @BindView(R.id.ll_discount)
-    LinearLayout llDiscount;
-    @BindView(R.id.tv_sn)
-    TextView tvSn;
-    @BindView(R.id.ll_sn)
-    LinearLayout llSn;
+    @BindView(R.id.tv_waitpay_money)
+    TextView tvWaitpayMoney;
+    @BindView(R.id.tv_order_type)
+    TextView tvOrderType;
+    @BindView(R.id.tv_ad_name)
+    TextView tvAdName;
+    @BindView(R.id.ll_name)
+    LinearLayout llName;
+    @BindView(R.id.tv_duration)
+    TextView tvDuration;
+    @BindView(R.id.ll_duration)
+    LinearLayout llDuration;
     @BindView(R.id.tv_pay_time)
     TextView tvPayTime;
     @BindView(R.id.ll_pay_time)
     LinearLayout llPayTime;
+    @BindView(R.id.tv_sn)
+    TextView tvSn;
+    @BindView(R.id.tv_copy_sn)
+    TextView tvCopySn;
+    @BindView(R.id.ll_sn)
+    LinearLayout llSn;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.ll_city)
+    LinearLayout llCity;
     @BindView(R.id.tv_pay_way)
     TextView tvPayWay;
     @BindView(R.id.ll_pay_way)
     LinearLayout llPayWay;
     @BindView(R.id.nsv)
     NestedScrollView nsv;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
     @BindView(R.id.v_line)
     View vLine;
     @BindView(R.id.ll_title)
     LinearLayout llTitle;
-    @BindView(R.id.tv_waitpay_money)
-    TextView tvWaitpayMoney;
+    @BindView(R.id.pre_refresh)
+    SwipeRefreshLayout preRefresh;
     @BindView(R.id.tv_waitpay_cancel)
     TextView tvWaitpayCancel;
-    @BindView(R.id.tv_release_down)
-    TextView tvReleaseDown;
-    @BindView(R.id.ll_operate)
-    LinearLayout llOperate;
-    @BindView(R.id.ll_order_head_waitpay)
-    LinearLayout llOrderHeadWaitpay;
-    @BindView(R.id.ll_order_head_cancel)
-    LinearLayout llOrderHeadCancel;
-    @BindView(R.id.ll_order_head_authing)
-    LinearLayout llOrderHeadAuthing;
-    @BindView(R.id.ll_order_head_authfailed)
-    LinearLayout llOrderHeadAuthfailed;
-    @BindView(R.id.ll_order_head_waitrelease)
-    LinearLayout llOrderHeadWaitrelease;
-    @BindView(R.id.ll_order_head_releasing)
-    LinearLayout llOrderHeadReleasing;
-    @BindView(R.id.tv_order_completed_title)
-    TextView tvOrderCompletedTitle;
-    @BindView(R.id.ll_order_head_completed)
-    LinearLayout llOrderHeadCompleted;
-    @BindView(R.id.ll_order_head_failed)
-    LinearLayout llOrderHeadFailed;
+    @BindView(R.id.tv_waitpay_pay)
+    TextView tvWaitpayPay;
     @BindView(R.id.ll_order_operate_waitpay)
     LinearLayout llOrderOperateWaitpay;
+    @BindView(R.id.tv_release_down)
+    TextView tvReleaseDown;
     @BindView(R.id.tv_release_monit)
     TextView tvReleaseMonit;
     @BindView(R.id.ll_order_operate_release)
     LinearLayout llOrderOperateRelease;
-    @BindView(R.id.tv_ad_name)
-    TextView tvAdName;
-
+    @BindView(R.id.ll_operate)
+    LinearLayout llOperate;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private String orderId;
 
     private OrderDetailsEntity orderDetails;
@@ -172,7 +194,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     @Override
     public int getContentViewId() {
         StatusBarUtil.setTransparent(this, false);
-        return R.layout.activity_order_details;
+        return R.layout.activity_order_detailstwo;
     }
 
     @Override
@@ -288,19 +310,19 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.OrderStatus.WAIT_PAY:
                 startOrderCountDown(order.getRemainTime());
                 updateHeadViewVisiable(R.id.ll_order_head_waitpay);
-                imgHead.setImageResource(R.drawable.bg_order_wait_pay);
+//                imgHead.setImageResource(R.drawable.bg_order_wait_pay);
                 break;
             case Constants.OrderStatus.CANCEL:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_cancel);
-                imgHead.setImageResource(R.drawable.bg_order_cancel);
+//                imgHead.setImageResource(R.drawable.bg_order_cancel);
                 tvCancelReason.setText(!TextUtils.isEmpty(order.getCancelReason()) ? order.getCancelReason() : "无");
                 tvCancelTime.setText(TimeUtil.getAllTime(order.getCancelTime()));
                 break;
             case Constants.OrderStatus.OVERDUE:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-                imgHead.setImageResource(R.drawable.bg_order_failed);
+//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("已过期");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "超时未支付");
                 break;
@@ -312,32 +334,32 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_releasing);
                 tvReleaseInfo.setText(String.format("当前设备投放百分比  %s%%", CommonUtil.getMayTwoFloat(order.getReleaseingPercent() * 100)));
-                imgHead.setImageResource(R.drawable.bg_order_releasing);
+//                imgHead.setImageResource(R.drawable.bg_order_releasing);
                 break;
             case Constants.OrderStatus.COMPLETE:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_completed);
                 tvOrderCompletedTitle.setText(order.isAuditLate() ? "广告审核已过有效期" : "当前广告推广已完成");
-                imgHead.setImageResource(R.drawable.bg_order_completed);
+//                imgHead.setImageResource(R.drawable.bg_order_completed);
                 break;
             case Constants.OrderStatus.FAILED:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-                imgHead.setImageResource(R.drawable.bg_order_failed);
+//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("投放失败");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "无");
                 break;
             case Constants.OrderStatus.SOWING:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-                imgHead.setImageResource(R.drawable.bg_order_failed);
+//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("已下播");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "用户主动申请下播");
                 break;
             default:
                 closeOrderCountDown();
                 updateHeadViewVisiable(0);
-                imgHead.setImageResource(R.drawable.bg_order_cancel);
+//                imgHead.setImageResource(R.drawable.bg_order_cancel);
                 break;
         }
     }
@@ -349,15 +371,15 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.AD_STATUS.REVIEW_FAILED:
                 updateHeadViewVisiable(R.id.ll_order_head_authfailed);
                 tvAuthfailedReason.setText((advertising != null && advertising.getFaildReason() != null) ? advertising.getFaildReason() : "无");
-                imgHead.setImageResource(R.drawable.bg_order_authfailed);
+//                imgHead.setImageResource(R.drawable.bg_order_authfailed);
                 break;
             case Constants.AD_STATUS.WAIT_REVIEW:
                 updateHeadViewVisiable(R.id.ll_order_head_authing);
-                imgHead.setImageResource(R.drawable.bg_order_authing);
+//                imgHead.setImageResource(R.drawable.bg_order_authing);
                 break;
             default:
                 updateHeadViewVisiable(R.id.ll_order_head_waitrelease);
-                imgHead.setImageResource(R.drawable.bg_order_waitrelease);
+//                imgHead.setImageResource(R.drawable.bg_order_waitrelease);
                 break;
         }
     }

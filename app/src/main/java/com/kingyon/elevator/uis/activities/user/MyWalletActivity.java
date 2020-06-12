@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -23,9 +24,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
+
 /**
  * Created by GongLi on 2019/1/10.
  * Email：lc824767150@163.com
+ * 我的钱包
  */
 
 public class MyWalletActivity extends BaseActivity {
@@ -59,6 +63,7 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+
 
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {
@@ -99,7 +104,11 @@ public class MyWalletActivity extends BaseActivity {
                 break;
             case R.id.tv_recharge:
                 /*充值*/
-                startActivityForResult(RechargeActivity.class, CommonUtil.REQ_CODE_1);
+                if (isCertification()) {
+                    DialogUtils.shwoCertificationDialog(this);
+                } else {
+                    startActivityForResult(RechargeActivity.class, CommonUtil.REQ_CODE_1);
+                }
                 break;
             case R.id.ll_wallet:
                 break;

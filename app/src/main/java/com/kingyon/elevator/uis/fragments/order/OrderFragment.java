@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.fragments.order;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -37,6 +39,10 @@ public class OrderFragment extends FoundFragemtUtils {
     }
 
     private void httpList(String type,String type1,int page) {
+        rcvOrderList = getView().findViewById(R.id.rcv_order_list);
+        OrderAdapter orderAdapter = new OrderAdapter(getActivity());
+        rcvOrderList.setAdapter(orderAdapter);
+        rcvOrderList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
         NetService.getInstance().orderList(type,type1,page)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<PageListEntity<OrderDetailsEntity>>() {
@@ -68,6 +74,7 @@ public class OrderFragment extends FoundFragemtUtils {
 
     @Override
     public void init(Bundle savedInstanceState) {
+
 
     }
 

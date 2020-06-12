@@ -1,28 +1,22 @@
 package com.kingyon.elevator.uis.activities.user;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.adapterone.MyWalletAdapter;
-import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
+import com.kingyon.elevator.uis.fragments.main2.user.MyWalletDetailsFragment;
+import com.kingyon.elevator.uis.fragments.order.OrderFragment;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
-import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
-
-import java.lang.reflect.Field;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,18 +26,21 @@ import butterknife.OnClick;
  * @Created By Admin  on 2020/6/5
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:明细
  */
 
 public class MyWalletDetailsActivity extends BaseActivity {
+
     @BindView(R.id.img_top_back)
     ImageView imgTopBack;
     @BindView(R.id.tv_top_title)
     TextView tvTopTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
-    @BindView(R.id.pre_recycler_view)
-    RecyclerView preRecyclerView;
+    @BindView(R.id.viewpagertab)
+    SmartTabLayout viewpagertab;
+    @BindView(R.id.vp)
+    ViewPager vp;
 
     @Override
     public int getContentViewId() {
@@ -52,20 +49,14 @@ public class MyWalletDetailsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        NetService.getInstance().myWalletInfo(1)
-                .compose(this.<MyWalletInfo>bindLifeCycle())
-                .subscribe(new CustomApiCallback<MyWalletInfo>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        showToast(ex.getDisplayMessage());
 
-                    }
-                    @Override
-                    public void onNext(MyWalletInfo myWalletInfo) {
-                        PageListEntity<WalletRecordEntity> recordPage = myWalletInfo.getRecordPage();
+        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new MyWalletDetailsFragment().setIndex("pay_log",""), "消费记录");
+        adapter.addFrag(new MyWalletDetailsFragment().setIndex("recharge_log",""),"充值记录");
+        vp.setAdapter(adapter);
+        vp.setOffscreenPageLimit(adapter.getCount());
+        viewpagertab.setViewPager(vp);
 
-                    }
-                });
     }
 
     @Override

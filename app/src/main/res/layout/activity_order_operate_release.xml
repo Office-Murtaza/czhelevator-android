@@ -16,10 +16,10 @@
         android:layout_marginLeft="@dimen/spacing_small"
         android:layout_marginRight="@dimen/spacing_small"
         android:layout_weight="1"
-        android:background="@drawable/bg_six_frame_btn"
+        android:background="@drawable/bg_six_btn"
         android:gravity="center"
         android:text="申请广告下播"
-        android:textColor="#ffababab"
+        android:textColor="#ffffffff"
         android:textSize="15sp" />
 
     <TextView

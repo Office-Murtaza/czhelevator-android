@@ -121,7 +121,7 @@ public interface Constants {
         String NO_AUTH = "NOAUTH";
         String AUTHING = "AUTHING";
         String FAILD = "FAILD";
-        String AUTHED = "AUTH0";
+        String AUTHED = "AUTH";
     }
 
     interface IDENTITY_TYPE {//company:公司，person：个人。
