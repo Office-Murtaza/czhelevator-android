@@ -3,6 +3,10 @@ package com.kingyon.elevator.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.kingyon.elevator.entities.entities.OrderCommunityEntiy;
+
+import java.util.List;
+
 /**
  * Created by GongLi on 2019/1/4.
  * Email：lc824767150@163.com
@@ -33,6 +37,8 @@ public class OrderDetailsEntity implements Parcelable {
      * adId : 123
      * isInvoice : false
      * invoiceId : 15686463132132
+     *
+     *
      */
 
     private boolean auditLate;
@@ -65,6 +71,9 @@ public class OrderDetailsEntity implements Parcelable {
     private long adId;
     private boolean isInvoice;
     private String invoiceId;
+    private int numberScreen;
+    private String auditState;
+    private List<OrderCommunityEntiy> lstHousingBean;
 
     @Override
     public String toString() {
@@ -100,6 +109,30 @@ public class OrderDetailsEntity implements Parcelable {
                 ", isInvoice=" + isInvoice +
                 ", invoiceId='" + invoiceId + '\'' +
                 '}';
+    }
+
+    public List<OrderCommunityEntiy> getLstHousingBean() {
+        return lstHousingBean;
+    }
+
+    public void setLstHousingBean(List<OrderCommunityEntiy> lstHousingBean) {
+        this.lstHousingBean = lstHousingBean;
+    }
+
+    public String getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(String auditState) {
+        this.auditState = auditState;
+    }
+
+    public int getNumberScreen() {
+        return numberScreen;
+    }
+
+    public void setNumberScreen(int numberScreen) {
+        this.numberScreen = numberScreen;
     }
 
     public boolean isAuditLate() {

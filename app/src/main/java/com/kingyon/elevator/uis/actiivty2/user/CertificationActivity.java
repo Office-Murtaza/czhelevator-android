@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -105,6 +106,7 @@ public class CertificationActivity extends BaseActivity {
 
                     @Override
                     public void onNext(IdentityInfoEntity identityInfoEntity) {
+                        LogUtils.e(identityInfoEntity.getStatus());
                         if (identityInfoEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

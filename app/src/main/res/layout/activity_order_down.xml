@@ -43,22 +43,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <EditText
-                    android:id="@+id/et_remark"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dp_150"
                     android:layout_marginBottom="@dimen/spacing_default"
                     android:layout_marginLeft="@dimen/spacing_default"
                     android:layout_marginRight="@dimen/spacing_default"
-                    android:background="@drawable/bg_login_edit"
-                    android:hint="请输入备注"
-                    android:inputType="textMultiLine"
-                    android:paddingBottom="@dimen/spacing_twelve"
-                    android:paddingTop="@dimen/spacing_twelve"
-                    android:textColor="#333333"
-                    android:textColorHint="#ABABAB"
-                    android:textSize="@dimen/txt_normal_content"
-                    android:textStyle="bold" />
+                    >
+
+                    <EditText
+                        android:id="@+id/et_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_150"
+                        android:background="@drawable/bg_login_edit"
+                        android:hint="请在此补充您的下播理由……"
+                        android:inputType="textMultiLine"
+                        android:paddingBottom="@dimen/spacing_twelve"
+                        android:paddingTop="@dimen/spacing_twelve"
+                        android:textColor="#333333"
+                        android:textColorHint="#ABABAB"
+                        android:gravity="top"
+                        android:maxLength="10"
+                        android:enabled="true"
+                        android:textSize="@dimen/txt_normal_content"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_text_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0/50"
+                        android:textColor="#ff9a9a9a"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:textSize="12sp"
+                        />
+
+                </RelativeLayout>
+
 
                 <TextView
                     android:id="@+id/tv_ensure"
@@ -90,12 +112,14 @@
                         android:text="温馨提示："
                         android:textColor="#ffababab"
                         android:textSize="@dimen/txt_tips"
+                        android:visibility="gone"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="请谨慎提交下播申请，一旦下播则金额不予退还。"
+                        android:text="请谨慎申请下播，一旦下播您投放的广告将全部停
+止播放，由此产生的任何损失将由您自行承担责任。"
                         android:textColor="#ffababab"
                         android:textSize="@dimen/txt_tips"
                         android:textStyle="bold" />

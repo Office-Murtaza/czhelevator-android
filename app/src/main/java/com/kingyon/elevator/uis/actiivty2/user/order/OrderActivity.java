@@ -49,7 +49,7 @@ public class OrderActivity extends BaseActivity {
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new OrderFragment().setIndex("",""), "全部");
         adapter.addFrag(new OrderFragment().setIndex("WAITRELEASE",""),"待发布");
-        adapter.addFrag(new OrderFragment().setIndex("","REVIEWFAILD"),"审核未过");
+        adapter.addFrag(new OrderFragment().setIndex("","REJECT"),"审核未过");
         adapter.addFrag(new OrderFragment().setIndex("RELEASEING",""),"发布中");
         adapter.addFrag(new OrderFragment().setIndex("COMPLETE",""),"已完成");
         vp.setAdapter(adapter);

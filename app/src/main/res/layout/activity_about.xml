@@ -6,6 +6,7 @@
     android:background="@color/white"
     >
 
+    <include layout="@layout/layout2_top"/>
 
     <ImageView
         android:layout_marginTop="@dimen/dp_40"

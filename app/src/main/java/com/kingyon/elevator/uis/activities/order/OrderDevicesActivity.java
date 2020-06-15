@@ -31,11 +31,11 @@ import java.util.List;
 
 public class OrderDevicesActivity extends BaseStateRefreshingLoadingActivity<PlanPointGroup> {
 
-    private long orderId;
+    private String orderId;
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         return "屏幕";
     }
 

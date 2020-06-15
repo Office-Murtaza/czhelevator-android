@@ -3,6 +3,8 @@ package com.kingyon.elevator.uis.activities.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,10 +23,12 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
 import com.leo.afbaselibrary.utils.ScreenUtil;
+import com.leo.afbaselibrary.utils.ToastUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -39,13 +43,15 @@ public class OrderDownActivity extends BaseStateLoadingActivity {
     EditText etRemark;
     @BindView(R.id.tv_ensure)
     TextView tvEnsure;
+    @BindView(R.id.tv_text_number)
+    TextView tvTextNumber;
 
     private DownReasonsAdapter reasonsAdapter;
-    private long orderId;
+    private String orderId;
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         return "申请广告下播";
     }
 
@@ -69,6 +75,24 @@ public class OrderDownActivity extends BaseStateLoadingActivity {
                     }
                 }
                 baseAdaper.notifyDataSetChanged();
+            }
+        });
+        etRemark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length()>50){
+                    ToastUtils.showToast(OrderDownActivity.this,"最多只能输入50字符",1000);
+                }else {
+                    tvTextNumber.setText(s.toString().length() + "/50");
+                }
             }
         });
     }
@@ -138,5 +162,12 @@ public class OrderDownActivity extends BaseStateLoadingActivity {
             }
         }
         return result;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

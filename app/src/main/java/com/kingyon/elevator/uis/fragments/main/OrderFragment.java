@@ -18,6 +18,7 @@ import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.FreshOrderEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
@@ -243,8 +244,8 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
     protected void loadData(final int page) {
         if (!TextUtils.isEmpty(Net.getInstance().getToken())) {
             NetService.getInstance().orderList(status,"", page)
-                    .compose(this.<PageListEntity<OrderDetailsEntity>>bindLifeCycle())
-                    .subscribe(new CustomApiCallback<PageListEntity<OrderDetailsEntity>>() {
+                    .compose(this.<ConentEntity<OrderDetailsEntity>>bindLifeCycle())
+                    .subscribe(new CustomApiCallback<ConentEntity<OrderDetailsEntity>>() {
                         @Override
                         protected void onResultError(ApiException ex) {
                             showToast(ex.getDisplayMessage());
@@ -252,7 +253,7 @@ public class OrderFragment extends BaseStateRefreshLoadingFragment<OrderDetailsE
                         }
 
                         @Override
-                        public void onNext(PageListEntity<OrderDetailsEntity> orderDetailsEntityPageListEntity) {
+                        public void onNext(ConentEntity<OrderDetailsEntity> orderDetailsEntityPageListEntity) {
                             if (orderDetailsEntityPageListEntity == null || orderDetailsEntityPageListEntity.getContent() == null) {
                                 throw new ResultException(9001, "返回参数异常");
                             }

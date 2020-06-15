@@ -272,6 +272,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> deleteAd(@Field("objectId") long objectId);
 
+
     /*2.0获取分类模板*/
     @POST("ad/getAdTempletType")
     Observable<List<NormalElemEntity>> getAdTempletType();
@@ -297,18 +298,18 @@ public interface NetApi {
             , @Field("coupons") String coupons, @Field("adIndustry") long adIndustry);
 
     /*2.0查看监播*/
-    @POST("order/adPlayList")
+    @POST("myOrder/adPlayList")
     @FormUrlEncoded
-    Observable<PageListEntity<AdDetectingEntity>> adPlayList(@Field("orderId") long orderId
+    Observable<PageListEntity<AdDetectingEntity>> adPlayList(@Field("orderSn") String orderId
             , @Field("deviceId") long deviceId, @Field("page") int page);
 
     /*2.0申请下播*/
-    @GET("order/downAd")
-    Observable<String> downAd(@Query("orderId") long orderId, @Query("tagReasonId") long tagReasonId
+    @GET("myOrder/downAd")
+    Observable<String> downAd(@Query("orderSn") String orderId, @Query("tagReasonId") long tagReasonId
             , @Query("undercastRemarks") String undercastRemarks);
 
     /*2.0获取下播原因*/
-    @POST("order/downAdTags")
+    @POST("myOrder/downAdTags")
     Observable<List<NormalElemEntity>> downAdTags();
 
     /*2.0合同下载地址*/
@@ -524,8 +525,8 @@ public interface NetApi {
     Observable<String> removeLift(@Field("objectId") long objectId);
 
 
-    /*2.0订单详情*/
-    @POST("order/orderDetatils")
+    /*2.0订单详情myOrder/orderDetail*/
+    @POST("myOrder/orderDetail")
     @FormUrlEncoded
     Observable<OrderDetailsEntity> orderDetatils(@Field("orderSn") String orderId);
 
@@ -538,26 +539,26 @@ public interface NetApi {
     /*2.0订单列表*/
     @POST("myOrder/orderList")
     @FormUrlEncoded
-    Observable<PageListEntity<OrderDetailsEntity>> orderList(@Field("orderStatus") String status,
+    Observable<ConentEntity<OrderDetailsEntity>> orderList(@Field("orderStatus") String status,
                                                              @Field("auditStatus") String auditStatus,
                                                              @Field("page") int page);
 
 
     /*2.0查看订单点位列表*/
-    @POST("order/orderPoints")
+    @POST("myOrder/orderPoints")
     @FormUrlEncoded
-    Observable<List<PointItemEntity>> orderPoints(@Field("orderId") long orderId);
+    Observable<List<PointItemEntity>> orderPoints(@Field("orderSn") String orderId);
 
 
     /*2.0取消订单*/
-    @POST("order/orderCancel")
+    @POST("myOrder/orderCancel")
     @FormUrlEncoded
-    Observable<String> orderCancel(@Field("orderId") String orderId);
+    Observable<String> orderCancel(@Field("orderSn") String orderId);
 
     /*2.0删除订单*/
-    @POST("order/orderDelete")
+    @POST("myOrder/orderDelete")
     @FormUrlEncoded
-    Observable<String> orderDelete(@Field("orderId") String orderId);
+    Observable<String> orderDelete(@Field("orderSn") String orderId);
 
 
 
@@ -575,13 +576,13 @@ public interface NetApi {
     Observable<PageListEntity<MateriaEntity>> getMaterials(@Field("planType") String planType, @Field("screenSplit") String screenSplit
             , @Field("type") String type, @Field("page") int page);
 
-    //个人中心
-    @POST("user/getMeetCoupons")
+  /* 2.0获取可用优惠卷*/
+    @POST("myWallet/getMeetCoupons")
     @FormUrlEncoded
     Observable<List<CouponItemEntity>> getMeetCoupons(@Field("price") float price, @Field("type") String type);
 
     /*2.0获取我的优惠卷*/
-    @POST("user/getCoupons")
+    @POST("myWallet/getCoupons")
     @FormUrlEncoded
     Observable<ConentEntity<CouponItemEntity>> getCoupons(@Field("status") String status, @Field("page") int page);
 
@@ -603,6 +604,13 @@ public interface NetApi {
             , @Field("idNum") String idNum, @Field("idFace") String idFace
             , @Field("idBack") String idBack, @Field("companyName") String companyName
             , @Field("businessCert") String businessCert);
+
+    /*2.0身份认证*/
+    @POST("userSecurity/identityAuth")
+    @FormUrlEncoded
+    Observable<String> getIdentyAuth(@Field("personName") String personName, @Field("idCardNum") String idCardNum,
+                                     @Field("idCardPic") String idCardPic,@Field("type") String type);
+
 
     /*2.0个人资料*/
     @POST("user/userProfile")

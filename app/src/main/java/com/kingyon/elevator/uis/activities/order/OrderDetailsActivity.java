@@ -12,6 +12,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -33,6 +34,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnClickWithObjectListener;
 import com.kingyon.elevator.uis.activities.advertising.AdEditActivity;
 import com.kingyon.elevator.uis.activities.advertising.InfomationAdvertisingActivity;
+import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderCommunityAdapter;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -175,7 +177,12 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     LinearLayout llOperate;
     @BindView(R.id.stateLayout)
     StateLayout stateLayout;
+    @BindView(R.id.tv_sq)
+    TextView tvSq;
+    @BindView(R.id.img_sq)
+    ImageView imgSq;
     private String orderId;
+    private boolean isSq = true;
 
     private OrderDetailsEntity orderDetails;
     private View[] headViews;
@@ -248,7 +255,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     @Override
                     public void onNext(OrderDetailsEntity order) {
                         LogUtils.e(order.toString());
-
+                        LogUtils.e(order.getLstHousingBean().size(), order.getLstHousingBean().toString());
                         if (order == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -258,8 +265,13 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         updateOperate(order);
 
                         OrderIdentityEntity identity = order.getContract();
-                        tvAuthName.setText(identity.getName());
-
+                        tvAuthName.setText("投放人：" + order.getCreator().getNikeName());
+                        tvSq.setText("展开");
+                        imgSq.setImageResource(R.mipmap.ic_arrow_down);
+                        OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
+                        rcvList.setAdapter(orderCommunityAdapter);
+                        rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
+                        orderCommunityAdapter.notifyDataSetChanged();
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
                         tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getTitle() == null) ? "" : order.getAdvertising().getTitle());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
@@ -279,6 +291,30 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         llPayTime.setVisibility((order.getPayTime() != 0 && !payInvalid) ? View.VISIBLE : View.GONE);
                         tvPayWay.setText(FormatUtils.getInstance().getPayWay(order.getPayWay()));
                         llPayWay.setVisibility((payInvalid || TextUtils.isEmpty(order.getPayWay())) ? View.GONE : View.VISIBLE);
+                        tvWaitpayMoney.setText("￥"+CommonUtil.getTwoFloat(order.getRealPrice()));
+                        llSq.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (isSq){
+                                    isSq = false;
+                                    OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), order.getLstHousingBean().size());
+                                    rcvList.setAdapter(orderCommunityAdapter);
+                                    rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
+                                    orderCommunityAdapter.notifyDataSetChanged();
+                                    tvSq.setText("收起");
+                                    imgSq.setImageResource(R.mipmap.ic_arrow_small_up);
+                                }else {
+                                    isSq = true;
+                                    OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
+                                    rcvList.setAdapter(orderCommunityAdapter);
+                                    rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
+                                    orderCommunityAdapter.notifyDataSetChanged();
+                                    tvSq.setText("展开");
+                                    imgSq.setImageResource(R.mipmap.ic_arrow_down);
+                                }
+
+                            }
+                        });
 
                         loadingComplete(STATE_CONTENT);
                     }
@@ -439,8 +475,9 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_devices:
+                LogUtils.e(orderDetails.getOrderSn());
                 Bundle bundle3 = new Bundle();
-                bundle3.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle3.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 startActivity(OrderDevicesActivity.class, bundle3);
                 break;
             case R.id.tv_authfailed_modify:
@@ -452,7 +489,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     return;
                 }
                 Bundle bundle5 = new Bundle();
-                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
                 startActivity(OrderMonitActivity.class, bundle5);
                 break;
@@ -471,12 +508,12 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 break;
             case R.id.tv_waitpay_pay:
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle1.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 startActivity(OrderPayActivity.class, bundle1);
                 break;
             case R.id.tv_release_down:
                 Bundle bundle2 = new Bundle();
-                bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
                 break;
             case R.id.tv_release_monit:
@@ -485,7 +522,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     return;
                 }
                 Bundle bundle4 = new Bundle();
-                bundle4.putString(CommonUtil.KEY_VALUE_1, orderDetails.getObjctId());
+                bundle4.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 bundle4.putBoolean(CommonUtil.KEY_VALUE_2, false);
                 startActivity(OrderMonitActivity.class, bundle4);
                 break;

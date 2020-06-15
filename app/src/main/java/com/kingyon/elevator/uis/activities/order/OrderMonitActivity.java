@@ -31,12 +31,12 @@ import java.util.List;
 
 public class OrderMonitActivity extends BaseStateRefreshingLoadingActivity<CellGroupEntity> {
 
-    private long orderId;
+    private String orderId;
     private boolean monitImage;
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         monitImage = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_2, true);
         return monitImage ? "查看监播表" : "查看视频监控";
     }
@@ -88,7 +88,7 @@ public class OrderMonitActivity extends BaseStateRefreshingLoadingActivity<CellG
     private void onMonitClick(PointItemEntity entity) {
         Bundle bundle = new Bundle();
         if (monitImage) {
-            bundle.putLong(CommonUtil.KEY_VALUE_1, orderId);
+            bundle.putString(CommonUtil.KEY_VALUE_1, orderId);
             bundle.putLong(CommonUtil.KEY_VALUE_2, entity.getObjectId());
             startActivity(MonitImagesActivity.class, bundle);
         } else {

@@ -117,8 +117,9 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //        }
-//        StatusBarUtil.setHeadViewPadding(this, flTitle);
+        StatusBarUtil.setHeadViewPadding(this, flTitle);
 //        StatusBarUtil.setTransparent(this);
+        StatusBarUtil.setTransparent(this, false);
         selectedIndex = 0;
         updateMode();
         initDateView();

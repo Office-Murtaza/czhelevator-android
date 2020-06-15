@@ -9,7 +9,7 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
  * @Created By Admin  on 2020/6/5
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions: 我的动态
  */
 public class MyDynamicActivity extends BaseActivity {
     @Override

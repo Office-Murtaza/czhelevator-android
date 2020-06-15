@@ -63,18 +63,20 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
-
+        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
 //                        showToast(ex.getDisplayMessage());
                         LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        hideProgress();
+                        finish();
                     }
 
                     @Override
                     public void onNext(DataEntity<Float> floatDataEntity) {
+                        hideProgress();
                         if (floatDataEntity == null) {
                             throw new ResultException(9001, "没有获取到钱包余额");
                         }

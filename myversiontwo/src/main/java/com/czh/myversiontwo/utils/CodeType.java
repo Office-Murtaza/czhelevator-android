@@ -106,5 +106,22 @@ public class CodeType {
  public static final String KEYBOARD_PAY = "KEYBOARD_PAY";
  public static final String KEYBOARD_SETTING = "KEYBOARD_SETTING";
 
+/**
+ * 订单状态（WAITRELEASE-待发布、RELEASEING-发布中、COMPLETE-完成、SOWING-下播）
+ * */
+ public static final String OEDER_WAITRELEASE = "WAITRELEASE";
+ public static final String OEDER_RELEASEING = "RELEASEING";
+ public static final String OEDER_COMPLETE = "COMPLETE";
+ public static final String OEDER_SOWING = "SOWING";
+
+ /**
+  * 审核状态（NEED_AUDIT-待审、WAIT-审核中、PASS-审核通过、REJECT-拒绝/驳回）
+  * */
+ public static final String OEDER_NEED_AUDIT = "NEED_AUDIT";
+ public static final String OEDER_WAIT = "WAIT";
+ public static final String OEDER_PASS = "PASS";
+ public static final String OEDER_REJECT = "REJECT";
+
+
 
 }

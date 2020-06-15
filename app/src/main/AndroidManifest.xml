@@ -890,7 +890,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".uis.actiivty2.user.SecurityCenterActivity" /> <!-- 高德 -->
+
+        <!-- 高德 -->
+
         <service android:name="com.amap.api.location.APSService" />
 
         <meta-data

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
@@ -57,6 +58,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         addItemViewDelegate(2, new CellDelegate());
         addItemViewDelegate(3, new TimeDelegate());
         addItemViewDelegate(4, new EmptyDelegate());
+        LogUtils.e("111111111111111");
     }
 
     public void setEditMode(boolean editMode) {

@@ -29,12 +29,12 @@ import java.util.List;
 
 public class MonitImagesActivity extends BaseStateRefreshingLoadingActivity<AdDetectingEntity> {
 
-    private long orderId;
+    private String orderId;
     private long deviceId;
 
     @Override
     protected String getTitleText() {
-        orderId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
+        orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
         deviceId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_2,0);
         return "监播表";
     }

@@ -140,7 +140,6 @@
                                     android:orientation="vertical"
                                     android:background="@drawable/ad_order_title"
                                     android:padding="@dimen/dp_10"
-                                    android:elevation="2dp"
                                     android:layout_marginLeft="@dimen/dp5"
                                     android:layout_marginRight="@dimen/dp5"
                                     >
@@ -201,7 +200,10 @@
                                     <android.support.v7.widget.RecyclerView
                                         android:id="@+id/rcv_list"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
+                                        android:layout_height="wrap_content"
+                                        android:nestedScrollingEnabled="false"
+                                        android:overScrollMode="never"
+                                        />
 
 
                                     <LinearLayout
@@ -213,16 +215,18 @@
                                         android:padding="@dimen/dp5"
                                         >
                                         <TextView
+                                            android:id="@+id/tv_sq"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="收起"
+                                            android:text="展开"
                                             android:textColor="#ff666666"
                                             android:textSize="12sp"
                                             />
                                         <ImageView
+                                            android:id="@+id/img_sq"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:src="@mipmap/ic_arrow_small_up"
+                                            android:src="@mipmap/ic_arrow_down"
                                             android:layout_marginLeft="@dimen/dp5"
                                             />
 
@@ -263,6 +267,9 @@
                                             android:text="查看点位明细"
                                             android:textColor="#ff2d6ef2"
                                             android:textSize="12sp"
+                                            android:background="@drawable/ad_order_dwmx"
+                                            android:padding="@dimen/dp5"
+                                            android:layout_marginLeft="@dimen/dp5"
                                             />
 
                                     </LinearLayout>
@@ -433,7 +440,7 @@
                                                 android:minWidth="56dp"
                                                 android:text="投放类型："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -465,7 +472,7 @@
                                                 android:minWidth="56dp"
                                                 android:text="广告名称："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -476,7 +483,7 @@
                                                 android:maxLines="1"
                                                 android:text="洗发水"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
                                         </LinearLayout>
 
@@ -497,7 +504,7 @@
                                                 android:minWidth="56dp"
                                                 android:text="屏幕："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -506,7 +513,7 @@
                                                 android:drawableRight="@drawable/ic_plan_cell_right"
                                                 android:drawablePadding="@dimen/spacing_four"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold"
                                                 tools:text="543面" />
                                         </LinearLayout>
@@ -529,7 +536,7 @@
                                                 android:minWidth="56dp"
                                                 android:text="投放时间："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -538,7 +545,7 @@
                                                 android:layout_height="wrap_content"
                                                 tools:text="2018/11/15 15:00 - 2018/11/16 15:00"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
                                         </LinearLayout>
 
@@ -560,7 +567,7 @@
                                                 android:minWidth="80dp"
                                                 android:text="下单时间："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -568,7 +575,7 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold"
                                                 tools:text="2018-05-01 16:00" />
                                         </LinearLayout>
@@ -591,7 +598,7 @@
                                                 android:minWidth="80dp"
                                                 android:text="订单编号："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -601,7 +608,7 @@
                                                 android:layout_weight="1"
                                                 android:textColor="#666666"
                                                 android:textIsSelectable="true"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold"
                                                 tools:text="11977240" />
 
@@ -638,7 +645,7 @@
                                                 android:minWidth="56dp"
                                                 android:text="地址："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -647,7 +654,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:text="成都、北京（3天）"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
                                         </LinearLayout>
 
@@ -668,7 +675,7 @@
                                                 android:minWidth="80dp"
                                                 android:text="支付方式："
                                                 android:textColor="#ff808080"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold" />
 
                                             <TextView
@@ -676,7 +683,7 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:textColor="#666666"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/sp_14"
                                                 android:textStyle="bold"
                                                 tools:text="支付宝" />
                                         </LinearLayout>

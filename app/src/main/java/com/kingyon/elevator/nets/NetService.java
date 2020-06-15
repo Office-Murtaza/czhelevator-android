@@ -790,6 +790,7 @@ public class NetService {
         return addSchedulers(getApi().orderIdentityInfo());
     }
 
+
     /*2.0订单支付*/
     public Observable<WxPayEntity> orderPay(String orderId, String way,String payPwd ) {
         Observable<WxPayEntity> zip = Observable.zip(getApi().orderPay(orderId, way,payPwd), Observable.just(way), new Func2<WxPayEntity, String, WxPayEntity>() {
@@ -805,7 +806,7 @@ public class NetService {
         return addSchedulers(zip);
     }
     /*2.0订单列表*/
-    public Observable<PageListEntity<OrderDetailsEntity>> orderList(String status,String auditStatus, int page) {
+    public Observable<ConentEntity<OrderDetailsEntity>> orderList(String status,String auditStatus, int page) {
         return addSchedulers(getApi().orderList(status, auditStatus,page));
     }
     /*2.0合同下载地址*/
@@ -814,15 +815,15 @@ public class NetService {
     }
 
     /*2.0查看订单点位列表*/
-    public Observable<List<PointItemEntity>> orderPoints(long orderId) {
+    public Observable<List<PointItemEntity>> orderPoints(String orderId) {
         return addSchedulers(getApi().orderPoints(orderId));
     }
     /*2.0申请下播*/
-    public Observable<String> downAd(long orderId, long tagReasonId, String undercastRemarks) {
+    public Observable<String> downAd(String orderId, long tagReasonId, String undercastRemarks) {
         return addSchedulers(getApi().downAd(orderId, tagReasonId, undercastRemarks));
     }
     /*2.0查看监播*/
-    public Observable<PageListEntity<AdDetectingEntity>> adPlayList(long orderId, long deviceId, int page) {
+    public Observable<PageListEntity<AdDetectingEntity>> adPlayList(String orderId, long deviceId, int page) {
         return addSchedulers(getApi().adPlayList(orderId, deviceId, page));
     }
     /*2.0获取=播原因*/
@@ -897,9 +898,14 @@ public class NetService {
     public Observable<PlanNumberEntiy> setAdPlan(){
         return addSchedulers(getApi().getAdPlan());
     }
+
     /*2.0支付宝认证*/
     public Observable<PlanNumberEntiy> setAliIdentityAuth(String cerName,String certNo){
         return addSchedulers(getApi().getAliIdentityAuth(cerName,certNo));
+    }
+    /*2.0身份认证上传内容*/
+    public Observable<String> setIdentyAuth( String personName,String idCardNum,String idCardPic,String type){
+       return addSchedulers(getApi().getIdentyAuth(personName,idCardNum,idCardPic,type));
     }
 
 
@@ -980,7 +986,7 @@ public class NetService {
         return addSchedulers(getApi().getMaterials(planType, screenSplit, type, page));
     }
 
-    //个人中心
+    /* 2.0获取可用优惠卷*/
     public Observable<List<CouponItemEntity>> getMeetCoupons(float price, String type) {
         return addSchedulers(getApi().getMeetCoupons(price, type));
     }

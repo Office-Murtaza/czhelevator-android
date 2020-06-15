@@ -18,4 +18,8 @@ public class StringContent {
 
     public static String AD_ZQSTRING = "%s 点赞    %s 评论    %s播放";
 
+    public static String ORADER_NUMBER = "数量：%s      合计：¥%s";
+
+
+
 }
