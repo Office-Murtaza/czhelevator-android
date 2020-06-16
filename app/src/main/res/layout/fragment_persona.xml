@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    android:id="@+id/ll_persona"
-    >
+    android:id="@+id/ll_persona">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
         >
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smart_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/my_action_bar"
+            app:srlEnableAutoLoadMore="false"
+            app:srlEnableRefresh="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -122,7 +128,7 @@
                     android:id="@+id/tv_t_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="T币：￥200"
+                    android:text="T币：0"
                     android:textColor="#ff666666"
                     android:textSize="@dimen/sp_14"
                     android:layout_marginLeft="@dimen/sp_10"
@@ -142,7 +148,7 @@
                     android:id="@+id/tv_integral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="积分：2000"
+                    android:text="积分：0"
                     android:layout_marginRight="@dimen/dp20"
                     android:layout_marginLeft="@dimen/sp_10"
                     android:textColor="#ff666666"
@@ -176,7 +182,7 @@
                         android:id="@+id/tv_dynamic_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"
@@ -205,7 +211,7 @@
                         android:id="@+id/tv_attention_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"
@@ -234,7 +240,7 @@
                         android:id="@+id/tv_fan_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"
@@ -263,7 +269,7 @@
                         android:id="@+id/tv_card_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"
@@ -414,6 +420,9 @@
            <include layout="@layout/layout_persona_bottom"/>
 
         </RelativeLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
     </ScrollView>
 
 </RelativeLayout>

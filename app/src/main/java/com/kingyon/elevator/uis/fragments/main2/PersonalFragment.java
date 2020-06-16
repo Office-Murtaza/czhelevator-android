@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.fragments.main2;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
@@ -27,26 +27,29 @@ import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
 import com.kingyon.elevator.uis.activities.user.InviteActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.activities.user.MyCollectActivity;
+import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
 import com.kingyon.elevator.uis.activities.user.MyInvoiceActivity;
 import com.kingyon.elevator.uis.activities.user.MyWalletActivity;
 import com.kingyon.elevator.uis.activities.user.SettingActivity;
 import com.kingyon.elevator.uis.activities.user.UserProfileActivity;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RoleUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ATTENTION_FANS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ORDER;
@@ -130,6 +133,8 @@ public class PersonalFragment extends BaseFragment {
     LinearLayout llCustomer;
     @BindView(R.id.ll_system)
     LinearLayout llSystem;
+    @BindView(R.id.smart_refresh_layout)
+    SmartRefreshLayout smartRefreshLayout;
 
 
     @Override
@@ -140,6 +145,8 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         httpPersonal();
+
+
     }
 
     @Override
@@ -180,6 +187,12 @@ public class PersonalFragment extends BaseFragment {
         if (user != null) {
             GlideUtils.loadAvatarImageTransparent(getContext(), user.getAvatar(), imgPlaceholder);
             tvName.setText(user.getNikeName() != null ? user.getNikeName() : CommonUtil.getHideMobile(user.getPhone()));
+            tvAttentionNumber.setText(user.getUserCenterAttr().attentionNum + "");
+            tvFanNumber.setText(user.getUserCenterAttr().fansNum + "");
+            tvDynamicNumber.setText(user.getUserCenterAttr().dynamicNum + "");
+            tvCardNumber.setText(user.getUserCenterAttr().couponNum + "");
+            tvTCurrency.setText("T币：￥" + user.getUserCenterAttr().tlwMoney + "");
+            tvIntegral.setText("积分：" + user.getUserCenterAttr().integral + "");
             String authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
             switch (authStatus) {
                 case Constants.IDENTITY_STATUS.AUTHING:
@@ -209,6 +222,13 @@ public class PersonalFragment extends BaseFragment {
             tvName.setText("登录/注册");
             llBusiness.setVisibility(View.GONE);
             llProperty.setVisibility(View.GONE);
+            imgCertification.setImageResource(R.mipmap.ic_personal_certification_off);
+            tvAttentionNumber.setText("0");
+            tvFanNumber.setText("0");
+            tvDynamicNumber.setText("0");
+            tvCardNumber.setText( "0");
+            tvTCurrency.setText("T币：￥0.00" );
+            tvIntegral.setText("积分：0.00" );
         }
     }
 
@@ -224,6 +244,17 @@ public class PersonalFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                httpPersonal();
+            }
+        });
     }
 
     @Override
@@ -243,50 +274,50 @@ public class PersonalFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.img_code:
                 /*二维码*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
-                   ActivityUtils.setActivity(ACTIVITY_RE_CODE);
+                } else {
+                    ActivityUtils.setActivity(ACTIVITY_RE_CODE);
                 }
                 break;
             case R.id.img_placeholder:
                 /*头像*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
+                } else {
                     startActivity(UserProfileActivity.class);
                 }
                 break;
             case R.id.tv_name:
                 /*昵称*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
+                } else {
                     startActivity(UserProfileActivity.class);
                 }
                 break;
             case R.id.img_certification:
                 /*认证*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
+                } else {
 //                    ActivityUtils.setActivity(ACTIVITY_IDENTITY_INFO);
                     ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
                 }
                 break;
             case R.id.tv_grade:
                 /*等级*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
+                } else {
                     startActivity(UserProfileActivity.class);
                 }
                 break;
             case R.id.ll_portrait:
                 /*个人资料*/
-                if (islogin()){
+                if (islogin()) {
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                }else {
+                } else {
                     startActivity(UserProfileActivity.class);
                 }
                 break;
@@ -311,18 +342,20 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_attention:
                 /*关注*/
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
+                ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS,"page",0);
                 break;
             case R.id.tv_fan_number:
                 break;
             case R.id.ll_fan:
                 /*粉丝*/
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
+                ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS,"page",1);
                 break;
             case R.id.tv_card_number:
                 break;
             case R.id.ll_card:
                 /*卡卷*/
+                /*优惠卷*/
+                startActivity(MyCouponsActivty.class);
                 break;
             case R.id.ll_statistical:
                 break;
@@ -384,8 +417,8 @@ public class PersonalFragment extends BaseFragment {
                 /*客服电话*/
                 try {
                     AFUtil.toCall(getContext(), getString(R.string.service_phone));
-                }catch (Exception e){
-                    ToastUtils.showToast(getActivity(),"当前手机不允许拨打电话，请换手机操作",2000);
+                } catch (Exception e) {
+                    ToastUtils.showToast(getActivity(), "当前手机不允许拨打电话，请换手机操作", 2000);
                 }
                 break;
             case R.id.ll_system:
@@ -398,9 +431,9 @@ public class PersonalFragment extends BaseFragment {
     }
 
     private boolean islogin() {
-        if (tvName.getText().toString().equals("登录/注册")){
+        if (tvName.getText().toString().equals("登录/注册")) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

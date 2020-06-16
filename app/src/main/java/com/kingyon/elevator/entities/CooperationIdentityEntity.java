@@ -18,6 +18,17 @@ public class CooperationIdentityEntity implements Parcelable {
     private String status;
     private AMapCityEntity city;
 
+    @Override
+    public String toString() {
+        return "CooperationIdentityEntity{" +
+                "personName='" + personName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", faildReason='" + faildReason + '\'' +
+                ", status='" + status + '\'' +
+                ", city=" + city +
+                '}';
+    }
+
     public String getPersonName() {
         return personName;
     }

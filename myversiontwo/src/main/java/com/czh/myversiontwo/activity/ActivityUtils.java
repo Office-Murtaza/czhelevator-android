@@ -8,6 +8,8 @@ import com.czh.myversiontwo.utils.QuickClickUtils;
 
 import java.util.Objects;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
+
 /**
  * @Created By Admin  on 2020/4/27
  * @Email : 163235610@qq.com
@@ -16,6 +18,13 @@ import java.util.Objects;
  */
 public class ActivityUtils {
 
+    public static void setLoginActivity(){
+        if (QuickClickUtils.isFastClick()){
+            ARouter.getInstance()
+                    .build(ACTIVITY_MAIN2_LOGIN)
+                    .navigation();
+        }
+    }
 
     public static void setActivity(String Url ){
         if (QuickClickUtils.isFastClick()) {
@@ -24,11 +33,21 @@ public class ActivityUtils {
                     .navigation();
         }
     }
+
     public static void setActivity(String Url,String key,String value ){
         if (QuickClickUtils.isFastClick()) {
             ARouter.getInstance()
                     .build(Url)
                     .withString(key,value)
+                    .navigation();
+            LogUtils.e();
+        }
+    }
+    public static void setActivity(String Url,String key,int value ){
+        if (QuickClickUtils.isFastClick()) {
+            ARouter.getInstance()
+                    .build(Url)
+                    .withInt(key,value)
                     .navigation();
             LogUtils.e();
         }

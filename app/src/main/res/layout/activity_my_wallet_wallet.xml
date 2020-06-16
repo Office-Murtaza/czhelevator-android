@@ -96,6 +96,8 @@
                         android:layout_height="wrap_content"
                         android:src="@mipmap/lc_wallet_line"
                         android:scaleType="fitXY"
+                        android:layout_marginRight="@dimen/dp_20"
+                        android:layout_marginLeft="@dimen/dp_20"
                         />
 
 

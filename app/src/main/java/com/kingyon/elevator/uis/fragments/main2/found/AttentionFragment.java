@@ -200,11 +200,14 @@ public class AttentionFragment extends FoundFragemtUtils {
 
     @Override
     protected void lazyLoad() {
-        if (smartRefreshLayout!=null) {
-            smartRefreshLayout.autoRefresh(100);
-        }else {
-            httpQueryAttention(1, "", "");
-        }
+//        if (recommendEntityList.size() < 0) {
+            if (smartRefreshLayout!=null) {
+                smartRefreshLayout.autoRefresh(100);
+            }else {
+                httpQueryAttention(1, "", "");
+            }
+//        }
+
     }
 
     @Override

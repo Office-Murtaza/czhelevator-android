@@ -268,10 +268,15 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         tvAuthName.setText("投放人：" + order.getCreator().getNikeName());
                         tvSq.setText("展开");
                         imgSq.setImageResource(R.mipmap.ic_arrow_down);
-                        OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
-                        rcvList.setAdapter(orderCommunityAdapter);
-                        rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
-                        orderCommunityAdapter.notifyDataSetChanged();
+                        if (order.getLstHousingBean()!= null) {
+                            OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
+                            rcvList.setAdapter(orderCommunityAdapter);
+                            rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
+                            orderCommunityAdapter.notifyDataSetChanged();
+                        }else {
+                            rcvList.setVisibility(View.GONE);
+                            llSq.setVisibility(View.GONE);
+                        }
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
                         tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getTitle() == null) ? "" : order.getAdvertising().getTitle());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
@@ -328,8 +333,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 tvWaitpayMoney.setText(getPriceSpan(CommonUtil.getTwoFloat(order.getRealPrice())));
                 break;
             case Constants.OrderStatus.RELEASEING:
-                updateOperateViewVisiable(R.id.ll_order_operate_release);
-                tvReleaseMonit.setVisibility(View.VISIBLE);
+//                updateOperateViewVisiable(R.id.ll_order_operate_release);
+//                tvReleaseMonit.setVisibility(View.VISIBLE);
                 break;
             case Constants.OrderStatus.WAIT_RELEASE:
                 updateOperateViewVisiable(R.id.ll_order_operate_release);
@@ -346,19 +351,16 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.OrderStatus.WAIT_PAY:
                 startOrderCountDown(order.getRemainTime());
                 updateHeadViewVisiable(R.id.ll_order_head_waitpay);
-//                imgHead.setImageResource(R.drawable.bg_order_wait_pay);
                 break;
             case Constants.OrderStatus.CANCEL:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_cancel);
-//                imgHead.setImageResource(R.drawable.bg_order_cancel);
                 tvCancelReason.setText(!TextUtils.isEmpty(order.getCancelReason()) ? order.getCancelReason() : "无");
                 tvCancelTime.setText(TimeUtil.getAllTime(order.getCancelTime()));
                 break;
             case Constants.OrderStatus.OVERDUE:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("已过期");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "超时未支付");
                 break;
@@ -370,25 +372,21 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_releasing);
                 tvReleaseInfo.setText(String.format("当前设备投放百分比  %s%%", CommonUtil.getMayTwoFloat(order.getReleaseingPercent() * 100)));
-//                imgHead.setImageResource(R.drawable.bg_order_releasing);
                 break;
             case Constants.OrderStatus.COMPLETE:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_completed);
                 tvOrderCompletedTitle.setText(order.isAuditLate() ? "广告审核已过有效期" : "当前广告推广已完成");
-//                imgHead.setImageResource(R.drawable.bg_order_completed);
                 break;
             case Constants.OrderStatus.FAILED:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("投放失败");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "无");
                 break;
             case Constants.OrderStatus.SOWING:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
-//                imgHead.setImageResource(R.drawable.bg_order_failed);
                 tvFailedTitle.setText("已下播");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "用户主动申请下播");
                 break;

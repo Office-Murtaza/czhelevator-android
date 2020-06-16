@@ -3,6 +3,8 @@ package com.kingyon.elevator.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.kingyon.elevator.entities.entities.UserCenterAttrEntiy;
+
 /**
  * Created by GongLi on 2018/12/24.
  * Email：lc824767150@163.com
@@ -31,6 +33,15 @@ public class UserEntity implements Parcelable {
     private String authStatus;
     private String fullName;
     private boolean isBindPhone;
+    private UserCenterAttrEntiy userCenterAttr;
+
+    public UserCenterAttrEntiy getUserCenterAttr() {
+        return userCenterAttr;
+    }
+
+    public void setUserCenterAttr(UserCenterAttrEntiy userCenterAttr) {
+        this.userCenterAttr = userCenterAttr;
+    }
 
     public String getFullname() {
         return fullName;

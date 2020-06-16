@@ -56,15 +56,15 @@ public class PointMonitChildrenAdapter extends BaseAdapterWithHF<PointItemEntity
         switch (item.getDevice()) {
             case Constants.DEVICE_PLACE.LEFT:
                 holder.tvScreen.setText("左屏");
-                holder.imgScreen.setImageResource(R.drawable.ic_screen_left);
+                holder.imgScreen.setImageResource(R.mipmap.ic_screen_left);
                 break;
             case Constants.DEVICE_PLACE.CENTER:
                 holder.tvScreen.setText("中屏");
-                holder.imgScreen.setImageResource(R.drawable.ic_screen_center);
+                holder.imgScreen.setImageResource(R.mipmap.ic_screen_middle);
                 break;
             case Constants.DEVICE_PLACE.RIGHT:
                 holder.tvScreen.setText("右屏");
-                holder.imgScreen.setImageResource(R.drawable.ic_screen_right);
+                holder.imgScreen.setImageResource(R.mipmap.ic_screen_right);
                 break;
             default:
                 holder.tvScreen.setText("");

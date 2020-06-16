@@ -78,7 +78,7 @@ public class DeviceLiveActivity extends BaseSwipeBackActivity {
     private PointItemEntity entity;
     private CameraWebSocketClient socketClient;
     private Subscription heartSubscribe;
-
+//    String LiveAddress = "rtmp://58.200.131.2:1935/livetv/hunanhd";
     @Override
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
@@ -133,6 +133,7 @@ public class DeviceLiveActivity extends BaseSwipeBackActivity {
         //设置拉流地址
         LogUtils.d("监播地址："+entity.getLiveAddress());
         videoTextureView.setVideoPath(entity.getLiveAddress());
+//        videoTextureView.setVideoPath(LiveAddress);
 
         //初始化和打开socket连接
         socketClient = new CameraWebSocketClient(NetApi.socketDomainName);
@@ -218,6 +219,8 @@ public class DeviceLiveActivity extends BaseSwipeBackActivity {
         if (result != null && TextUtils.equals("ok", result.toLowerCase())) {
             startHeartBeat();
             sendOpen(FormatUtils.getInstance().getLiveLiftNo(entity.getLiveAddress()));
+//            sendOpen(FormatUtils.getInstance().getLiveLiftNo(LiveAddress));
+            LogUtils.e(FormatUtils.getInstance().getLiveLiftNo(entity.getLiveAddress()));
         } else {
             postFinishWithToast("登录异常");
         }

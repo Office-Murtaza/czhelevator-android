@@ -106,10 +106,17 @@ public class OrderFragment extends FoundFragemtUtils {
                     public void onNext(ConentEntity<OrderDetailsEntity> orderDetailsEntityPageListEntity) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         addData(orderDetailsEntityPageListEntity);
-                        rcvOrderList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        rl_notlogin.setVisibility(View.GONE);
+                        if (orderDetailsEntityPageListEntity.getContent().size()>0||page>1) {
+                            rcvOrderList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rl_notlogin.setVisibility(View.GONE);
+                        }else {
+                            rcvOrderList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                            rl_notlogin.setVisibility(View.GONE);
+                        }
                     }
                 });
 

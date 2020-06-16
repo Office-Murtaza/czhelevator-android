@@ -43,6 +43,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="展开"
+                android:visibility="gone"
                 android:textColor="#ff808080"
                 android:textSize="@dimen/txt_normal_content"
                 android:textStyle="bold" />

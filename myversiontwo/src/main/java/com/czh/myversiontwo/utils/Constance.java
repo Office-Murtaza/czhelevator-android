@@ -83,6 +83,15 @@ public class Constance {
     public static final String ACTIVITY_ORDER = "/app/activity/order_activity";
     /**支付宝认证*/
     public static final String ACTIVITY_PAYTREASURECERT = "/app/activity/paytreasurecert";
+    /**用户中心-关注-粉丝*/
+    public static final String ACTIVITY_ATTENTION_FANS="/app/activity/attentionfans";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
+//    public static final String ACTIVITY_="";
 
 
 

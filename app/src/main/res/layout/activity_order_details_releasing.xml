@@ -33,9 +33,17 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ImageView
+    <TextView
+        android:id="@+id/tv_release_monit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:src="@drawable/img_order_releasing" />
+        android:background="@drawable/bg_white_six_frame"
+        android:paddingLeft="@dimen/dp_14"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/dp_14"
+        android:paddingBottom="@dimen/dp_8"
+        android:text="实时监播"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/txt_normal_content" />
 </LinearLayout>

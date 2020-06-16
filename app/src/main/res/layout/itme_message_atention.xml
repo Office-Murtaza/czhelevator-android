@@ -10,6 +10,7 @@
 
 
     <ImageView
+        android:id="@+id/img_portrait"
         android:layout_width="@dimen/dp50"
         android:layout_height="@dimen/dp50"
         android:src="@mipmap/im_head_placeholder"
@@ -23,6 +24,7 @@
         >
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="哥不只是传说"
@@ -32,6 +34,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_conent"
             android:layout_marginTop="@dimen/dp5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

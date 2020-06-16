@@ -1214,6 +1214,8 @@ public class NetService {
         return addSchedulers(observable);
     }
 
+
+
 //    public Observable<String> cooperationApply(final String partnerName, final String phone, final AMapCityEntity city) {
 //        Observable<String> observable;
 //        if (TextUtils.isEmpty(city.getAdcode())) {

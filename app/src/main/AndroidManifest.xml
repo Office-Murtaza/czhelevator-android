@@ -741,6 +741,10 @@
         <activity android:name=".uis.actiivty2.user.AboutActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0个人中心粉丝关注-->
+        <activity android:name=".uis.actiivty2.user.AttentionFansActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

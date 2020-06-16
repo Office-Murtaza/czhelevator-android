@@ -90,7 +90,7 @@ public interface NetApi {
                   @Field("title") String title,@Field("label") int label);
 
     /*2.0静态/通用获取七牛云参数*/
-    @GET("common/getQiNiu")
+    @POST("common/getQiNiu")
     Observable<UploadParamsEnitty> getUploadToken();
 
     /*2.0获取话题栏目*/
@@ -304,7 +304,8 @@ public interface NetApi {
             , @Field("deviceId") long deviceId, @Field("page") int page);
 
     /*2.0申请下播*/
-    @GET("myOrder/downAd")
+    @POST("myOrder/downAd")
+    @FormUrlEncoded
     Observable<String> downAd(@Query("orderSn") String orderId, @Query("tagReasonId") long tagReasonId
             , @Query("undercastRemarks") String undercastRemarks);
 
@@ -716,10 +717,11 @@ public interface NetApi {
     @POST("partner/getInfo")
     Observable<CooperationInfoEntity> cooperationInfo();
 
-    //新版合伙人查询接口
+    //新版合伙人查询接口partner/applyStatus
     @POST("partner/getPartnerInfo")
     Observable<CooperationInfoNewEntity> cooperationInfoNew();
 
+    /*2.0合伙人状态*/
     @GET("partner/applyStatus")
     Observable<CooperationIdentityEntity> cooperationIentityInfo();
 

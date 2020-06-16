@@ -212,14 +212,14 @@ public class RecommendFragment extends FoundFragemtUtils {
 
     @Override
     protected void lazyLoad() {
-
-//        smartRefreshLayout.autoRefresh(100);
-        if (smartRefreshLayout!=null){
-            smartRefreshLayout.autoRefresh(100);
-        }else {
-            httpTop();
-            httpRecommend(page, "");
-        }
+//        if (recommendEntityList.size()<0) {
+            if (smartRefreshLayout != null) {
+                smartRefreshLayout.autoRefresh(100);
+            } else {
+                httpTop();
+                httpRecommend(page, "");
+            }
+//        }
     }
 
     @OnClick(R.id.rl_error)

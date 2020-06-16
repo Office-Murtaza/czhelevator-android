@@ -170,6 +170,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 ad_img_preview.setVisibility(View.GONE);
                 elAdimg.setVisibility(View.GONE);
                 /*便民信息*/
+                tv_ad_type.setText("便民信息");
                 et_input_ad_name.setHint("请输入需投放的便民信息内容");
                 et_input_ad_name.setMaxLines(60);
                 textNumber.setText("0/60");

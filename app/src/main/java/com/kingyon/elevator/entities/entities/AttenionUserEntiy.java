@@ -29,6 +29,8 @@ public class AttenionUserEntiy implements Serializable, InsertData {
     public String nickname;
     public String photo;
     public long createTime;
+    public int isAttention;
+
 
     @Override
     public String toString() {

@@ -53,7 +53,7 @@ public class OrderMonitActivity extends BaseStateRefreshingLoadingActivity<CellG
             protected void convert(CommonHolder holder, CellGroupEntity item, int position) {
                 holder.setTextNotHide(R.id.tv_name, item.getCellName());
                 holder.setSelected(R.id.img_expand, item.isExpand());
-                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
+//                holder.setTextNotHide(R.id.tv_expand, item.isExpand() ? "折叠" : "展开");
                 RecyclerView rvPoints = holder.getView(R.id.rv_points);
                 PointMonitChildrenAdapter childrenAdapter = (PointMonitChildrenAdapter) rvPoints.getAdapter();
                 if (childrenAdapter == null) {
