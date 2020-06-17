@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.activities.advertising;
 
 import android.Manifest;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -28,10 +25,14 @@ import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;

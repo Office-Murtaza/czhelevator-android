@@ -41,7 +41,16 @@ public interface Constants {
         String INVITE = "INVITE";
         String CELL = "CELL";
     }
-
+    /**
+     *              NORMAL, // 普通用户
+     *             PARTNER, // 合伙人
+     *             INSTALLER, // 安装师傅
+     *             SALESMAN, // 销售人员
+     *             NEIGHBORHOOD, // 物业小区
+     *             PROPERTY, // 物业公司
+     *             PLATFORM, // 平台{管理员}
+     *             VIP; //VIP用户
+     */
     interface RoleType {// 0-普通用户，1-业务员，2-安装员，3-合伙人，4-小区，5-物业
         String NORMAL = "NORMAL";
         String SALESMAN = "SALESMAN";
@@ -49,7 +58,10 @@ public interface Constants {
         String PARTNER = "PARTNER";
         String NEIGHBORHOODS = "NEIGHBORHOOD";
         String PROPERTY = "PROPERTY";
+        String PLATFORM = "PLATFORM";
+        String VIP = "VIP";
     }
+
 
     interface LoginType {//登录方式（nor：密码登录，wx：微信，qq：QQ，wb：新浪微博,ALI支付宝）
         String NORMAL = "NOR";

@@ -1,7 +1,5 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -9,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
@@ -17,18 +14,13 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
-import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.ToastUtils;
-import com.zhihu.matisse.Matisse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
-import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 
 /**
  * @Created By Admin  on 2020/5/12

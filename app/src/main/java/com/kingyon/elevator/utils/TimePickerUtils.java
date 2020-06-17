@@ -1,7 +1,6 @@
 package com.kingyon.elevator.utils;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.ViewGroup;
 
 import com.bigkoo.pickerview.TimePickerView;

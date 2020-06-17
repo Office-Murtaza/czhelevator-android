@@ -1,6 +1,5 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
-import com.kingyon.elevator.uis.actiivty2.massage.MessageAttentionActivity;
 import com.kingyon.elevator.uis.dialogs.NotAttentionDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;

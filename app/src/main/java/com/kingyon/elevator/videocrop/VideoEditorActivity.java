@@ -3,7 +3,6 @@ package com.kingyon.elevator.videocrop;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.blankj.utilcode.util.LogUtils;
-//import com.iceteck.silicompressorr.SiliCompressor;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
@@ -42,20 +40,16 @@ import com.kingyon.elevator.view.VideoEditorView;
 import com.lansosdk.NoFree.LSOVideoScale;
 import com.marvhong.videoeffect.FillMode;
 import com.marvhong.videoeffect.composer.Mp4Composer;
-import com.marvhong.videoeffect.helper.MagicFilterFactory;
 import com.zhaoss.weixinrecorded.util.Utils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import VideoHandle.EpEditor;
-import VideoHandle.OnEditorListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
-import static junit.framework.Assert.assertEquals;
+//import com.iceteck.silicompressorr.SiliCompressor;
 
 /**
  * 视频编辑界面

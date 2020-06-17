@@ -7,9 +7,9 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.InputEntity;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.R;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 

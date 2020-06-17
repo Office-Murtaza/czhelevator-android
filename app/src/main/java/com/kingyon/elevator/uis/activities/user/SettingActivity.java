@@ -12,26 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.utils.GlideCacheUtil;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
-import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.ActivityUtil;
-import com.leo.afbaselibrary.utils.ToastUtils;
-import com.leo.afbaselibrary.utils.download.DownloadApkUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.concurrent.TimeUnit;
@@ -45,7 +38,6 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACCOUNT_BINDING;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_ABOUT;
 
 /**
@@ -104,7 +96,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
             case R.id.tv_logout:
                 if (TextUtils.isEmpty(Net.getInstance().getToken())) {
 //                    startActivity(LoginActivity.class);
-                    ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
+                   ActivityUtils.setLoginActivity();
                 } else {
                     showExitDialog();
                 }

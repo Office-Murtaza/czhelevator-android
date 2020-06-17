@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.adapters.adapterone;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,29 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.constants.ReflashConstants;
-import com.kingyon.elevator.date.DateUtils;
-import com.kingyon.elevator.entities.DateGridEntity;
-import com.kingyon.elevator.entities.FolderEntity;
-import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.utils.DensityUtil;
-import com.kingyon.elevator.utils.MyToastUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import me.nereo.multi_image_selector.MultiFilterType;
-import me.nereo.multi_image_selector.bean.Folder;
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * Created By SongPeng  on 2019/12/13

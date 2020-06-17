@@ -10,14 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
-import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.List;

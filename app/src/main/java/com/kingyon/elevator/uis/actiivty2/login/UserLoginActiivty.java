@@ -19,9 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.czh.myversiontwo.utils.CodeType.CODE;
 import static com.czh.myversiontwo.utils.CodeType.NOR;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CODE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_FORGET_PASSWORD;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_USER_LOGIN;
 

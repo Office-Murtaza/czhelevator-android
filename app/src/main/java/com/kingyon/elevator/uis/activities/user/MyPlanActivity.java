@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.activities.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,7 +22,6 @@ import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;

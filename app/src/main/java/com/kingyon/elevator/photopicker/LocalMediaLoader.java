@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
+
 import java.util.Locale;
 
 /**

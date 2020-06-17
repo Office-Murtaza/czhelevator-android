@@ -9,7 +9,6 @@ import com.blankj.utilcode.util.AppUtils;
 import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.leo.afbaselibrary.nets.BaseNet;
-import com.leo.afbaselibrary.nets.HttpsCerUtils;
 import com.orhanobut.logger.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -21,9 +20,7 @@ import java.util.TreeMap;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 /**
  * Created by gongli on 2017/7/17 17:39

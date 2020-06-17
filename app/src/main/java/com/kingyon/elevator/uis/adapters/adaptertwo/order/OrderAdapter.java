@@ -1,6 +1,5 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo.order;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -28,7 +25,6 @@ import java.util.List;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_COMPLETE;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_REJECT;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_RELEASEING;
-import static com.czh.myversiontwo.utils.CodeType.OEDER_SOWING;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_WAIT;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_WAITRELEASE;
 import static com.czh.myversiontwo.utils.StringContent.ORADER_NUMBER;

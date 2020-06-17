@@ -1,15 +1,11 @@
 package com.kingyon.elevator.uis.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.widgets.ProgressWebView;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

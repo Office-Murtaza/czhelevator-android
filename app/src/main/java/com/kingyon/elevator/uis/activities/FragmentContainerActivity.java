@@ -1,17 +1,14 @@
 package com.kingyon.elevator.uis.activities;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
@@ -30,7 +27,6 @@ import com.kingyon.elevator.uis.fragments.user.EditPayPasswordFragment;
 import com.kingyon.elevator.uis.fragments.user.FingerSettingFragment;
 import com.kingyon.elevator.uis.fragments.user.IncomeOrPayDetailsFragment;
 import com.kingyon.elevator.uis.fragments.user.IncomeRecordFragment;
-import com.kingyon.elevator.uis.fragments.user.PartnerFragment;
 import com.kingyon.elevator.uis.fragments.user.RemeberPasswordFragment;
 import com.kingyon.elevator.uis.fragments.user.ResetLoginPasswordFragment;
 import com.kingyon.elevator.uis.fragments.user.SecuritySettingFragment;

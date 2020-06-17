@@ -13,6 +13,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -27,7 +28,6 @@ import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -165,8 +165,8 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().partnerCellList(longitude, latitude, page)
-                .compose(this.<PageListEntity<CellItemEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<CellItemEntity>>() {
+                .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -174,7 +174,7 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
                     }
 
                     @Override
-                    public void onNext(PageListEntity<CellItemEntity> cellItemEntityPageListEntity) {
+                    public void onNext(ConentEntity<CellItemEntity> cellItemEntityPageListEntity) {
                         if (cellItemEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

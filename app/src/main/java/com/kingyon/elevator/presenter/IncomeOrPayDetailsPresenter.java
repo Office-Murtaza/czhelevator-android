@@ -6,7 +6,6 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
-import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;

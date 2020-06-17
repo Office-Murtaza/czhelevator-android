@@ -1,12 +1,9 @@
 package com.kingyon.elevator.uis.widgets;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +12,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 
 /**

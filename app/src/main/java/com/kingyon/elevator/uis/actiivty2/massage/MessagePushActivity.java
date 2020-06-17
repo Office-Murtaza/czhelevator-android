@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.adapters.adaptertwo.MessageNewsAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessagePushAdapter;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 

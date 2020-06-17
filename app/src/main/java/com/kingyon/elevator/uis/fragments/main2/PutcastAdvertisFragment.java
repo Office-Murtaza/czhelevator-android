@@ -14,48 +14,36 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AMapCityEntity;
-import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.entities.CityFacilityInfoEntiy;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
-import com.kingyon.elevator.uis.activities.MainActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
 import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
-import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendHouseAdapter;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.FormatUtils;
-import com.kingyon.elevator.utils.LocationUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.CityUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
-import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,11 +108,12 @@ public class PutcastAdvertisFragment extends BaseFragment {
     RelativeLayout rlNull;
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private LocationEntity locationEntity;
-    private int page = 1;
+
     private List<RecommendHouseEntiy> list = new ArrayList<>();
     RecommendHouseAdapter recommendHouseAdapter;
     private String latitude,longitude;
     private  int cityId;
+    private int page = 1;
     private String provinceCode, cityCode,  countyCode;
 
     @Override
@@ -260,14 +249,6 @@ public class PutcastAdvertisFragment extends BaseFragment {
                     public void onNext(ConentOdjerEntity conentOdjerEntity) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         CityFacilityInfoEntiy cityFacility = conentOdjerEntity.getPageContent();
-                        LogUtils.e(cityFacility.adDuration, cityFacility.askfor,
-                                cityFacility.bmAdImg, cityFacility.businessAdImg,
-                                cityFacility.cityCode, cityFacility.diyAdImg,
-                                cityFacility.exposure, cityFacility.facilityNum,
-                                cityFacility.id, cityFacility.price,
-                                cityFacility.throwDuration, cityFacility.way,
-                                cityFacility.terminal
-                        );
                         tvTerminal.setText(cityFacility.terminal);
                         tvClaim.setText(cityFacility.askfor);
                         tvDuration.setText(cityFacility.throwDuration);
@@ -340,6 +321,10 @@ public class PutcastAdvertisFragment extends BaseFragment {
             case R.id.ll_view_schedule:
                 if (isToken(getActivity())) {
                     startActivity(PlanNewFragment.class);
+                    LogUtils.e("11111111111");
+                }else {
+                    ActivityUtils.setLoginActivity();
+                    LogUtils.e("222222222222");
                 }
                 break;
             case R.id.rl_error:

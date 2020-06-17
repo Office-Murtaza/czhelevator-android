@@ -2,11 +2,8 @@ package com.kingyon.elevator.presenter;
 
 import android.content.Context;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
-import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.DianZanEntity;
 import com.kingyon.elevator.entities.MsgCommentEntity;
 import com.kingyon.elevator.entities.MsgNoticeEntity;

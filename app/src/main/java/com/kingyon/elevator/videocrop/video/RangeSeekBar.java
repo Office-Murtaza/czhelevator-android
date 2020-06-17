@@ -17,8 +17,6 @@ import android.view.ViewConfiguration;
 
 import androidx.annotation.Nullable;
 
-
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 
 import java.text.DecimalFormat;

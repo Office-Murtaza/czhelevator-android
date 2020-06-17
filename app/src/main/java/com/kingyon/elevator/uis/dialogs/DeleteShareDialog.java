@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +11,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.kingyon.elevator.entities.entities.CommentListEntity;
-import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
-import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
-import java.util.HashMap;
 import java.util.List;
-
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
 
 /**
  * Created By Admin  on 2020/4/16

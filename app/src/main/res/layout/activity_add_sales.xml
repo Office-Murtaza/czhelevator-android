@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+
+    <include layout="@layout/layout2_top"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="#E1E1E1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="楼栋名称"
+            android:textColor="#ff333333"
+            android:textSize="14sp"
+            />
+
+        <EditText
+            android:id="@+id/et_conent"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入楼栋名称"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:gravity="right"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:background="@color/color_00000000"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="#E1E1E1"/>
+
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="@dimen/dp_220"
+        android:layout_height="46dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginLeft="@dimen/spacing_default"
+        android:layout_marginTop="@dimen/spacing_twelve"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:layout_marginBottom="@dimen/spacing_twelve"
+        android:background="@drawable/bg_six_btn"
+        android:gravity="center"
+        android:text="添加单元"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/txt_big_content"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

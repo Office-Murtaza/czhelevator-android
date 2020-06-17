@@ -2,13 +2,10 @@ package com.kingyon.elevator.videocrop;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
-import android.os.Environment;
-import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;

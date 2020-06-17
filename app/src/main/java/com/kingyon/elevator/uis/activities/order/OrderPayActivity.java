@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.FreshOrderEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -37,6 +35,8 @@ import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.WeakHandler;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

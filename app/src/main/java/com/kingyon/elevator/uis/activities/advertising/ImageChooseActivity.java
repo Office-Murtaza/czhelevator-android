@@ -13,9 +13,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.AdTempletEntity;
 import com.kingyon.elevator.entities.LocalMaterialEntity;
-import com.kingyon.elevator.entities.MateriaEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DBUtils;
@@ -27,12 +25,10 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
-import com.leo.afbaselibrary.utils.TimeUtil;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;

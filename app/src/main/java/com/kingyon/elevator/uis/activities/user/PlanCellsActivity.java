@@ -9,22 +9,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.PlanCellDeleteEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.homepage.CellDetailsActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;

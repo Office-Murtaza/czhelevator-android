@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 import com.blankj.utilcode.util.LogUtils;
-import com.gerry.scaledelete.ScreenUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;

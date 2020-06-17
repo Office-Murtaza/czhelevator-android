@@ -1,7 +1,6 @@
 package com.kingyon.elevator.entities;
 
 import com.kingyon.elevator.entities.entities.ConentEntity;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 
 /**
  * Created by GongLi on 2019/1/10.

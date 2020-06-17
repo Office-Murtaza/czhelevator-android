@@ -1,7 +1,6 @@
 package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 

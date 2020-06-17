@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.activities.BaseHtmlActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
 

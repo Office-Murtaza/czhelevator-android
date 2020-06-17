@@ -20,7 +20,6 @@ import com.baidu.ocr.ui.camera.CameraActivity;
 import com.baidu.ocr.ui.camera.CameraNativeHelper;
 import com.baidu.ocr.ui.camera.CameraView;
 import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.utils.OCRUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
@@ -28,6 +27,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.OCRUtil;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -44,8 +44,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 

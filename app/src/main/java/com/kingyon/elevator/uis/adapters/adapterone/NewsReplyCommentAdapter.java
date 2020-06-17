@@ -17,7 +17,6 @@ import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;

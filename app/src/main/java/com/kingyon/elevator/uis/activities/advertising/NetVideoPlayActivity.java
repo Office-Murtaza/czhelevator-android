@@ -1,14 +1,12 @@
 package com.kingyon.elevator.uis.activities.advertising;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.MusicUtils;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;

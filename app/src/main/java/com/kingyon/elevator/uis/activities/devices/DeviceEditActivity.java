@@ -23,6 +23,7 @@ import com.kingyon.elevator.entities.LiftElemEntity;
 import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -526,9 +527,9 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
 
     private void requestCell(double longitude, double latitude) {
         NetService.getInstance().partnerCellList(longitude, latitude, 1)
-                .flatMap(new Func1<PageListEntity<CellItemEntity>, Observable<CellItemEntity>>() {
+                .flatMap(new Func1<ConentEntity<CellItemEntity>, Observable<CellItemEntity>>() {
                     @Override
-                    public Observable<CellItemEntity> call(PageListEntity<CellItemEntity> pageListEntity) {
+                    public Observable<CellItemEntity> call(ConentEntity<CellItemEntity> pageListEntity) {
                         return Observable.just((pageListEntity != null && pageListEntity.getContent() != null && pageListEntity.getContent().size() > 0) ? pageListEntity.getContent().get(0) : null);
                     }
                 })

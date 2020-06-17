@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -18,8 +17,6 @@ import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
-
-import java.util.List;
 
 import static com.czh.myversiontwo.utils.CodeType.ADV_BUSINESS;
 import static com.czh.myversiontwo.utils.CodeType.ADV_DAY;

@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CellItemEntity;
-import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
@@ -14,7 +13,6 @@ import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

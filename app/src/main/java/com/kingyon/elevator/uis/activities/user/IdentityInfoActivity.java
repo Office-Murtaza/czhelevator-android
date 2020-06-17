@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.OCRUtil;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 
 import butterknife.OnClick;
-
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_INFO;
 
 /**
  * Created by GongLi on 2019/1/9.

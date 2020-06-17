@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;

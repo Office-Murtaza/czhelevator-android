@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.customview.NonScrollableListView;
 import com.kingyon.elevator.entities.CommentEntity;
 
 import java.util.List;

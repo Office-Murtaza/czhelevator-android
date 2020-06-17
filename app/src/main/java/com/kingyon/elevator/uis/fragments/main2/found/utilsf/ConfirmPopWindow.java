@@ -3,7 +3,6 @@ package com.kingyon.elevator.uis.fragments.main2.found.utilsf;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
@@ -15,9 +14,7 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.czh.myversiontwo.activity.ActivityUtils;
-import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.R;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
@@ -28,7 +25,6 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
 
 /**
  * Created By Admin  on 2020/4/15

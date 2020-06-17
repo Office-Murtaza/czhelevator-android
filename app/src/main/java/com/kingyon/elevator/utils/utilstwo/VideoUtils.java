@@ -5,20 +5,13 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.bumptech.glide.load.Encoder;
-import com.kingyon.elevator.utils.TimeUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Created By Admin  on 2020/5/12

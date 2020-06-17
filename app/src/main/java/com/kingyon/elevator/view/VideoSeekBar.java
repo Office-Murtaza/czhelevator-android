@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 
 import java.io.File;

@@ -20,7 +20,6 @@ import com.kingyon.elevator.uis.activities.HtmlActivity;
 import com.kingyon.elevator.uis.adapters.adapterone.MessageDetailsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.JumpUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.view.NoticeOrHelperView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

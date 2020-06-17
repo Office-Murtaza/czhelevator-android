@@ -1,6 +1,5 @@
 package com.kingyon.elevator.view;
 
-import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 

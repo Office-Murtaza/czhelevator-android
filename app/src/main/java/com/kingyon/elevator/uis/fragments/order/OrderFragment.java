@@ -36,8 +36,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
-
 /**
  * @Created By Admin  on 2020/6/11
  * @Email : 163235610@qq.com
@@ -66,6 +64,7 @@ public class OrderFragment extends FoundFragemtUtils {
         if (smartRefreshLayout!=null) {
             smartRefreshLayout.autoRefresh(100);
         }else {
+            showProgressDialog(getString(R.string.wait));
             httpList(type, type1, page);
         }
     }
@@ -78,6 +77,7 @@ public class OrderFragment extends FoundFragemtUtils {
                 .subscribe(new CustomApiCallback<ConentEntity<OrderDetailsEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         if (ex.getCode() == -102) {
                             if (page > 1) {
@@ -106,6 +106,7 @@ public class OrderFragment extends FoundFragemtUtils {
                     public void onNext(ConentEntity<OrderDetailsEntity> orderDetailsEntityPageListEntity) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         addData(orderDetailsEntityPageListEntity);
+                        hideProgress();
                         if (orderDetailsEntityPageListEntity.getContent().size()>0||page>1) {
                             rcvOrderList.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
@@ -206,10 +207,11 @@ public class OrderFragment extends FoundFragemtUtils {
             case R.id.rl_error:
                 page = 1;
                 list.clear();
+                showProgressDialog(getString(R.string.wait));
                 httpList(type, type1, page);
                 break;
             case R.id.rl_notlogin:
-                ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
+                ActivityUtils.setLoginActivity();
                 break;
         }
     }

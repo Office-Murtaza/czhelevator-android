@@ -1,10 +1,6 @@
 package com.kingyon.elevator.utils.utilstwo;
 
-import android.graphics.Color;
 import android.os.CountDownTimer;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 /**

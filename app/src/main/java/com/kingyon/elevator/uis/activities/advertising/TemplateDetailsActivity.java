@@ -23,7 +23,6 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by GongLi on 2019/2/13.

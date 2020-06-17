@@ -6,15 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.MyWalletInfo;
-import com.kingyon.elevator.entities.WalletRecordEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.user.MyWalletDetailsFragment;
-import com.kingyon.elevator.uis.fragments.order.OrderFragment;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 

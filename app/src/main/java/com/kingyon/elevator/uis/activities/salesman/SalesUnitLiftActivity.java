@@ -9,6 +9,7 @@ import com.kingyon.elevator.uis.activities.devices.LiftChooseActivity;
 /**
  * Created by GongLi on 2019/1/18.
  * Email：lc824767150@163.com
+ * 电梯管理
  */
 
 public class SalesUnitLiftActivity extends LiftChooseActivity {

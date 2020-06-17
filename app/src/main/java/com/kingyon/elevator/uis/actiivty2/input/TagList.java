@@ -3,22 +3,12 @@ package com.kingyon.elevator.uis.actiivty2.input;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.entities.QueryTopicEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.actiivty2.input.adapter.TagAdapter;
 import com.kingyon.elevator.uis.actiivty2.input.utils.Tag;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.util.ArrayList;

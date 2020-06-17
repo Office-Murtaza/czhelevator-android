@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.LogUtils;
@@ -31,7 +29,6 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
 import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
 import com.kingyon.elevator.uis.fragments.main.HomepageFragment;
 import com.kingyon.elevator.uis.fragments.main.UserFragment;
@@ -65,7 +62,6 @@ import cn.jpush.android.api.JPushInterface;
 
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
  * Created By Admin  on 2020/3/30

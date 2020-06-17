@@ -1,7 +1,5 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +14,6 @@ import android.widget.RelativeLayout;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
@@ -25,15 +22,12 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendtopAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
-import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
-import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -168,6 +159,7 @@ public class RecommendFragment extends FoundFragemtUtils {
             attentionAdapter.notifyDataSetChanged();
         }
     }
+
     private void httpTop() {
         NetService.getInstance().setQueryRecommendTop()
                 .compose(this.bindLifeCycle())

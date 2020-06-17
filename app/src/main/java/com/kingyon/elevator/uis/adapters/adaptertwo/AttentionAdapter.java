@@ -1,7 +1,5 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
-import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,28 +13,23 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.czh.myversiontwo.view.RoundImageView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.uis.actiivty2.input.Parser;
+import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
+import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
-import com.kingyon.elevator.utils.utilstwo.ImageUtils;
 import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
-import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
-import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
@@ -50,7 +43,6 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAIL
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_STRING_OBJECT;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -247,6 +239,8 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                     ReportShareDialog reportShareDialog = new ReportShareDialog(context,queryRecommendEntity.id,HOME_CONTENT);
                     reportShareDialog.show();
                 }
+              }else {
+                  ActivityUtils.setLoginActivity();
               }
             }
         });

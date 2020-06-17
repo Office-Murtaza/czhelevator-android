@@ -2,15 +2,11 @@ package com.kingyon.elevator.presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Looper;
-import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.utils.RuntimeUtils;
-import com.kingyon.elevator.videocrop.VideoClipUtils;
-import com.kingyon.elevator.videocrop.VideoCropListener;
 import com.kingyon.elevator.view.VideoEditorView;
 
 import VideoHandle.EpEditor;

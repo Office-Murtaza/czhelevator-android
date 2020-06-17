@@ -1,19 +1,13 @@
 package com.kingyon.elevator.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
-import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.FolderEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -27,16 +21,11 @@ import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.photopicker.MimeType;
 import com.kingyon.elevator.uis.activities.PhotoPickerActivity;
 import com.kingyon.elevator.view.PhotoPickerView;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import me.nereo.multi_image_selector.MultiFilterType;
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * Created By SongPeng  on 2019/12/17

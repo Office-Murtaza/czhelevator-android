@@ -3,17 +3,12 @@ package com.kingyon.elevator.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.github.ybq.android.spinkit.SpinKitView;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.utils.DialogUtils;

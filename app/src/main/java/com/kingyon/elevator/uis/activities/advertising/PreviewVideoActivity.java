@@ -1,29 +1,20 @@
 package com.kingyon.elevator.uis.activities.advertising;
 
-import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.application.App;
-import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.MyActionBar;
 import com.kingyon.elevator.interfaces.OnItemClick;
-import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;

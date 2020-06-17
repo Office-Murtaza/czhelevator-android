@@ -2,7 +2,6 @@ package com.kingyon.elevator.presenter;
 
 import android.content.Context;
 
-import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;

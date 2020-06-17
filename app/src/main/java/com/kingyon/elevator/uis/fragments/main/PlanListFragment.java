@@ -33,7 +33,6 @@ import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.activities.order.ConfirmOrderActivity;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignNewActivity;
 import com.kingyon.elevator.uis.adapters.adapterone.PlanAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -219,7 +218,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             showToast(ex.getDisplayMessage());
                             loadingComplete(false, 100000);
                             updateBarVisiable();
-                            isLogin(ex.getCode());
+//                            isLogin(ex.getCode());
                         }
 
                         @Override

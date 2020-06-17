@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.youth.banner.loader.ImageLoader;
 

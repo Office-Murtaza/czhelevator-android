@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.customview.PayPasswordEditView;
-import com.kingyon.elevator.interfaces.PayPasswordListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.SetPasswordPresenter;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;

@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RichTextUtil;
 import com.leo.afbaselibrary.nets.entities.DataEntity;

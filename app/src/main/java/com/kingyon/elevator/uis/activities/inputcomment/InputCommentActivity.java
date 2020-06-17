@@ -3,7 +3,6 @@ package com.kingyon.elevator.uis.activities.inputcomment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -11,9 +10,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.utils.QuickClickUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -32,7 +32,6 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.uis.activities.advertising.InfomationAdvertisingActivity;
-import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.uis.activities.order.OrderPayActivity;
 import com.kingyon.elevator.uis.activities.order.PaySuccessActivity;
 import com.kingyon.elevator.uis.activities.user.IdentityInfoActivity;

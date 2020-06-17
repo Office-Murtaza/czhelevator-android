@@ -36,11 +36,8 @@ import com.umeng.commonsdk.UMConfigure;
 import org.litepal.LitePalApplication;
 
 import java.io.File;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.OkHttpClient;
 
 /**

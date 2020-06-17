@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.paylibrary.PayListener;
-import com.kingyon.paylibrary.entitys.PayWay;
 import com.kingyon.paylibrary.wechatpay.WxConstants;
 import com.kingyon.paylibrary.wechatpay.WxPayStatusEntity;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;

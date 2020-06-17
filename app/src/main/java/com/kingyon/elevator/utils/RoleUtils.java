@@ -2,9 +2,6 @@ package com.kingyon.elevator.utils;
 
 import android.text.TextUtils;
 
-import com.kingyon.elevator.application.AppContent;
-import com.kingyon.elevator.constants.Constants;
-
 /**
  * Created by GongLi on 2019/2/13.
  * Email：lc824767150@163.com

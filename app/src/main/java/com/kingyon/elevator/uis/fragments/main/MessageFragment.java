@@ -28,7 +28,6 @@ import com.kingyon.elevator.uis.adapters.adapterone.MessageAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseStateLoadingFragment;

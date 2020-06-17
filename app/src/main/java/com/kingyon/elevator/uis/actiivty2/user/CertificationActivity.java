@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
@@ -16,12 +15,9 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.user.IdentityPersonActivity;
-import com.kingyon.elevator.uis.activities.user.IdentitySuccessActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.leo.afbaselibrary.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +88,7 @@ public class CertificationActivity extends BaseActivity {
                                             super.run();
                                             try {
                                                 Thread.sleep(1000);//休眠3秒
-                                                startActivity(IdentitySuccessActivity.class);
+//                                                startActivity(IdentitySuccessActivity.class);
                                                     finish();
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();

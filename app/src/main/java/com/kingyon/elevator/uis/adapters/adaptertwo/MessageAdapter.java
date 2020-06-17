@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.fragments.main.MessageFragment;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MESSAGE_PUSH;
 

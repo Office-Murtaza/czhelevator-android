@@ -1,6 +1,5 @@
 package com.kingyon.elevator.uis.activities.cooperation;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -9,24 +8,18 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
-
 import com.kingyon.elevator.entities.BindAccountEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
-import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.AddNewBankCardPresenter;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.TextChangedListener;
 import com.kingyon.elevator.view.AddNewBankCardView;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 

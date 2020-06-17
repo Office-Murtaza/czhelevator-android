@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
-
 import com.kingyon.elevator.R;
 
 import butterknife.BindView;

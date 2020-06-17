@@ -1,9 +1,5 @@
 package com.kingyon.elevator.entities.entities;
 
-import android.support.annotation.NonNull;
-
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**

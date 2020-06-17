@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.actiivty2.activityutils;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,22 +20,15 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
-import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.entities.PictureChooseEntity;
 import com.kingyon.elevator.entities.entities.VideoInfo;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
-import com.kingyon.elevator.photopicker.ExternalStorage;
-import com.kingyon.elevator.photopicker.LocalMediaLoader;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.presenter.presenter2.VoideChoosePresenter;
-import com.kingyon.elevator.uis.activities.advertising.VideoChooseActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ImageDialoAdapter;
-import com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseVideoAdapter;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
-import com.kingyon.elevator.videocrop.VideoEditorActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
 import java.io.File;
@@ -48,9 +40,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACTIVITYUTILS_VIDEO_CHOOSE;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
-import static com.kingyon.elevator.presenter.PhotoPickerPresenter.eqVideo;
-import static com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter.listimage;
 import static com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseVideoAdapter.videopath;
 
 /**

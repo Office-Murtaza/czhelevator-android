@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -26,12 +27,10 @@ import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
 import com.kingyon.elevator.uis.activities.user.InviteActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
-import com.kingyon.elevator.uis.activities.user.MyCollectActivity;
 import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
 import com.kingyon.elevator.uis.activities.user.MyInvoiceActivity;
 import com.kingyon.elevator.uis.activities.user.MyWalletActivity;
 import com.kingyon.elevator.uis.activities.user.SettingActivity;
-import com.kingyon.elevator.uis.activities.user.UserProfileActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RoleUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -50,10 +49,11 @@ import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ATTENTION_FANS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MY_COLLECT;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ORDER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -135,6 +135,10 @@ public class PersonalFragment extends BaseFragment {
     LinearLayout llSystem;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.tv_hx1)
+    TextView tvHx1;
+    @BindView(R.id.tv_hx2)
+    TextView tvHx2;
 
 
     @Override
@@ -193,6 +197,7 @@ public class PersonalFragment extends BaseFragment {
             tvCardNumber.setText(user.getUserCenterAttr().couponNum + "");
             tvTCurrency.setText("T币：￥" + user.getUserCenterAttr().tlwMoney + "");
             tvIntegral.setText("积分：" + user.getUserCenterAttr().integral + "");
+            LogUtils.e(user.getRole());
             String authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
             switch (authStatus) {
                 case Constants.IDENTITY_STATUS.AUTHING:
@@ -215,8 +220,21 @@ public class PersonalFragment extends BaseFragment {
                     imgCertification.setImageResource(R.mipmap.ic_personal_certification_off);
                     break;
             }
+            /*安装*/
+            llInstallation.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole()) ? View.VISIBLE : View.GONE);
+            /*业务*/
             llBusiness.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.SALESMAN, user.getRole()) ? View.VISIBLE : View.GONE);
-            llProperty.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole()) ? View.VISIBLE : View.GONE);
+           /*物业*/
+            llProperty.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PROPERTY, user.getRole()) ? View.VISIBLE : View.GONE);
+            if (!RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PROPERTY, user.getRole())&&
+                !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.SALESMAN, user.getRole())&&
+                !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole())){
+                    tvHx1.setVisibility(View.GONE);
+                    tvHx2.setVisibility(View.GONE);
+            }else {
+                tvHx1.setVisibility(View.VISIBLE);
+                tvHx2.setVisibility(View.VISIBLE);
+            }
         } else {
             GlideUtils.loadLocalImage(getContext(), R.mipmap.im_head_placeholder, imgPlaceholder);
             tvName.setText("登录/注册");
@@ -226,9 +244,15 @@ public class PersonalFragment extends BaseFragment {
             tvAttentionNumber.setText("0");
             tvFanNumber.setText("0");
             tvDynamicNumber.setText("0");
-            tvCardNumber.setText( "0");
-            tvTCurrency.setText("T币：￥0.00" );
-            tvIntegral.setText("积分：0.00" );
+            tvCardNumber.setText("0");
+            tvTCurrency.setText("T币：￥0.00");
+            tvIntegral.setText("积分：0.00");
+            llProperty.setVisibility(View.GONE);
+            llBusiness.setVisibility(View.GONE);
+            llInstallation.setVisibility(View.GONE);
+            tvHx1.setVisibility(View.GONE);
+            tvHx2.setVisibility(View.GONE);
+
         }
     }
 
@@ -263,7 +287,7 @@ public class PersonalFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.img_code, R.id.img_placeholder, R.id.tv_name, R.id.img_certification, R.id.tv_grade,
+    @OnClick({R.id.img_code, R.id.img_certification,
             R.id.ll_portrait, R.id.tv_t_currency, R.id.tv_integral, R.id.ll_amount, R.id.tv_dynamic_number,
             R.id.ll_dynamic, R.id.tv_attention_number, R.id.ll_attention, R.id.tv_fan_number, R.id.ll_fan,
             R.id.tv_card_number, R.id.ll_card, R.id.ll_statistical, R.id.ll_order, R.id.ll_collect, R.id.ll_advertisi,
@@ -274,51 +298,26 @@ public class PersonalFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.img_code:
                 /*二维码*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                } else {
+                if (isToken(getActivity())) {
                     ActivityUtils.setActivity(ACTIVITY_RE_CODE);
-                }
-                break;
-            case R.id.img_placeholder:
-                /*头像*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
                 } else {
-                    startActivity(UserProfileActivity.class);
-                }
-                break;
-            case R.id.tv_name:
-                /*昵称*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                } else {
-                    startActivity(UserProfileActivity.class);
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.img_certification:
                 /*认证*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
-                } else {
-//                    ActivityUtils.setActivity(ACTIVITY_IDENTITY_INFO);
+                if (isToken(getActivity())) {
                     ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
-                }
-                break;
-            case R.id.tv_grade:
-                /*等级*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
                 } else {
-                    startActivity(UserProfileActivity.class);
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.ll_portrait:
                 /*个人资料*/
-                if (islogin()) {
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", 0);
                 } else {
-                    startActivity(UserProfileActivity.class);
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.tv_t_currency:
@@ -333,46 +332,71 @@ public class PersonalFragment extends BaseFragment {
 
                 break;
             case R.id.tv_dynamic_number:
-                break;
             case R.id.ll_dynamic:
-                /*动态*/
+                if (isToken(getActivity())) {
 
+                } else {
+                    /*动态*/
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.tv_attention_number:
-                break;
             case R.id.ll_attention:
                 /*关注*/
-                ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS,"page",0);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS, "page", 0);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.tv_fan_number:
-                break;
             case R.id.ll_fan:
                 /*粉丝*/
-                ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS,"page",1);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_ATTENTION_FANS, "page", 1);
+                } else {
+
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.tv_card_number:
-                break;
             case R.id.ll_card:
                 /*卡卷*/
-                /*优惠卷*/
-                startActivity(MyCouponsActivty.class);
+                if (isToken(getActivity())) {
+                    startActivity(MyCouponsActivty.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_statistical:
                 break;
             case R.id.ll_order:
                 /*订单*/
 //                MyActivityUtils.goOrderCOntainerActivity(getActivity(), new NormalParamEntity("", "全部订单"));
-
-                ActivityUtils.setActivity(ACTIVITY_ORDER);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_ORDER);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
 
                 break;
             case R.id.ll_collect:
                 /*收藏*/
-                startActivity(MyCollectActivity.class);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_MY_COLLECT);
+                } else {
+                    ActivityUtils.setLoginActivity();
+//                    startActivity(MyCollectActivity.class);
+                }
+
                 break;
             case R.id.ll_advertisi:
                 /*广告*/
-                startActivity(MyAdActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(MyAdActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_activity:
                 /*活动*/
@@ -384,30 +408,59 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_wallet:
                 /*我的钱包*/
-                startActivity(MyWalletActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(MyWalletActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_invoice:
                 /*我的发票*/
-                startActivity(MyInvoiceActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(MyInvoiceActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.ll_task:
                 /*我的任务*/
+
                 break;
             case R.id.ll_partner:
                 /*合伙人*/
-                startActivity(CooperationActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(CooperationActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.ll_installation:
                 /*安装管理*/
-                startActivity(InstallerActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(InstallerActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.ll_business:
                 /*业务管理*/
-                startActivity(SalesmanActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(SalesmanActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.ll_property:
                 /*物业管理*/
-                startActivity(PropertyActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(PropertyActivity.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_invite:
                 /*邀请有礼*/

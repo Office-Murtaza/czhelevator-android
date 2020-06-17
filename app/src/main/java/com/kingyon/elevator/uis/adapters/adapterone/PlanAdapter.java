@@ -5,14 +5,11 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
@@ -31,11 +28,9 @@ import com.leo.afbaselibrary.widgets.StateLayout;
 import com.leo.afbaselibrary.widgets.emptyprovider.FadeViewAnimProvider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE;
 import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE1;
 import static com.mob.tools.utils.Strings.getString;
 
@@ -58,7 +53,6 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
         addItemViewDelegate(2, new CellDelegate());
         addItemViewDelegate(3, new TimeDelegate());
         addItemViewDelegate(4, new EmptyDelegate());
-        LogUtils.e("111111111111111");
     }
 
     public void setEditMode(boolean editMode) {

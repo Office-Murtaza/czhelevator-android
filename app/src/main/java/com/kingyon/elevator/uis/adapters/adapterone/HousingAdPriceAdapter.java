@@ -5,15 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.photopicker.MediaDirectory;
-import com.kingyon.elevator.utils.DensityUtil;
-import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.List;
 

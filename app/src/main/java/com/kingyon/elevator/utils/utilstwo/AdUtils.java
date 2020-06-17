@@ -1,8 +1,5 @@
 package com.kingyon.elevator.utils.utilstwo;
 
-import android.view.View;
-import android.widget.TextView;
-
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;

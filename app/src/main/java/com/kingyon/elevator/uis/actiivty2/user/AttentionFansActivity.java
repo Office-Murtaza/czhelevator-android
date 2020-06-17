@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.fragments.main2.found.topic.TopicDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.user.AttentionFansFragment;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ATTENTION_FANS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_SEARCH_ATTENTION_USERA;
 
 /**
  * @Created By Admin  on 2020/6/16
@@ -79,7 +80,7 @@ public class AttentionFansActivity extends BaseActivity {
                 break;
             case R.id.tv_right:
                 /*添加搜索好友*/
-
+                ActivityUtils.setActivity(ACTIVITY_SEARCH_ATTENTION_USERA);
                 break;
         }
     }

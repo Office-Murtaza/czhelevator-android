@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.activities.user;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
@@ -13,10 +12,8 @@ import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
-import com.leo.afbaselibrary.utils.GlideUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by GongLi on 2019/1/9.

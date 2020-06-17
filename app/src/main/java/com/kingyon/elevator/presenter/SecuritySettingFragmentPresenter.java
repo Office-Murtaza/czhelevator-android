@@ -1,10 +1,7 @@
 package com.kingyon.elevator.presenter;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.interfaces.IOnAuthKeyPrepared;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;

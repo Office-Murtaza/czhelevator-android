@@ -14,8 +14,6 @@ import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
-import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
-import com.kingyon.elevator.utils.DealScrollRecyclerView;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.orhanobut.logger.Logger;
 

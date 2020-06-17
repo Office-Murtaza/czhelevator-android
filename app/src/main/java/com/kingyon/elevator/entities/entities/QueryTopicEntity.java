@@ -2,7 +2,6 @@ package com.kingyon.elevator.entities.entities;
 
 import com.bobomee.android.mentions.edit.listener.InsertData;
 import com.bobomee.android.mentions.model.FormatRange;
-import com.kingyon.elevator.uis.actiivty2.input.utils.Tag;
 
 import java.io.Serializable;
 import java.util.List;

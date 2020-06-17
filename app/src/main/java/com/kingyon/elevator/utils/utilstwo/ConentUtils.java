@@ -1,7 +1,6 @@
 package com.kingyon.elevator.utils.utilstwo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,15 +8,11 @@ import android.util.Log;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
-import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
-import com.kingyon.elevator.uis.adapters.adaptertwo.TopicSearchAdapter;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
-import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;

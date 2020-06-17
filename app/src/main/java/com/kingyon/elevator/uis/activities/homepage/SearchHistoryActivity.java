@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
-import com.kingyon.elevator.entities.KeywordEntity;
 import com.kingyon.elevator.entities.SearchHistoryEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.uis.fragments.homepage.HistoryFragment;
@@ -29,7 +27,6 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;

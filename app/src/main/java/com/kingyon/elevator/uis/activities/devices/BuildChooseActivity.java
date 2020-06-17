@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.activities.devices;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -28,6 +30,7 @@ import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -39,11 +42,15 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
 
     @BindView(R.id.tv_superior)
     TextView tvSuperior;
-
+    @BindView(R.id.tv_dz)
+    TextView tvDz;
     protected long parentId;
     protected EditDialog<NormalElemEntity> editDialog;
     protected boolean beInstaller;
     protected String superior;
+    protected String regionName;
+
+
 
     @Override
     protected String getTitleText() {
@@ -62,11 +69,14 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
     public void init(Bundle savedInstanceState) {
         parentId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         superior = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
+        regionName = getIntent().getStringExtra(CommonUtil.KEY_VALUE_3);
         super.init(savedInstanceState);
         if (!TextUtils.isEmpty(superior)) {
             tvSuperior.setText(superior);
+            tvDz.setText(regionName + "");
         } else {
             tvSuperior.setVisibility(View.GONE);
+            tvDz.setVisibility(View.GONE);
         }
     }
 
@@ -102,6 +112,7 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
     }
 
     protected void showEditDialog(NormalElemEntity entity) {
+        LogUtils.e(entity.getName(),entity.getObjectId());
         if (editDialog == null) {
             editDialog = new EditDialog<>(this, this);
         }
@@ -185,6 +196,8 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
     @OnClick(R.id.tv_create)
     public void onViewClicked() {
         onCreateImplement();
+        LogUtils.e("1111111111");
+
     }
 
     @Override
@@ -224,5 +237,12 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
                     }
                 });
         return false;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

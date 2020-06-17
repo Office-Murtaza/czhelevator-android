@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.kingyon.elevator.entities.NormalMessageEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
 import com.kingyon.elevator.uis.activities.NewsDetailsActivity;

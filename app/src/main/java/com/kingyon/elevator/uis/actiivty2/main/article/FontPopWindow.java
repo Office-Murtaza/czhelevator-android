@@ -1,31 +1,17 @@
 package com.kingyon.elevator.uis.actiivty2.main.article;
 
-import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
-import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
-
-import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 
 /**
  * @Created By Admin  on 2020/4/15

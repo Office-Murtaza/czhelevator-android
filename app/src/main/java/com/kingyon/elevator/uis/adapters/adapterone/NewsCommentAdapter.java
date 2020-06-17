@@ -8,21 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.customview.NonScrollableListView;
 import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
-import com.kingyon.elevator.photopicker.MediaData;
-import com.kingyon.elevator.utils.DensityUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.nereo.multi_image_selector.bean.Image;
-import me.nereo.multi_image_selector.utils.TimeUtils;
 
 /**
  * Created By SongPeng  on 2019/12/13

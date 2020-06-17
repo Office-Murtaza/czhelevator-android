@@ -1,9 +1,7 @@
 package com.kingyon.elevator.uis.activities;
 
-import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.utils.JumpUtils;
-import com.leo.afbaselibrary.uis.activities.BaseHtmlActivity;
 
 /**
  * Created by GongLi on 2018/8/15.

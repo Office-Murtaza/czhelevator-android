@@ -1,11 +1,9 @@
 package com.kingyon.elevator.customview;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;

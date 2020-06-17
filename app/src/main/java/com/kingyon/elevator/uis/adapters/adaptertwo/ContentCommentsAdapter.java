@@ -1,6 +1,5 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,12 +11,10 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
-import com.kingyon.elevator.entities.entities.ConentEntity;
-import com.kingyon.elevator.uis.actiivty2.content.ContentDetailsActivity;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
@@ -30,10 +27,7 @@ import com.leo.afbaselibrary.utils.TimeUtil;
 
 import java.util.List;
 
-import static com.czh.myversiontwo.utils.CodeType.CANCEL_LIKE;
 import static com.czh.myversiontwo.utils.CodeType.HOME_COMMENT;
-import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
-import static com.czh.myversiontwo.utils.CodeType.LIKE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_COMMENT_TWO;
 
 /**
@@ -170,6 +164,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                             ReportShareDialog reportShareDialog = new ReportShareDialog(context,commentListEntity.id,HOME_COMMENT);
                             reportShareDialog.show();
                         }
+                    }else {
+                        ActivityUtils.setLoginActivity();
                     }
 
                 }

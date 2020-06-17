@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.bumptech.glide.Glide;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -19,7 +18,6 @@ import com.leo.afbaselibrary.utils.GlideUtils;
 import com.litao.android.lib.entity.PhotoEntry;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,12 +1,8 @@
 package com.kingyon.elevator.view;
 
-import com.kingyon.elevator.entities.ADEntity;
-import com.kingyon.elevator.entities.FolderEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 import com.kingyon.elevator.photopicker.MediaDirectory;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

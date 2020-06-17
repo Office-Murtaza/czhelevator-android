@@ -1,7 +1,5 @@
 package com.kingyon.elevator.mvpbase;
 
-import android.app.ProgressDialog;
-
 /**
  * Created By SongPeng  on 2019/11/18
  * Email : 1531603384@qq.com

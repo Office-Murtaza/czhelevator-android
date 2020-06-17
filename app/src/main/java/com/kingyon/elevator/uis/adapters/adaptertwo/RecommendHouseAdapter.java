@@ -1,6 +1,5 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -17,7 +16,6 @@ import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;
-import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.util.List;
@@ -75,6 +73,8 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
                             AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name);
                             advertisPutDialog.show();
                         }
+                    }else {
+                        ActivityUtils.setLoginActivity();
                     }
                 }
             });

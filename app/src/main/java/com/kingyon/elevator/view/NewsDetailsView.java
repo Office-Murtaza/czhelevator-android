@@ -1,7 +1,6 @@
 package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.CommentEntity;
-import com.kingyon.elevator.entities.NewsEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 import java.util.List;

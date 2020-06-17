@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by GongLi on 2019/1/17.
  * Email：lc824767150@163.com
+ * 单元管理
  */
 
 public class UnitChooseActivity extends BuildChooseActivity {
@@ -105,5 +106,11 @@ public class UnitChooseActivity extends BuildChooseActivity {
                         autoRefresh();
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        autoRefresh();
     }
 }

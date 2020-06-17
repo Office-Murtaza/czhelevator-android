@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.entities.UploadParamsEnitty;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;

@@ -1,7 +1,5 @@
 package com.kingyon.elevator.utils;
 
-import com.blankj.utilcode.util.LogUtils;
-
 /**
  * Created By SongPeng  on 2019/12/2
  * Email : 1531603384@qq.com

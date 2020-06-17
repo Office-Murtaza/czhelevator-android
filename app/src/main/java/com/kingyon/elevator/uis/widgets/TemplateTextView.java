@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.AdTempletEntity;

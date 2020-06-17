@@ -60,8 +60,6 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     EditText etName;
     @BindView(R.id.tv_type)
     TextView tvType;
-    @BindView(R.id.et_flow)
-    EditText etFlow;
     @BindView(R.id.rv_logo)
     RecyclerView rvLogo;
     @BindView(R.id.rv_images)
@@ -161,26 +159,26 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                             tvType.setTag(entity.getCellType());
                             tvType.setText(FormatUtils.getInstance().getCellType(entity.getCellType()));
 
-                            etFlow.setText(String.valueOf(entity.getHumanTraffic()));
+//                            etFlow.setText(String.valueOf(entity.getHumanTraffic()));
 
                             logoAdapter.addData(entity.getCellLogo());
                             imagesAdapter.addDatas(entity.getCellBanner());
 
                             loadingComplete(STATE_CONTENT);
-                            preVRight.setVisibility(View.VISIBLE);
+                            preVRight.setVisibility(View.GONE);
                         }
                     });
         } else {
             loadingComplete(STATE_CONTENT);
-            preVRight.setVisibility(View.VISIBLE);
+            preVRight.setVisibility(View.GONE);
         }
     }
 
-    @OnClick({R.id.pre_v_right, R.id.ll_area, R.id.ll_address, R.id.ll_name, R.id.ll_type, R.id.ll_flow, R.id.tv_create})
+    @OnClick({R.id.pre_v_right, R.id.ll_area, R.id.ll_address, R.id.ll_name, R.id.ll_type,  R.id.tv_create})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_right:
-                startActivityForResult(CellLocationChooseActivity.class, CommonUtil.REQ_CODE_1);
+//                startActivityForResult(CellLocationChooseActivity.class, CommonUtil.REQ_CODE_1);
                 break;
             case R.id.ll_area:
 //                KeyBoardUtils.closeKeybord(this);
@@ -190,9 +188,10 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
 //                        addressUtil.showPicker();
 //                    }
 //                }, 100);
-                if (tvArea.getTag() == null) {
-                    showToast("请选择定位");
-                }
+//                if (tvArea.getTag() == null) {
+//                    showToast("请选择定位");
+//                }
+                startActivityForResult(CellLocationChooseActivity.class, CommonUtil.REQ_CODE_1);
                 break;
             case R.id.ll_address:
                 if (TextUtils.isEmpty(CommonUtil.getEditText(etAddress))) {
@@ -205,8 +204,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                 KeyBoardUtils.closeKeybord(this);
                 showCellTypePicker();
                 break;
-            case R.id.ll_flow:
-                break;
+
             case R.id.tv_create:
                 onSaveClick();
                 break;
@@ -257,17 +255,17 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         }
 
         flow = null;
-        if (!TextUtils.isEmpty(CommonUtil.getEditText(etFlow))) {
-            try {
-                flow = Long.parseLong(etFlow.getText().toString());
-            } catch (NumberFormatException e) {
-                flow = null;
-            }
-            if (flow == null || flow <= 0) {
-                showToast("输入的人流量信息有误");
-                return;
-            }
-        }
+//        if (!TextUtils.isEmpty(CommonUtil.getEditText(etFlow))) {
+//            try {
+//                flow = Long.parseLong(etFlow.getText().toString());
+//            } catch (NumberFormatException e) {
+//                flow = null;
+//            }
+//            if (flow == null || flow <= 0) {
+//                showToast("输入的人流量信息有误");
+//                return;
+//            }
+//        }
 //        if (flow == null) {
 //            flow = 0L;
 //        }

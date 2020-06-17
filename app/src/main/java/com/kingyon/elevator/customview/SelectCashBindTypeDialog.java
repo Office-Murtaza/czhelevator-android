@@ -4,17 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.utils.DialogUtils;
-import com.kingyon.elevator.utils.HtmlFormUtil;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

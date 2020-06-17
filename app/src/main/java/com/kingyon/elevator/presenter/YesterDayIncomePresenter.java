@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.ReflashConstants;
-import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;

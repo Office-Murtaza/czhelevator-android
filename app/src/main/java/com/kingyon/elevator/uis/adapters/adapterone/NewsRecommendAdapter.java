@@ -5,20 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.customview.NonScrollableListView;
-import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.NewsEntity;
-import com.kingyon.elevator.entities.NewsItemEntity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DensityUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;

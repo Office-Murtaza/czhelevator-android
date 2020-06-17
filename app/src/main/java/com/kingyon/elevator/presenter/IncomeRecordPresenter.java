@@ -3,20 +3,13 @@ package com.kingyon.elevator.presenter;
 import android.content.Context;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
-import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.MainActivity;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.view.IncomeRecordView;
-import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-
-import java.util.List;
 
 /**
  * Created By SongPeng  on 2019/11/25

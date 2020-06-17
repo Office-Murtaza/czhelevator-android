@@ -85,13 +85,18 @@ public class Constance {
     public static final String ACTIVITY_PAYTREASURECERT = "/app/activity/paytreasurecert";
     /**用户中心-关注-粉丝*/
     public static final String ACTIVITY_ATTENTION_FANS="/app/activity/attentionfans";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
-//    public static final String ACTIVITY_="";
+    /**用户中心-用户搜索*/
+    public static final String ACTIVITY_SEARCH_ATTENTION_USERA="/app/activity/searchattentionuser";
+    /**用户中心*/
+    public static final String ACTIVITY_USER_CENTER="/app/activity/usercenter";
+    /**我都收藏*/
+    public static final String ACTIVITY_MY_COLLECT="/app/activity/mycollect";
+
+
+//    public static final String ACTIVITY_="/app/activity/attentionfans";
+//    public static final String ACTIVITY_="/app/activity/attentionfans";
+//    public static final String ACTIVITY_="/app/activity/attentionfans";
+//    public static final String ACTIVITY_="/app/activity/attentionfans";
 
 
 

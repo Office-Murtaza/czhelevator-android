@@ -3,17 +3,14 @@ package com.kingyon.elevator.uis.actiivty2.activityutils;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +22,7 @@ import com.czh.myversiontwo.uiutils.ExtractFrameWorkThread;
 import com.czh.myversiontwo.uiutils.ExtractVideoInfoUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.adapters.adaptertwo.VideoEditAdapter;
-import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.utilstwo.VideoUtils;
-import com.lansosdk.videoeditor.MediaInfo;
 import com.leo.afbaselibrary.utils.GlideUtils;
-import com.zhaoss.weixinrecorded.util.MyVideoEditor;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -37,10 +30,8 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.disposables.Disposable;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_VIDEO_COVER;
-import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
 
 /**
  * @Created By Admin  on 2020/5/14

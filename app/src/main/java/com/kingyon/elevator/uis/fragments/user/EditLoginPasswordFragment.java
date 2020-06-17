@@ -1,12 +1,8 @@
 package com.kingyon.elevator.uis.fragments.user;
 
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,15 +11,12 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
-import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditLoginPasswordPresenter;
 import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.utils.AccountNumUtils;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.view.EditLoginPasswordView;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

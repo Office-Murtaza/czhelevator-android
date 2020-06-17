@@ -11,7 +11,6 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.utils.FormatUtils;
-import com.kingyon.elevator.utils.NumberFormatUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import butterknife.BindView;

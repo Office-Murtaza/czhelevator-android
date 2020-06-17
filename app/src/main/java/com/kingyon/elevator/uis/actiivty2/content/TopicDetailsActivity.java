@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.content;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -15,34 +14,25 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
-import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
-import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.uis.fragments.main2.found.topic.TopicDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
-import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
 

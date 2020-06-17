@@ -7,8 +7,6 @@ import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.interfaces.OnItemClick;
-import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
-import com.kingyon.elevator.utils.DialogUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

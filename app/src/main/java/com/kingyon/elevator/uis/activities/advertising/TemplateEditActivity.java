@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.activities.advertising;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;

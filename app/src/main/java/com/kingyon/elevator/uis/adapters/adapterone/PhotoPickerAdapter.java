@@ -8,20 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.photopicker.MediaData;
-import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.utils.DensityUtil;
-import com.kingyon.elevator.utils.DialogUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-
-import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
 
 /**
  * Created By SongPeng  on 2019/12/13

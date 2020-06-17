@@ -2,13 +2,14 @@ package com.kingyon.elevator.utils.utilstwo;
 
 import android.content.Context;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.ToastUtils;
-
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
  * @Created By Admin  on 2020/5/13
@@ -17,16 +18,38 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
  * @Instructions:
  */
 public class TokenUtils {
-
+    static boolean istoken ;
     public static  boolean isToken(Context context){
+        httpGetToken(new GetToke() {
+            @Override
+            public boolean setToken(boolean is) {
+                return is;
+            }
+        });
         if (DataSharedPreferences.getToken().isEmpty()){
-            ToastUtils.showToast(context,"你还没有登录请登录后操作",1000);
-
-            ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
+            ToastUtils.showToast(context,"未登录或登录过期请重新登录",1000);
             return false;
         }else {
             return true;
         }
+
+    }
+
+    private static void httpGetToken(GetToke getToke) {
+        NetService.getInstance().userProfile()
+                .subscribe(new CustomApiCallback<UserEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        if (ex.getCode()==100200) {
+                            getToke.setToken(false);
+                            DataSharedPreferences.clearLoginInfo();
+                        }
+                    }
+                    @Override
+                    public void onNext(UserEntity userEntity) {
+                        getToke.setToken(true);
+                    }
+                });
     }
 
     public static boolean isCreateAccount(String CreatateAccount){
@@ -57,8 +80,12 @@ public class TokenUtils {
 
     public static void isLogin(int eree){
         if (eree==100200){
-            ARouter.getInstance().build(ACTIVITY_MAIN2_LOGIN).navigation();
+            ActivityUtils.setLoginActivity();
         }
+    }
+
+    interface GetToke{
+        boolean setToken(boolean is);
     }
 
 }

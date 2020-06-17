@@ -5,23 +5,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAttentionAdapter;
-import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -39,8 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 
 /**
  * @Created By Admin  on 2020/6/16
@@ -162,7 +160,13 @@ public class AttentionFansFragment extends FoundFragemtUtils {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        editSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Toast.makeText(getContext(), editSearch.getText().toString(), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -218,7 +222,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
                 httpAttention(type,1);
                 break;
             case R.id.rl_notlogin:
-                ActivityUtils.setActivity(ACTIVITY_MAIN2_LOGIN);
+                ActivityUtils.setLoginActivity();
                 break;
         }
     }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.utils.TimeUtil;
 

@@ -21,7 +21,6 @@ import com.kingyon.elevator.entities.PlanItemEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
-import com.kingyon.elevator.uis.activities.password.LoginActivity;
 import com.kingyon.elevator.uis.activities.plan.AssignActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderEditActivity;
 import com.kingyon.elevator.uis.adapters.adapterone.PlanAdapter;

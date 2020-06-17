@@ -1,9 +1,66 @@
 package com.kingyon.elevator.nets;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.kingyon.elevator.entities.*;
+import com.kingyon.elevator.entities.ADEntity;
+import com.kingyon.elevator.entities.AdDetectingEntity;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
+import com.kingyon.elevator.entities.AdTempletEntity;
+import com.kingyon.elevator.entities.AdvertisionEntity;
+import com.kingyon.elevator.entities.AnnouncementEntity;
+import com.kingyon.elevator.entities.AutoCalculationDiscountEntity;
+import com.kingyon.elevator.entities.BannerEntity;
+import com.kingyon.elevator.entities.BindAccountEntity;
+import com.kingyon.elevator.entities.CameraBrandEntity;
+import com.kingyon.elevator.entities.CellDetailsEntity;
+import com.kingyon.elevator.entities.CellDeviceNumberEntity;
+import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.CityCellEntity;
+import com.kingyon.elevator.entities.CommentEntity;
+import com.kingyon.elevator.entities.CommitOrderEntiy;
+import com.kingyon.elevator.entities.CooperationIdentityEntity;
+import com.kingyon.elevator.entities.CooperationInfoEntity;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.entities.CouponItemEntity;
+import com.kingyon.elevator.entities.DeviceNumberEntity;
+import com.kingyon.elevator.entities.DianZanEntity;
+import com.kingyon.elevator.entities.FeedBackEntity;
+import com.kingyon.elevator.entities.FeedBackMessageEntity;
+import com.kingyon.elevator.entities.IdentityInfoEntity;
+import com.kingyon.elevator.entities.IncomeDetailsEntity;
+import com.kingyon.elevator.entities.IncomeOrPayEntity;
+import com.kingyon.elevator.entities.IncomeRecordEntity;
+import com.kingyon.elevator.entities.IncomeStatisticsEntity;
+import com.kingyon.elevator.entities.IndustryEntity;
+import com.kingyon.elevator.entities.InvoiceEntity;
+import com.kingyon.elevator.entities.InvoiceInfoEntity;
+import com.kingyon.elevator.entities.LiftElemEntity;
+import com.kingyon.elevator.entities.LoginResultEntity;
+import com.kingyon.elevator.entities.MateriaEntity;
+import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
+import com.kingyon.elevator.entities.MsgCommentEntity;
+import com.kingyon.elevator.entities.MsgNoticeEntity;
+import com.kingyon.elevator.entities.MsgUnreadCountEntity;
+import com.kingyon.elevator.entities.NewsDetailsEntity;
+import com.kingyon.elevator.entities.NewsEntity;
+import com.kingyon.elevator.entities.NormalElemEntity;
+import com.kingyon.elevator.entities.NormalMessageEntity;
+import com.kingyon.elevator.entities.NormalOptionEntity;
+import com.kingyon.elevator.entities.OrderDetailsEntity;
+import com.kingyon.elevator.entities.OrderFailedNumberEntity;
+import com.kingyon.elevator.entities.OrderIdentityEntity;
+import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.entities.PropertyIdentityEntity;
+import com.kingyon.elevator.entities.PropertyInfoEntity;
+import com.kingyon.elevator.entities.RecommendInfoEntity;
+import com.kingyon.elevator.entities.SettlementEntity;
+import com.kingyon.elevator.entities.UnreadNumberEntity;
+import com.kingyon.elevator.entities.UploadParamsEnitty;
+import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.entities.VersionEntity;
+import com.kingyon.elevator.entities.WalletRecordEntity;
+import com.kingyon.elevator.entities.WithdrawItemEntity;
+import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
-import com.kingyon.elevator.entities.entities.CityFacilityInfoEntiy;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -378,7 +435,7 @@ public interface NetApi {
             , @Field("unitId") long unitId, @Field("liftId") long liftId
             , @Field("cameraBrand") Long cameraBrand, @Field("cameraIp") String cameraIp);
 //添加小区&编辑小区
-    @POST("common/addCell")
+    @POST("cell/addCell")
     @FormUrlEncoded
     Observable<String> addCell(@Field("objctId") Long objectId, @Field("adcode") String adcode
             , @Field("address") String address, @Field("cellName") String cellName
@@ -774,7 +831,7 @@ public interface NetApi {
 
     @POST("partner/myCellList")
     @FormUrlEncoded
-    Observable<PageListEntity<CellItemEntity>> partnerCellList(@Field("longitude") Double longitude
+    Observable<ConentEntity<CellItemEntity>> partnerCellList(@Field("longitude") Double longitude
             , @Field("latitude") Double latitude, @Field("page") int page);
 
 //    @POST("partner/myCellDevices")

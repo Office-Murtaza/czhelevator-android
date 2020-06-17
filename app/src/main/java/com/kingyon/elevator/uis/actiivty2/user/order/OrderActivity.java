@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.uis.fragments.main2.found.topic.TopicDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.order.OrderFragment;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;

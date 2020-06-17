@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;

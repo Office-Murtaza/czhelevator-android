@@ -1,7 +1,5 @@
 package com.kingyon.elevator.utils;
 
-import com.qiniu.android.utils.StringUtils;
-
 /**
  * Created By SongPeng  on 2019/12/3
  * Email : 1531603384@qq.com

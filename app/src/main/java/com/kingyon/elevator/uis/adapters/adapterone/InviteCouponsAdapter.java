@@ -15,7 +15,6 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,6 +1,5 @@
 package com.kingyon.elevator.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -8,12 +7,9 @@ import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CheckCodePresenter;
-import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.view.EditLoginPasswordView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.utils.ActivityUtil;
 
 import java.util.concurrent.TimeUnit;
 

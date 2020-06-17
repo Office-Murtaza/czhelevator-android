@@ -11,7 +11,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.presenter2.MessageNewsPresenter;
-import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageNewsAdapter;
 
 import butterknife.BindView;

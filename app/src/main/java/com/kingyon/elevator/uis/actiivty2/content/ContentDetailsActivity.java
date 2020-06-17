@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.NewsSharedEntity;
@@ -38,7 +39,6 @@ import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
-import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -317,6 +317,8 @@ public class ContentDetailsActivity extends BaseActivity {
                         ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT);
                         reportShareDialog.show();
                     }
+                }else {
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             default:

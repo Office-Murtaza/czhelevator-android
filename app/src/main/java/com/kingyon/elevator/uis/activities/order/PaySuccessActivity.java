@@ -10,18 +10,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.TabEntity;
-import com.kingyon.elevator.nets.CustomApiCallback;
-import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
-import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.ActivityUtil;
-import com.leo.afbaselibrary.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

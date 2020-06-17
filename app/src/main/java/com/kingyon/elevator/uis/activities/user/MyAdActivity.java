@@ -33,7 +33,6 @@ import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;

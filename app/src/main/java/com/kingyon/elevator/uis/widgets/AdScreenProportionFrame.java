@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.leo.afbaselibrary.utils.ScreenUtil;
 
 /**
  * Created by GongLi on 2018/12/26.

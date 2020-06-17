@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.IncomeStatisticsEntity;
-import com.kingyon.elevator.entities.TimeHolder;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -18,8 +17,6 @@ import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 

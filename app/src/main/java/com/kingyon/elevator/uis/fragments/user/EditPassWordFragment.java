@@ -2,10 +2,7 @@ package com.kingyon.elevator.uis.fragments.user;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
@@ -14,7 +11,6 @@ import com.kingyon.elevator.presenter.EditPayPasswordFragmentPresenter;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.view.EditPayPasswordFragmentView;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

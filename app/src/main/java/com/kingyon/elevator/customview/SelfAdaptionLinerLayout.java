@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.kingyon.elevator.R;
 

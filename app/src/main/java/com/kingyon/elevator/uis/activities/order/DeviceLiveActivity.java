@@ -2,7 +2,6 @@ package com.kingyon.elevator.uis.activities.order;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.AdTempletEntity;
-import com.kingyon.elevator.uis.activities.advertising.TemplateListActivity;
 import com.leo.afbaselibrary.uis.adapters.ItemViewDelegate;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;

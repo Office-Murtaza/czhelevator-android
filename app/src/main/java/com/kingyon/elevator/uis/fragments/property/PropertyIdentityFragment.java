@@ -3,10 +3,8 @@ package com.kingyon.elevator.uis.fragments.property;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,7 +31,6 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.GlideUtils;
-import com.leo.afbaselibrary.utils.ScreenUtil;
 
 import org.json.JSONObject;
 

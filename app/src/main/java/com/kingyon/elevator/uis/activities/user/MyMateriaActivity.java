@@ -4,22 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 
 import com.gerry.scaledelete.ScreenUtil;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.TabPagerEntity;
-import com.kingyon.elevator.uis.fragments.main.PlanListFragment;
 import com.kingyon.elevator.uis.fragments.user.MateriaListFragment;
 import com.leo.afbaselibrary.uis.activities.BaseTabActivity;
-import com.leo.afbaselibrary.uis.adapters.TabPagerAdapter;
 import com.leo.afbaselibrary.uis.adapters.UnLazyAdapter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

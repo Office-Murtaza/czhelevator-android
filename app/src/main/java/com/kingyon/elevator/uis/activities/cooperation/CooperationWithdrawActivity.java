@@ -20,19 +20,14 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.BindAccountEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
-import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.uis.dialogs.WithdrawSuccessDialog;
 import com.kingyon.elevator.uis.widgets.CustomImageSpan;
 import com.kingyon.elevator.uis.widgets.DecimalDigitsInputFilter;
@@ -43,6 +38,8 @@ import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 

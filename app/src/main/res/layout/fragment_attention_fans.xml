@@ -33,6 +33,10 @@
             android:hint="请输入关注用户昵称或ID"
             android:paddingLeft="@dimen/dp10"
             android:textSize="12dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+
             />
 
     </LinearLayout>

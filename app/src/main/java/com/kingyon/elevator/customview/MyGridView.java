@@ -2,7 +2,6 @@ package com.kingyon.elevator.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.AbsListView;
 import android.widget.GridView;
 
 /**

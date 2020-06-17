@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +12,6 @@ import android.widget.TextView;
 import com.czh.myversiontwo.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
-import com.kingyon.elevator.uis.actiivty2.input.adapter.TagAdapter;
-import com.kingyon.elevator.uis.actiivty2.input.utils.Tag;
-import com.leo.afbaselibrary.utils.GlideUtils;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * @Created By Admin  on 2020/4/20

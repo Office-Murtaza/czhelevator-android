@@ -3,8 +3,6 @@ package com.kingyon.elevator.entities;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.date.DateUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**

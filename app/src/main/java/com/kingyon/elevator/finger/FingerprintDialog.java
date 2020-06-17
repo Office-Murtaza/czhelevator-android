@@ -2,8 +2,6 @@ package com.kingyon.elevator.finger;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

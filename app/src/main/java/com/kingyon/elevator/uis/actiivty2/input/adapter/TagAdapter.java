@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.actiivty2.input.utils.Tag;
-import com.kingyon.elevator.uis.actiivty2.input.utils.User;
 
 import java.util.List;
 

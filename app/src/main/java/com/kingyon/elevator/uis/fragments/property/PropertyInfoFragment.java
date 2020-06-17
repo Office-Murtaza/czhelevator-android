@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
-import com.kingyon.elevator.entities.PlanItemEntity;
 import com.kingyon.elevator.entities.PropertyInfoEntity;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
-import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyDeviceActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyEarningsActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyIncomeActivity;

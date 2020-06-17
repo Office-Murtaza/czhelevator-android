@@ -4,9 +4,7 @@ import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;

@@ -18,7 +18,6 @@ import com.kingyon.elevator.presenter.NoticeOrHelperPresenter;
 import com.kingyon.elevator.uis.adapters.adapterone.CommentsAdapter;
 import com.kingyon.elevator.uis.widgets.MessageItemDecornation;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.view.NoticeOrHelperView;
 import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.activities.user;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;

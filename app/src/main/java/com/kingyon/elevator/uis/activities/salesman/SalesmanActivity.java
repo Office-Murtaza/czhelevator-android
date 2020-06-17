@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CellItemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.devices.CellEditActivity;
@@ -26,6 +27,7 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2018/12/24.
  * Email：lc824767150@163.com
+ * 6-17小区管理
  */
 
 public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellItemEntity> {
@@ -75,6 +77,7 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
             Bundle bundle = new Bundle();
             bundle.putLong(CommonUtil.KEY_VALUE_1, item.getObjctId());
             bundle.putString(CommonUtil.KEY_VALUE_2, item.getCellName());
+            bundle.putString(CommonUtil.KEY_VALUE_3,item.getRegionName());
             startActivity(SalesCellBuildActivity.class, bundle);
         }
     }
@@ -121,8 +124,8 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().partnerCellList(null, null, page)
-                .compose(this.<PageListEntity<CellItemEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<CellItemEntity>>() {
+                .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -130,7 +133,7 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
                     }
 
                     @Override
-                    public void onNext(PageListEntity<CellItemEntity> cellItemEntityPageListEntity) {
+                    public void onNext(ConentEntity<CellItemEntity> cellItemEntityPageListEntity) {
                         if (cellItemEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

@@ -5,12 +5,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.UserEntity;
-import com.kingyon.elevator.utils.PinyinUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

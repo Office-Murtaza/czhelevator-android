@@ -2,10 +2,8 @@ package com.kingyon.elevator.uis.actiivty2.content;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
@@ -245,6 +244,8 @@ public class ArticleDetailsActivity extends BaseActivity {
                         ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT);
                         reportShareDialog.show();
                     }
+                }else {
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.input_comment_container:

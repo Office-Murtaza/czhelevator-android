@@ -36,7 +36,6 @@ import com.kingyon.elevator.entities.CommentEntity;
 import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
-import com.kingyon.elevator.entities.CooperationInfoEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.DeviceDetailsInfo;
@@ -88,7 +87,6 @@ import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
-import com.kingyon.elevator.entities.entities.CityFacilityInfoEntiy;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -126,17 +124,13 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.http.Field;
-import retrofit2.http.Query;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -1303,10 +1297,10 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
         return addSchedulers(getApi().partnerWithdrawList(page));
     }
 
-    public Observable<PageListEntity<CellItemEntity>> partnerCellList(Double longitude, Double latitude, int page) {
-        return addSchedulers(getApi().partnerCellList(longitude, latitude, page).doOnNext(new Action1<PageListEntity<CellItemEntity>>() {
+    public Observable<ConentEntity<CellItemEntity>> partnerCellList(Double longitude, Double latitude, int page) {
+        return addSchedulers(getApi().partnerCellList(longitude, latitude, page).doOnNext(new Action1<ConentEntity<CellItemEntity>>() {
             @Override
-            public void call(PageListEntity<CellItemEntity> cellItemEntityPageListEntity) {
+            public void call(ConentEntity<CellItemEntity> cellItemEntityPageListEntity) {
                 if (cellItemEntityPageListEntity != null && cellItemEntityPageListEntity.getContent() != null) {
                     for (CellItemEntity entity : cellItemEntityPageListEntity.getContent()) {
                         entity.setCanEdit(false);

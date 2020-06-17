@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;

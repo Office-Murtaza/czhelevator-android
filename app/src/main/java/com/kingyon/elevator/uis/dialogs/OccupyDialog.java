@@ -5,9 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 

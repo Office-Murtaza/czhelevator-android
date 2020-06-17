@@ -7,14 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.entities.WalletRecordEntity;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MyWalletTwoAdapter;
@@ -31,14 +28,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
  * @Created By Admin  on 2020/6/12
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions: 钱包明细
  */
 public class MyWalletDetailsFragment extends BaseFragment {
     String type, type1;

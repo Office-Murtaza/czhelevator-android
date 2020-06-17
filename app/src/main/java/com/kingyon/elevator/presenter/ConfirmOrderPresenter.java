@@ -1,8 +1,6 @@
 package com.kingyon.elevator.presenter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 
 import com.blankj.utilcode.util.GsonUtils;
@@ -16,20 +14,14 @@ import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.DeviceParamCache;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
-import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
-import com.kingyon.elevator.uis.activities.order.OrderPayActivity;
-import com.kingyon.elevator.uis.activities.order.PaySuccessActivity;
-import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.view.ConfirmOrderView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
 
 import org.json.JSONObject;
 

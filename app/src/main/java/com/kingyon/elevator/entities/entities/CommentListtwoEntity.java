@@ -1,7 +1,5 @@
 package com.kingyon.elevator.entities.entities;
 
-import java.util.List;
-
 /**
  * @Created By Admin  on 2020/5/14
  * @Email : 163235610@qq.com

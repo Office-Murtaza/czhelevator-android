@@ -2,10 +2,8 @@ package com.kingyon.elevator.utils.utilstwo;
 
 import android.content.Context;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.utils.QuickClickUtils;
 import com.kingyon.elevator.entities.NewsSharedEntity;
-import com.kingyon.elevator.uis.actiivty2.content.ContentDetailsActivity;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.utils.ToastUtils;

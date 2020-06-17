@@ -35,7 +35,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
 
 /**

@@ -2,41 +2,26 @@ package com.kingyon.elevator.uis.fragments.user;
 
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Utils;
-import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.customview.MyMarkView;
 import com.kingyon.elevator.customview.MyTextItemView;
-import com.kingyon.elevator.date.DatePickerListener;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
@@ -49,7 +34,6 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.IncomeRecordView;
-import com.leo.afbaselibrary.widgets.StateLayout;
 
 import java.util.ArrayList;
 

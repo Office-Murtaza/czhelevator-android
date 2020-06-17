@@ -3,14 +3,10 @@ package com.kingyon.elevator.uis.widgets.video;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,13 +16,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.kingyon.elevator.R;
-//import com.pili.pldroid.player.IMediaController;
-
 import java.util.Locale;
+
+//import com.pili.pldroid.player.IMediaController;
 
 /**
  * You can write a custom MediaController instead of this class

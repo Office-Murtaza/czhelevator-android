@@ -1,28 +1,21 @@
 package com.kingyon.elevator.uis.fragments.user;
 
 
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
-import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
-import com.kingyon.elevator.interfaces.IOnAuthKeyPrepared;
-import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.SecuritySettingFragmentPresenter;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -33,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
 import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_SETTING;
 
 /**

@@ -1,23 +1,17 @@
 package com.kingyon.elevator.customview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
-import com.kingyon.elevator.finger.FingerprintCallback;
-import com.kingyon.elevator.finger.FingerprintVerifyManager;
 import com.kingyon.elevator.interfaces.InputPayPwdListener;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
-import com.leo.afbaselibrary.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

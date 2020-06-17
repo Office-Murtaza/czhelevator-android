@@ -18,7 +18,6 @@ import com.kingyon.elevator.uis.adapters.adapterone.MyCouponsInvalidAdapter;
 import com.kingyon.elevator.uis.adapters.adapterone.MyCouponsNormalAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;

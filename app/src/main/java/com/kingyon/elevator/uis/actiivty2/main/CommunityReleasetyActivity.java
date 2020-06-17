@@ -32,12 +32,8 @@ import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
-import com.kingyon.elevator.uis.actiivty2.input.utils.HtmlParserUtil;
-import com.kingyon.elevator.uis.actiivty2.input.utils.Tag;
-import com.kingyon.elevator.uis.actiivty2.input.utils.User;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ChooseAdapter;
 import com.kingyon.elevator.utils.CommonUtil;
-import com.kingyon.elevator.utils.utilstwo.HtmlUtil;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -51,14 +47,10 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import org.json.JSONObject;
-import org.xml.sax.XMLReader;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +62,6 @@ import static com.czh.myversiontwo.utils.CodeType.REQUEST_TAG_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_USER_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.TYPE_WSQ;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
-import static com.kingyon.elevator.utils.PictureSelectorUtil.showPictureSelectorCropProperty;
 
 /**
  * Created By Admin  on 2020/4/15

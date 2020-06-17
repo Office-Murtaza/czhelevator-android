@@ -6,13 +6,13 @@ import android.content.Context;
 import androidx.annotation.ColorRes;
 
 import com.kingyon.elevator.customview.CashTipsDialog;
-import com.kingyon.elevator.customview.MainWindowNoticeDialog;
-import com.kingyon.elevator.customview.OrderDetailedTipsDialog;
-import com.kingyon.elevator.customview.PreviewVideoBackTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
+import com.kingyon.elevator.customview.MainWindowNoticeDialog;
+import com.kingyon.elevator.customview.OrderDetailedTipsDialog;
 import com.kingyon.elevator.customview.PlanSelectDateDialog;
+import com.kingyon.elevator.customview.PreviewVideoBackTipsDialog;
 import com.kingyon.elevator.customview.RuleDescTipsDialog;
 import com.kingyon.elevator.customview.SelectCashBindTypeDialog;
 import com.kingyon.elevator.customview.UserPrivacyTipsDialog;

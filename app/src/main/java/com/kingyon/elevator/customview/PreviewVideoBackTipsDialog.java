@@ -3,18 +3,11 @@ package com.kingyon.elevator.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.data.DataSharedPreferences;
-import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.interfaces.OnItemClick;
-import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.utils.DialogUtils;
-import com.kingyon.elevator.utils.HtmlFormUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -8,13 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.czh.myversiontwo.R;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.List;
-
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
 
 /**
  * Created By Admin  on 2020/4/16

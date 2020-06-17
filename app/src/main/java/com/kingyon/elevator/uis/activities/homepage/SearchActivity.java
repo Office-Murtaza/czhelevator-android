@@ -19,12 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.donkingliang.labels.LabelsView;
-import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.entities.AMapCityEntity;
@@ -422,6 +420,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
             case R.id.rl_plan:
                 if (isToken(this)) {
                     startActivity(PlanNewFragment.class);
+                }else {
+                    ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.img_menu:

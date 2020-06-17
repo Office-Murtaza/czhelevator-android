@@ -28,12 +28,10 @@ import com.kingyon.elevator.entities.CommitOrderEntiy;
 import com.kingyon.elevator.entities.CouponItemEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.ImageScan;
-import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.ConfirmOrderPresenter;
-import com.kingyon.elevator.uis.actiivty2.content.ContentActivity;
 import com.kingyon.elevator.uis.activities.advertising.NetVideoPlayActivity;
 import com.kingyon.elevator.uis.activities.plan.OrderCouponsActivity;
 import com.kingyon.elevator.uis.activities.user.IdentityInfoActivity;
@@ -375,7 +373,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 if (authStatus.equals(Constants.IDENTITY_STATUS.NO_AUTH)
                         || authStatus.equals(Constants.IDENTITY_STATUS.FAILD)
                         || authStatus.equals(Constants.IDENTITY_STATUS.AUTHING)) {
+
                     showOrderIdentityDialog();
+
                 } else {
                     if (adEntity != null) {
                         if (realPayPrice > 0) {

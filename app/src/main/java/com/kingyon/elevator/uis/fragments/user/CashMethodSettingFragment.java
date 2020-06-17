@@ -12,7 +12,6 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
-import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import com.kingyon.elevator.interfaces.SelectCashBindTypeListener;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.CashMethodSettingPresenter;
@@ -25,6 +24,7 @@ import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.CashMethodSettingView;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

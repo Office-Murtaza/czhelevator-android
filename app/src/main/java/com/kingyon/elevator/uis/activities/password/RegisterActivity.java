@@ -27,8 +27,6 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
-import com.kingyon.elevator.uis.activities.MainActivity;
-import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.JumpUtils;

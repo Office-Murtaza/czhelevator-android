@@ -4,23 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.widgets.PagerSlidingTabStrip;
-
-import java.util.regex.Pattern;
 
 /**
  * Created by lc on 2017/11/4.

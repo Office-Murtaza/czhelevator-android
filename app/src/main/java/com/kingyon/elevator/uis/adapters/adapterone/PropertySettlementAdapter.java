@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.SettlementEntity;
-import com.kingyon.elevator.uis.activities.property.PropertySettlementActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.uis.adapters.ItemViewDelegate;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;

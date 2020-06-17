@@ -4,8 +4,6 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.blankj.utilcode.util.LogUtils;
-
 
 /**
  * Created By SongPeng  on 2019/11/18

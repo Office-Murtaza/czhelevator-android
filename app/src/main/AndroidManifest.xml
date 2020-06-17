@@ -147,11 +147,6 @@
             android:screenOrientation="portrait" />
         <!-- 登录注册 -->
         <activity
-            android:name=".uis.activities.password.LoginActivity"
-            android:configChanges="fontScale|orientation"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".uis.activities.password.RegisterActivity"
             android:configChanges="fontScale|orientation"
             android:screenOrientation="portrait" />
@@ -745,7 +740,22 @@
         <activity android:name=".uis.actiivty2.user.AttentionFansActivity"
             android:screenOrientation="portrait"
             />
-
+        <!--2.0用户搜索-->
+        <activity android:name=".uis.actiivty2.user.SearchAttentionUserActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0用户中心-->
+        <activity android:name=".uis.actiivty2.user.UserCenterActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0我的收藏-->
+        <activity android:name=".uis.actiivty2.user.MyCollectActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0添加小区内容-->
+        <activity android:name=".uis.activities.salesman.AddSalesActiviry"
+            android:screenOrientation="portrait"
+            />
         <!-- ****************友盟配置****************************** -->
         <meta-data
             android:name="UMENG_APPKEY"
