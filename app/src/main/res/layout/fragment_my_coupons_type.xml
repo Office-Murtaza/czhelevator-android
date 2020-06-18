@@ -7,9 +7,9 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_coupon_voucher"
+        android:drawableRight="@mipmap/ic_arrow_right_down_w"
         android:drawablePadding="@dimen/spacing_six"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/spacing_default"

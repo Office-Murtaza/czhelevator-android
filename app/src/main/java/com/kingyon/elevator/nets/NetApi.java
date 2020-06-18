@@ -434,13 +434,18 @@ public interface NetApi {
             , @Field("cellId") long cellId, @Field("buildId") long buildId
             , @Field("unitId") long unitId, @Field("liftId") long liftId
             , @Field("cameraBrand") Long cameraBrand, @Field("cameraIp") String cameraIp);
-//添加小区&编辑小区
-    @POST("cell/addCell")
+//2.0添加小区&编辑小区
+    @POST("common/addCell")
     @FormUrlEncoded
     Observable<String> addCell(@Field("objctId") Long objectId, @Field("adcode") String adcode
             , @Field("address") String address, @Field("cellName") String cellName
             , @Field("cellType") String cellType, @Field("humanTraffic") Long humanTraffic
             , @Field("cellLogo") String cellLogo, @Field("cellBanner") String cellBanner
+            , @Field("throwWay") String throwWay, @Field("occupancyRate") String occupancyRate
+            , @Field("averageSellingPrice") String averageSellingPrice, @Field("siteNumber") String siteNumber
+            , @Field("propertyFee") String propertyFee, @Field("peopleCoverd") String peopleCoverd
+            , @Field("rent") String rent, @Field("numberArea") String numberArea
+            , @Field("exclusiveAdvertising") String exclusiveAdvertising, @Field("deliveryTime") String deliveryTime
             , @Field("longitude") double longitude, @Field("latitude") double latitude);
 
     @POST("common/deviceList")
@@ -559,6 +564,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> addBuilding(@Field("objectId") Long objectId, @Field("cellId") long cellId, @Field("name") String name);
 
+    /*2.0添加单元*/
     @POST("cell/addUnit")
     @FormUrlEncoded
     Observable<String> addUnit(@Field("objectid") Long objectid, @Field("buldingId") long buldingId, @Field("name") String name);
@@ -652,7 +658,7 @@ public interface NetApi {
     @POST("userSecurity/getIdentityInformation")
     Observable<IdentityInfoEntity> getIdentityInformation();
 
-
+    /*2.0行业*/
     @POST("user/industrys")
     Observable<List<IndustryEntity>> getIndustrys();
 

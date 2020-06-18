@@ -18,7 +18,7 @@ import com.leo.afbaselibrary.utils.ToastUtils;
  * @Instructions:
  */
 public class TokenUtils {
-    static boolean istoken ;
+    static boolean istoken = false;
     public static  boolean isToken(Context context){
         httpGetToken(new GetToke() {
             @Override
@@ -28,11 +28,11 @@ public class TokenUtils {
         });
         if (DataSharedPreferences.getToken().isEmpty()){
             ToastUtils.showToast(context,"未登录或登录过期请重新登录",1000);
-            return false;
+            istoken = false;
         }else {
-            return true;
+            istoken = true;
         }
-
+    return istoken;
     }
 
     private static void httpGetToken(GetToke getToke) {
@@ -40,10 +40,10 @@ public class TokenUtils {
                 .subscribe(new CustomApiCallback<UserEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        if (ex.getCode()==100200) {
+//                        if (ex.getCode()==100200) {
                             getToke.setToken(false);
                             DataSharedPreferences.clearLoginInfo();
-                        }
+//                        }
                     }
                     @Override
                     public void onNext(UserEntity userEntity) {

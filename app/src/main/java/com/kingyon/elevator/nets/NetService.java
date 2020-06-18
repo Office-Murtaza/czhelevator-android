@@ -448,11 +448,19 @@ public class NetService {
                 , cellId, buildId, unitId, liftId, cameraBrand, cameraIp));
     }
 
-    public Observable<String> addCell(Long objectId, String adcode, String address, String cellName
-            , String cellType, Long humanTraffic, String cellLogo, String cellBanner
-            , double longitude, double latitude) {
+    public Observable<String> addCell(Long objectId, String adcode,
+                                      String address, String cellName,
+                                      String cellType, Long humanTraffic,
+                                      String cellLogo, String cellBanner,
+                                      String throwWay,String occupancyRate,
+                                      String averageSellingPrice,String siteNumber,
+                                      String propertyFee,String peopleCoverd,
+                                      String rent,String numberArea,
+                                      String exclusiveAdvertising,String deliveryTime,
+                                      double longitude, double latitude) {
         return addSchedulers(getApi().addCell(objectId, adcode, address, cellName, cellType, humanTraffic
-                , cellLogo, cellBanner, longitude, latitude));
+                , cellLogo, cellBanner,throwWay,occupancyRate,averageSellingPrice,siteNumber,propertyFee,peopleCoverd,
+                rent,numberArea,exclusiveAdvertising,deliveryTime, longitude, latitude));
     }
 
     public Observable<PageListEntity<PointItemEntity>> installerDeviceList(int page) {

@@ -21,15 +21,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="#e4e4e4"
+            android:background="@mipmap/btn_image_upload"
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_add_auth_img" />
+
 
             <!--<TextView-->
             <!--style="@style/text_normal.secondary"-->

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:background="@drawable/bg_bj"
-    android:orientation="vertical">
+    android:padding="@dimen/dp_10"
+    >
 
     <TextView
         android:layout_width="24dp"
@@ -16,43 +19,23 @@
         android:textColor="@color/black_normal"
         android:textSize="16sp" />
 
-
     <TextView
-        android:id="@+id/tv_business"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="商业广告点位"
-        android:textColor="#ff333333"
-        android:gravity="center"
-        android:padding="20dp"
-        android:textSize="15sp"
+        android:text="请选择社区类型"
+        android:textColor="#ff999999"
+        android:textSize="14sp"
         />
 
-
-    <TextView
-        android:id="@+id/tv_day"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_marginTop="@dimen/dp5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="DIY广告点位"
-        android:textColor="#ff333333"
-        android:gravity="center"
-        android:padding="20dp"
-        android:textSize="15sp"
-        />
-
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/tv_convenience"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="便民信息点位"
-        android:textColor="#ff333333"
-        android:gravity="center"
-        android:padding="20dp"
-        android:textSize="15sp"
-        />
-
-    <TextView
+        android:layout_marginTop="@dimen/dp_10"
         android:id="@+id/share_btn_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -194,6 +194,7 @@
                         android:background="@drawable/white_margin_sixteen_divider" />
 
                     <LinearLayout
+                        android:id="@+id/ll_throwway"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:orientation="horizontal">
@@ -209,6 +210,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_throwway"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -250,6 +252,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_humantraffic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -261,6 +264,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -291,6 +295,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_occupancyrate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -302,6 +307,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -332,6 +338,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_averagesellingprice"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -341,6 +348,7 @@
                             android:paddingRight="@dimen/spacing_default"
                             android:textColor="#333333"
                             android:textColorHint="#ABABAB"
+                            android:inputType="number"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
                             android:textStyle="bold" />
@@ -373,6 +381,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_sitenumber"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -384,6 +393,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -414,6 +424,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_propertyfee"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -425,6 +436,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -455,6 +467,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/tv_peoplecoverd"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -466,6 +479,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -496,6 +510,8 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_rent"
+                            android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -537,6 +553,7 @@
                             android:textSize="12sp"
                             />
                         <EditText
+                            android:id="@+id/et_numberarea"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -548,6 +565,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
+                            android:inputType="number"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -558,6 +576,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/ll_exclusiveadvertising"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:orientation="horizontal">
@@ -573,6 +592,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_exclusiveadvertising"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -593,6 +613,7 @@
                         android:background="@drawable/white_margin_sixteen_divider" />
 
                     <LinearLayout
+                        android:id="@+id/ll_deliverytime"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:orientation="horizontal">
@@ -602,12 +623,13 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/spacing_default"
                             android:gravity="center_vertical"
-                            android:text="禁忌行业"
+                            android:text="交房时间"
                             android:textColor="#ff333333"
                             android:textSize="@dimen/txt_normal_content"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_deliverytime"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -634,7 +656,7 @@
                         android:layout_marginTop="15dp"
                         android:paddingLeft="@dimen/spacing_default"
                         android:paddingRight="@dimen/spacing_default"
-                        android:text="交房时间"
+                        android:text="小区封面"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/txt_normal_content"
                         android:textStyle="bold" />

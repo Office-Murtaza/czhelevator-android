@@ -1,26 +1,39 @@
 package com.kingyon.elevator.uis.activities.devices;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.services.core.PoiItem;
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.blankj.utilcode.util.LogUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.CellDetailsEntity;
+import com.kingyon.elevator.entities.IndustryEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
+import com.kingyon.elevator.uis.activities.plan.IndustryActivity;
+import com.kingyon.elevator.uis.activities.salesman.TabooChooseActivity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.uis.adapters.adapterone.UploadImageAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.dialog.CommunityTypeAdapter;
+import com.kingyon.elevator.uis.dialogs.CommunityTypeDialog;
+import com.kingyon.elevator.uis.dialogs.OnWayDialog;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.AddressPickerUtil;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -29,17 +42,25 @@ import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.GridSpacingItemDecoration;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
+import com.leo.afbaselibrary.utils.TimeUtil;
+import com.leo.afbaselibrary.widgets.StateLayout;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
 
@@ -66,10 +87,54 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     RecyclerView rvImages;
     @BindView(R.id.tv_create)
     TextView tvCreate;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.head_root)
+    RelativeLayout headRoot;
+    @BindView(R.id.ll_area)
+    LinearLayout llArea;
+    @BindView(R.id.ll_address)
+    LinearLayout llAddress;
+    @BindView(R.id.ll_name)
+    LinearLayout llName;
+    @BindView(R.id.ll_type)
+    LinearLayout llType;
+    @BindView(R.id.tv_throwway)
+    TextView tvThrowway;
+    @BindView(R.id.ll_throwway)
+    LinearLayout llThrowway;
+    @BindView(R.id.et_humantraffic)
+    EditText etHumantraffic;
+    @BindView(R.id.et_occupancyrate)
+    EditText etOccupancyrate;
+    @BindView(R.id.et_averagesellingprice)
+    EditText etAveragesellingprice;
+    @BindView(R.id.et_sitenumber)
+    EditText etSitenumber;
+    @BindView(R.id.et_propertyfee)
+    EditText etPropertyfee;
+    @BindView(R.id.tv_peoplecoverd)
+    EditText tvPeoplecoverd;
+    @BindView(R.id.et_rent)
+    EditText etRent;
+    @BindView(R.id.et_numberarea)
+    EditText etNumberarea;
+    @BindView(R.id.tv_exclusiveadvertising)
+    TextView tvExclusiveadvertising;
+    @BindView(R.id.ll_exclusiveadvertising)
+    LinearLayout llExclusiveadvertising;
+    @BindView(R.id.tv_deliverytime)
+    TextView tvDeliverytime;
+    @BindView(R.id.ll_deliverytime)
+    LinearLayout llDeliverytime;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     private boolean edit;
     private long editCellId;
-
+    private DatePickerDialog startDialog;
     private UploadImageAdapter logoAdapter;
     private UploadImageAdapter imagesAdapter;
     private AddressPickerUtil addressUtil;
@@ -174,7 +239,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         }
     }
 
-    @OnClick({R.id.pre_v_right, R.id.ll_area, R.id.ll_address, R.id.ll_name, R.id.ll_type,  R.id.tv_create})
+    @OnClick({R.id.pre_v_right, R.id.ll_area, R.id.ll_address, R.id.ll_name, R.id.ll_type, R.id.tv_create
+            ,R.id.ll_throwway,R.id.ll_exclusiveadvertising,R.id.ll_deliverytime})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_right:
@@ -201,21 +267,58 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             case R.id.ll_name:
                 break;
             case R.id.ll_type:
-                KeyBoardUtils.closeKeybord(this);
-                showCellTypePicker();
+//                KeyBoardUtils.closeKeybord(this);
+//                showCellTypePicker();
+                CommunityTypeDialog communityTypeDialog = new CommunityTypeDialog(this, new CommunityTypeDialog.OnClickzhi() {
+                    @Override
+                    public void getIdStr(String title, int id) {
+                        LogUtils.e(title,id);
+                        tvType.setText(title);
+                        cellType = String.valueOf(id);
+                    }
+                });
+                communityTypeDialog.show();
                 break;
 
             case R.id.tv_create:
                 onSaveClick();
                 break;
+            case R.id.ll_throwway:
+                OnWayDialog dialog = new OnWayDialog(this, new OnWayDialog.OnWayString() {
+                    @Override
+                    public void onWay(String str) {
+                   tvThrowway.setText(str);
+                    }
+                });
+                dialog.show();
+                break;
+            case R.id.ll_exclusiveadvertising:
+                startActivityForResult(TabooChooseActivity.class, CommonUtil.REQ_CODE_4);
+                break;
+            case R.id.ll_deliverytime:
+                initTimePicker1();
+                break;
         }
     }
+//    onActivityResult
+
+
 
     private String location;
     private Long adCode;
     private String address;
     private String cellName;
     private String cellType;
+    String throwWay;
+    String occupancyRate;
+    String averageSellingPrice;
+    String siteNumber;
+    String propertyFee;
+    String peopleCoverd;
+    String rent;
+    String numberArea;
+    String exclusiveAdvertising;
+    String deliveryTime;
     private Long flow;
     private String logoResult;
     private String imagesResult;
@@ -248,27 +351,27 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         }
         cellName = etName.getText().toString();
 
-        cellType = (String) tvType.getTag();
+
         if (TextUtils.isEmpty(cellType)) {
             showToast("请选择小区类型");
             return;
         }
 
         flow = null;
-//        if (!TextUtils.isEmpty(CommonUtil.getEditText(etFlow))) {
-//            try {
-//                flow = Long.parseLong(etFlow.getText().toString());
-//            } catch (NumberFormatException e) {
-//                flow = null;
-//            }
-//            if (flow == null || flow <= 0) {
-//                showToast("输入的人流量信息有误");
-//                return;
-//            }
-//        }
-//        if (flow == null) {
-//            flow = 0L;
-//        }
+        if (!TextUtils.isEmpty(CommonUtil.getEditText(etHumantraffic))) {
+            try {
+                flow = Long.parseLong(etHumantraffic.getText().toString());
+            } catch (NumberFormatException e) {
+                flow = null;
+            }
+            if (flow == null || flow <= 0) {
+                showToast("输入的人流量信息有误");
+                return;
+            }
+        }
+        if (flow == null) {
+            flow = 0L;
+        }
         if (logoAdapter.getItemRealCount() <= 0) {
             showToast("请选择小区封面");
             return;
@@ -285,8 +388,21 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
 
         tvCreate.setEnabled(false);
         showProgressDialog(getString(R.string.wait));
-
+        occupancyRate = etOccupancyrate.getText().toString();
+        averageSellingPrice = etAveragesellingprice.getText().toString();
+        siteNumber = etSitenumber.getText().toString();
+        propertyFee = StringEdit(etPropertyfee);
+        peopleCoverd = StringEdit(tvPeoplecoverd);
+        rent = StringEdit(etRent);
+        numberArea = StringEdit(etNumberarea);
+        exclusiveAdvertising = tvExclusiveadvertising.getText().toString();
+        deliveryTime = tvDeliverytime.getText().toString();
+        throwWay = tvThrowway.getText().toString();
         dealLogo();
+    }
+
+    private String StringEdit(EditText et) {
+        return et.getText().toString();
     }
 
     private void dealLogo() {
@@ -294,8 +410,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             showProgressDialog("小区封面上传中...");
             NetService.getInstance().uploadFile(this, logoFile.get(0), new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images, List<String> hash,JSONObject response) {
-                    LogUtils.e(images,hash,response);
+                public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
+                    LogUtils.e(images, hash, response);
                     if (images != null && images.size() > 0) {
                         logoResult = images.get(0);
                         dealImages();
@@ -324,8 +440,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             showProgressDialog("小区照片上传中...");
             NetService.getInstance().uploadFiles(this, imageFiles, new NetUpload.OnUploadCompletedListener() {
                 @Override
-                public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
-                    LogUtils.e(images,hash,response);
+                public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
+                    LogUtils.e(images, hash, response);
                     if (images != null && images.size() == imageFiles.size()) {
                         try {
                             List<String> results = new ArrayList<>();
@@ -365,12 +481,12 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         }
     }
 
-
     private void publishRequest() {
         showProgressDialog(getString(R.string.wait));
         double[] centerLatLon = FormatUtils.getInstance().getCenterLatLon(location);
         NetService.getInstance().addCell(edit ? editCellId : null, String.valueOf(adCode), address
-                , cellName, cellType, flow, logoResult, imagesResult, centerLatLon[0], centerLatLon[1])
+                , cellName, cellType, flow, logoResult, imagesResult, throwWay, occupancyRate, averageSellingPrice,
+                siteNumber, propertyFee, peopleCoverd, rent, numberArea, exclusiveAdvertising, deliveryTime, centerLatLon[0], centerLatLon[1])
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
@@ -445,6 +561,28 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                         imagesAdapter.addDatas(mSelectPath2);
                     }
                     break;
+                    case CommonUtil.REQ_CODE_4:
+                        String industryEntity = data.getStringExtra(CommonUtil.KEY_VALUE_1);
+                        Gson gson = new Gson();
+                        List<IndustryEntity> list = gson.fromJson(industryEntity, new TypeToken<List<IndustryEntity>>(){}.getType());
+                        LogUtils.e(list.size());
+                        StringBuffer sb = new StringBuffer();
+                        StringBuffer sb1 = new StringBuffer();
+                        for (int i = 0;i<list.size();i++){
+                            if (list.get(i).isChoose()){
+                                LogUtils.e(list.get(i).getName(),list.get(i).getObjectId());
+                                sb.append(list.get(i).getName()+",");
+                                sb1.append(list.get(i).getObjectId()+",");
+                            }
+                        }
+                        if (!sb.toString().isEmpty()) {
+                            tvExclusiveadvertising.setText(sb.toString().substring(0, (sb.toString().length() - 1)));
+                            exclusiveAdvertising = sb1.toString();
+                        }else {
+                            tvExclusiveadvertising.setText("");
+                            exclusiveAdvertising = "";
+                        }
+                        break;
             }
         }
     }
@@ -463,5 +601,76 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             addressUtil.onDestroy();
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+
+    private void initTimePicker1() {//选择出生年月日
+        //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
+        //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        SimpleDateFormat formatter_year = new SimpleDateFormat("yyyy ");
+        String year_str = formatter_year.format(curDate);
+        int year_int = (int) Double.parseDouble(year_str);
+
+        SimpleDateFormat formatter_mouth = new SimpleDateFormat("MM ");
+        String mouth_str = formatter_mouth.format(curDate);
+        int mouth_int = (int) Double.parseDouble(mouth_str);
+
+        SimpleDateFormat formatter_day = new SimpleDateFormat("dd ");
+        String day_str = formatter_day.format(curDate);
+        int day_int = (int) Double.parseDouble(day_str);
+
+
+        Calendar selectedDate = Calendar.getInstance();//系统当前时间
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(1900, 0, 1);
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(year_int, mouth_int - 1, day_int);
+
+        //时间选择器
+        TimePickerView pvTime1 = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
+                /*btn_Time.setText(getTime(date));*/
+                LogUtils.e(getTime(date),date);
+                tvDeliverytime.setText(getTime(date));
+                deliveryTime = String.valueOf(TimeUtil.ymdToLong(getTime(date)));
+                LogUtils.e(deliveryTime);
+            }
+        }).setType(new boolean[]{true, true, true, false, false, false}) //年月日时分秒 的显示与否，不设置则默认全部显示
+                .setLabel("年", "月", "日", "", "", "")//默认设置为年月日时分秒
+                .isCenterLabel(false)
+                .setTitleText("交房时间")//标题
+                .setDividerColor(0xFFFFFFFF)
+                .setSubmitColor(0xFF2D6EF2)//确定按钮文字颜色
+                .setCancelColor(0xFF999999)//取消按钮文字颜色
+                .setTextColorCenter(0xFF333333)//设置选中项的颜色
+                .setTextColorOut(0xFF666666)//设置没有被选中项的颜色
+                .setTextColorCenter(0xFF000000)//
+                .setTitleColor(0xFF000000)//标题文字颜色
+                .setSubCalSize(16)//确定和取消文字大小
+                .setTitleSize(16)//标题文字大小
+                .setContentSize(21)
+                .setDate(selectedDate)
+                .setLineSpacingMultiplier(1.2f)
+//                .setRangDate(startDate, endDate)
+//                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
+                .setDecorView(null)
+                .build();
+        pvTime1.show();
+    }
+
+    private String getTime(Date date) {//可根据需要自行截取数据显示
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
     }
 }

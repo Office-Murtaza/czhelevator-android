@@ -21,6 +21,8 @@ public class NormalElemEntity extends OnChoosedInterface implements Parcelable {
     protected long objectId;
     protected String name;
 
+
+
     public boolean isCanEdit() {
         return canEdit;
     }

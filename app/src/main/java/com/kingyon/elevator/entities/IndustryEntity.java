@@ -25,6 +25,26 @@ public class IndustryEntity extends OnChoosedInterface implements Parcelable {
     private String name;
     private String type;
     private List<IndustryEntity> childs;
+    private boolean isChoose;
+
+    public boolean isChoose() {
+        return isChoose;
+    }
+
+    public void setChoose(boolean choose) {
+        isChoose = choose;
+    }
+
+    @Override
+    public String toString() {
+        return "IndustryEntity{" +
+                "objectId=" + objectId +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", childs=" + childs +
+                ", isChoose=" + isChoose +
+                '}';
+    }
 
     public long getObjectId() {
         return objectId;

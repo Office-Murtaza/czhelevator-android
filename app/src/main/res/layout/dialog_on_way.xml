@@ -18,10 +18,10 @@
 
 
     <TextView
-        android:id="@+id/tv_business"
+        android:id="@+id/tv_video_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="商业广告点位"
+        android:text="视频/海报"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"
@@ -30,10 +30,10 @@
 
 
     <TextView
-        android:id="@+id/tv_day"
+        android:id="@+id/tv_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DIY广告点位"
+        android:text="视频"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"
@@ -42,10 +42,10 @@
 
 
     <TextView
-        android:id="@+id/tv_convenience"
+        android:id="@+id/tv_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="便民信息点位"
+        android:text="海报"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"

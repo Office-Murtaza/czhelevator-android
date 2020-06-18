@@ -17,6 +17,8 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NormalElemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.salesman.AddSalesActiviry;
+import com.kingyon.elevator.uis.activities.salesman.SalesBuildUnitActivity;
 import com.kingyon.elevator.uis.dialogs.EditDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RoleUtils;
@@ -105,18 +107,26 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
 
     protected void onEditImplement(NormalElemEntity entity) {
         showEditDialog(entity);
+        LogUtils.e("2222",entity.toString());
     }
 
     protected void onCreateImplement() {
         showEditDialog(null);
+        LogUtils.e("2222");
     }
 
     protected void showEditDialog(NormalElemEntity entity) {
-        LogUtils.e(entity.getName(),entity.getObjectId());
-        if (editDialog == null) {
-            editDialog = new EditDialog<>(this, this);
-        }
-        editDialog.show(entity, this, "楼栋", entity != null ? entity.getName() : "", "请输入楼栋名称", false, false);
+        LogUtils.e("11111");
+
+        Bundle bundle = new Bundle();
+        bundle.putLong(CommonUtil.KEY_VALUE_1, parentId);
+        bundle.putString(CommonUtil.KEY_VALUE_2,"添加楼栋");
+        bundle.putInt(CommonUtil.KEY_VALUE_3,1);
+        startActivity(AddSalesActiviry.class, bundle);
+//        if (editDialog == null) {
+//            editDialog = new EditDialog<>(this, this);
+//        }
+//        editDialog.show(entity, this, "楼栋", entity != null ? entity.getName() : "", "请输入楼栋名称", false, false);
     }
 
     @Override
@@ -197,6 +207,7 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
     public void onViewClicked() {
         onCreateImplement();
         LogUtils.e("1111111111");
+
 
     }
 

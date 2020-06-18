@@ -29,7 +29,8 @@
             android:id="@+id/img_delete"
             android:layout_width="@dimen/spacing_default"
             android:layout_height="@dimen/spacing_default"
-            android:src="@drawable/ic_upload_delete" />
+            android:layout_gravity="right"
+            android:src="@mipmap/btn_image_clear" />
 
         <TextView
             android:id="@+id/tv_main_image"
