@@ -91,6 +91,7 @@ import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -430,8 +431,13 @@ public class NetService {
         return addSchedulers(observable);
     }
 
+    /*2.0设备详情*/
     public Observable<PointItemEntity> deviceDetails(long deviceId) {
         return addSchedulers(getApi().deviceDetails(deviceId));
+    }
+    /*2.0物业设备收益*/
+    public Observable<ConentEntity<EquipmentDetailsRevenueEntiy>> getEquipmentDetailsRevenue(int page,String month,long deviceId ){
+        return addSchedulers(getApi().setEquipmentDetailsRevenue(page,month,deviceId));
     }
 
     public Observable<String> repairDevice(long deviceId, Long reasonId, String remarks, String images) {
@@ -463,7 +469,7 @@ public class NetService {
                 rent,numberArea,exclusiveAdvertising,deliveryTime, longitude, latitude));
     }
 
-    public Observable<PageListEntity<PointItemEntity>> installerDeviceList(int page) {
+    public Observable<ConentEntity<PointItemEntity>> installerDeviceList(int page) {
         return addSchedulers(getApi().installerDeviceList(page));
     }
 
@@ -474,6 +480,7 @@ public class NetService {
 //        return addSchedulers(getApi().liftCamera(liftId));
 //    }
 
+    /*2.0摄像头厂家*/
     public Observable<List<CameraBrandEntity>> cameraBrandInfo() {
         return addSchedulers(getApi().cameraBrandInfo());
     }
@@ -1391,16 +1398,16 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
         return addSchedulers(observable);
     }
 
-    public Observable<PageListEntity<IncomeStatisticsEntity>> propertyIncomeStatistics(String filter, int page) {
+    public Observable<ConentEntity<IncomeStatisticsEntity>> propertyIncomeStatistics(String filter, int page) {
         return addSchedulers(getApi().propertyIncomeStatistics(filter, page));
     }
 
-    public Observable<PageListEntity<IncomeStatisticsEntity>> propertyEarningsDetails(long startTime
+    public Observable<ConentEntity<IncomeStatisticsEntity>> propertyEarningsDetails(long startTime
             , long endTime, int page) {
         return addSchedulers(getApi().propertyEarningsDetails(startTime, endTime, page));
     }
 
-    public Observable<PageListEntity<SettlementEntity>> propertySettlementList(String type, int page) {
+    public Observable<ConentEntity<SettlementEntity>> propertySettlementList(String type, int page) {
         return addSchedulers(getApi().settlementList(type, page));
     }
 

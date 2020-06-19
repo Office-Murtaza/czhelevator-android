@@ -14,6 +14,7 @@ import com.leo.afbaselibrary.nets.exceptions.ResultException;
 /**
  * Created by GongLi on 2019/1/21.
  * Email：lc824767150@163.com
+ * 设备详情
  */
 
 public class InstallerDeviceDetailsActivity extends CooperationDevicesDetailsActivity {

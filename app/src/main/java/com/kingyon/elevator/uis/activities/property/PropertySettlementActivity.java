@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.SettlementEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.IncomeRecordsActivity;
@@ -48,8 +49,8 @@ public class PropertySettlementActivity extends BaseStateRefreshingLoadingActivi
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().propertySettlementList("ALL", page)
-                .compose(this.<PageListEntity<SettlementEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<SettlementEntity>>() {
+                .compose(this.<ConentEntity<SettlementEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<SettlementEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -57,7 +58,7 @@ public class PropertySettlementActivity extends BaseStateRefreshingLoadingActivi
                     }
 
                     @Override
-                    public void onNext(PageListEntity<SettlementEntity> settlementEntityPageListEntity) {
+                    public void onNext(ConentEntity<SettlementEntity> settlementEntityPageListEntity) {
                         if (settlementEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

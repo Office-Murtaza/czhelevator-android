@@ -29,6 +29,7 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/15.
  * Email：lc824767150@163.com
+ * 设备详情
  */
 
 public class CooperationDevicesDetailsActivity extends BaseStateRefreshingLoadingActivity<Object> implements CooperationDeviceDetailsDecoration.GroupStickyListener {

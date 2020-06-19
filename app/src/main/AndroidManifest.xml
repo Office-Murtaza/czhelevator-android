@@ -518,7 +518,7 @@
         <activity
             android:name=".uis.activities.property.PropertyDeviceChooseActivity"
             android:screenOrientation="portrait" /> <!-- 设备 -->
-<!--        编辑设备" : "添加设备-->
+<!--       2.0 编辑设备" : "添加设备-->
         <activity
             android:name=".uis.activities.devices.DeviceEditActivity"
             android:screenOrientation="portrait" />
@@ -550,6 +550,7 @@
         <activity
             android:name=".uis.activities.devices.LiftEditActivity"
             android:screenOrientation="portrait" />
+        <!--2.0摄像头内容-->
         <activity
             android:name=".uis.activities.devices.CameraBrandActivity"
             android:screenOrientation="portrait" />
@@ -760,6 +761,11 @@
         <activity android:name=".uis.activities.salesman.TabooChooseActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0设备收益明细-->
+        <activity android:name=".uis.actiivty2.property.EquipmentDetailsRevenueActivity"
+            android:screenOrientation="portrait"
+            />
+
         <!-- ****************友盟配置****************************** -->
         <meta-data
             android:name="UMENG_APPKEY"

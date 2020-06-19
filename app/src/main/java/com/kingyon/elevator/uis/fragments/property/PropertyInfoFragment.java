@@ -8,9 +8,11 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
@@ -20,7 +22,6 @@ import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.property.PropertyDeviceActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyEarningsActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyIncomeActivity;
-import com.kingyon.elevator.uis.activities.property.PropertyInfomationsActivity;
 import com.kingyon.elevator.uis.activities.property.PropertySettlementActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -29,7 +30,9 @@ import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by GongLi on 2019/1/14.
@@ -37,27 +40,31 @@ import butterknife.OnClick;
  */
 
 public class PropertyInfoFragment extends BaseFragment implements OnParamsChangeInterface {
-    @BindView(R.id.pre_v_back)
-    ImageView preVBack;
-    @BindView(R.id.fl_title)
-    FrameLayout flTitle;
+
+
+    @BindView(R.id.img_top_back)
+    ImageView imgTopBack;
+    @BindView(R.id.tv_top_title)
+    TextView tvTopTitle;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
+    @BindView(R.id.tv_records)
+    TextView tvRecords;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
     @BindView(R.id.tv_withdraw_money)
     TextView tvWithdrawMoney;
-    @BindView(R.id.tv_records)
-    TextView tvRecords;
     @BindView(R.id.tv_income_today)
     TextView tvIncomeToday;
     @BindView(R.id.tv_income_month)
     TextView tvIncomeMonth;
     @BindView(R.id.tv_income_year)
     TextView tvIncomeYear;
-    @BindView(R.id.v_infomation)
-    View vInfomation;
-    @BindView(R.id.tv_infomation)
-    TextView tvInfomation;
-
+    @BindView(R.id.tv_income)
+    LinearLayout tvIncome;
+    @BindView(R.id.tv_devices)
+    LinearLayout tvDevices;
+    Unbinder unbinder;
     private boolean propertyCell;
     private PropertyInfoEntity entity;
     private TipDialog<String> tipDialog;
@@ -84,16 +91,17 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
         } else {
             entity = new PropertyInfoEntity();
         }
-        StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
-        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
+//        StatusBarUtil.setHeadViewPadding(getActivity(), flTitle);
+//        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
+        tvTopTitle.setText("物业管理");
         updateUI(entity);
     }
 
     @Override
     public void onResume() {
-//        tvRecords.setVisibility(propertyCell ? View.GONE : View.VISIBLE);
-        vInfomation.setVisibility(propertyCell ? View.VISIBLE : View.GONE);
-        tvInfomation.setVisibility(propertyCell ? View.VISIBLE : View.GONE);
+////        tvRecords.setVisibility(propertyCell ? View.GONE : View.VISIBLE);
+//        vInfomation.setVisibility(propertyCell ? View.VISIBLE : View.GONE);
+//        tvInfomation.setVisibility(propertyCell ? View.VISIBLE : View.GONE);
         super.onResume();
     }
 
@@ -105,7 +113,7 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
 
     private void updateUI(PropertyInfoEntity entity) {
         tvTotalMoney.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getAllIncome())));
-        tvWithdrawMoney.setText(CommonUtil.getTwoFloat(entity.getUsefulIncome()));
+        tvWithdrawMoney.setText("待结算金额：¥"+CommonUtil.getTwoFloat(entity.getUsefulIncome()));
         tvIncomeToday.setText(CommonUtil.getMayTwoFloat(entity.getTodayIncome()));
         tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
         tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
@@ -117,18 +125,15 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
         return spannableString;
     }
 
-    @OnClick({R.id.pre_v_back, R.id.pre_v_right, R.id.tv_records, R.id.ll_income_today, R.id.ll_income_month, R.id.ll_income_year, R.id.tv_income, R.id.tv_devices, R.id.tv_infomation})
+    @OnClick({R.id.img_top_back,  R.id.tv_records, R.id.ll_income_today, R.id.ll_income_month, R.id.ll_income_year, R.id.tv_income, R.id.tv_devices})
     public void onViewClicked(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
-            case R.id.pre_v_back:
+            case R.id.img_top_back:
                 FragmentActivity activity = getActivity();
                 if (activity != null && !activity.isFinishing()) {
                     activity.finish();
                 }
-                break;
-            case R.id.pre_v_right:
-                onTipClick();
                 break;
             case R.id.tv_records:
                 if (propertyCell) {
@@ -151,10 +156,12 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
                 startActivity(PropertyIncomeActivity.class, bundle);
                 break;
             case R.id.tv_income:
+                /*收益明细*/
                 startActivity(PropertyEarningsActivity.class);
 //                startActivity(PropertyIncomeActivity.class);
                 break;
             case R.id.tv_devices:
+                /*设备管理*/
                 if (propertyCell) {
                     bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.NEIGHBORHOODS);
                 } else {
@@ -162,18 +169,12 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
                 }
                 startActivity(PropertyDeviceActivity.class, bundle);
                 break;
-            case R.id.tv_infomation:
-                startActivity(PropertyInfomationsActivity.class);
-                break;
+//            case R.id.tv_infomation:
+//                startActivity(PropertyInfomationsActivity.class);
+//                break;
         }
     }
 
-    private void onTipClick() {
-        if (tipDialog == null) {
-            tipDialog = new TipDialog<>(getContext(), null);
-        }
-        tipDialog.showEnsureNoClose(String.format("每月结算时间为15号，若有疑问可致电：%s", getString(R.string.service_phone)), "知道了", "");
-    }
 
     private Drawable getBackDrawable(int color) {
         Drawable up = ContextCompat.getDrawable(getContext(), R.drawable.ic_back_gray_tint);
@@ -196,4 +197,17 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
     }
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

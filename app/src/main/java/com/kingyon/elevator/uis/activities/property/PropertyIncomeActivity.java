@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.activities.property;
 
 import com.kingyon.elevator.entities.IncomeStatisticsEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationIncomeActivity;
@@ -17,8 +18,8 @@ public class PropertyIncomeActivity extends CooperationIncomeActivity {
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().propertyIncomeStatistics(filter, page)
-                .compose(this.<PageListEntity<IncomeStatisticsEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<IncomeStatisticsEntity>>() {
+                .compose(this.<ConentEntity<IncomeStatisticsEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<IncomeStatisticsEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -26,11 +27,11 @@ public class PropertyIncomeActivity extends CooperationIncomeActivity {
                     }
 
                     @Override
-                    public void onNext(PageListEntity<IncomeStatisticsEntity> incomeStatisticsEntityPageListEntity) {
+                    public void onNext(ConentEntity<IncomeStatisticsEntity> incomeStatisticsEntityPageListEntity) {
                         if (incomeStatisticsEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
-                        totalMoney = incomeStatisticsEntityPageListEntity.getTotalAmount();
+//                        totalMoney = incomeStatisticsEntityPageListEntity.getTotalAmount();
                         if (FIRST_PAGE == page) {
                             mItems.clear();
                         }

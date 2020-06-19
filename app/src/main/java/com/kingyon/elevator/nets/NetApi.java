@@ -65,6 +65,7 @@ import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -400,33 +401,49 @@ public interface NetApi {
 //获取最新版本
     @GET("common/getLatestVersion")
     Observable<VersionEntity> getLatestVersion(@Query("platform") String platform, @Query("versionCode") int versionCode);
-//收入明细
-    @POST("common/incomeList")
+//2.0 收入明细
+    @POST("property/incomeList")
     @FormUrlEncoded
     Observable<PageListEntity<IncomeRecordEntity>> incomeRecordsList(@Field("type") String type
             , @Field("deviceId") Long deviceId, @Field("billSn") String billSn
             , @Field("role") String role, @Field("page") int page);
-//物业/合伙人 小区设备列表(add)
-    @GET("common/cellDeviceList")
-    Observable<List<PointItemEntity>> cellDeviceList(@Query("cellId") long cellId);
-//物业/合伙人 小区设备数量列表(add
-    @GET("common/cellDevicesNumber")
+
+//2.0物业/合伙人 小区设备列表(add)
+    @POST("common/cellDeviceList")
+    @FormUrlEncoded
+    Observable<List<PointItemEntity>> cellDeviceList(@Field("cellId") long cellId);
+
+//2.0 物业/合伙人 小区设备数量列表(add
+    @POST("common/cellDevicesNumber")
     Observable<List<CellDeviceNumberEntity>> cellDevicesNumber();
-//物业/合伙人 设备数(add
-    @GET("common/devicesNumber")
+
+    //2.0物业/合伙人 设备数(add
+    @POST("common/devicesNumber")
     Observable<DeviceNumberEntity> devicesNumber();
-//设备详情(add)
-    @GET("common/deviceDetails")
-    Observable<PointItemEntity> deviceDetails(@Query("deviceId") long deviceId);
+
+    //2.0设备详情(add)
+    @POST("common/deviceDetails")
+    @FormUrlEncoded
+    Observable<PointItemEntity> deviceDetails(@Field("deviceId") long deviceId);
+
+    /*2.0物业设备详情收益*/
+    @POST("property/incomeList")
+    @FormUrlEncoded
+    Observable<ConentEntity<EquipmentDetailsRevenueEntiy>>setEquipmentDetailsRevenue(@Field("page") int page,@Field("month")String month ,
+                                                                             @Field("deviceId")long deviceId);
+
+
 //设备报修
     @POST("common/repairDevice")
     @FormUrlEncoded
     Observable<String> repairDevice(@Field("deviceId") long deviceId, @Field("reasonId") Long reasonId
             , @Field("remarks") String remarks, @Field("images") String images);
+
 //获取设备报修原因列表（add)
-    @GET("common/repairReasons")
+    @POST("common/repairReasons")
     Observable<List<NormalElemEntity>> repairReasons();
-//添加/修改设备
+
+    //2.0添加/修改设备
     @POST("common/addDevice")
     @FormUrlEncoded
     Observable<String> addDevice(@Field("objectId") Long objectId, @Field("deviceNo") String deviceNo
@@ -434,7 +451,8 @@ public interface NetApi {
             , @Field("cellId") long cellId, @Field("buildId") long buildId
             , @Field("unitId") long unitId, @Field("liftId") long liftId
             , @Field("cameraBrand") Long cameraBrand, @Field("cameraIp") String cameraIp);
-//2.0添加小区&编辑小区
+
+    //2.0添加小区&编辑小区
     @POST("common/addCell")
     @FormUrlEncoded
     Observable<String> addCell(@Field("objctId") Long objectId, @Field("adcode") String adcode
@@ -450,7 +468,7 @@ public interface NetApi {
 
     @POST("common/deviceList")
     @FormUrlEncoded
-    Observable<PageListEntity<PointItemEntity>> installerDeviceList(@Field("page") int page);
+    Observable<ConentEntity<PointItemEntity>> installerDeviceList(@Field("page") int page);
 
     @GET("common/advertising")
     Observable<AdvertisionEntity> getAdertising();
@@ -458,7 +476,8 @@ public interface NetApi {
 //    @GET("common/liftCamera")
 //    Observable<CameraEntity> liftCamera(@Query("liftId") long liftId);
 
-    @GET("common/cameraBrandInfo")
+    /*2.0摄像头厂家列表*/
+    @POST("common/cameraBrandInfo")
     Observable<List<CameraBrandEntity>> cameraBrandInfo();
 
     //用户
@@ -681,7 +700,7 @@ public interface NetApi {
     Observable<UserEntity> userProfile();
 
     /*2.0用户信息修改*/
-    @POST("user/userEidtProfile")
+    @POST("user/userEditProfile")
     @FormUrlEncoded
     Observable<UserEntity> userEidtProfile(@FieldMap Map<String, String> params);
 
@@ -835,6 +854,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<PageListEntity<WithdrawItemEntity>> partnerWithdrawList(@Field("page") int page);
 
+    /*2.0*/
     @POST("partner/myCellList")
     @FormUrlEncoded
     Observable<ConentEntity<CellItemEntity>> partnerCellList(@Field("longitude") Double longitude
@@ -866,19 +886,25 @@ public interface NetApi {
     @GET("property/applyStatus")
     Observable<PropertyIdentityEntity> propertyIdentityInfo();
 
-    @POST("property/info")
+    /*2.0物业首页数据*/
+    @POST("property/indexInfo")
     Observable<PropertyInfoEntity> propertyInfo();
 
-    @GET("property/incomeRecords")
-    Observable<PageListEntity<IncomeStatisticsEntity>> propertyIncomeStatistics(@Query("filter") String filter, @Query("page") int page);
-
-    @GET("property/incomeStatistics")
-    Observable<PageListEntity<IncomeStatisticsEntity>> propertyEarningsDetails(@Query("startTime") long startTime
-            , @Query("endTime") long endTime, @Query("page") int page);
-
-    @POST("property/settlementList")
+    /*2.0物业收益记录*/
+    @POST("property/getEarningsRecord")
     @FormUrlEncoded
-    Observable<PageListEntity<SettlementEntity>> settlementList(@Field("type") String type, @Field("page") int page);
+    Observable<ConentEntity<IncomeStatisticsEntity>> propertyIncomeStatistics(@Field("filter") String filter, @Field("page") int page);
+
+    /*2.0收益明细*/
+    @POST("property/getEarningsDetail")
+    @FormUrlEncoded
+    Observable<ConentEntity<IncomeStatisticsEntity>> propertyEarningsDetails(@Field("startTime") long startTime
+            , @Field("endTime") long endTime, @Field("page") int page);
+
+    /*2.0结算记录*/
+    @POST("property/getClearRecord")
+    @FormUrlEncoded
+    Observable<ConentEntity<SettlementEntity>> settlementList(@Field("type") String type, @Field("page") int page);
 
     @POST("property/convenientList")
     @FormUrlEncoded

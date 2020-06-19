@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.activities.property;
 
 import com.kingyon.elevator.entities.IncomeStatisticsEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationEarningsActivity;
@@ -15,8 +16,8 @@ public class PropertyEarningsActivity extends CooperationEarningsActivity {
             subscription.unsubscribe();
         }
         NetService.getInstance().propertyEarningsDetails(startTime, endTime, page)
-                .compose(this.<PageListEntity<IncomeStatisticsEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<IncomeStatisticsEntity>>() {
+                .compose(this.<ConentEntity<IncomeStatisticsEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<IncomeStatisticsEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -24,12 +25,12 @@ public class PropertyEarningsActivity extends CooperationEarningsActivity {
                     }
 
                     @Override
-                    public void onNext(PageListEntity<IncomeStatisticsEntity> incomeStatisticsEntityPageListEntity) {
+                    public void onNext(ConentEntity<IncomeStatisticsEntity> incomeStatisticsEntityPageListEntity) {
                         if (incomeStatisticsEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
                         if (FIRST_PAGE == page) {
-                            updateTotal(incomeStatisticsEntityPageListEntity.getTotalAmount());
+//                            updateTotal(incomeStatisticsEntityPageListEntity.getTotalAmount());
                             mItems.clear();
                         }
                         if (incomeStatisticsEntityPageListEntity.getContent() != null) {

@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="："
+            android:text="-"
             android:textColor="#ff808080"
             android:textSize="13sp" />
 
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_marginLeft="3dp"
-            tools:src="@drawable/ic_screen_left" />
+            tools:src="@mipmap/ic_screen_left" />
     </LinearLayout>
 
     <TextView

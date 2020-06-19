@@ -43,6 +43,7 @@ import me.nereo.multi_image_selector.MultiImageSelector;
 /**
  * Created by GongLi on 2019/1/15.
  * Email：lc824767150@163.com
+ * 设备报修
  */
 
 public class CooperationDeviceReportActivity extends BaseSwipeBackActivity implements BaseAdapterWithHF.OnItemClickListener<Object>, NetUpload.OnUploadCompletedListener {

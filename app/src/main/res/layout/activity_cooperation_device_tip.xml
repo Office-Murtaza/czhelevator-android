@@ -2,48 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white_normal"
-    android:orientation="vertical">
+    android:background="#F4F4F9"
+    android:padding="@dimen/dp10"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spacing_divider"
-        android:background="@drawable/white_margin_sixteen_divider" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_default">
+        android:src="@mipmap/ic_manage_list"
+        ></ImageView>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="小区名称"
-            android:textColor="#ff333333"
-            android:textSize="@dimen/txt_big_content"
-            android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设备列表"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:textColor="#ff1a1d48"
+        android:textSize="12sp"
+        />
 
-        <TextView
-            android:id="@+id/tv_used"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已使用"
-            android:textColor="#ff333333"
-            android:textSize="@dimen/txt_big_content"
-            android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/已上线"
-            android:textColor="#ABABAB"
-            android:textSize="@dimen/txt_big_content"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spacing_divider"
-        android:background="@drawable/white_margin_sixteen_divider" />
 </LinearLayout>

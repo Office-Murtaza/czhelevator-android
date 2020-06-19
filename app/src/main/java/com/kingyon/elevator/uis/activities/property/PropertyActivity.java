@@ -21,6 +21,7 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 /**
  * Created by GongLi on 2019/1/14.
  * Email：lc824767150@163.com
+ * 物业首页
  */
 
 public class PropertyActivity extends BaseStateRefreshingActivity {
@@ -36,7 +37,7 @@ public class PropertyActivity extends BaseStateRefreshingActivity {
 
     @Override
     public int getContentViewId() {
-        StatusBarUtil.setTransparent(this, false);
+//        StatusBarUtil.setTransparent(this, false);
         return R.layout.activity_property;
     }
 

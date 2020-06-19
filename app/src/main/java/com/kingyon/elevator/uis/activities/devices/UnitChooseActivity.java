@@ -71,7 +71,7 @@ public class UnitChooseActivity extends BuildChooseActivity {
     protected void showEditDialog(NormalElemEntity entity) {
         Bundle bundle = new Bundle();
         bundle.putLong(CommonUtil.KEY_VALUE_1, parentId);
-        bundle.putString(CommonUtil.KEY_VALUE_2,"添加单元");
+        bundle.putString(CommonUtil.KEY_VALUE_2,"单元");
         bundle.putInt(CommonUtil.KEY_VALUE_3,2);
         startActivity(AddSalesActiviry.class, bundle);
 

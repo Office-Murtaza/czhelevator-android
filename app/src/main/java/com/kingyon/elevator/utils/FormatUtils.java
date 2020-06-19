@@ -571,13 +571,13 @@ public class FormatUtils {
         if (device != null) {
             switch (device) {
                 case Constants.DEVICE_PLACE.LEFT:
-                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_screen_left);
+                    drawable = ContextCompat.getDrawable(context, R.mipmap.ic_screen_left);
                     break;
                 case Constants.DEVICE_PLACE.CENTER:
-                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_screen_center);
+                    drawable = ContextCompat.getDrawable(context, R.mipmap.ic_screen_middle);
                     break;
                 case Constants.DEVICE_PLACE.RIGHT:
-                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_screen_right);
+                    drawable = ContextCompat.getDrawable(context, R.mipmap.ic_screen_right);
                     break;
                 default:
                     drawable = null;

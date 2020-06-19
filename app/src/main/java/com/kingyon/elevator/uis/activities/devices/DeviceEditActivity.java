@@ -26,6 +26,8 @@ import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.dialogs.ScreenPositionDialog;
+import com.kingyon.elevator.uis.dialogs.ScreenTypeDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.LocationUtils;
@@ -44,6 +46,7 @@ import rx.functions.Func1;
 /**
  * Created by GongLi on 2019/1/17.
  * Email：lc824767150@163.com
+ * 2。0安装管理-添加设备
  */
 
 public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLocationListener {
@@ -51,7 +54,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
     @BindView(R.id.tv_location)
     TextView tvLocation;
     @BindView(R.id.fl_location)
-    FrameLayout flLocation;
+    LinearLayout flLocation;
     @BindView(R.id.tv_device_no)
     TextView tvDeviceNo;
     @BindView(R.id.tv_cell)
@@ -96,6 +99,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
         edit = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_1, false);
         device = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
         fromCooperation = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_4, false);
+
         return edit ? "编辑设备" : "添加设备";
     }
 
@@ -122,19 +126,19 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                     case Constants.DEVICE_PLACE.LEFT:
                         tvOritation.setTag(Constants.DEVICE_PLACE.LEFT);
                         tvOritation.setText("左屏");
-                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_left, 0, R.drawable.ic_user_right, 0);
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_left, 0, R.drawable.ic_user_right, 0);
 //                        imgOritation.setImageResource(R.drawable.ic_screen_left);
                         break;
                     case Constants.DEVICE_PLACE.CENTER:
                         tvOritation.setTag(Constants.DEVICE_PLACE.CENTER);
                         tvOritation.setText("中屏");
-                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_center, 0, R.drawable.ic_user_right, 0);
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_middle, 0, R.drawable.ic_user_right, 0);
 //                        imgOritation.setImageResource(R.drawable.ic_screen_center);
                         break;
                     case Constants.DEVICE_PLACE.RIGHT:
                         tvOritation.setTag(Constants.DEVICE_PLACE.RIGHT);
                         tvOritation.setText("右屏");
-                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_right, 0, R.drawable.ic_user_right, 0);
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_right, 0, R.drawable.ic_user_right, 0);
 //                        imgOritation.setImageResource(R.drawable.ic_screen_right);
                         break;
                     default:
@@ -306,71 +310,41 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
     }
 
     private void showScreenTypePicker() {
-        if (typePicker == null || typeOptions == null) {
-            typeOptions = new ArrayList<>();
-            typeOptions.add(new NormalParamEntity(Constants.PLAN_TYPE.BUSINESS, "商业"));
-            typeOptions.add(new NormalParamEntity(Constants.PLAN_TYPE.DIY, "DIY"));
-            typePicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                @Override
-                public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                    if (typeOptions == null || typeOptions.size() <= options1) {
-                        return;
-                    }
-                    NormalParamEntity entity = typeOptions.get(options1);
-                    tvType.setTag(entity.getType());
-                    tvType.setText(entity.getName());
-                }
-            }).setCyclic(false, false, false).build();
-        }
-        typePicker.setPicker(typeOptions);
-        typePicker.show();
+        ScreenTypeDialog screenTypeDialog = new ScreenTypeDialog(this, new ScreenTypeDialog.OnWayString() {
+            @Override
+            public void onWay(String str, String type) {
+                    tvType.setTag(type);
+                    tvType.setText(str);
+            }
+        });
+        screenTypeDialog.show();
     }
 
     private void showScreenLocationPicker() {
-        if (oritationPicker == null || oritationOptions == null) {
-            oritationOptions = new ArrayList<>();
-            oritationOptions.add(new NormalParamEntity(Constants.DEVICE_PLACE.LEFT, "左屏"));
-            oritationOptions.add(new NormalParamEntity(Constants.DEVICE_PLACE.CENTER, "中屏"));
-            oritationOptions.add(new NormalParamEntity(Constants.DEVICE_PLACE.RIGHT, "右屏"));
-            oritationPicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                @Override
-                public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                    if (oritationOptions == null || oritationOptions.size() <= options1) {
-                        return;
-                    }
-                    NormalParamEntity entity = oritationOptions.get(options1);
-                    String type = entity.getType();
-                    switch (type) {
-                        case Constants.DEVICE_PLACE.LEFT:
-                            tvOritation.setTag(Constants.DEVICE_PLACE.LEFT);
-                            tvOritation.setText("左屏");
-                            tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_left, 0, R.drawable.ic_user_right, 0);
-//                        imgOritation.setImageResource(R.drawable.ic_screen_left);
-                            break;
-                        case Constants.DEVICE_PLACE.CENTER:
-                            tvOritation.setTag(Constants.DEVICE_PLACE.CENTER);
-                            tvOritation.setText("中屏");
-                            tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_center, 0, R.drawable.ic_user_right, 0);
-//                        imgOritation.setImageResource(R.drawable.ic_screen_center);
-                            break;
-                        case Constants.DEVICE_PLACE.RIGHT:
-                            tvOritation.setTag(Constants.DEVICE_PLACE.RIGHT);
-                            tvOritation.setText("右屏");
-                            tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_screen_right, 0, R.drawable.ic_user_right, 0);
-//                        imgOritation.setImageResource(R.drawable.ic_screen_right);
-                            break;
-                        default:
-                            tvOritation.setTag(null);
-                            tvOritation.setText("");
-                            tvOritation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_right, 0);
-//                        imgOritation.setImageDrawable(null);
-                            break;
-                    }
+        ScreenPositionDialog screenPositionDialog = new ScreenPositionDialog(this, new ScreenPositionDialog.OnWayString() {
+            @Override
+            public void onWay(String str, String type) {
+                switch (str){
+                    case "左屏":
+                        tvOritation.setTag(Constants.DEVICE_PLACE.LEFT);
+                        tvOritation.setText("左屏");
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_left, 0, R.drawable.ic_user_right, 0);
+                        break;
+                    case "中屏":
+                        tvOritation.setTag(Constants.DEVICE_PLACE.CENTER);
+                        tvOritation.setText("中屏");
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_middle, 0, R.drawable.ic_user_right, 0);
+                        break;
+                    case "右屏" :
+                        tvOritation.setTag(Constants.DEVICE_PLACE.RIGHT);
+                        tvOritation.setText("右屏");
+                        tvOritation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_screen_right, 0, R.drawable.ic_user_right, 0);
+                        break;
                 }
-            }).setCyclic(false, false, false).build();
-        }
-        oritationPicker.setPicker(oritationOptions);
-        oritationPicker.show();
+
+            }
+        });
+        screenPositionDialog.show();
     }
 
     public void checkLocation() {
@@ -545,7 +519,8 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                     @Override
                     public void onNext(CellItemEntity entity) {
                         tvLocation.setTag(entity);
-                        tvLocation.setText(String.format("当前定位：%s", entity.getCellName()));
+//                        tvLocation.setText(String.format("当前定位：%s", entity.getCellName()));
+                        tvLocation.setText(entity.getCellName());
                         if (tvCell.getTag() == null) {
                             tvCell.setTag(entity.getObjctId());
                             tvCell.setText(entity.getCellName());

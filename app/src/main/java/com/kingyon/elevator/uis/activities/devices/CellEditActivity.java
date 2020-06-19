@@ -611,7 +611,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     }
 
 
-    private void initTimePicker1() {//选择出生年月日
+    private void initTimePicker1() {
+        //选择出生年月日
         //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
         //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间

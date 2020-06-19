@@ -11,57 +11,63 @@ import android.os.Parcelable;
 public class PropertyInfoEntity implements Parcelable {
 
     /**
-     * allIncome : 1236.03
-     * usefulIncome : 1000.23
-     * todayIncome : 236.02
-     * mouthIncome : 236.32
-     * yearIncome : 1236
+
+
+     "total": 82090.8,
+
+     "notClearing": 6744.6,
+
+     "yesterday": 3002.4,
+
+     "thisMonth": 82090.8,
+
+     "thisYear": 82090.8
      */
 
-    private double allIncome;
-    private double usefulIncome;
-    private double todayIncome;
-    private double mouthIncome;
-    private double yearIncome;
+    private double total;
+    private double notClearing;
+    private double yesterday;
+    private double thisMonth;
+    private double thisYear;
 
     public double getAllIncome() {
-        return allIncome;
+        return total;
     }
 
     public void setAllIncome(double allIncome) {
-        this.allIncome = allIncome;
+        this.total = allIncome;
     }
 
     public double getUsefulIncome() {
-        return usefulIncome;
+        return notClearing;
     }
 
     public void setUsefulIncome(double usefulIncome) {
-        this.usefulIncome = usefulIncome;
+        this.notClearing = usefulIncome;
     }
 
     public double getTodayIncome() {
-        return todayIncome;
+        return yesterday;
     }
 
     public void setTodayIncome(double todayIncome) {
-        this.todayIncome = todayIncome;
+        this.yesterday = todayIncome;
     }
 
     public double getMouthIncome() {
-        return mouthIncome;
+        return thisMonth;
     }
 
     public void setMouthIncome(double mouthIncome) {
-        this.mouthIncome = mouthIncome;
+        this.thisMonth = mouthIncome;
     }
 
     public double getYearIncome() {
-        return yearIncome;
+        return thisYear;
     }
 
     public void setYearIncome(double yearIncome) {
-        this.yearIncome = yearIncome;
+        this.thisYear = yearIncome;
     }
 
     @Override
@@ -71,22 +77,22 @@ public class PropertyInfoEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(this.allIncome);
-        dest.writeDouble(this.usefulIncome);
-        dest.writeDouble(this.todayIncome);
-        dest.writeDouble(this.mouthIncome);
-        dest.writeDouble(this.yearIncome);
+        dest.writeDouble(this.total);
+        dest.writeDouble(this.notClearing);
+        dest.writeDouble(this.yesterday);
+        dest.writeDouble(this.thisMonth);
+        dest.writeDouble(this.thisYear);
     }
 
     public PropertyInfoEntity() {
     }
 
     protected PropertyInfoEntity(Parcel in) {
-        this.allIncome = in.readDouble();
-        this.usefulIncome = in.readDouble();
-        this.todayIncome = in.readDouble();
-        this.mouthIncome = in.readDouble();
-        this.yearIncome = in.readDouble();
+        this.total = in.readDouble();
+        this.notClearing = in.readDouble();
+        this.yesterday = in.readDouble();
+        this.thisMonth = in.readDouble();
+        this.thisYear = in.readDouble();
     }
 
     public static final Parcelable.Creator<PropertyInfoEntity> CREATOR = new Parcelable.Creator<PropertyInfoEntity>() {

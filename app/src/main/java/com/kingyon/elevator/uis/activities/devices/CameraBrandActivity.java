@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Created by GongLi on 2019/2/20.
  * Email：lc824767150@163.com
+ * 摄像头品牌
  */
 
 public class CameraBrandActivity extends BaseStateRefreshingLoadingActivity<CameraBrandEntity> {

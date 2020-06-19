@@ -37,6 +37,8 @@ public class AddSalesActiviry extends BaseActivity {
     long parentId;
     String superior;
     int type;
+    @BindView(R.id.tv_name)
+    TextView tvName;
 
     @Override
     public int getContentViewId() {
@@ -47,8 +49,10 @@ public class AddSalesActiviry extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         parentId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         superior = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
-        type = getIntent().getIntExtra(CommonUtil.KEY_VALUE_3,0);
-        tvTopTitle.setText(superior);
+        type = getIntent().getIntExtra(CommonUtil.KEY_VALUE_3, 0);
+        tvTopTitle.setText("添加" + superior);
+        tvName.setText(superior+"名称");
+        etConent.setHint("请输入"+superior+"名称");
     }
 
     @Override
@@ -71,18 +75,19 @@ public class AddSalesActiviry extends BaseActivity {
     }
 
     private void httpAdd() {
-        if (etConent.getText().toString().isEmpty()){
+        if (etConent.getText().toString().isEmpty()) {
 
-        }else {
+        } else {
             if (type == 1) {
                 /*添加楼栋*/
-                NetService.getInstance().addBuilding((long) 0,parentId,etConent.getText().toString())
+                NetService.getInstance().addBuilding((long) 0, parentId, etConent.getText().toString())
                         .compose(this.<String>bindLifeCycle())
                         .subscribe(new CustomApiCallback<String>() {
                             @Override
                             protected void onResultError(ApiException ex) {
                                 showToast(ex.getDisplayMessage());
                             }
+
                             @Override
                             public void onNext(String s) {
                                 showToast("保存成功");

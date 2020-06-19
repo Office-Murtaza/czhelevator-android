@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_device_manage_head"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/spacing_default">
@@ -30,18 +29,19 @@
                 android:paddingLeft="@dimen/spacing_four"
                 android:paddingRight="@dimen/spacing_four"
                 android:singleLine="true"
-                android:textColor="#ffffffff"
-                android:textSize="30sp"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_22"
                 android:textStyle="bold"
                 tools:text="99" />
 
             <TextView
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="已上线"
-                android:textColor="#ffffffff"
-                android:textSize="11sp" />
+                android:textColor="#666666"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,18 +61,19 @@
                 android:paddingLeft="@dimen/spacing_four"
                 android:paddingRight="@dimen/spacing_four"
                 android:singleLine="true"
-                android:textColor="#ffffffff"
-                android:textSize="30sp"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_22"
                 android:textStyle="bold"
                 tools:text="99" />
 
             <TextView
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="已使用"
-                android:textColor="#ffffffff"
-                android:textSize="11sp" />
+                android:textColor="#666666"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,18 +93,19 @@
                 android:paddingLeft="@dimen/spacing_four"
                 android:paddingRight="@dimen/spacing_four"
                 android:singleLine="true"
-                android:textColor="#ffffffff"
-                android:textSize="30sp"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_22"
                 android:textStyle="bold"
                 tools:text="99" />
 
             <TextView
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="总数"
-                android:textColor="#ffffffff"
-                android:textSize="11sp" />
+                android:textColor="#666666"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

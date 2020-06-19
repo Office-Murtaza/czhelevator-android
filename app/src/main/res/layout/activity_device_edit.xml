@@ -33,24 +33,36 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/fl_location"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:orientation="horizontal"
                 android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/ic_position_black"
+                    android:drawablePadding="@dimen/spacing_four"
+                    android:textColor="#ff808080"
+                    android:textSize="@dimen/txt_normal_content"
+                    android:background="@drawable/bg_location"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:padding="@dimen/dp5"
+                    android:text="位置" />
 
                 <TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_location"
-                    android:drawablePadding="@dimen/spacing_four"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#ff808080"
                     android:textSize="@dimen/txt_normal_content"
-                    android:textStyle="bold"
-                    tools:text="当前定位:" />
-            </FrameLayout>
+                    android:padding="@dimen/dp5"
+                    android:layout_marginLeft="@dimen/dp5"
+                    ></TextView>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -367,7 +379,7 @@
                     android:textColorHint="#ff808080"
                     android:textSize="@dimen/txt_big_content"
                     android:textStyle="bold"
-                    tools:drawableLeft="@drawable/ic_screen_left" />
+                    tools:drawableLeft="@mipmap/ic_screen_left" />
             </LinearLayout>
 
             <View

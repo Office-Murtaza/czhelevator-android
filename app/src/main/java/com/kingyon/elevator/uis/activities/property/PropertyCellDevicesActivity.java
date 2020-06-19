@@ -6,6 +6,7 @@ import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.property.EquipmentDetailsRevenueActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationCellDevicesActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -24,7 +25,7 @@ public class PropertyCellDevicesActivity extends CooperationCellDevicesActivity 
         Bundle bundle = new Bundle();
         bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getObjectId());
         bundle.putString(CommonUtil.KEY_VALUE_2, role);
-        startActivity(PropertyDevicesDetailsActivity.class, bundle);
+        startActivity(EquipmentDetailsRevenueActivity.class, bundle);
     }
 
     @Override

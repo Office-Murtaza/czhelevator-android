@@ -87,6 +87,7 @@ public class CooperationDeviceDetailsAdapter extends MultiItemTypeAdapter<Object
             holder.setTextNotHide(R.id.tv_device_location, deviceLocatoin);
             holder.setTextNotHide(R.id.tv_device_status, (TextUtils.equals(Constants.DEVICE_STATUS.NORMAL, item.getStatus()) || TextUtils.equals(Constants.DEVICE_STATUS.ONLINE, item.getStatus())) ? "正常" : "维修中");
             holder.setTextNotHide(R.id.tv_ad_status, TextUtils.equals(Constants.Device_AD_STATUS.PROCESSING, item.getAdStatus()) ? "投放中" : "未投放");
+
         }
     }
 

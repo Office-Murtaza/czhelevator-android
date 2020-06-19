@@ -40,8 +40,8 @@ public class CooperationDeviceNumberAdapter extends MultiItemTypeAdapter<Object>
             CellDeviceNumberEntity item = (CellDeviceNumberEntity) o;
             holder.setTextNotHide(R.id.tv_name, item.getCellName());
             holder.setTextNotHide(R.id.tv_address, item.getCellAddress());
-            holder.setTextNotHide(R.id.tv_total, String.valueOf(item.getTotalScreen()));
-            holder.setTextNotHide(R.id.tv_used, String.valueOf(item.getUsedScreen()));
+            holder.setTextNotHide(R.id.tv_total, item.getTotalScreen()+"已上线");
+            holder.setTextNotHide(R.id.tv_used, item.getUsedScreen()+"已使用");
             holder.setVisible(R.id.v_line, position != mItems.size() - 1);
         }
     }

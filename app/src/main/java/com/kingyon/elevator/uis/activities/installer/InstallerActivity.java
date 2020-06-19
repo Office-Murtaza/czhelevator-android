@@ -12,6 +12,7 @@ import com.acker.simplezxing.activity.CaptureActivity;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.devices.DeviceEditActivity;
@@ -53,7 +54,7 @@ public class InstallerActivity extends BaseStateRefreshingLoadingActivity<PointI
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        preVRight.setImageResource(R.drawable.ic_capture_code);
+        preVRight.setImageResource(R.mipmap.btn_manage_scanning);
     }
 
     @Override
@@ -92,8 +93,8 @@ public class InstallerActivity extends BaseStateRefreshingLoadingActivity<PointI
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().installerDeviceList(page)
-                .compose(this.<PageListEntity<PointItemEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<PointItemEntity>>() {
+                .compose(this.<ConentEntity<PointItemEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<PointItemEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -101,7 +102,7 @@ public class InstallerActivity extends BaseStateRefreshingLoadingActivity<PointI
                     }
 
                     @Override
-                    public void onNext(PageListEntity<PointItemEntity> pointItemEntityPageListEntity) {
+                    public void onNext(ConentEntity<PointItemEntity> pointItemEntityPageListEntity) {
                         if (pointItemEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

@@ -120,7 +120,7 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
 
         Bundle bundle = new Bundle();
         bundle.putLong(CommonUtil.KEY_VALUE_1, parentId);
-        bundle.putString(CommonUtil.KEY_VALUE_2,"添加楼栋");
+        bundle.putString(CommonUtil.KEY_VALUE_2,"楼栋");
         bundle.putInt(CommonUtil.KEY_VALUE_3,1);
         startActivity(AddSalesActiviry.class, bundle);
 //        if (editDialog == null) {
