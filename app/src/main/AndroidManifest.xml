@@ -40,8 +40,12 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 锐动视频编辑SDK需要 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".application.App"
@@ -763,6 +767,10 @@
             />
         <!--2.0设备收益明细-->
         <activity android:name=".uis.actiivty2.property.EquipmentDetailsRevenueActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0显示相机-->
+        <activity android:name=".uis.actiivty2.activityutils.CameraViewActivit"
             android:screenOrientation="portrait"
             />
 

@@ -10,4 +10,5 @@ public class PlanNumberEntiy {
     public int num;
     public String certifyUrl;
     public String certifyId;
+
 }

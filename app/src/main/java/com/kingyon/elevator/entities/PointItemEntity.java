@@ -28,6 +28,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
      * deviceId : 123654
      * deviceNo : 设备编号
      * deviceType : diy
+     *
      */
 
     private List<Long> occupyTimes;

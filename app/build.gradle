@@ -213,8 +213,7 @@ dependencies {
     implementation project(path: ':mentions')
     implementation project(path: ':matisse')
     implementation project(path: ':htmleditorlibrary')
-
-
+    implementation 'cjt.library.wheel:camera:1.1.9'
 }
 
 

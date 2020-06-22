@@ -30,7 +30,7 @@ public class SecuritySettingFragmentPresenter extends BasePresenter<SecuritySett
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
-                            getView().checkPayPwdIsInit(true);
+//                            getView().checkPayPwdIsInit(true);
                         }
                     }
 

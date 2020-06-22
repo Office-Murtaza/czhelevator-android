@@ -145,7 +145,62 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
                         tvAdStatus.setText(TextUtils.equals(Constants.Device_AD_STATUS.PROCESSING, pointItemEntity.getAdStatus()) ? "投放中" : "未投放");
                     }
                 });
-        httpData(page, month, deviceId);
+        if (role.equals(Constants.RoleType.PARTNER)){
+            httpData1(page, month, deviceId);
+        }else {
+            httpData(page, month, deviceId);
+        }
+
+
+    }
+
+    private void httpData1(int page, String month, long deviceId) {
+        NetService.getInstance().getIncomeList(page, month, deviceId)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<EquipmentDetailsRevenueEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        if (ex.getCode() == -102) {
+                            if (page > 1) {
+                                ToastUtils.showToast(activity, ex.getDisplayMessage(), 1000);
+                            } else {
+                                rvList.setVisibility(View.GONE);
+                                rlError.setVisibility(View.GONE);
+                                rlNull.setVisibility(View.VISIBLE);
+                            }
+
+                        } else if (ex.getCode()==100200){
+                            rvList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }else {
+                            rvList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.VISIBLE);
+                            rlNull.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<EquipmentDetailsRevenueEntiy> list) {
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        rvList.setVisibility(View.VISIBLE);
+                        rlError.setVisibility(View.GONE);
+                        rlNull.setVisibility(View.GONE);
+                        addData(list);
+                        if (list.getContent().size()>0||page>1) {
+                            rvList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }else {
+                            rvList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
     }
 
     private void httpData(int page, String month, long deviceId) {
@@ -224,7 +279,11 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                httpData(1, month, deviceId);
+                if (role.equals(Constants.RoleType.PARTNER)){
+                    httpData1(page, month, deviceId);
+                }else {
+                    httpData(page, month, deviceId);
+                }
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -232,7 +291,11 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 LogUtils.e("onLoadMore");
                 page++;
-                httpData(1, month, deviceId);
+                if (role.equals(Constants.RoleType.PARTNER)){
+                    httpData1(page, month, deviceId);
+                }else {
+                    httpData(page, month, deviceId);
+                }
             }
         });
     }
@@ -295,7 +358,12 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
                 tvChooseTime.setText(getTime(date));
 //                month = com.leo.afbaselibrary.utils.TimeUtil.ymdToLong(getTime(date));
                 month = getTime(date);
-                httpData(1, month, deviceId);
+                page = 1;
+                if (role.equals(Constants.RoleType.PARTNER)){
+                    httpData1(page, month, deviceId);
+                }else {
+                    httpData(page, month, deviceId);
+                }
                 LogUtils.e(month);
             }
         }).setType(new boolean[]{true, true, false, false, false, false}) //年月日时分秒 的显示与否，不设置则默认全部显示

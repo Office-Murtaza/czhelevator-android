@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -48,6 +50,8 @@ import java.io.InputStreamReader;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 
 public class CooperationIdentityFragment extends BaseFragment implements OnParamsChangeInterface {
 
@@ -317,7 +321,9 @@ public class CooperationIdentityFragment extends BaseFragment implements OnParam
             public void onClick(View v) {
                 if (isattestation){
                     alertDialog.dismiss();
-                    startActivity(IdentityInfoActivity.class);
+//                    startActivity(IdentityInfoActivity.class);
+                    ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
+//                    DialogUtils.shwoCertificationDialog(getActivity());
                 }else {
                     if (is){
                         alertDialog.dismiss();

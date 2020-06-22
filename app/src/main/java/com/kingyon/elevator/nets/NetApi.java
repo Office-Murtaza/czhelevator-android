@@ -68,8 +68,10 @@ import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.PublicEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
@@ -101,6 +103,7 @@ public interface NetApi {
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
     String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
@@ -145,7 +148,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<QueryTopicEntity.PageContentBean>>
     getOueryTopic(@Field("page") int page,
-                  @Field("title") String title,@Field("label") int label);
+                  @Field("title") String title,@Field("labelId") int label);
 
     /*2.0静态/通用获取七牛云参数*/
     @POST("common/getQiNiu")
@@ -385,6 +388,9 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<PlanNumberEntiy>getAliIdentityAuth(@Field("cerName") String cerName,@Field("certNo") String certNo);
 
+    /*2.0合伙人首页内容*/
+    @POST("partner/getPartnerIndexInfo")
+    Observable<PartnerIndexInfoEntity> getPartnerIndexInfo();
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -431,7 +437,11 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<EquipmentDetailsRevenueEntiy>>setEquipmentDetailsRevenue(@Field("page") int page,@Field("month")String month ,
                                                                              @Field("deviceId")long deviceId);
-
+    /*2.0合伙人设备详情收益*/
+    @POST("partner/incomeList")
+    @FormUrlEncoded
+    Observable<ConentEntity<EquipmentDetailsRevenueEntiy>> setincomeList(@Field("page") int page,@Field("month")String month ,
+                                                                         @Field("deviceId")long deviceId);
 
 //设备报修
     @POST("common/repairDevice")
@@ -799,14 +809,17 @@ public interface NetApi {
     @POST("partner/getInfo")
     Observable<CooperationInfoEntity> cooperationInfo();
 
-    //新版合伙人查询接口partner/applyStatus
-    @POST("partner/getPartnerInfo")
+    //2.0查询是否有支付密码
+    @POST("userSecurity/pay/verifyPayPasswordInit")
     Observable<CooperationInfoNewEntity> cooperationInfoNew();
 
     /*2.0合伙人状态*/
-    @GET("partner/applyStatus")
+    @POST("partner/applyStatus")
     Observable<CooperationIdentityEntity> cooperationIentityInfo();
 
+    /*2.0查看是否设置支付密码*/
+    @POST("userSecurity/pay/verifyPayPasswordInit")
+    Observable<PublicEntity> setverifyPayPasswordInit();
 
     /**
      * 获取收益记录里的总收益  收入 支出三个数据
@@ -1007,37 +1020,37 @@ public interface NetApi {
 
 
     /**
-     * 初始化支付密码
+     * 2.0初始化支付密码
      *
      * @param password 密码
      * @return
      */
-    @POST("user/pay/initPassword")
+    @POST("userSecurity/pay/initPassword")
     @FormUrlEncoded
     Observable<String> initPayPassword(@Field("password") String password);
 
 
     /**
-     * 原密码的方式修改支付密码
+     * 2.0原密码的方式修改支付密码
      *
      * @param oldPassword 旧密码
      * @param newPasswrod 新密码
      * @return
      */
-    @POST("user/pay/changePasswordByOld")
+    @POST("userSecurity/pay/changePasswordByOld")
     @FormUrlEncoded
     Observable<String> changePasswordByOld(@Field("oldPassword") String oldPassword, @Field("newPassword") String newPasswrod);
 
 
     /**
-     * 验证码的方式修改支付密码
+     * 2.0验证码的方式修改支付密码
      *
      * @param phone     手机号
      * @param vaildCode 验证码
      * @param password  密码
      * @return
      */
-    @POST("user/pay/changePasswordByCode")
+    @POST("userSecurity/pay/changePasswordByCode")
     @FormUrlEncoded
     Observable<String> changePasswordByCode(@Field("phone") String phone, @Field("vaildCode") String vaildCode, @Field("password") String password);
 
@@ -1047,7 +1060,7 @@ public interface NetApi {
      *
      * @return
      */
-    @POST("user/pay/vaildInit")
+    @POST("userSecurity/pay/verifyPayPasswordInit")
     Observable<Boolean> vaildInitPayPwd();
 
 
@@ -1065,12 +1078,13 @@ public interface NetApi {
 
 
     /**
-     * 获取弹窗广告数据或者固定位置通知
+     * 2.0获取弹窗广告数据或者固定位置通知
      *
      * @return
      */
-    @GET("common/getTipsList")
-    Observable<List<AdNoticeWindowEntity>> getTipsList(@Query("position") String position, @Query("showWay") int showWay);
+    @POST("common/getTipsList")
+    @FormUrlEncoded
+    Observable<List<AdNoticeWindowEntity>> getTipsList(@Field("position") String position, @Field("showWay") int showWay);
 
 
     /**

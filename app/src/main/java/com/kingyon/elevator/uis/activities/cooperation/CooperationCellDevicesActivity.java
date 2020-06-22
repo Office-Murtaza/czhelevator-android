@@ -9,6 +9,7 @@ import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.property.EquipmentDetailsRevenueActivity;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.uis.adapters.adapterone.CooperationCellDevicesAdapter;
 import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
@@ -29,6 +30,7 @@ import java.util.List;
 /**
  * Created by GongLi on 2019/1/14.
  * Email：lc824767150@163.com
+ * 设备管理2
  */
 
 public class CooperationCellDevicesActivity extends BaseStateRefreshingLoadingActivity<PlanPointGroup> {
@@ -98,7 +100,7 @@ public class CooperationCellDevicesActivity extends BaseStateRefreshingLoadingAc
         Bundle bundle = new Bundle();
         bundle.putLong(CommonUtil.KEY_VALUE_1, entity.getObjectId());
         bundle.putString(CommonUtil.KEY_VALUE_2, role);
-        startActivity(CooperationDevicesDetailsActivity.class, bundle);
+        startActivity(EquipmentDetailsRevenueActivity.class, bundle);
     }
 
     @Override

@@ -11,15 +11,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.activityutils.CameraViewActivit;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+
 
 import java.io.File;
 
@@ -79,7 +82,8 @@ public class IdentityCertificationActivity extends BaseActivity {
                 break;
             case R.id.img_idcard:
                 /*打开相机拍照*/
-                takePhoto();
+//                takePhoto();
+                startActivityForResult(CameraViewActivit.class, 101);
                 break;
             case R.id.tv_rz:
                 httpSubmit();
@@ -132,10 +136,12 @@ public class IdentityCertificationActivity extends BaseActivity {
         if (requestCode != RESULT_CANCELED){
             switch (requestCode){
                 case 101:
-                    File tempFile = new File(Environment.getExternalStorageDirectory(),"fileImg.jpg");
-                    LogUtils.e(tempFile);
+//                    File tempFile = new File(Environment.getExternalStorageDirectory(),"fileImg.jpg");
+                    String path =data.getDataString().concat("path");
+                    LogUtils.e(path);
                     break;
             }
         }
     }
+
 }

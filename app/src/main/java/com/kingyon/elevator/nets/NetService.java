@@ -94,8 +94,10 @@ import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.PublicEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
@@ -438,6 +440,11 @@ public class NetService {
     /*2.0物业设备收益*/
     public Observable<ConentEntity<EquipmentDetailsRevenueEntiy>> getEquipmentDetailsRevenue(int page,String month,long deviceId ){
         return addSchedulers(getApi().setEquipmentDetailsRevenue(page,month,deviceId));
+    }
+
+    /*2.0合伙人设备收益*/
+    public Observable<ConentEntity<EquipmentDetailsRevenueEntiy>> getIncomeList(int page,String month,long deviceId ){
+        return addSchedulers(getApi().setincomeList(page,month,deviceId));
     }
 
     public Observable<String> repairDevice(long deviceId, Long reasonId, String remarks, String images) {
@@ -916,6 +923,10 @@ public class NetService {
     public Observable<String> setIdentyAuth( String personName,String idCardNum,String idCardPic,String type){
        return addSchedulers(getApi().getIdentyAuth(personName,idCardNum,idCardPic,type));
     }
+    /*2.0合伙人首页内容*/
+    public Observable<PartnerIndexInfoEntity> setPartnerIndexInfo(){
+        return addSchedulers(getApi().getPartnerIndexInfo());
+    }
 
 
     public Observable<Long> getAvInfoDuration(String url) {
@@ -1179,7 +1190,7 @@ public class NetService {
         return addSchedulers(getApi().messageRead(messageId));
     }
 
-    //合伙人
+    //2.0合伙人
     public Observable<CooperationEntity> cooperationInfo() {
         final CooperationEntity entity = new CooperationEntity();
         Observable<CooperationEntity> observable = Observable.just(DataSharedPreferences.getUserBean())
@@ -1213,7 +1224,8 @@ public class NetService {
                         entity.setIdentity(cooperationIdentityEntity);
                         return observable;
                     }
-                }).flatMap(new Func1<CooperationInfoNewEntity, Observable<CooperationEntity>>() {
+                })
+                .flatMap(new Func1<CooperationInfoNewEntity, Observable<CooperationEntity>>() {
                     @Override
                     public Observable<CooperationEntity> call(CooperationInfoNewEntity cooperationInfoEntity) {
                         entity.setInfo(cooperationInfoEntity);
@@ -1223,6 +1235,9 @@ public class NetService {
         return addSchedulers(observable);
     }
 
+    public Observable<PublicEntity> setverifyPayPasswordInit(){
+        return addSchedulers(getApi().setverifyPayPasswordInit());
+    }
 
 
 //    public Observable<String> cooperationApply(final String partnerName, final String phone, final AMapCityEntity city) {

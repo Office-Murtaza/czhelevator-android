@@ -43,7 +43,7 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
-                            getView().checkPayPwdIsInit(true);
+//                            getView().checkPayPwdIsInit(true);
                         }
                     }
 

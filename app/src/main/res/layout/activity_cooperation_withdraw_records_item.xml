@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_normal"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingBottom="15dp"
     android:paddingTop="15dp">
 
@@ -14,6 +14,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/spacing_default"
+        android:visibility="gone"
         android:paddingRight="@dimen/spacing_default">
 
         <TextView
@@ -63,8 +64,8 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,4 +76,76 @@
         android:textColor="#ABABAB"
         android:textSize="@dimen/txt_tips"
         tools:text="失败原因：银行卡信息错误" />
+
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付宝提现"
+            android:textColor="#ff333333"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现账户：187****5643"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现时间：2020-04-12   12：23"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="审核状态：通过"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="128.00"
+            android:textColor="#ff333333"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（扣税4.00）"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
+
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

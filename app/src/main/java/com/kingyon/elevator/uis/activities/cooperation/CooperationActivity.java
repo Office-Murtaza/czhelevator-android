@@ -30,7 +30,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class CooperationActivity extends BaseStateRefreshingActivity {
 
+    /*申请界面*/
     private CooperationIdentityFragment identityFragment;
+    /*合伙人*/
     private CooperationInfoFragment infoFragment;
 
     @Override
@@ -69,6 +71,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                             throw new ResultException(9001, "返回参数异常");
                         }
                         //未认证时不先设置密码，认证过的才需要先设置密码
+//                        LogUtils.e(authed,info.isSetPayPassword());
                         if (authed) {
                             if (!info.isSetPayPassword()) {
                                 //未设置支付密码

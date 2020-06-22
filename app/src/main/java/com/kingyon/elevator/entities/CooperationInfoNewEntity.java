@@ -21,7 +21,7 @@ public class CooperationInfoNewEntity implements Parcelable {
     private double fulfilledIncome;
     private double yesterdayIncome;
     private boolean disable;
-    private boolean isSetPayPassword;
+    private boolean setPayPassword;
     private boolean isCashing;
 
     public double getTotalIncome() {
@@ -72,12 +72,20 @@ public class CooperationInfoNewEntity implements Parcelable {
         this.disable = disable;
     }
 
+//    public boolean isSetPayPassword() {
+//        return isSetPayPassword;
+//    }
+//
+//    public void setSetPayPassword(boolean setPayPassword) {
+//        this.isSetPayPassword = setPayPassword;
+//    }
+
     public boolean isSetPayPassword() {
-        return isSetPayPassword;
+        return setPayPassword;
     }
 
     public void setSetPayPassword(boolean setPayPassword) {
-        isSetPayPassword = setPayPassword;
+        this.setPayPassword = setPayPassword;
     }
 
     public boolean isCashing() {
@@ -105,7 +113,7 @@ public class CooperationInfoNewEntity implements Parcelable {
         dest.writeDouble(this.fulfilledIncome);
         dest.writeDouble(this.yesterdayIncome);
         dest.writeByte((byte)(this.disable ?1:0));
-        dest.writeByte((byte)(this.isSetPayPassword ?1:0));
+        dest.writeByte((byte)(this.setPayPassword ?1:0));
         dest.writeByte((byte)(this.isCashing ?1:0));
     }
 
@@ -116,7 +124,7 @@ public class CooperationInfoNewEntity implements Parcelable {
         this.fulfilledIncome = in.readDouble();
         this.yesterdayIncome = in.readDouble();
         this.disable =in.readByte()!=0;
-        this.isSetPayPassword =in.readByte()!=0;
+        this.setPayPassword =in.readByte()!=0;
         this.isCashing =in.readByte()!=0;
     }
 

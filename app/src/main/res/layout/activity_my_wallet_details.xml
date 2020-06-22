@@ -33,7 +33,7 @@
         app:stl_defaultTabTextSize="14sp"
         app:stl_defaultTabTextHorizontalPadding="16dp"
         app:stl_distributeEvenly="true"
-        app:stl_clickable="false"
+        app:stl_clickable="true"
         app:stl_titleOffset="24dp"
         app:stl_drawDecorationAfterTab="false"
 

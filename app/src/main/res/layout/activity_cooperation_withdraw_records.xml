@@ -7,17 +7,13 @@
 
     <include layout="@layout/layout_header" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/background" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white_normal"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/spacing_default"
+        android:visibility="gone"
         android:paddingRight="@dimen/spacing_default">
 
         <TextView

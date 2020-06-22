@@ -12,6 +12,9 @@ buildscript {
         maven {
             url "https://dl.bintray.com/tencent-soter/maven/"
         }
+        maven {
+            url 'https://dl.bintray.com/cjt/maven'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'

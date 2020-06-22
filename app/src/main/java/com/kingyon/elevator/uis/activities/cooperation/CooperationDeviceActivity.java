@@ -33,6 +33,7 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/14.
  * Email：lc824767150@163.com
+ * 设备管理
  */
 
 public class CooperationDeviceActivity extends BaseStateRefreshingLoadingActivity<Object> {
@@ -55,7 +56,7 @@ public class CooperationDeviceActivity extends BaseStateRefreshingLoadingActivit
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        preVRight.setImageResource(R.drawable.ic_capture_code);
+        preVRight.setImageResource(R.mipmap.btn_manage_scanning);
     }
 
     @Override
