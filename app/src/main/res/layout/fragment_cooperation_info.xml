@@ -68,6 +68,7 @@
 
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_income_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

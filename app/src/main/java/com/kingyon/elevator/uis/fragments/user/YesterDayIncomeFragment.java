@@ -13,6 +13,7 @@ import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.YesterDayIncomePresenter;
 import com.kingyon.elevator.uis.adapters.adapterone.IncomeAdapter;
@@ -127,7 +128,7 @@ public class YesterDayIncomeFragment extends MvpBaseFragment<YesterDayIncomePres
     }
 
     @Override
-    public void showDetailsListData(List<YesterdayIncomeEntity> incomeDetailsEntities) {
+    public void showDetailsListData(List<EarningsYesterdayEnity> incomeDetailsEntities) {
         if (incomeAdapter != null) {
             incomeAdapter.reflashData(incomeDetailsEntities);
         }

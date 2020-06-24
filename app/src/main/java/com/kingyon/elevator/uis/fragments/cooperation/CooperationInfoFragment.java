@@ -21,17 +21,21 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
+import com.kingyon.elevator.entities.IdentityInfoEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
-import com.kingyon.elevator.uis.activities.FragmentContainerActivity;
 import com.kingyon.elevator.uis.activities.WebViewActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawRecordsActivity;
+import com.kingyon.elevator.uis.activities.cooperation.WithdrawalWayActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -75,6 +79,10 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     Unbinder unbinder;
     @BindView(R.id.container_view)
     RelativeLayout containerView;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
+    @BindView(R.id.ll_income_today)
+    LinearLayout llIncomeToday;
     private CooperationInfoNewEntity entity;
     private TipDialog<String> tipDialog;
 
@@ -109,18 +117,34 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().setPartnerIndexInfo()
                 .compose(this.bindLifeCycle())
-                .subscribe(new CustomApiCallback<PartnerIndexInfoEntity>() {
+                .subscribe(new CustomApiCallback<ConentEntity<PartnerIndexInfoEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
                     }
 
                     @Override
-                    public void onNext(PartnerIndexInfoEntity partnerIndexInfoEntity) {
+                    public void onNext(ConentEntity<PartnerIndexInfoEntity> list) {
                         hideProgress();
+                        PartnerIndexInfoEntity partnerIndexInfoEntity = list.getContent().get(0);
+
                         updateUI(partnerIndexInfoEntity);
                         LogUtils.e(partnerIndexInfoEntity.toString());
+                    }
+                });
+
+        NetService.getInstance().getIdentityInformation()
+                .compose(this.<IdentityInfoEntity>bindLifeCycle())
+                .subscribe(new CustomApiCallback<IdentityInfoEntity>() {
+                    @Override
+                    public void onNext(IdentityInfoEntity identityInfoEntity) {
+                        DataSharedPreferences.saveUesrName(identityInfoEntity.getCompanyName());
+                    }
+
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                     }
                 });
 
@@ -133,9 +157,12 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     }
 
     private void updateUI(PartnerIndexInfoEntity entity) {
+        tvTime.setText("总收益：("+ DateUtils.getCurrentTime1()+")");
         tvAllIncome.setText(getSumSpan(CommonUtil.getTwoFloat(entity.total)));
         tvCanCrash.setText(CommonUtil.getTwoFloat(entity.canWithdraw));
-        yesterdayIncome.setText("昨日新增收益:"+CommonUtil.getMayTwoFloat(entity.yesterday));
+        yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getMayTwoFloat(entity.yesterday));
+        CooperationInfoNewEntity cooperationInfoNewEntity = new CooperationInfoNewEntity();
+        cooperationInfoNewEntity.setYesterdayIncome(entity.yesterday);
         tvAlreadyCrash.setText(CommonUtil.getMayTwoFloat(entity.withdrawal));
     }
 
@@ -178,8 +205,8 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 });
     }
 
-    @OnClick({R.id.btn_apply_crash, R.id.tv_device_manager,R.id.tv_right,R.id.yesterday_income,
-            R.id.tv_all_income, R.id.already_crash_container, R.id.img_top_back})
+    @OnClick({R.id.btn_apply_crash, R.id.tv_device_manager, R.id.tv_right, R.id.yesterday_income,
+            R.id.tv_all_income, R.id.already_crash_container, R.id.img_top_back, R.id.ll_income_today})
     public void onViewClicked(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -199,9 +226,11 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
                 break;
             case R.id.yesterday_income:
+                /*昨日收益*/
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
                 break;
             case R.id.already_crash_container:
+                /*已提现*/
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
                 break;
             case R.id.btn_apply_crash:
@@ -211,16 +240,19 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                     if (entity.isCashing()) {
                         bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
                         //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
-                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
+//                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
+                        MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
                     } else {
                         showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
                     }
                 }
                 break;
-//            case R.id.ll_income_today:
+            case R.id.ll_income_today:
 //                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);
 //                startActivity(CooperationIncomeActivity.class, bundle);
-//                break;
+                /*总余额*/
+                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
+                break;
 //            case R.id.ll_income_month:
 //                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.MONTH);
 //                startActivity(CooperationIncomeActivity.class, bundle);

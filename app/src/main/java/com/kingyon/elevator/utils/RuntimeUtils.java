@@ -6,6 +6,7 @@ import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.NewsEntity;
+import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 
 /**
@@ -23,6 +24,8 @@ public class RuntimeUtils {
     public static CooperationInfoNewEntity cooperationInfoNewEntity;
 
     public static BindAccountEntity selectBindAccountEntity;//选择的提现账号
+
+    public static UserCashTypeListEnity userCashTypeListEnity;//选择的提现账号
 
     public static String payVerCode = "";
 

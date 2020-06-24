@@ -52,7 +52,7 @@ public class VideoCoverActivity extends Activity {
     private ExtractVideoInfoUtil mExtractVideoInfoUtil;
     private ExtractFrameWorkThread mExtractFrameWorkThread;
     private VideoEditAdapter videoEditAdapter;
-    private final String OutPutFileDirPath = Environment.getExternalStorageDirectory() + "/PDD";
+    private  String OutPutFileDirPath;
     @BindView(R.id.rv_imga)
     RecyclerView mRecyclerView;
     String videoPath;
@@ -63,6 +63,8 @@ public class VideoCoverActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_cover);
         videoPath = getIntent().getStringExtra("videoPath");
+        OutPutFileDirPath = getExternalCacheDir() + File.separator +"/sdcard/PDD/";
+        LogUtils.e(OutPutFileDirPath);
         ButterKnife.bind(this);
         tvRight.setText("确认");
         tvTopTitle.setText("选择封面");

@@ -108,17 +108,17 @@ public class SelectDateDialog extends Dialog {
                 selectType = 0;
                 tv_annian.setTextColor(Color.parseColor("#ffffff"));
                 tv_annian.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_select);
-                tv_anyue.setTextColor(Color.parseColor("#EB7A12"));
+                tv_anyue.setTextColor(Color.parseColor("#FF2659"));
                 tv_anyue.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_unselect);
                 year_picker_view.setVisibility(View.VISIBLE);
                 month_select_container.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_anyue:
                 selectType = 1;
-                tv_annian.setTextColor(Color.parseColor("#EB7A12"));
+                tv_annian.setTextColor(Color.parseColor("#FF2659"));
                 tv_anyue.setTextColor(Color.parseColor("#ffffff"));
-                tv_annian.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_unselect);
-                tv_anyue.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_select);
+                tv_annian.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_unselect1);
+                tv_anyue.setBackgroundResource(R.drawable.shape_bg_date_dialog_tab_select1);
                 year_picker_view.setVisibility(View.INVISIBLE);
                 month_select_container.setVisibility(View.VISIBLE);
                 break;

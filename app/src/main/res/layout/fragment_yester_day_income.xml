@@ -14,14 +14,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="#F4F4F9"
+            >
 
             <TextView
                 android:id="@+id/yesterday_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
-                android:drawableStart="@mipmap/withdrawals_shijiantubiao"
+                android:drawableStart="@mipmap/ic_partner_income_goup"
                 android:drawablePadding="7dp"
                 android:gravity="center"
                 android:text="2019年11月16日"

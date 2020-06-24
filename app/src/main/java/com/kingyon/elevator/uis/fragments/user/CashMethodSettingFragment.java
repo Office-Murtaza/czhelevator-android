@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 提现方式选择界面
+ * 2.0 提现方式选择界面
  */
 public class CashMethodSettingFragment extends MvpBaseFragment<CashMethodSettingPresenter> implements CashMethodSettingView {
 

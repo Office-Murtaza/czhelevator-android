@@ -76,7 +76,7 @@ public class CutTimeActivity extends BaseActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_cut_time);
 
-        frameDir = LanSongFileUtil.getCreateFileDir(String.valueOf(System.currentTimeMillis()));
+        frameDir = LanSongFileUtil.getCreateFileDir(this,String.valueOf(System.currentTimeMillis()));
 
         Intent intent = getIntent();
         path = intent.getStringExtra("path");

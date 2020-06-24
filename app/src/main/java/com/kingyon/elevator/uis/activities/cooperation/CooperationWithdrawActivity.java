@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.activities.cooperation;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -24,6 +25,7 @@ import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.BindAccountEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.NormalParamEntity;
+import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -54,6 +56,7 @@ import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
 /**
  * Created by GongLi on 2019/1/14.
  * Email：lc824767150@163.com
+ * 2.0提现申请
  */
 
 public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
@@ -99,7 +102,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     TextView tv_confirm_cash;
 
     private CooperationInfoNewEntity entity;
-    private BindAccountEntity bindAccountEntity;
+    private UserCashTypeListEnity bindAccountEntity;
 
     private OptionsPickerView wayPicker;
     private List<NormalParamEntity> wayOptions;
@@ -108,6 +111,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
+        bindAccountEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
         if (entity == null) {
             entity = new CooperationInfoNewEntity();
         }
@@ -122,7 +126,6 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         // preVRight.setText("提现记录");
-        bindAccountEntity = RuntimeUtils.selectBindAccountEntity;
         if (bindAccountEntity == null) {
             LogUtils.d("跳转到提现界面了-----------------------异常");
             showToast("数据异常，请重试");
@@ -144,7 +147,6 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 Double money;
@@ -155,27 +157,42 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 }
                 Double taxation = money * entity.getTaxation();
                 tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
-                if (s.length()>0) {
-                    tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_apply_crash_btn);
-                    tv_confirm_cash.setTextColor(Color.parseColor("#ffffff"));
-                }else {
-                    tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_device_manager_btn);
-                    tv_confirm_cash.setTextColor(Color.parseColor("#EB7A12"));
-                }
-            }
+//                if (s.length()>0) {
+//                tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_apply_crash_btn);
+//                tv_confirm_cash.setTextColor(Color.parseColor("#ffffff"));
+//            }else {
+//                tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_device_manager_btn);
+//                tv_confirm_cash.setTextColor(Color.parseColor("#EB7A12"));
+//            }
+        }
         });
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
     }
 
     private void setCashInfoData() {
-        if (bindAccountEntity.getCashType() == 1) {
-            tv_account_type.setText("银行卡");
-            tv_account_num.setText(AccountNumUtils.hideBankCardNum(bindAccountEntity.getCashAccount()));
-        } else {
-            tv_account_type.setText("支付宝");
-            tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.getCashAccount()));
+        if (bindAccountEntity.cashType== 1) {
+            tv_account_type.setText("银行卡"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_num.setText(AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_bank);
+            Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
+            rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());  // left, top, right, bottom
+            tv_account_type.setCompoundDrawables(rightDrawable, null, rightDrawable1, null);
+        } else if (bindAccountEntity.cashType == 2){
+            tv_account_type.setText("支付宝"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount));
+            Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_alipay);
+            Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
+            rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());  // left, top, right, bottom
+            tv_account_type.setCompoundDrawables(rightDrawable, null, rightDrawable1, null);
+        }else {
+            tv_account_type.setText("微信"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount));
+            Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_wechat);
+            Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
+            rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());  // left, top, right, bottom
+            tv_account_type.setCompoundDrawables(rightDrawable, null, rightDrawable1, null);
         }
-        tv_account_name.setText(bindAccountEntity.getCashName());
+        tv_account_name.setText(bindAccountEntity.cashName);
     }
 
     private void updateMoneyInfo() {
@@ -236,11 +253,12 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     @Override
                     public void onNext(String content) {
                         hideProgress();
-                        if (content.equals("成功")) {
-                            onEnsureClick();
-                        } else {
-                            showToast("支付密码错误");
-                        }
+                        onEnsureClick();
+//                        if (content.equals("成功")) {
+//
+//                        } else {
+//                            showToast("支付密码错误");
+//                        }
                     }
                 });
     }
@@ -340,42 +358,17 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             showToast("超过可提现金额");
             return;
         }
-        if (bindAccountEntity.getCashType() == 1) {
+        if (bindAccountEntity.cashType == 1) {
             //银行卡
             requestWithdraw(money, Constants.WithdrawType.BANKCARD, null,
-                    bindAccountEntity.getOpeningBank(), bindAccountEntity.getCashAccount(), bindAccountEntity.getCashName());
-        } else {
+                    bindAccountEntity.openingBank, bindAccountEntity.cashAccount, bindAccountEntity.cashName);
+        } else if (bindAccountEntity.cashType == 2){
             //支付宝
-            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.getCashAccount(), null, null, bindAccountEntity.getCashName());
+            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
+        }else {
+            requestWithdraw(money, Constants.WithdrawType.WX, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
+
         }
-
-
-//        if (llAliInfo.getVisibility() == View.GONE && llBankInfo.getVisibility() == View.GONE) {
-//            showToast("请选择提现方式");
-//            return;
-//        }
-//        if (llAliInfo.getVisibility() == View.VISIBLE) {
-//            if (TextUtils.isEmpty(CommonUtil.getEditText(etAliAccount))) {
-//                showToast("请输入支付宝账号");
-//                return;
-//            }
-//            requestWithdraw(money, Constants.WithdrawType.ALI, etAliAccount.getText().toString(), null, null, null);
-//        }
-//        if (llBankInfo.getVisibility() == View.VISIBLE) {
-//            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankHolder))) {
-//                showToast("请输入持卡人姓名");
-//                return;
-//            }
-//            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankNo))) {
-//                showToast("请输入银行卡号");
-//                return;
-//            }
-////            if (TextUtils.isEmpty(CommonUtil.getEditText(etBankName))) {
-////                showToast("请输入银行名称");
-////                return;
-////            }
-//            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null, etBankName.getText().toString(), etBankNo.getText().toString(), etBankHolder.getText().toString());
-//        }
     }
 
     private void requestWithdraw(final double money, String way, String aliAccount, String bankName, String bankNo, String bankHolder) {

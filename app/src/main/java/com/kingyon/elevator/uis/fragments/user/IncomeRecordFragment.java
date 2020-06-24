@@ -26,6 +26,9 @@ import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
+import com.kingyon.elevator.entities.entities.EarningsTopEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
+import com.kingyon.elevator.entities.entities.chartentily;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.IncomeRecordPresenter;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -36,6 +39,10 @@ import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.IncomeRecordView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,7 +97,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
     @Override
     public void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this, getContentView());
-        setStateLayout();
+//        setStateLayout();
         currentSelectYear = DateUtils.getCurrentYear();
         currentSelectMonth = DateUtils.getCurrentMonth();
         currentSelectDay = DateUtils.getCurrentDay();
@@ -99,8 +106,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         selectIncomeOrPay = 0;
         creatButton();
         initChartView();
+        LogUtils.e(selectCatType, currentSelectYear, currentSelectMonth);
         presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
-        presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
+//        presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
     }
 
 
@@ -178,7 +186,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         }
         set1 = new LineDataSet(values, "提示信息");
         set1.setDrawIcons(false);
-        set1.setColor(Color.RED);
+        set1.setColor(Color.parseColor("#74749B"));
         set1.setCircleColor(Color.parseColor("#569EBE"));
         set1.setLineWidth(1f);
         set1.setCircleRadius(2f);
@@ -194,7 +202,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         // set the filled area
         set1.setDrawFilled(false);
         set1.setFillFormatter((dataSet, dataProvider) -> line_chart_view.getAxisLeft().getAxisMinimum());
-        set1.setHighLightColor(Color.RED);
+        set1.setHighLightColor(Color.parseColor("#74749B"));
         set1.setFillColor(Color.parseColor("#00000000"));
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
@@ -230,6 +238,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 });
                 break;
             case R.id.user_income:
+                /*收入*/
                 selectIncomeOrPay = 0;
                 user_income.setMainTitleColor(Color.parseColor("#DD575F"));
                 user_pay_money.setMainTitleColor(Color.parseColor("#474747"));
@@ -238,6 +247,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
             case R.id.user_pay_money:
+                /*支出*/
                 selectIncomeOrPay = 1;
                 user_income.setMainTitleColor(Color.parseColor("#474747"));
                 user_pay_money.setMainTitleColor(Color.parseColor("#DD575F"));
@@ -246,6 +256,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
             case R.id.tv_no_chart_data:
+                LogUtils.e(selectCatType, currentSelectYear, currentSelectMonth);
                 presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
@@ -345,8 +356,9 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         }
         set1 = new LineDataSet(values, "提示信息");
         set1.setDrawIcons(false);
-        set1.setColor(Color.RED);
-        set1.setCircleColor(Color.parseColor("#569EBE"));
+//        set1.setColor(Color.RED);
+        set1.setColor(Color.parseColor("#74749B"));
+        set1.setCircleColor(Color.parseColor("#45C7D6"));
         set1.setLineWidth(1f);
         set1.setCircleRadius(2f);
         set1.setDrawCircleHole(false);
@@ -360,7 +372,8 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         // set the filled area
         set1.setDrawFilled(false);
         set1.setFillFormatter((dataSet, dataProvider) -> line_chart_view.getAxisLeft().getAxisMinimum());
-        set1.setHighLightColor(Color.RED);
+//        set1.setHighLightColor(Color.RED);
+        set1.setHighLightColor(Color.parseColor("#74749B"));
         set1.setFillColor(Color.parseColor("#00000000"));
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
@@ -371,31 +384,82 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         // }
     }
 
+
+
     @Override
-    public void showIncomeOrPayData(IncomeOrPayEntity incomeOrPayEntity) {
+    public void showIncomeOrPayData(EarningsTopEntity<EarningsTwoYearlistEntity> incomeOrPayEntity) {
+        LogUtils.e(incomeOrPayEntity.toString());
         if (incomeOrPayEntity != null) {
-            tv_user_all_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.getGains()));
-            user_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.getIncome()));
-            user_pay_money.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.getPay()));
+            tv_user_all_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalEarning));
+            user_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalIncome));
+            user_pay_money.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalPay));
+            if (incomeOrPayEntity.lstDayItem!=null&&incomeOrPayEntity.lstDayItem.size()>0){
+                /*月*/
+                MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity = new MonthOrDayIncomeOrPayEntity();
+                monthOrDayIncomeOrPayEntity.setMaxValue(incomeOrPayEntity.totalIncome);
+                List<MonthOrDayIncomeOrPayEntity.ListBean> list = new ArrayList<>();
+                list.clear();
+                if (selectIncomeOrPay==0){
+                    /*收入*/
+                    for (int i= 0;i<incomeOrPayEntity.lstDayItem.size();i++){
+                                MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
+                                listBean.setStep(incomeOrPayEntity.lstDayItem.get(i).day);
+                                listBean.setValue(Math.abs(incomeOrPayEntity.lstDayItem.get(i).totalIncomeDay));
+                                listBean.setTitle(incomeOrPayEntity.lstDayItem.get(i).day + "");
+                                list.add(listBean);
+                    }
+                }else {
+                    /*支出*/
+                    for (int i= 0;i<incomeOrPayEntity.lstDayItem.size();i++){
+                        MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
+                        listBean.setStep(incomeOrPayEntity.lstDayItem.get(i).day);
+                        listBean.setValue(Math.abs(incomeOrPayEntity.lstDayItem.get(i).totalPayDay));
+                        listBean.setTitle(incomeOrPayEntity.lstDayItem.get(i).day + "");
+                        list.add(listBean);
+                    }
+                }
+                monthOrDayIncomeOrPayEntity.setList(list);
+                showMonthData(monthOrDayIncomeOrPayEntity);
+
+            }
+            if (incomeOrPayEntity.lstMonthItem!=null&&incomeOrPayEntity.lstMonthItem.size()>0){
+                /*年*/
+                MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity = new MonthOrDayIncomeOrPayEntity();
+                monthOrDayIncomeOrPayEntity.setMaxValue(incomeOrPayEntity.totalIncome);
+                List<MonthOrDayIncomeOrPayEntity.ListBean> list = new ArrayList<>();
+                list.clear();
+                if (selectIncomeOrPay==0) {
+                    for (int i = 0; i < incomeOrPayEntity.lstMonthItem.size(); i++) {
+                        MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
+                        listBean.setStep(incomeOrPayEntity.lstMonthItem.get(i).month);
+                        listBean.setValue(Math.abs(incomeOrPayEntity.lstMonthItem.get(i).totalIncomeMonth));
+                        listBean.setTitle(incomeOrPayEntity.lstMonthItem.get(i).month + "");
+                        list.add(listBean);
+                    }
+                }else {
+                    for (int i = 0; i < incomeOrPayEntity.lstMonthItem.size(); i++) {
+                        MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
+                        listBean.setStep(incomeOrPayEntity.lstMonthItem.get(i).month);
+                        listBean.setValue(Math.abs(incomeOrPayEntity.lstMonthItem.get(i).totalPayMonth));
+                        listBean.setTitle(incomeOrPayEntity.lstMonthItem.get(i).month + "");
+                        list.add(listBean);
+                    }
+                }
+                monthOrDayIncomeOrPayEntity.setList(list);
+                showYeardata(monthOrDayIncomeOrPayEntity);
+            }
         }
     }
 
     @Override
     public void showChartData(MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity) {
         tv_no_chart_data.setVisibility(View.GONE);
-        if (selectCatType == 0) {
-            //按年查看数据
-            showYeardata(monthOrDayIncomeOrPayEntity);
-        } else {
-            showMonthData(monthOrDayIncomeOrPayEntity);
-        }
-
     }
 
     @Override
     public void showChartLoadingTips(String tips) {
         tv_no_chart_data.setText(tips);
-        tv_no_chart_data.setVisibility(View.VISIBLE);
+        tv_no_chart_data.setVisibility(View.GONE);
     }
 
     @Override

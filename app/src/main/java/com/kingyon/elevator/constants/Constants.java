@@ -84,6 +84,7 @@ public interface Constants {
     interface WithdrawType {//ali，bankCard
         String ALI = "ALI";
         String BANKCARD = "BANKCARD";
+        String WX = "WX";
     }
 
     interface OrderStatus {//waitPay:待支付，cancel：取消，waitRelease，待发布，releaseing：发布中，complete:完成 SOWING:下播 OVERDUE:过期

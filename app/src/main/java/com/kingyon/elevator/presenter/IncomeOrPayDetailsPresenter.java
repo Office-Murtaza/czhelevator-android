@@ -6,6 +6,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
+import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
+import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -21,14 +23,14 @@ import java.util.List;
  */
 public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetailsView> {
 
-    private int startPosition = 0;
+    private int startPosition = 1;
     private int size = 40;
-    private List<IncomeDetailsEntity> incomeDetailsEntityList;
+    private  List<BalancePaymentsEntily.PageContentBean.LstResponseBean> lstResponse;;
 
 
     public IncomeOrPayDetailsPresenter(Context mContext) {
         super(mContext);
-        incomeDetailsEntityList = new ArrayList<>();
+        lstResponse = new ArrayList<>();
     }
 
 
@@ -39,32 +41,36 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
             //查询收入
             if (selectCatType == 0) {
                 //查询月收入详情
-                getIncomePayDataDayList(reflashType, Constants.QueryDataType.IncomeType,year + "-" + formatDay);
+                getIncomePayDataDayList(reflashType, "INCOME",year + "-" + formatDay);
             } else {
                 //查询日收入详情
-                getDayIncomeData(reflashType, year + "-" + formatMonth + "-" + formatDay);
+                getDayIncomeData(reflashType, "INCOME",year + "-" + formatMonth + "-" + formatDay);
             }
         } else {
             //查询支出
             if (selectCatType == 0) {
                 //查询月支出详情
-                getIncomePayDataDayList(reflashType, Constants.QueryDataType.PayType,year + "-" + formatDay);
+//                getIncomePayDataDayList(reflashType, Constants.QueryDataType.PayType,year + "-" + formatDay);
+                getIncomePayDataDayList(reflashType, "PAY",year + "-" + formatDay);
             } else {
                 //查询日支出详情
-                getDayPayData(reflashType, year + "-" + formatMonth + "-" + formatDay);
+//                getDayPayData(reflashType, year + "-" + formatMonth + "-" + formatDay);
+                getDayIncomeData(reflashType, "PAY",year + "-" + formatMonth + "-" + formatDay);
             }
         }
     }
 
 
-    private void getDayIncomeData(int reflashType, String date) {
+    private void getDayIncomeData(int reflashType,String type, String date) {
+        LogUtils.e(reflashType,type,date,startPosition);
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getIncomeDetailedList(startPosition + "", size + "", date)
-                .subscribe(new CustomApiCallback<List<IncomeDetailsEntity>>() {
+        NetService.getInstance().getMonthIncomeOrPayByDate(startPosition, type, date)
+                .subscribe(new CustomApiCallback<BalancePaymentsEntily>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             if (startPosition == 0) {
@@ -75,20 +81,21 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
                     }
 
                     @Override
-                    public void onNext(List<IncomeDetailsEntity> incomeDetailsEntities) {
+                    public void onNext(BalancePaymentsEntily incomeDetailsEntities) {
+                        LogUtils.e(incomeDetailsEntities.toString());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             if (reflashType == ReflashConstants.Refalshing) {
-                                incomeDetailsEntityList = incomeDetailsEntities;
+                                lstResponse = incomeDetailsEntities.getPageContent().getLstResponse();
                             } else {
-                                incomeDetailsEntityList.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
+                                lstResponse.addAll(incomeDetailsEntities.getPageContent().getLstResponse());
+                                if (incomeDetailsEntities.getPageContent().getLstResponse().size() == 0) {
                                     getView().loadMoreIsComplete();
                                 }
                             }
-                            startPosition = incomeDetailsEntityList.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
-                            getView().showDetailsListData(incomeDetailsEntityList);
+                            startPosition = lstResponse.size();
+                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + lstResponse.size());
+                            getView().showDetailsListData(lstResponse,incomeDetailsEntities);
                         }
                     }
                 });
@@ -96,13 +103,15 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
 
 
     private void getIncomePayDataDayList(int reflashType, String type, String date) {
+        LogUtils.e(reflashType,type,date,startPosition);
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getIncomePayDataDayList(startPosition + "", size + "", type, date)
-                .subscribe(new CustomApiCallback<List<IncomeDetailsEntity>>() {
+        NetService.getInstance().getYearIncomeOrPayByDate(startPosition, type, date)
+                .subscribe(new CustomApiCallback<BalancePaymentsEntily>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             if (startPosition == 0) {
@@ -113,20 +122,22 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
                     }
 
                     @Override
-                    public void onNext(List<IncomeDetailsEntity> incomeDetailsEntities) {
+                    public void onNext(BalancePaymentsEntily incomeDetailsEntities) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
+                            LogUtils.e(incomeDetailsEntities.toString());
+
                             if (reflashType == ReflashConstants.Refalshing) {
-                                incomeDetailsEntityList = incomeDetailsEntities;
+                                lstResponse = incomeDetailsEntities.getPageContent().getLstResponse();
                             } else {
-                                incomeDetailsEntityList.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
+                                lstResponse.addAll(incomeDetailsEntities.getPageContent().getLstResponse());
+                                if (incomeDetailsEntities.getPageContent().getLstResponse().size() == 0) {
                                     getView().loadMoreIsComplete();
                                 }
                             }
-                            startPosition = incomeDetailsEntityList.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
-                            getView().showDetailsListData(incomeDetailsEntityList);
+                            startPosition = lstResponse.size();
+                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.getPageContent().getLstResponse().size());
+                            getView().showDetailsListData(lstResponse,incomeDetailsEntities);
                         }
                     }
                 });
@@ -152,23 +163,23 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
                     public void onNext(List<IncomeDetailsEntity> incomeDetailsEntities) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            if (reflashType == ReflashConstants.Refalshing) {
-                                incomeDetailsEntityList = incomeDetailsEntities;
-                            } else {
-                                incomeDetailsEntityList.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
-                                    getView().loadMoreIsComplete();
-                                }
-                            }
-                            startPosition = incomeDetailsEntityList.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
-                            getView().showDetailsListData(incomeDetailsEntityList);
+//                            if (reflashType == ReflashConstants.Refalshing) {
+//                                lstResponse = incomeDetailsEntities;
+//                            } else {
+//                                lstResponse.addAll(incomeDetailsEntities);
+//                                if (incomeDetailsEntities.size() == 0) {
+//                                    getView().loadMoreIsComplete();
+//                                }
+//                            }
+//                            startPosition = lstResponse.size();
+//                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
+//                            getView().showDetailsListData(lstResponse);
                         }
                     }
                 });
     }
 
-    public List<IncomeDetailsEntity> getIncomeDetailsEntityList() {
-        return incomeDetailsEntityList;
+    public List<BalancePaymentsEntily.PageContentBean.LstResponseBean> getlstResponse() {
+        return lstResponse;
     }
 }

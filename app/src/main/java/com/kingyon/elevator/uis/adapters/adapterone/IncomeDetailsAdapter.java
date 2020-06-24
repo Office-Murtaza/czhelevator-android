@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
+import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.utils.DensityUtil;
+import com.kingyon.elevator.utils.TimeUtil;
 
 import java.util.List;
 
@@ -23,18 +25,18 @@ import java.util.List;
  */
 public class IncomeDetailsAdapter extends RecyclerView.Adapter<IncomeDetailsAdapter.ViewHolder> {
 
-    private List<IncomeDetailsEntity> incomeDetailsEntityList;
+    private List<BalancePaymentsEntily.PageContentBean.LstResponseBean> incomeDetailsEntityList;
     private Context context;
     protected LayoutInflater inflater;
 
-    public IncomeDetailsAdapter(Context context, List<IncomeDetailsEntity> incomeDetailsEntityList) {
+    public IncomeDetailsAdapter(Context context, List<BalancePaymentsEntily.PageContentBean.LstResponseBean> incomeDetailsEntityList) {
         this.context = context;
         this.incomeDetailsEntityList = incomeDetailsEntityList;
         this.inflater = LayoutInflater.from(context);
     }
 
 
-    public void reflashData(List<IncomeDetailsEntity> incomeDetailsEntityList) {
+    public void reflashData(List<BalancePaymentsEntily.PageContentBean.LstResponseBean> incomeDetailsEntityList) {
         this.incomeDetailsEntityList = incomeDetailsEntityList;
         notifyDataSetChanged();
     }
@@ -48,20 +50,20 @@ public class IncomeDetailsAdapter extends RecyclerView.Adapter<IncomeDetailsAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            IncomeDetailsEntity incomeDetailsEntity = incomeDetailsEntityList.get(position);
-            holder.tv_income_date.setText(incomeDetailsEntity.getDateValue() + "\t\t" + (incomeDetailsEntity.getTimeValue() == null ? "" : incomeDetailsEntity.getTimeValue()));
-            holder.tv_income_type.setText(incomeDetailsEntity.getTypeName());
-            holder.tv_income_money.setText("¥" + incomeDetailsEntity.getAmount());
+            BalancePaymentsEntily.PageContentBean.LstResponseBean incomeDetailsEntity = incomeDetailsEntityList.get(position);
+            holder.tv_income_date.setText(TimeUtil.getAllTime(incomeDetailsEntity.getCreateTime())+"");
+            holder.tv_income_type.setText("来源："+incomeDetailsEntity.getType());
+            holder.tv_income_money.setText("¥" + incomeDetailsEntity.getTotal());
             RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) holder.item_container.getLayoutParams();
-            if (incomeDetailsEntity.getAmount().equals("0.00")) {
-                param.height = 0;
-                param.width = 0;
-                holder.item_container.setVisibility(View.GONE);
-            } else {
-                holder.item_container.setVisibility(View.VISIBLE);
-                param.height = DensityUtil.dip2px(50);
-                param.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-            }
+//            if (incomeDetailsEntity.getTotal().equals("0.00")) {
+//                param.height = 0;
+//                param.width = 0;
+//                holder.item_container.setVisibility(View.GONE);
+//            } else {
+//                holder.item_container.setVisibility(View.VISIBLE);
+//                param.height = DensityUtil.dip2px(50);
+//                param.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

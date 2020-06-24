@@ -5,6 +5,9 @@ import android.content.Context;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
+import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -21,14 +24,14 @@ import java.util.List;
 public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView> {
     private int startPosition = 0;
     private int size = 30;
-    private List<YesterdayIncomeEntity> yesterdayIncomeEntityList;
+    private List<EarningsYesterdayEnity> yesterdayIncomeEntityList;
 
     public YesterDayIncomePresenter(Context mContext) {
         super(mContext);
         yesterdayIncomeEntityList = new ArrayList<>();
     }
 
-    public List<YesterdayIncomeEntity> getYesterdayIncomeEntityList() {
+    public List<EarningsYesterdayEnity> getYesterdayIncomeEntityList() {
         return yesterdayIncomeEntityList;
     }
 
@@ -39,8 +42,8 @@ public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView>
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getYesterdayIncomeDetailedList(startPosition + "", size + "")
-                .subscribe(new CustomApiCallback<List<YesterdayIncomeEntity>>() {
+        NetService.getInstance().getYesterdayIncomeDetailedList(startPosition )
+                .subscribe(new CustomApiCallback<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
@@ -52,20 +55,21 @@ public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView>
                     }
 
                     @Override
-                    public void onNext(List<YesterdayIncomeEntity> incomeDetailsEntities) {
+                    public void onNext(ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>> incomeDetailsEntities) {
+                        LogUtils.e(incomeDetailsEntities.toString());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             getView().showContentView();
                             if (reflashType == ReflashConstants.Refalshing) {
-                                yesterdayIncomeEntityList = incomeDetailsEntities;
+                                yesterdayIncomeEntityList = incomeDetailsEntities.pageContent.lstResponse;
                             } else {
-                                yesterdayIncomeEntityList.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
+                                yesterdayIncomeEntityList.addAll(incomeDetailsEntities.pageContent.lstResponse);
+                                if (incomeDetailsEntities.pageContent.lstResponse.size() == 0) {
                                     getView().loadMoreIsComplete();
                                 }
                             }
                             startPosition = yesterdayIncomeEntityList.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
+                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.pageContent.lstResponse.size());
                             getView().showDetailsListData(yesterdayIncomeEntityList);
                         }
                     }
@@ -97,9 +101,9 @@ public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView>
                             getView().hideProgressDailog();
                             getView().showContentView();
                             if (reflashType == ReflashConstants.Refalshing) {
-                                yesterdayIncomeEntityList = incomeDetailsEntities;
+//                                yesterdayIncomeEntityList = incomeDetailsEntities;
                             } else {
-                                yesterdayIncomeEntityList.addAll(incomeDetailsEntities);
+//                                yesterdayIncomeEntityList.addAll(incomeDetailsEntities);
                                 if (incomeDetailsEntities.size() == 0) {
                                     getView().loadMoreIsComplete();
                                 }
@@ -111,4 +115,6 @@ public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView>
                     }
                 });
     }
+
+
 }

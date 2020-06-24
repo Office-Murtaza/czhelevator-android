@@ -297,12 +297,12 @@ public class OrdinaryActivity {
     public static void httpContentPublish(BaseActivity baseActivity, String title, String content,
                                           String image, String video, String type , String combination ,
                                           String topicId , String atAccount,int videoSize,
-                                          String videoCover,long playTime, int videoHorizontalVertical){
-        LogUtils.e(title,content,image,video,type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical);
+                                          String videoCover,long playTime, int videoHorizontalVertical,boolean isOriginal){
+        LogUtils.e(title,content,image,video,type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal);
 
         baseActivity.showProgressDialog(baseActivity.getString(R.string.wait));
         NetService.getInstance().setContentPublish(title,content,image,video,type,
-                combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical)
+                combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override

@@ -1,6 +1,9 @@
 package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
+import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 import java.util.List;
@@ -11,10 +14,12 @@ import java.util.List;
  */
 public interface YesterDayIncomeView extends BaseView {
 
-    void showDetailsListData(List<YesterdayIncomeEntity> incomeDetailsEntities);
+    void showDetailsListData(List<EarningsYesterdayEnity> incomeDetailsEntities);
 
     /**
      * 已经全部加载完成了
      */
     void  loadMoreIsComplete();
+
+
 }

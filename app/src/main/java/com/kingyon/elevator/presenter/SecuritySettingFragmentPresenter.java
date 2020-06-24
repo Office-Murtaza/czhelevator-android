@@ -2,6 +2,7 @@ package com.kingyon.elevator.presenter;
 
 import android.support.v4.app.FragmentActivity;
 
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -24,7 +25,7 @@ public class SecuritySettingFragmentPresenter extends BasePresenter<SecuritySett
             getView().showProgressDialog("数据查询中...", false);
         }
         NetService.getInstance().vaildInitPayPwd()
-                .subscribe(new CustomApiCallback<Boolean>() {
+                .subscribe(new CustomApiCallback<CooperationInfoNewEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
@@ -35,10 +36,10 @@ public class SecuritySettingFragmentPresenter extends BasePresenter<SecuritySett
                     }
 
                     @Override
-                    public void onNext(Boolean isInit) {
+                    public void onNext(CooperationInfoNewEntity isInit) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            getView().checkPayPwdIsInit(isInit);
+                            getView().checkPayPwdIsInit(isInit.isSetPayPassword());
                         }
                     }
                 });

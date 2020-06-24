@@ -225,7 +225,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
                 httpUbdata();
                 break;
             case R.id.img_icon:
-
+            /*表情*/
                 break;
             case R.id.img_aite:
 //                @
@@ -252,11 +252,9 @@ public class VoideReleasetyActiivty extends BaseActivity {
 
                 break;
             case R.id.tv_cover:
+/*封面*/
 
-//                ARouter.getInstance().build(ACTIVITY_VIDEO_COVER).withString("videoPath",videoPath).navigation();
-//                httpCover();
                 Bundle bundle = new Bundle();
-//                bundle.putString("videoUrl", images.get(0));
                 bundle.putString("videoPath", videoPath);
                 startActivityForResult(VideoCoverActivity.class, ACCESS_VOIDE_COVER, bundle);
                 break;
@@ -276,10 +274,12 @@ public class VoideReleasetyActiivty extends BaseActivity {
             case R.id.image_original:
                 initOriginal();
                 isOriginal();
+                isOriginal = true;
                 break;
             case R.id.imag_reprinted:
                 initOriginal();
                 isReprinted();
+                isOriginal = false;
                 break;
             default:
         }
@@ -344,11 +344,11 @@ public class VoideReleasetyActiivty extends BaseActivity {
                 if (VideoUtils.isCross(videoPath)) {
                     OrdinaryActivity.httpContentPublish(VoideReleasetyActiivty.this, editTitle.getText().toString(),
                             String.valueOf(convertMetionString), null, images.get(0), TYPE_VIDEO, "3", topicId, atAccount,
-                            videoSize, videoCoverUrl, videoTime, 0);
+                            videoSize, videoCoverUrl, videoTime, 0,isOriginal);
                 } else {
                     OrdinaryActivity.httpContentPublish(VoideReleasetyActiivty.this, editTitle.getText().toString(),
                             String.valueOf(convertMetionString), null, images.get(0), TYPE_VIDEO, "3", topicId, atAccount,
-                            videoSize, videoCoverUrl, videoTime, 1);
+                            videoSize, videoCoverUrl, videoTime, 1,isOriginal);
                 }
             }
 

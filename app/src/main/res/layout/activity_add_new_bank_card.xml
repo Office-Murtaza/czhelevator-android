@@ -19,125 +19,136 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/my_action_bar"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="36dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/dp10"
+        >
 
-        <RelativeLayout
+
+
+            <TextView
+                android:id="@+id/tv_zhname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新增微信账户"
+                android:textColor="#ff333333"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+
+
+
+
+
+        <TextView
+            android:id="@+id/tv_conent"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="为了您的提现功能正常使用，请正确填写以下账户信息"
+            android:textColor="#ff2d6ef2"
+            android:textSize="12sp"
+            />
+        <View
+            android:layout_marginTop="@dimen/dp_40"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="1dp"
+            android:background="#E1E1E1" />
 
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="账户类型"
-                android:textColor="@color/default_text_color"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_account_type"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="85dp"
-                android:gravity="center_vertical"
-                android:text="支付宝提现"
-                android:textColor="@color/hint_text_color"
-                android:textSize="15sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#7F7F7F" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/ll_name"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp10"
+            >
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="账号"
-                android:textColor="@color/default_text_color"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/tv_zfb_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账户姓名"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp10"
+                android:paddingBottom="@dimen/dp10"
+                />
+            <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="85dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
-                android:hint="请输入支付宝账号"
                 android:textColor="@color/default_text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#7F7F7F" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
-
-        <RelativeLayout
+        <View
+            android:layout_marginTop="@dimen/dp10"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="1dp"
+            android:background="#E1E1E1" />
 
+        <LinearLayout
+            android:id="@+id/ll_zh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp10"
+            >
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="姓名"
-                android:textColor="@color/default_text_color"
-                android:textSize="15sp" />
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账户账号"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp10"
+                android:paddingBottom="@dimen/dp10"
+                />
             <EditText
-                android:id="@+id/tv_zfb_name"
+                android:id="@+id/et_zh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="85dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
-                android:hint="请输入支付宝绑定的真实姓名"
+                android:hint="请输入绑定用户的微信账号"
                 android:textColor="@color/default_text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#7F7F7F" />
+        </LinearLayout>
 
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/kaihuhang_container"
+        <View
+            android:layout_marginTop="@dimen/dp10"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:visibility="gone">
+            android:layout_height="1dp"
+            android:background="#E1E1E1" />
 
+        <LinearLayout
+            android:id="@+id/ll_kfh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dp10"
+            >
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="开户行"
-                android:textColor="@color/default_text_color"
-                android:textSize="15sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开户网点"
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp10"
+                android:paddingBottom="@dimen/dp10"
+                />
 
             <EditText
-                android:id="@+id/tv_bank_card_kaihuhang"
+                android:id="@+id/et_kfh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="85dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请输入银行卡开户行"
@@ -145,13 +156,24 @@
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="15sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#7F7F7F" />
+        </LinearLayout>
 
-        </RelativeLayout>
+        <View
+            android:id="@+id/view_kfh"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:background="#E1E1E1" />
+
+        <TextView
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温馨提示：新增此账户后将替代原有提现账户信息。"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            />
 
     </LinearLayout>
 
@@ -162,22 +184,12 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="133dp"
-        android:background="@drawable/shape_bg_default_btn"
+        android:layout_marginBottom="33dp"
+        android:background="@mipmap/btn_common_normal"
         android:gravity="center"
         android:text="确定"
         android:textColor="#ffffffff"
         android:textSize="15sp" />
 
 
-    <TextView
-        android:layout_width="254dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:gravity="center"
-        android:text="@string/bind_card_tips"
-        android:textColor="@color/default_text_color"
-        android:textSize="10sp" />
 </RelativeLayout>

@@ -12,6 +12,14 @@ public class MonthOrDayIncomeOrPayEntity {
     private double maxValue;
     private List<ListBean> list;
 
+    @Override
+    public String toString() {
+        return "MonthOrDayIncomeOrPayEntity{" +
+                "maxValue=" + maxValue +
+                ", list=" + list +
+                '}';
+    }
+
     public double getMaxValue() {
         return maxValue;
     }
@@ -38,6 +46,15 @@ public class MonthOrDayIncomeOrPayEntity {
         private String title;
         private double value;
         private int step;
+
+        @Override
+        public String toString() {
+            return "ListBean{" +
+                    "title='" + title + '\'' +
+                    ", value=" + value +
+                    ", step=" + step +
+                    '}';
+        }
 
         public String getTitle() {
             return title;

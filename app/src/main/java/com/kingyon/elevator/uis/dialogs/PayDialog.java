@@ -223,27 +223,35 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 dismiss();
                 break;
             case R.id.tv_payment:
-                dismiss();
                 if (isOverdue()) {
                     if (type.equals("BALANCE")){
-                        dismiss();
-                        if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)){
-                            fingerprintInit();
+                        if (myWallet>priceActual) {
+//                            dismiss();
+                            if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                                fingerprintInit();
+                            } else {
+                                DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), KEYBOARD_PAY, password -> {
+//                                    DialogUtils.getInstance().hideInputPayPwdToCashDailog();
+                                    LogUtils.e(password);
+                                    if (password.equals("susser")) {
+                                        if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                                            fingerprintInit();
+                                        } else {
+                                            ToastUtils.showToast(context, "你还没有设置指纹支付，请设置再试", 1000);
+                                        }
+                                    } else {
+                                        httpPatment(type, password);
+                                    }
+                                });
+                            }
                         }else {
-                            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
-                                DialogUtils.getInstance().hideInputPayPwdToCashDailog();
-                                LogUtils.e(password);
-                                if (password.equals("susser")){
-                                    fingerprintInit();
-                                }else {
-                                    httpPatment(type, password);
-                                }
-                            });
+                            ToastUtils.showToast(context, "余额不足请使用其他支付方式", 1000);
                         }
                     }else {
                         httpPatment(type,"");
                     }
                 }else {
+                    dismiss();
                     ToastUtils.showToast(context,"请重新支付",1000);
                 }
                 break;
@@ -280,11 +288,15 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
             LogUtils.e("onUsepwd");
 
             DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
-                DialogUtils.getInstance().hideInputPayPwdToCashDailog();
+//                DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                 LogUtils.e(password);
                 if (password.equals("susser")){
-                    fingerprintInit();
-                    hideInput(context);
+                    if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)){
+                        fingerprintInit();
+                        hideInput(context);
+                    }else {
+                        ToastUtils.showToast(context,"你还没有设置指纹支付，请设置再试",1000);
+                    }
                 }else {
                     httpPatment(type, password);
                 }
@@ -323,7 +335,22 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                     @Override
                     protected void onResultError(ApiException ex) {
                         context.hideProgressDailog();
+                        DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                         ToastUtils.showToast(context,ex.getDisplayMessage(),1000);
+                        if (ex.getCode()==-100){
+                            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
+                                LogUtils.e(password);
+                                if (password.equals("susser")){
+                                    if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)){
+                                        fingerprintInit();
+                                    }else {
+                                        ToastUtils.showToast(context,"你还没有设置指纹支付，请设置再试",1000);
+                                    }
+                                }else {
+                                    httpPatment(type, password);
+                                }
+                            });
+                        }
                         if (ex instanceof PayApiException) {
                             WxPayEntity payResultEntity = ((PayApiException) ex).getPayEntity();
                             if (payResultEntity != null) {
@@ -354,7 +381,8 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
 
                     @Override
                     public void onNext(WxPayEntity wxPayEntity) {
-                        LogUtils.e(wxPayEntity.toString());
+
+                        DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                         context.hideProgressDailog();
                         if (wxPayEntity == null) {
                             throw new ResultException(9000, "返回参数异常");
@@ -371,10 +399,11 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                                 LogUtils.e(orderEntiy.getOrderId(),Constants.PayType.BALANCE_PAY);
                                 if (wxPayEntity.getReturn_code().equals("SUCCESS")){
                                     EventBus.getDefault().post(new FreshOrderEntity());
+                                    dismiss();
 //                                        Bundle bundle = new Bundle();
 //                                        bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
 //                                        bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.BALANCE_PAY);
-//                                        startActivity(PaySuccessActivity.class, bundle);
+//                                        startActivity(PaySuccessActivity.class, bundle)
                                     ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
                                             "payType",Constants.PayType.BALANCE_PAY,"priceActual", String.valueOf(priceActual));
                                         context.finish();
@@ -409,6 +438,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 @Override
                 public void onPaySuccess(PayWay payWay) {
                     ToastUtils.showToast(context,getString(R.string.pay_Success),1000);
+                    dismiss();
                     EventBus.getDefault().post(new FreshOrderEntity());
 //                    if (detailsEntity != null) {
 //                        Bundle bundle = new Bundle();
@@ -461,6 +491,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
             wxPayUtils.checkResult(wxPayStatusEntity, new PayListener() {
                 @Override
                 public void onPaySuccess(PayWay payWay) {
+                    dismiss();
                     EventBus.getDefault().post(new FreshOrderEntity());
 //                        Bundle bundle = new Bundle();
 //                        bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());

@@ -2571,7 +2571,7 @@ public class VideoEditor {
             }
 
             if(startX4>=0 && startY4>=0 && width4>0 && height4>0){
-               String filter4 = String.format(Locale.getDefault(), ";[d3]delogo=x=%d:y=%d:w=%d:h=%d",
+                String filter4 = String.format(Locale.getDefault(), ";[d3]delogo=x=%d:y=%d:w=%d:h=%d",
                         startX4,startY4,width4,height4);
                 filter+=filter4;
             }
@@ -2768,18 +2768,18 @@ public class VideoEditor {
 //        ffmpeg -f image2 -framerate 5 -i foo-%03d.jpeg c.gif
 
         String  subfix="jpeg";
-        LanSongFileUtil.deleteNameFiles("lansonggif",subfix);
+//        LanSongFileUtil.deleteNameFiles(this,"lansonggif",subfix);
 
-        String bmpPaths= LanSongFileUtil.getCreateFileDir("");
-        bmpPaths+="/lansonggif_%05d."+subfix;
-
-        if(executeExtractFrame(videoInput,inteval,scaleW,scaleH,bmpPaths)){
-
-            String  ret=executeConvertBmpToGif(bmpPaths,frameRate);
-
-            LanSongFileUtil.deleteNameFiles("lansonggif",subfix);
-            return ret;
-        }
+//        String bmpPaths= LanSongFileUtil.getCreateFileDir("");
+//        bmpPaths+="/lansonggif_%05d."+subfix;
+//
+//        if(executeExtractFrame(videoInput,inteval,scaleW,scaleH,bmpPaths)){
+//
+//            String  ret=executeConvertBmpToGif(bmpPaths,frameRate);
+//
+//            LanSongFileUtil.deleteNameFiles("lansonggif",subfix);
+//            return ret;
+//        }
         return null;
     }
 
@@ -2882,7 +2882,7 @@ public class VideoEditor {
      */
     public String executeAddTextToMp4(String srcPath,String text)
     {
-       // ffmpeg -i d1.mp4 -metadata description="LanSon\"g \"Text"
+        // ffmpeg -i d1.mp4 -metadata description="LanSon\"g \"Text"
         //  -acodec copy -vcodec copy t1.mp4
         if(fileExist(srcPath) && text!=null) {
             String retPath = LanSongFileUtil.createMp4FileInBox();
@@ -2926,8 +2926,8 @@ public class VideoEditor {
      */
     public String executeGetTextFromMp4(String srcPath)
     {
-            //LSTODO. 暂时预留.
-         return null;
+        //LSTODO. 暂时预留.
+        return null;
     }
     /**
      * 获取lansosdk的建议码率;
@@ -3281,7 +3281,7 @@ public class VideoEditor {
         return null;
     }
     private static boolean selectColorFormat(MediaCodecInfo codecInfo,
-                                        String mimeType) {
+                                             String mimeType) {
         MediaCodecInfo.CodecCapabilities capabilities = codecInfo
                 .getCapabilitiesForType(mimeType);
         for (int i = 0; i < capabilities.colorFormats.length; i++) {
@@ -3370,47 +3370,47 @@ public class VideoEditor {
         for (int i = 0; i < cmdList.size(); i++) {
             command[i] = (String) cmdList.get(i);
         }
-       if(executeVideoEditor(command)==0){
+        if(executeVideoEditor(command)==0){
             return dstPath;
-       }else{
+        }else{
             LSLog.e("executeGetAudioTrack error");
             return null;
-       }
+        }
     }
     public int testVideoMergeAudio(String video, String audio,String dstPath) {
 
 
-            List<String> cmdList = new ArrayList<String>();
-            cmdList.add("-i");
-            cmdList.add(video);
+        List<String> cmdList = new ArrayList<String>();
+        cmdList.add("-i");
+        cmdList.add(video);
 
-            cmdList.add("-i");
-            cmdList.add(audio);
-
-
-            cmdList.add("-map");
-            cmdList.add("0:v");
-
-            cmdList.add("-map");
-            cmdList.add("1:a");
-
-            cmdList.add("-vcodec");
-            cmdList.add("copy");
-
-            cmdList.add("-acodec");
-            cmdList.add("copy");
-
-            cmdList.add("-absf");
-            cmdList.add("aac_adtstoasc");
+        cmdList.add("-i");
+        cmdList.add(audio);
 
 
-            cmdList.add("-y");
-            cmdList.add(dstPath);
-            String[] command = new String[cmdList.size()];
-            for (int i = 0; i < cmdList.size(); i++) {
-                command[i] = (String) cmdList.get(i);
-            }
-            VideoEditor editor = new VideoEditor();
-            return editor.executeVideoEditor(command);
+        cmdList.add("-map");
+        cmdList.add("0:v");
+
+        cmdList.add("-map");
+        cmdList.add("1:a");
+
+        cmdList.add("-vcodec");
+        cmdList.add("copy");
+
+        cmdList.add("-acodec");
+        cmdList.add("copy");
+
+        cmdList.add("-absf");
+        cmdList.add("aac_adtstoasc");
+
+
+        cmdList.add("-y");
+        cmdList.add(dstPath);
+        String[] command = new String[cmdList.size()];
+        for (int i = 0; i < cmdList.size(); i++) {
+            command[i] = (String) cmdList.get(i);
+        }
+        VideoEditor editor = new VideoEditor();
+        return editor.executeVideoEditor(command);
     }
 }

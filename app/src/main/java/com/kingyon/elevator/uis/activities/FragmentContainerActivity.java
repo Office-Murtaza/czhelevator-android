@@ -80,7 +80,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (type) {
             case FragmentConstants.CashMethodSettingFragment:
-                my_action_bar.setTitle("提现方式");
+                my_action_bar.setTitle("提现申请");
                 entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
                 //LogUtils.e("接收到的参数：", GsonUtils.toJson(entity));
                 fragmentTransaction.replace(R.id.fragment_container, CashMethodSettingFragment.newInstance(entity));
@@ -97,18 +97,22 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
                     if (RuntimeUtils.chartSelectParameterEntity.getSelectIncomeOrPay() == 0) {
                         //收入
                         if (RuntimeUtils.chartSelectParameterEntity.getSelectCatType() == 0) {
-                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月收入");
+//                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月收入");
+                            my_action_bar.setTitle("收入记录");
                         } else {
-                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
-                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日收入");
+//                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
+//                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日收入");
+                            my_action_bar.setTitle("收入记录");
                         }
                     } else {
                         //支出
                         if (RuntimeUtils.chartSelectParameterEntity.getSelectCatType() == 0) {
-                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月支出");
+//                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "月支出");
+                            my_action_bar.setTitle("支出记录");
                         } else {
-                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
-                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日支出");
+//                            my_action_bar.setTitle(RuntimeUtils.chartSelectParameterEntity.getCurrentSelectMonth() + "月"
+//                                    + RuntimeUtils.chartSelectParameterEntity.getCurrentSelectDay() + "日支出");
+                            my_action_bar.setTitle("支出记录");
                         }
                     }
                     fragmentTransaction.replace(R.id.fragment_container, IncomeOrPayDetailsFragment.newInstance());

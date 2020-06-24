@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="35dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/red"
+    app:cardBackgroundColor="@color/color_00000000"
     app:cardCornerRadius="3dp">
 
     <LinearLayout
@@ -12,6 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:background="@mipmap/bg_manage_income_detail"
         android:gravity="center_horizontal"
         android:minHeight="35dp"
         android:orientation="vertical"
@@ -34,9 +35,10 @@
                 android:textSize="8sp" />
 
             <ImageView
-                android:layout_width="4dp"
-                android:layout_height="7.5dp"
-                android:src="@mipmap/nianshouru_youbiaotubiao" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:src="@mipmap/ic_manage_income_detail" />
         </LinearLayout>
 
 

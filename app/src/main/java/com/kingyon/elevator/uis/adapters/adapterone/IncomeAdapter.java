@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
+import com.kingyon.elevator.utils.TimeUtil;
 
 import java.util.List;
 
@@ -20,18 +22,18 @@ import java.util.List;
  */
 public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder> {
 
-    private List<YesterdayIncomeEntity> incomeEntityList;
+    private List<EarningsYesterdayEnity> incomeEntityList;
     private Context context;
     protected LayoutInflater inflater;
 
-    public IncomeAdapter(Context context, List<YesterdayIncomeEntity> incomeEntityList) {
+    public IncomeAdapter(Context context, List<EarningsYesterdayEnity> incomeEntityList) {
         this.context = context;
         this.incomeEntityList = incomeEntityList;
         this.inflater = LayoutInflater.from(context);
     }
 
 
-    public void reflashData(List<YesterdayIncomeEntity> incomeEntityList) {
+    public void reflashData(List<EarningsYesterdayEnity> incomeEntityList) {
         this.incomeEntityList = incomeEntityList;
         notifyDataSetChanged();
     }
@@ -45,12 +47,12 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            YesterdayIncomeEntity yesterdayIncomeEntity = incomeEntityList.get(position);
-            holder.tv_income_money.setText("¥\t" + yesterdayIncomeEntity.getAmount());
-            holder.tv_income_time.setText(yesterdayIncomeEntity.getDateValue() + "\t\t" + yesterdayIncomeEntity.getTimeValue());
-            holder.tv_income_type.setText(yesterdayIncomeEntity.getTypeName());
+            EarningsYesterdayEnity yesterdayIncomeEntity = incomeEntityList.get(position);
+            holder.tv_income_money.setText("¥\t" + yesterdayIncomeEntity.yesterday);
+            holder.tv_income_time.setText(TimeUtil.getAllTime(yesterdayIncomeEntity.createTime));
+            holder.tv_income_type.setText("·来源:"+yesterdayIncomeEntity.type);
             RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) holder.item_container.getLayoutParams();
-            if (yesterdayIncomeEntity.getAmount().equals("0.00")) {
+            if (yesterdayIncomeEntity.total.equals("0.00")) {
                 param.height = 0;
                 param.width = 0;
                 holder.item_container.setVisibility(View.GONE);

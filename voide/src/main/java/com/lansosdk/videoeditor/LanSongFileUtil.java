@@ -1,5 +1,6 @@
 package com.lansosdk.videoeditor;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
@@ -35,7 +36,8 @@ public class LanSongFileUtil {
     private static final Object mLock = new Object();
 
     //可以修改这个路径;
-    public static  String DEFAULT_DIR = "/sdcard/PDD/";
+
+    public static  String DEFAULT_DIR ;
     protected static String mTmpFileSubFix="";  //后缀,
     protected static String mTmpFilePreFix="";  //前缀;
 
@@ -43,7 +45,8 @@ public class LanSongFileUtil {
      * 获取文件创建的所在的文件夹
      * @return
      */
-    public static String getCreateFileDir(String name) {
+    public static String getCreateFileDir(Context context,String name) {
+        DEFAULT_DIR = context.getExternalCacheDir() + File.separator +"/sdcard/PDD/";
         File file = new File(DEFAULT_DIR+name);
         if (!file.exists()) {
             file.mkdirs();
@@ -51,9 +54,9 @@ public class LanSongFileUtil {
         return DEFAULT_DIR+name;
     }
 
-    public static void setFileDir(String dir) {
+    public static void setFileDir(Context context,String dir) {
         DEFAULT_DIR = dir;
-        getCreateFileDir("");
+        getCreateFileDir(context,"");
     }
 
     /**
@@ -273,9 +276,9 @@ public class LanSongFileUtil {
             }
         }
     }
-    public static void  deleteNameFiles(String prefix,String subfix)
+    public static void  deleteNameFiles(Context context,String prefix,String subfix)
     {
-        deleteNameFiles(getCreateFileDir(""),prefix,subfix);
+        deleteNameFiles(getCreateFileDir(context,""),prefix,subfix);
     }
     /**
      * 删除包含某些字符串名字的 文件;

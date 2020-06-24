@@ -61,10 +61,16 @@ import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.EarningsTopEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
@@ -76,7 +82,9 @@ import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
+import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.entities.WxPayEntity;
@@ -158,7 +166,21 @@ public interface NetApi {
     @POST("topic/queryTopicLabel")
     Observable<TopicLabelEntity<TopicLabelEntity.PageContentBean>> getTopicLabel();
 
-    /*2.0内容发布*/
+    /**
+     *2.0内容发布
+     * title 标题
+     * content 内容
+     * image 图片
+     * video 视频
+     * type 类型
+     * combination  状态
+     * topicId 话题
+     * atAccount 用户
+     * videoSize 视频大小
+     * videoCover 视频封面
+     * playTime 视频封面
+     *
+     * */
     @POST("content/contentPublish")
     @FormUrlEncoded
     Observable<String> getContentPublish(@Field("title") String title,@Field("content") String content,
@@ -166,7 +188,8 @@ public interface NetApi {
                                          @Field("type") String type ,@Field("combination") String combination ,
                                          @Field("topicId") String topicId ,@Field("atAccount") String atAccount,
                                          @Field("videoSize") int videoSize,@Field("videoCover") String videoCover,
-                                         @Field("playTime")long playTime,@Field("videoHorizontalVertical") int videoHorizontalVertical);
+                                         @Field("playTime")long playTime,@Field("videoHorizontalVertical") int videoHorizontalVertical,
+                                         @Field("isOriginal") boolean isOriginal);
 
     /*2.0置顶内容*/
     @POST("content/queryRecommendTop")
@@ -390,7 +413,12 @@ public interface NetApi {
 
     /*2.0合伙人首页内容*/
     @POST("partner/getPartnerIndexInfo")
-    Observable<PartnerIndexInfoEntity> getPartnerIndexInfo();
+    Observable<ConentEntity<PartnerIndexInfoEntity>> getPartnerIndexInfo();
+
+    /*2.0 获取合伙人提现账户*/
+    @POST("partner/cashType/getUserCashTypeList")
+    @FormUrlEncoded
+    Observable<List<UserCashTypeListEnity>> getUserCashTypeList(@Field("page") int page);
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -733,6 +761,9 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> setAliAuthQuery(@Field("certifyId") String certifyId);
 
+
+
+
     @POST("user/invoiceInfo")
     Observable<InvoiceInfoEntity> invoiceInfo();
 
@@ -822,35 +853,37 @@ public interface NetApi {
     Observable<PublicEntity> setverifyPayPasswordInit();
 
     /**
-     * 获取收益记录里的总收益  收入 支出三个数据
-     *
-     * @param date
+     * 2.0合伙人收益记录（年）
      * @return
      */
-    @POST("partner/getIncomeAndPayByDate")
+    @POST("partner/getEarningsRecordYear")
     @FormUrlEncoded
-    Observable<IncomeOrPayEntity> getIncomeAndPayByDate(@Field("date") String date);
+    Observable<EarningsTopEntity<EarningsTwoYearlistEntity>> getIncomeAndPayByDate(@Field("year") String date);
+
+    /**
+     * 2.0合伙人收益记录（月）
+     * */
+    @POST("partner/getEarningsRecordMonth")
+    @FormUrlEncoded
+    Observable<EarningsTopEntity<EarningsTwoYearlistEntity>> getEarningsRecordMonth(@Field("month") String month);
+
 
 
     /**
-     * 获取月支出 收入数据
+     * 2.0合伙人收支记录（天）
      *
-     * @param date
-     * @return
      */
-    @POST("partner/getIncomePayDataPerDay")
+    @POST("partner/getRecordDay")
     @FormUrlEncoded
-    Observable<MonthOrDayIncomeOrPayEntity> getMonthIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+    Observable<BalancePaymentsEntily> getMonthIncomeAndPayByDate(@Field("page") int page, @Field("type") String type, @Field("day") String day);
 
     /**
-     * 获取年收入 支出数据
+     * 2.0合伙人收支记录（月）
      *
-     * @param date
-     * @return
      */
-    @POST("partner/getIncomePayDataPerMonth")
+    @POST("partner/getRecordMonth")
     @FormUrlEncoded
-    Observable<MonthOrDayIncomeOrPayEntity> getYearIncomeAndPayByDate(@Field("type") String type, @Field("date") String date);
+    Observable<BalancePaymentsEntily> getYearIncomeAndPayByDate(@Field("page") int page,@Field("type") String type, @Field("month") String month);
 
 
     @POST("partner/apply")
@@ -959,7 +992,7 @@ public interface NetApi {
 
 
     /**
-     * 根据年份和月份查询某一个月的收入或支出详情
+     * 2.0根据年份和月份查询某一个月的收入或支出详情
      *
      * @param startPosition
      * @param size
@@ -971,15 +1004,12 @@ public interface NetApi {
 
 
     /**
-     * 查询昨日收益
+     * 2.0查询昨日收益
      *
-     * @param startPosition
-     * @param size
-     * @return
      */
-    @POST("partner/getYesterdayIncomeDetailedList")
+    @POST("partner/getYesterday")
     @FormUrlEncoded
-    Observable<List<YesterdayIncomeEntity>> getYesterdayIncomeDetailedList(@Field("start") String startPosition, @Field("size") String size);
+    Observable<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>> getYesterdayIncomeDetailedList(@Field("page") int  page);
 
     /**
      * 查询已提现的数据
@@ -1005,7 +1035,7 @@ public interface NetApi {
     Observable<List<BindAccountEntity>> getUserCashTypeList(@Field("start") String startPosition, @Field("size") String size);
 
     /**
-     * 绑定提现账号
+     * 2.0绑定提现账号
      *
      * @param cashAccount 账号
      * @param cashType    提现类型 1银行卡 2支付宝
@@ -1061,16 +1091,16 @@ public interface NetApi {
      * @return
      */
     @POST("userSecurity/pay/verifyPayPasswordInit")
-    Observable<Boolean> vaildInitPayPwd();
+    Observable<CooperationInfoNewEntity> vaildInitPayPwd();
 
 
     /**
-     * 验证码的方式修改支付密码
+     * 2.0验证支付密码
      *
      * @param password 支付密码
      * @return
      */
-    @POST("user/pay/vaildPassword")
+    @POST("userSecurity/pay/verifyPayPasswordByCode")
     @FormUrlEncoded
     Observable<String> vaildPasswordIsRight(@Field("password") String password);
 

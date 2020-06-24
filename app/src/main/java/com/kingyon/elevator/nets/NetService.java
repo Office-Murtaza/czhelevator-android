@@ -87,10 +87,16 @@ import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
+import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.EarningsTopEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
+import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
@@ -102,7 +108,9 @@ import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
+import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -211,9 +219,9 @@ public class NetService {
     /*2.0内容发布*/
     public Observable<String> setContentPublish(String title, String content, String image,String video, String type ,
                                                 String combination , String topicId , String atAccount ,int videoSize,
-                                                String videoCover,long playTime, int videoHorizontalVertical){
+                                                String videoCover,long playTime, int videoHorizontalVertical,boolean isOriginal){
         return addSchedulers(getApi().getContentPublish(title,content,image,video,
-                type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical));
+                type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal));
     }
 
     /*2.0置顶内容*/
@@ -924,7 +932,7 @@ public class NetService {
        return addSchedulers(getApi().getIdentyAuth(personName,idCardNum,idCardPic,type));
     }
     /*2.0合伙人首页内容*/
-    public Observable<PartnerIndexInfoEntity> setPartnerIndexInfo(){
+    public Observable<ConentEntity<PartnerIndexInfoEntity>> setPartnerIndexInfo(){
         return addSchedulers(getApi().getPartnerIndexInfo());
     }
 
@@ -1235,6 +1243,11 @@ public class NetService {
         return addSchedulers(observable);
     }
 
+    /*2.0 获取合伙人提现账户*/
+    public Observable<List<UserCashTypeListEnity>> steUserCashTypeList(int page){
+        return addSchedulers(getApi().getUserCashTypeList(page));
+    }
+
     public Observable<PublicEntity> setverifyPayPasswordInit(){
         return addSchedulers(getApi().setverifyPayPasswordInit());
     }
@@ -1462,34 +1475,38 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 获取收益记录 详情  总收益 收入 支出等
+     * 2.0合伙人收益记录（年）
      *
      * @param date
      * @return
      */
-    public Observable<IncomeOrPayEntity> getIncomeAndPayByDate(String date) {
+    public Observable<EarningsTopEntity<EarningsTwoYearlistEntity>> getIncomeAndPayByDate(String date) {
         return addSchedulers(getApi().getIncomeAndPayByDate(date));
     }
 
+    /**
+     *
+     *2.0合伙人收益记录（月）
+     * */
+    public Observable<EarningsTopEntity<EarningsTwoYearlistEntity>> setEarningsRecordMonth(String month){
+        return addSchedulers(getApi().getEarningsRecordMonth(month));
+    }
+
 
     /**
-     * 获取月收入 或者支出的数据 填充图表
+     * 2.0合伙人收支记录（天）
      *
-     * @param date
-     * @return
      */
-    public Observable<MonthOrDayIncomeOrPayEntity> getMonthIncomeOrPayByDate(String type, String date) {
-        return addSchedulers(getApi().getMonthIncomeAndPayByDate(type, date));
+    public Observable<BalancePaymentsEntily> getMonthIncomeOrPayByDate(int page,String type, String day) {
+        return addSchedulers(getApi().getMonthIncomeAndPayByDate(page,type, day));
     }
 
     /**
-     * 获取年收入 或者支出的数据 填充图表
+     * 2.0合伙人收支记录（月）
      *
-     * @param date
-     * @return
      */
-    public Observable<MonthOrDayIncomeOrPayEntity> getYearIncomeOrPayByDate(String type, String date) {
-        return addSchedulers(getApi().getYearIncomeAndPayByDate(type, date));
+    public Observable<BalancePaymentsEntily> getYearIncomeOrPayByDate(int page,String type, String month) {
+        return addSchedulers(getApi().getYearIncomeAndPayByDate(page,type, month));
     }
 
     /**
@@ -1524,12 +1541,12 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 查询昨日收益
+     * 2.0查询昨日收益
      *
      * @return
      */
-    public Observable<List<YesterdayIncomeEntity>> getYesterdayIncomeDetailedList(String startPosition, String size) {
-        return addSchedulers(getApi().getYesterdayIncomeDetailedList(startPosition, size));
+    public Observable<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>> getYesterdayIncomeDetailedList(int page) {
+        return addSchedulers(getApi().getYesterdayIncomeDetailedList(page));
     }
 
     /**
@@ -1552,7 +1569,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 绑定提现账号
+     * 2.0绑定提现账号
      *
      * @return
      */
@@ -1575,7 +1592,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
      *
      * @return
      */
-    public Observable<Boolean> vaildInitPayPwd() {
+    public Observable<CooperationInfoNewEntity> vaildInitPayPwd() {
         return addSchedulers(getApi().vaildInitPayPwd());
     }
 

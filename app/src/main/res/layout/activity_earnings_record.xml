@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <include layout="@layout/layout2_top"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@mipmap/bg_partner_detail_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_select_time"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:drawableEnd="@mipmap/ic_manage_income_date"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="2019年"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/tv_user_all_income"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="总收益（元）"
+                android:textColor="#ff999999"
+                android:gravity="center"
+                android:textSize="14sp"
+                />
+
+
+            <TextView
+                android:layout_margin="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="#E1E1E1"
+
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_sr"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收入（元）"
+                        android:textColor="#ff999999"
+                        android:textSize="14sp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_sr"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7683.7"
+                        android:textColor="#ff333333"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="match_parent"
+                    android:background="#E1E1E1"
+                    android:layout_marginBottom="@dimen/dp20"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/ll_zc"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="支出(元)"
+                        android:textColor="#ff999999"
+                        android:textSize="14sp"
+                        />
+                    <TextView
+                        android:id="@+id/user_pay_money"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7683.7"
+                        android:textColor="#ff333333"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_current_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="每月收入"
+            android:textColor="#ff000000"
+            android:textSize="15sp" />
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RelativeLayout
+                android:id="@+id/chart_container"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="16dp">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/line_chart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp" />
+
+                <TextView
+                    android:id="@+id/tv_no_chart_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="图表数据加载中"
+                    android:textColor="@color/default_text_color">
+
+                </TextView>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

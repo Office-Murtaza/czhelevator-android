@@ -2,6 +2,8 @@ package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
+import com.kingyon.elevator.entities.entities.EarningsTopEntity;
+import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 /**
@@ -10,7 +12,7 @@ import com.kingyon.elevator.mvpbase.BaseView;
  */
 public interface IncomeRecordView extends BaseView {
 
-    void showIncomeOrPayData(IncomeOrPayEntity incomeOrPayEntity);
+    void showIncomeOrPayData(EarningsTopEntity<EarningsTwoYearlistEntity> incomeOrPayEntity);
 
 
     /**

@@ -25,16 +25,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true">
-        <com.zhaoss.weixinrecorded.view.TuyaView
-            android:id="@+id/tv_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
         <RelativeLayout
             android:id="@+id/rl_touch_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            />
+            >
+
+            <com.zhaoss.weixinrecorded.view.TuyaView
+                android:id="@+id/tv_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

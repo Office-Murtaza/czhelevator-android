@@ -589,6 +589,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         if (orderEntiy.getPayMoney() > 0) {
             /*金额大于0跳支付*/
             PayDialog payDialog = new PayDialog(this, orderEntiy,orderEntiy.getPayMoney());
+            payDialog.setCancelable(false);
             payDialog.show();
 
         } else {

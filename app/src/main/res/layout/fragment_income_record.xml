@@ -5,7 +5,7 @@
     android:id="@+id/stateLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg_color"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="28dp"
-            android:background="@color/white"
+            android:layout_margin="20dp"
+            android:background="@mipmap/bg_partner_detail_white"
             android:orientation="vertical">
 
             <TextView
@@ -27,8 +27,8 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:drawableEnd="@mipmap/nianshouru_xiabiaotupian"
-                android:drawablePadding="2dp"
+                android:drawableEnd="@mipmap/ic_manage_income_date"
+                android:drawablePadding="5dp"
                 android:gravity="center"
                 android:text="2019年"
                 android:textColor="#ff000000"
@@ -39,7 +39,7 @@
                 android:id="@+id/tv_user_all_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 app:mainTitleColor="#474747"
                 app:mainTitleSize="19"
                 app:mainTitleStyle="blod"
@@ -50,17 +50,25 @@
                 app:smallTitleStyle="normal"
                 app:smallTitleText="总收益(元)" />
 
+
+            <TextView
+                android:layout_margin="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="#E1E1E1"
+
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="@dimen/dp10"
                 android:orientation="horizontal">
 
                 <com.kingyon.elevator.customview.MyTextItemView
                     android:id="@+id/user_income"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     app:mainTitleColor="#DD575F"
                     app:mainTitleSize="14"
@@ -72,11 +80,17 @@
                     app:smallTitleStyle="normal"
                     app:smallTitleText="收入(元)" />
 
+                <TextView
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="match_parent"
+                    android:background="#E1E1E1"
+                    android:layout_marginBottom="@dimen/dp20"
+                    />
                 <com.kingyon.elevator.customview.MyTextItemView
                     android:id="@+id/user_pay_money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     app:mainTitleColor="#474747"
                     app:mainTitleSize="14"
@@ -100,9 +114,10 @@
             android:textSize="15sp" />
 
         <RelativeLayout
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            >
 
             <RelativeLayout
                 android:id="@+id/chart_container"
@@ -123,7 +138,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:text="图表数据加载中"
                     android:textColor="@color/default_text_color">
 

@@ -2,6 +2,7 @@ package com.kingyon.elevator.presenter;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -23,37 +24,34 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
 
     public void checkBindAccountData(String bingType, String account, String name, String kaihuhang) {
         if (account.isEmpty()) {
-            if (isViewAttached()) {
                 getView().showShortToast("请输入账号");
-            }
             return;
         }
         if (name.isEmpty()) {
-            if (isViewAttached()) {
                 getView().showShortToast("请输入名字");
-            }
             return;
         }
-        if (bingType.equals("ZFB")) {
+        if (bingType.equals("2")) {
             if (PublicFuncation.isMobileNO(account) || PublicFuncation.checkEmail(account)) {
                 addAccount("2", account, name, kaihuhang);
             } else {
-                if (isViewAttached()) {
                     getView().showShortToast("请输入正确的支付宝账号");
-                }
                 return;
             }
+        } else if (bingType.equals("3")) {
+//            if (PublicFuncation.isMobileNO(account) || PublicFuncation.checkEmail(account)) {
+                addAccount("3", account, name, kaihuhang);
+//            } else {
+//                    getView().showShortToast("请输入正确的微信账号");
+//                return;
+//            }
         } else {
             if (!AccountNumUtils.checkBankCard(account)) {
-                if (isViewAttached()) {
                     getView().showShortToast("请输入正确的银行卡号");
-                }
                 return;
             }
             if (kaihuhang.isEmpty()) {
-                if (isViewAttached()) {
                     getView().showShortToast("请输入银行卡开户行");
-                }
                 return;
             }
             addAccount("1", account, name, kaihuhang);
@@ -69,6 +67,7 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             getView().showShortToast(ex.getDisplayMessage());
@@ -77,11 +76,13 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
 
                     @Override
                     public void onNext(String data) {
+                        LogUtils.e(data);
+                        getView().showShortToast("绑定成功");
+                        getView().bindSuccess(bingType,account, name, kaihuhang);
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
                             if (data.equals("成功")) {
-                                getView().showShortToast("绑定成功");
-                                getView().bindSuccess(bingType,account, name, kaihuhang);
+
                             } else {
                                 getView().showShortToast("绑定失败，请重试");
                             }

@@ -773,6 +773,10 @@
         <activity android:name=".uis.actiivty2.activityutils.CameraViewActivit"
             android:screenOrientation="portrait"
             />
+        <!--2.0选择提现账户-->
+        <activity android:name=".uis.activities.cooperation.WithdrawalWayActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.MyActionBar;
@@ -28,6 +29,9 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
 
 /**
  * 裁剪视频之后的预览界面
@@ -92,6 +96,9 @@ public class PreviewVideoActivity extends AppCompatActivity {
                     EditVideoActivity.editVideoActivity.finish();
                     if (fromType== Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
                         EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoCropSuccessResult, videoPath));
+                        finish();
+                    }else if (fromType==ACCESS_VOIDE_CODE){
+                        ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY,"videoPath",videoPath);
                         finish();
                     }else {
                         MyActivityUtils.goConfirmOrderActivity(PreviewVideoActivity.this,

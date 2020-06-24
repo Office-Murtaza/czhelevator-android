@@ -107,6 +107,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     String TAG_FORMAT = "&nbsp;<tag id='%1$s' name='%2$s'>%2$s</tag>&nbsp;";
     String newTopic;
     StringBuffer sb = new StringBuffer();
+    private boolean isOriginal = true;
 
 
     @Override
@@ -233,7 +234,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                             LogUtils.e(sb.toString().substring(3), sb.toString());
                             String str = sb.toString().substring(3);
                             OrdinaryActivity.httpContentPublish(CommunityReleasetyActivity.this, "", String.valueOf(convertMetionString),
-                                    str, null, TYPE_WSQ, "2", topicId, atAccount, 0, null, 0, 3);
+                                    str, null, TYPE_WSQ, "2", topicId, atAccount, 0, null, 0, 3,isOriginal);
                         }
                     }
 
@@ -246,7 +247,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                 });
             } else {
                 OrdinaryActivity.httpContentPublish(CommunityReleasetyActivity.this, "", String.valueOf(convertMetionString),
-                        null, null, TYPE_WSQ, "1", topicId, atAccount, 0, null, 0, 3);
+                        null, null, TYPE_WSQ, "1", topicId, atAccount, 0, null, 0, 3,isOriginal);
             }
         }
     }

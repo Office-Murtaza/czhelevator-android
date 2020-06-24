@@ -41,6 +41,12 @@ public class DateUtils {
         return dateFormat.format(calendar.getTime());
     }
 
+
+    public static String getCurrentTime1() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return dateFormat.format(calendar.getTime());
+    }
     /**
      * 获取这个月有多少天
      *

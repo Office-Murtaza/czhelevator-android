@@ -33,6 +33,8 @@ public class DataSharedPreferences {
 
     public static final String CERTIFY_ID = "CERTIFY_ID";//*保存认证ID*/
 
+    public static final String USER_NAME = "USER_NAME";/*用户名字*/
+
 
 
     //是否已经显示过用户隐私政策对话框
@@ -43,10 +45,19 @@ public class DataSharedPreferences {
     /*保存用户id*/
     public static final String CREATATE_ACCOUNT ="CREATATE_ACCOUNT";
 
+    /*保存用户名字*/
+    public static void saveUesrName(String username){
+        getPreferences().edit().putString(USER_NAME, username).apply();
+    }
+    public static String getUesrName() {
+        return getPreferences().getString(USER_NAME, "");
+    }
+
     /*保存认证ID*/
     public static void saveCertifyId(String certifyId){
         getPreferences().edit().putString(CERTIFY_ID, certifyId).apply();
     }
+
 
     public static String getCertifyId() {
         return getPreferences().getString(CERTIFY_ID, "");
