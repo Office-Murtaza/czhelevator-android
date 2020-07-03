@@ -9,6 +9,40 @@
 
     <include layout="@layout/ui_layout_divider" />
 
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@mipmap/bg_search_area"
+        android:padding="@dimen/basic_activity_margin2"
+        android:layout_margin="@dimen/dp_20"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_search"
+            android:layout_marginLeft="@dimen/dp5"
+            ></ImageView>
+
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:hint="请输入需搜索的小区……"
+            android:paddingLeft="@dimen/dp10"
+            android:textSize="12dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            />
+
+    </LinearLayout>
+
+
     <com.leo.afbaselibrary.widgets.StateLayout
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"

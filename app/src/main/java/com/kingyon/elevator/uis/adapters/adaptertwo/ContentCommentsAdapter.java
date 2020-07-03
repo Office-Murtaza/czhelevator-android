@@ -58,7 +58,10 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
 
         return new ContentCommentsAdapter.ViewHolder(view);
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommentListEntity commentListEntity = conentEntity.get(position);

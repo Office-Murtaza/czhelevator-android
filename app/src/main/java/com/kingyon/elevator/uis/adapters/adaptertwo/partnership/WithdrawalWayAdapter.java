@@ -12,8 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawActivity;
+import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
@@ -33,9 +35,14 @@ public class WithdrawalWayAdapter extends RecyclerView.Adapter<WithdrawalWayAdap
 
     private Context context;
     List<UserCashTypeListEnity> userCashTypeListEnities;
-    public WithdrawalWayAdapter(Context context,List<UserCashTypeListEnity> userCashTypeListEnities) {
+    CooperationInfoNewEntity entity1;
+    String type;
+    OnClick   onClick;
+    public WithdrawalWayAdapter(Context context,List<UserCashTypeListEnity> userCashTypeListEnities,CooperationInfoNewEntity entity,String type) {
         this.context = context;
         this.userCashTypeListEnities = userCashTypeListEnities;
+        this.entity1 = entity;
+        this.type = type;
     }
 
     @NonNull
@@ -52,27 +59,36 @@ public class WithdrawalWayAdapter extends RecyclerView.Adapter<WithdrawalWayAdap
                 case 1:
                     holder.imgIcon.setImageResource(R.mipmap.ic_cashout_bank);
                     holder.tvName.setText("银行卡");
-                    holder.tvZfb.setText(enity.cashAccount);
+                    holder.tvZfb.setText(enity.openingBank+"("+(enity.cashAccount.substring(enity.cashAccount.length()-4))+")");
                     break;
                 case 2:
                     holder.imgIcon.setImageResource(R.mipmap.ic_cashout_alipay);
                     holder.tvName.setText("支付宝");
-                    holder.tvZfb.setText(enity.cashAccount);
+                    holder.tvZfb.setText(AccountNumUtils.hidePhoneNum(enity.cashAccount));
                     break;
                 case 3:
                     holder.imgIcon.setImageResource(R.mipmap.ic_cashout_wechat);
                     holder.tvName.setText("微信");
-                    holder.tvZfb.setText(enity.cashAccount);
+                    holder.tvZfb.setText(AccountNumUtils.hidePhoneNum(enity.cashAccount));
                     break;
             }
             holder.llZfb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(CommonUtil.KEY_VALUE_2, enity);
-                    MyActivityUtils.goActivity(context, CooperationWithdrawActivity.class, bundle);
+                    if (type.equals("1")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(CommonUtil.KEY_VALUE_2, enity);
+                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity1);
+                        MyActivityUtils.goActivity(context, CooperationWithdrawActivity.class, bundle);
+                    }else {
+                        onClick.OnClick(enity);
+                    }
                 }
             });
+    }
+
+    public void setOnClick(OnClick onClick){
+        this.onClick = onClick;
     }
 
     @Override
@@ -93,5 +109,8 @@ public class WithdrawalWayAdapter extends RecyclerView.Adapter<WithdrawalWayAdap
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    public  interface OnClick{
+        void OnClick(UserCashTypeListEnity enity);
     }
 }

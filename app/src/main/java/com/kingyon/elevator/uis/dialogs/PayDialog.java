@@ -20,8 +20,10 @@ import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.CommitOrderEntiy;
+import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.FreshOrderEntity;
 import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
@@ -31,6 +33,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.utilstwo.PayTimerUtils;
 import com.kingyon.paylibrary.PayListener;
 import com.kingyon.paylibrary.alipay.AliPayUtils;
@@ -107,6 +110,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
 //    private OrderDetailsEntity detailsEntity;
     private Float myWallet;
     private Float priceActual;
+    private boolean isSetPayPassword;
 
     public PayDialog(@NonNull MvpBaseActivity context, CommitOrderEntiy orderEntiy,float priceActual) {
         super(context, R.style.ShareDialog);
@@ -153,6 +157,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
         llBalance.setEnabled(true);
         llWechat.setEnabled(true);
     }
+
     private void httpWallet() {
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {
@@ -169,6 +174,18 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                         }
                         myWallet = floatDataEntity.getData();
                         tvBalance.setText(String.format("T币（￥%s可用）", CommonUtil.getMayTwoFloat(myWallet != null ? myWallet : 0)));
+                    }
+                });
+        NetService.getInstance().vaildInitPayPwd()
+                .subscribe(new CustomApiCallback<CooperationInfoNewEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+
+                    }
+
+                    @Override
+                    public void onNext(CooperationInfoNewEntity cooperationInfoNewEntity) {
+                        isSetPayPassword = cooperationInfoNewEntity.isSetPayPassword();
                     }
                 });
 
@@ -202,55 +219,73 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_balance:
+                /*余额选项*/
                 initview();
                 imgBalance.setSelected(true);
                 type = "BALANCE";
 
                 break;
             case R.id.ll_wechat:
+                /*微信选项*/
                 initview();
                 imgWechat.setSelected(true);
                 type = "WECHAT";
 
                 break;
             case R.id.tv_alipay:
+                /*支付宝选项*/
                 initview();
                 imgAlipay.setSelected(true);
                 type = "ALI";
 
                 break;
             case R.id.tv_cancel:
+                /*取消*/
                 dismiss();
                 break;
             case R.id.tv_payment:
+                /*点击支付*/
                 if (isOverdue()) {
-                    if (type.equals("BALANCE")){
-                        if (myWallet>priceActual) {
-//                            dismiss();
-                            if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
-                                fingerprintInit();
-                            } else {
-                                DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), KEYBOARD_PAY, password -> {
-//                                    DialogUtils.getInstance().hideInputPayPwdToCashDailog();
-                                    LogUtils.e(password);
-                                    if (password.equals("susser")) {
-                                        if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
-                                            fingerprintInit();
+                    /*是否是余额支付*/
+                    if (type.equals("BALANCE")) {
+                        /*是否设置支付密码*/
+                        if (isSetPayPassword) {
+                            /*余额是否充足*/
+                            if (myWallet > priceActual) {
+                                /*是否设置指纹*/
+                                if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                                    fingerprintInit();
+                                } else {
+                                    /*支付密码支付*/
+                                    DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), KEYBOARD_PAY, password -> {
+                                        if (password.equals("susser")) {
+                                            /*判断是否设置指纹*/
+                                            if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                                                fingerprintInit();
+                                            } else {
+                                                ToastUtils.showToast(context, "你还没有设置指纹支付，请设置再试", 1000);
+                                            }
                                         } else {
-                                            ToastUtils.showToast(context, "你还没有设置指纹支付，请设置再试", 1000);
+                                            /*密码支付*/
+                                            httpPatment(type, password);
                                         }
-                                    } else {
-                                        httpPatment(type, password);
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                ToastUtils.showToast(context, "余额不足请使用其他支付方式", 1000);
                             }
-                        }else {
-                            ToastUtils.showToast(context, "余额不足请使用其他支付方式", 1000);
+                        } else {
+                            /*跳转设置支付密码*/
+                            context.showShortToast("当前还未设置支付密码，请先设置支付密码");
+//                            MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.SetPasswordFragment, "setting");
                         }
                     }else {
-                        httpPatment(type,"");
+                        /*微信支付宝支付*/
+                        httpPatment(type, "");
                     }
+
                 }else {
+                    /*超时*/
                     dismiss();
                     ToastUtils.showToast(context,"请重新支付",1000);
                 }
@@ -258,6 +293,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
         }
     }
 
+    /*初始化选项*/
     private void initview() {
         imgAlipay.setSelected(false);
         imgBalance.setSelected(false);
@@ -265,6 +301,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
 
     }
 
+    /*打开指纹支付*/
     private void fingerprintInit() {
         FingerprintVerifyManager.Builder builder = new FingerprintVerifyManager.Builder((Activity) context);
         builder.callback(fingerprintCallback)
@@ -273,6 +310,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
     }
 
 
+    /*指纹对象*/
     private FingerprintCallback fingerprintCallback = new FingerprintCallback() {
         @Override
         public void onSucceeded() {
@@ -324,6 +362,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
 
     };
 
+    /*请求支付*/
     private void httpPatment(String type,String payPwd) {
         LogUtils.e(orderEntiy.getOrderId(),type,payPwd);
         tvAlipay.setEnabled(false);

@@ -53,6 +53,10 @@ import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 
+/**
+ * 申请合伙人界面
+ * */
+
 public class CooperationIdentityFragment extends BaseFragment implements OnParamsChangeInterface {
 
     @BindView(R.id.fl_title)
@@ -164,6 +168,12 @@ public class CooperationIdentityFragment extends BaseFragment implements OnParam
                         switch (authStatus) {
                             case Constants.IDENTITY_STATUS.AUTHING:
                                 shwoDialog("您已提交个人认证申请，工作人员正在审核处理中，预计需要5个工作日。",false,false);
+                                break;
+                            case Constants.IDENTITY_STATUS.FAILD:
+                                shwoDialog("个人认证失败，请重新提交",true,false);
+                                break;
+                            case Constants.IDENTITY_STATUS.NO_AUTH:
+                                shwoDialog("为了更好的为您提供服务，申请成为合伙人请先完成资质认证。",true,false);
                                 break;
                             default:
                                 break;
@@ -344,17 +354,17 @@ public class CooperationIdentityFragment extends BaseFragment implements OnParam
 
 
     private void updateUI(CooperationIdentityEntity entity) {
-        switch (entity.getStatus()){
-
-            case Constants.IDENTITY_STATUS.AUTHING:
-//                认证中
-                shwoDialog("您已提交合伙人申请，工作人员正在审核处理中，预计需要5个工作日。",false,false);
-                break;
-            case Constants.IDENTITY_STATUS.FAILD:
-//                失败
-                shwoDialog("您提交的申请，工作人员审核不通过，请重新提交。",false,true);
-                break;
-
+        if (entity!=null){
+            switch (entity.getStatus()) {
+                case Constants.COOPERATION_STATUS.AUDITING:
+    //                认证中
+                    shwoDialog("您已提交合伙人申请，工作人员正在审核处理中，预计需要5个工作日。", false, false);
+                    break;
+                case Constants.COOPERATION_STATUS.FAILD:
+    //                失败
+                    shwoDialog("您提交的申请，工作人员审核不通过，请重新提交。", false, true);
+                    break;
+            }
 
         }
     }

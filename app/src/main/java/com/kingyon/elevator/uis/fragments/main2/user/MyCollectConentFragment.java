@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -58,12 +59,15 @@ public class MyCollectConentFragment extends FoundFragemtUtils {
     MycollectConentAdapter attentionAdapter;
     List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
     private int page = 1;
+    String account;
     @Override
     protected void lazyLoad() {
+        account = DataSharedPreferences.getCreatateAccount();
         if (smartRefreshLayout != null) {
             smartRefreshLayout.autoRefresh(100);
         } else {
             recommendEntityList.clear();
+            showProgressDialog(getString(R.string.wait));
             httpRecommend(page, "");
         }
     }
@@ -77,6 +81,7 @@ public class MyCollectConentFragment extends FoundFragemtUtils {
     public void init(Bundle savedInstanceState) {
         smartRefreshLayout.setEnableRefresh(true);
         smartRefreshLayout.setEnableAutoLoadMore(true);
+
     }
 
     @Override
@@ -95,32 +100,30 @@ public class MyCollectConentFragment extends FoundFragemtUtils {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LogUtils.e("推荐");
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 recommendEntityList.clear();
                 httpRecommend(1, "");
-                smartRefreshLayout.finishRefresh();
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                recommendEntityList.clear();
                 httpRecommend(page, "");
-                smartRefreshLayout.finishLoadMore();
             }
         });
     }
     private void httpRecommend(int page, String title) {
-        NetService.getInstance().setQueryRecommend(page, title)
+        LogUtils.e(page, title,account);
+        NetService.getInstance().setmyCollects(page)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         closeRefresh();
+                        hideProgress();
                         LogUtils.e(ex.getDisplayMessage(),ex.getCode());
                         if (ex.getCode()==-102){
                             if (page>1) {
@@ -141,10 +144,17 @@ public class MyCollectConentFragment extends FoundFragemtUtils {
                     @Override
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
-                        rvComment.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
+                        hideProgress();
                         dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()>0||page>1) {
+                            rvComment.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }else {
+                            rvComment.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
     }

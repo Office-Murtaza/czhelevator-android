@@ -20,6 +20,15 @@ public class StringContent {
 
     public static String ORADER_NUMBER = "数量：%s      合计：¥%s";
 
+    public static String ATTENTION_TO_FANS = "关注   %s     |   粉丝   %s";
+
+    public static String REVIEW_STATUS1 = "审核状态: <font color=\"#2D6EF2\"><big>%s</big></font>";
+
+    public static String REVIEW_STATUS2 = "审核状态: <font color=\"#FF3049\"><big>%s</big></font>";
+
+    public static String REVIEW_STATUS3 = "审核状态: <font color=\"#6BAB44\"><big>%s</big></font>";
+
+
 
 
 }

@@ -21,6 +21,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
 import com.google.gson.Gson;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
@@ -59,6 +61,7 @@ import static com.czh.myversiontwo.utils.CodeType.CANCEL_LIKE;
 import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
 import static com.czh.myversiontwo.utils.CodeType.LIKE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
+import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
 
 
 /**
@@ -112,7 +115,7 @@ public class VoideDetailsActivity extends BaseActivity {
     @BindView(R.id.iv_like)
     ImageView ivLike;
     @Autowired
-    String conentEntity;
+    int contentId;
     QueryRecommendEntity recommendEntity;
     int page = 1;
     @BindView(R.id.rl)
@@ -127,60 +130,81 @@ public class VoideDetailsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        isRefresh = false;
         ARouter.getInstance().inject(this);
-        Gson gson = new Gson();
-        recommendEntity = gson.fromJson(conentEntity, QueryRecommendEntity.class);
-        ConentUtils.httpAddBrowse(this, recommendEntity.id);
-        Parser mTagParser = new Parser();
-        tvContent.setMovementMethod(new LinkMovementMethod());
-        tvContent.setParserConverter(mTagParser);
-        tvName.setText(recommendEntity.nickname + "");
-        tvTime.setText(TimeUtil.getRecentlyTime(recommendEntity.createTime));
-        tvTitle.setText(recommendEntity.title + "");
-        tvContent.setText(recommendEntity.content);
-        tvLikeComments.setText(String.format("%s 点赞    %s 评论    ", recommendEntity.likes, recommendEntity.comments));
-        tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
-        tvNumber.setText(recommendEntity.browseTimes + "次播放");
-        tvVideoTime.setText(TimeUtils.secondToTime(recommendEntity.playTime / 1000) + "");
-        GlideUtils.loadRoundImage(this, recommendEntity.photo, imgPortrait, 20);
-        if (recommendEntity.isAttent == 0) {
-            tvAttention.setText("关注");
-            tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));
-            tvAttention.setTextColor(Color.parseColor("#ffffff"));
+        showProgressDialog(getString(R.string.wait));
+        NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        hideProgress();
+                        finish();
+                        ToastUtils.showToast(VoideDetailsActivity.this,ex.getDisplayMessage(),1000);
+                    }
 
-        } else {
-            tvAttention.setText("已关注");
-            tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
-            tvAttention.setTextColor(Color.parseColor("#FF1330"));
+                    @Override
+                    public void onNext(QueryRecommendEntity queryRecommendEntity) {
+                        recommendEntity = queryRecommendEntity;
+                        ConentUtils.httpAddBrowse(VoideDetailsActivity.this, recommendEntity.id);
+                        Parser mTagParser = new Parser();
+                        tvContent.setMovementMethod(new LinkMovementMethod());
+                        tvContent.setParserConverter(mTagParser);
+                        tvName.setText(recommendEntity.nickname + "");
+                        tvTime.setText(TimeUtil.getRecentlyTime(recommendEntity.createTime));
+                        tvTitle.setText(recommendEntity.title + "");
+                        tvContent.setText(recommendEntity.content);
+                        tvLikeComments.setText(String.format("%s 点赞    %s 评论    ", recommendEntity.likes, recommendEntity.comments));
+                        tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
+                        tvNumber.setText(recommendEntity.browseTimes + "次播放");
+                        tvVideoTime.setText(TimeUtils.secondToTime(recommendEntity.playTime / 1000) + "");
+                        GlideUtils.loadRoundImage(VoideDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        if (recommendEntity.isAttent == 0) {
+                            tvAttention.setText("关注");
+                            tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));
+                            tvAttention.setTextColor(Color.parseColor("#ffffff"));
 
-        }
-        if (recommendEntity.original) {
-            tvOriginal.setText("原创");
-        } else {
-            tvOriginal.setText("转载");
-        }
+                        } else {
+                            tvAttention.setText("已关注");
+                            tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
+                            tvAttention.setTextColor(Color.parseColor("#FF1330"));
 
-        httpComment(page, recommendEntity.id);
+                        }
+                        if (recommendEntity.original) {
+                            tvOriginal.setText("原创");
+                        } else {
+                            tvOriginal.setText("转载");
+                        }
+                        if (recommendEntity.isCollect > 0) {
+                            imCollection.setImageResource(R.mipmap.btn_big_collect_off);
+                        } else {
+                            imCollection.setImageResource(R.mipmap.btn_big_collect);
+                        }
 
-        if (recommendEntity.liked) {
-            ivLike.setImageResource(R.mipmap.btn_big_like_off);
-        } else {
-            ivLike.setImageResource(R.mipmap.btn_big_like);
-        }
+                        httpComment(page, recommendEntity.id);
+
+                        if (recommendEntity.liked) {
+                            ivLike.setImageResource(R.mipmap.btn_big_like_off);
+                        } else {
+                            ivLike.setImageResource(R.mipmap.btn_big_like);
+                        }
 
 //        video.startWindowFullscreen(this, false, false);
-        video.setUp(recommendEntity.video, true, "");
-        video.getBackButton().setVisibility(View.GONE);
-        video.getFullscreenButton().setVisibility(View.GONE);
-        video.startPlayLogic();
+                        video.setUp(recommendEntity.video, true, "");
+                        video.getBackButton().setVisibility(View.GONE);
+                        video.getFullscreenButton().setVisibility(View.GONE);
+                        video.startPlayLogic();
 
-        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page++;
-                httpComment(page,recommendEntity.id);
-            }
-        });
+                        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                            @Override
+                            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                                page++;
+                                httpComment(page, recommendEntity.id);
+                            }
+                        });
+                    hideProgress();
+                    }
+                });
 
     }
 
@@ -314,17 +338,49 @@ public class VoideDetailsActivity extends BaseActivity {
                 SharedUtils.shared(this, shareDialog,recommendEntity.content, "www.baidu.com", recommendEntity.title);
                 break;
             case R.id.im_collection:
+                /*收藏*/
+                if (recommendEntity.isCollect==0) {
+                    ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
+                        @Override
+                        public void Collect(boolean is) {
+                            if (is) {
+                                imCollection.setImageResource(R.mipmap.btn_big_collect_off);
+                                ToastUtils.showToast(VoideDetailsActivity.this, "收藏成功", 1000);
+                                LogUtils.e("收藏成功");
+                                recommendEntity.isCollect = 1;
+                            } else {
+                                LogUtils.e("收藏失败");
+                            }
+                        }
+                    });
+                }else {
+                    ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
+                        @Override
+                        public void Collect(boolean is) {
+                            if (is) {
+                                recommendEntity.isCollect = 0;
+                                imCollection.setImageResource(R.mipmap.btn_big_collect);
+                            } else {
+                                ToastUtils.showToast(VoideDetailsActivity.this, "失败", 1000);
+                            }
+                        }
+                    });
+                }
                 break;
             case R.id.iv_like:
+                LogUtils.e(recommendEntity.liked);
                 if (recommendEntity.liked) {
+                    recommendEntity.liked = false;
                     ivLike.setImageResource(R.mipmap.btn_big_like);
                     ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
                             HOME_CONTENT, CANCEL_LIKE, 0, recommendEntity, "2");
                 } else {
+                    recommendEntity.liked = true;
                     ivLike.setImageResource(R.mipmap.btn_big_like_off);
                     ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
                             HOME_CONTENT, LIKE, 0, recommendEntity, "2");
                 }
+
                 break;
             default:
         }

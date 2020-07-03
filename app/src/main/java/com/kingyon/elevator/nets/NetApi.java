@@ -61,7 +61,10 @@ import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.AuthStatusEntily;
 import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
+import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
+import com.kingyon.elevator.entities.entities.Chartentily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -75,6 +78,7 @@ import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
+import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
 import com.kingyon.elevator.entities.entities.PublicEntity;
@@ -85,6 +89,8 @@ import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
+import com.kingyon.elevator.entities.entities.UserTwoEntity;
+import com.kingyon.elevator.entities.entities.WithdrawEntily;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.entities.WxPayEntity;
@@ -111,7 +117,6 @@ public interface NetApi {
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
     String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
@@ -198,7 +203,12 @@ public interface NetApi {
     /*2.0推荐内容*/
     @POST("content/queryRecommend")
     @FormUrlEncoded
-    Observable<ConentEntity<QueryRecommendEntity>> getQueryRecommend(@Field("page") int page ,@Field("title") String title);
+    Observable<ConentEntity<QueryRecommendEntity>> getQueryRecommend(@Field("page") int page,@Field("title") String title,@Field("account") String account);
+
+    /*2.0内容详情*/
+    @POST("content/queryContentById")
+    @FormUrlEncoded
+    Observable<QueryRecommendEntity> getQueryContentById(@Field("contentId") String contentId,@Field("account") String account);
 
     /*2.0获取关注内容*/
     @POST("content/queryAttention")
@@ -218,7 +228,7 @@ public interface NetApi {
     @POST("topic/queryTopic")
     @FormUrlEncoded
     Observable<ConentEntity<HomeTopicConentEntity>> getQueryTopicConetn(@Field("page") int page
-            ,@Field("label") int label,@Field("title") String title,@Field("id") String id);
+            ,@Field("labelId") String label,@Field("title") String title,@Field("id") String id);
 
 
     /*2.0内容点赞*/
@@ -263,7 +273,9 @@ public interface NetApi {
     /*2.0用户关注*/
     @POST("user/addOrCancelAttention")
     @FormUrlEncoded
-    Observable<String> getAddAttention(@Field("handlerType") String handlerType,@Field("beFollowerAccount") String beFollowerAccount);
+    Observable<String> getAddAttention(@Field("handlerType") String handlerType,
+                                       @Field("beFollowerAccount") String beFollowerAccount,
+                                       @Field("followerAccount") String followerAccount);
 
     /*2.0获取用户*/
     @POST("user/getAttention")
@@ -390,8 +402,8 @@ public interface NetApi {
     /*2.0申请下播*/
     @POST("myOrder/downAd")
     @FormUrlEncoded
-    Observable<String> downAd(@Query("orderSn") String orderId, @Query("tagReasonId") long tagReasonId
-            , @Query("undercastRemarks") String undercastRemarks);
+    Observable<String> downAd(@Field("orderSn") String orderId, @Field("tagReasonId") long tagReasonId
+            , @Field("undercastRemarks") String undercastRemarks);
 
     /*2.0获取下播原因*/
     @POST("myOrder/downAdTags")
@@ -409,7 +421,7 @@ public interface NetApi {
     /*2.0支付宝认证*/
     @POST("userSecurity/aliIdentityAuth")
     @FormUrlEncoded
-    Observable<PlanNumberEntiy>getAliIdentityAuth(@Field("cerName") String cerName,@Field("certNo") String certNo);
+    Observable<PlanNumberEntiy>getAliIdentityAuth(@Field("cerName") String cerName,@Field("certNo") String certNo,@Field("type") String type);
 
     /*2.0合伙人首页内容*/
     @POST("partner/getPartnerIndexInfo")
@@ -419,6 +431,35 @@ public interface NetApi {
     @POST("partner/cashType/getUserCashTypeList")
     @FormUrlEncoded
     Observable<List<UserCashTypeListEnity>> getUserCashTypeList(@Field("page") int page);
+
+    /*2.0点位内容收藏*/
+    @POST("user/addCollect")
+    @FormUrlEncoded
+    Observable<String> getAddCollect(@Field("objectId") String objectId,@Field("type") String type);
+
+    /*2.0取消收藏*/
+    @POST("user/cancelCollect")
+    @FormUrlEncoded
+    Observable<String> getCancelCollect(@Field("objectId") String collectId);
+
+    /*2.0获取开票信息*/
+    @POST("user/invoiceInfo")
+    Observable<Chartentily> getInvoiceInfo();
+
+    /*2.0获取用户动态*/
+    @POST("user/userCenterContent")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryRecommendEntity>> userCenterContent(@Field("page") int page,@Field("otherUserAccount") String otherUserAccount );
+
+    /*2.0获取其他用户信息*/
+    @POST("user/userCenterInfo")
+    @FormUrlEncoded
+    Observable<UserTwoEntity>  userCenterInfo(@Field("otherUserAccount") String otherUserAccount);
+
+    /*2.0获取认证状态*/
+    @POST("userSecurity/getAuthStatus")
+    Observable<AuthStatusEntily> getAuthStatus();
+
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -530,9 +571,10 @@ public interface NetApi {
             , @Field("phone") String phone, @Field("vaildCode") String vaildCode, @Field("password") String password
             , @Field("unique") String unique, @Field("avatar") String avatar, @Field("nickName") String nickName);
 
-    @POST("user/unbindPhone")
+    /*2.0跟换手机*/
+    @POST("userSecurity/changePhone")
     @FormUrlEncoded
-    Observable<String> unbindPhone(@Field("phone") String phone, @Field("code") String code
+    Observable<String> unbindPhone(@Field("phone") String phone, @Field("vaildCode") String code
             , @Field("type") String type);
 
     /*2.0获取验证码*/
@@ -583,7 +625,7 @@ public interface NetApi {
     @POST("home/announcementList")
     Observable<List<AnnouncementEntity>> announcementList();
 
-    //小区&点位
+    //2.0小区&点位
     @POST("cell/cityCellNums")
     Observable<List<CityCellEntity>> cityCellNums();
 
@@ -591,16 +633,11 @@ public interface NetApi {
 
     @POST("cell/cellDetails")
     @FormUrlEncoded
-    Observable<CellDetailsEntity> cellDetails(@Field("objectId") long objectId);
+    Observable<CellDetailsEntity> cellDetails(@Field("objectId") long objectId,@Field("account") String account);
 
-
-
-
-
-
-
-
-
+    /*2.0第三方绑定查询*/
+    @POST("user/checkBind3Rd")
+    Observable<UserEntity> checkBind3Rd();
 
 
 
@@ -707,7 +744,8 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<CouponItemEntity>> getCoupons(@Field("status") String status, @Field("page") int page);
 
-    @POST("user/donateCoupons")
+    /*2.0赠送优惠卷*/
+    @POST("myWallet/donateCoupons")
     @FormUrlEncoded
     Observable<String> donateCoupons(@Field("phone") String phone, @Field("count") String count, @Field("couponIds") String couponIds);
 
@@ -729,8 +767,8 @@ public interface NetApi {
     /*2.0身份认证*/
     @POST("userSecurity/identityAuth")
     @FormUrlEncoded
-    Observable<String> getIdentyAuth(@Field("personName") String personName, @Field("idCardNum") String idCardNum,
-                                     @Field("idCardPic") String idCardPic,@Field("type") String type);
+    Observable<CertifiCationEntiy> getIdentyAuth(@Field("personName") String personName, @Field("idCardNum") String idCardNum,
+                                                 @Field("idCardPic") String idCardPic, @Field("type") String type);
 
 
     /*2.0个人资料*/
@@ -740,7 +778,13 @@ public interface NetApi {
     /*2.0用户信息修改*/
     @POST("user/userEditProfile")
     @FormUrlEncoded
-    Observable<UserEntity> userEidtProfile(@FieldMap Map<String, String> params);
+    Observable<UserEntity> userEidtProfile(@Field("avatar") String avatar,
+                                           @Field("nikeName") String nikeName,
+                                           @Field("sex") String sex,
+                                           @Field("city") String city,
+                                           @Field("birthday") String birthday,
+                                           @Field("intro") String intro,
+                                           @Field("cover") String cover);
 
     /*2.0钱包余额*/
     @POST("myWallet/info")
@@ -761,6 +805,21 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> setAliAuthQuery(@Field("certifyId") String certifyId);
 
+    /*2.0收藏内容*/
+    @POST("user/myCollects")
+    @FormUrlEncoded
+    Observable<ConentEntity<QueryRecommendEntity>>  getmyCollects(@Field("page") int page,
+                                                                  @Field("type") String type,
+                                                                  @Field("latitude") double latitude,
+                                                                  @Field("longitude") double longitude );
+    /*2.0收藏内容*/
+    @POST("user/myCollects")
+    @FormUrlEncoded
+    Observable<ConentEntity<RecommendHouseEntiy>>  getmyCollects1(@Field("page") int page,
+                                                                  @Field("type") String type,
+                                                                  @Field("latitude") String latitude,
+                                                                  @Field("longitude") String longitude );
+
 
 
 
@@ -776,7 +835,7 @@ public interface NetApi {
 
     @POST("user/invoiceList")
     @FormUrlEncoded
-    Observable<PageListEntity<InvoiceEntity>> invoiceList(@Field("page") int page);
+    Observable<ConentEntity<InvoiceEntity>> invoiceList(@Field("page") int page);
 
     @POST("user/recommedInfo")
     Observable<RecommendInfoEntity> recommedInfo();
@@ -797,9 +856,10 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> cancelCollect(@Field("cellIds") String cellIds);
 
+    /*2.0意见反馈列表*/
     @POST("user/myFeedBackList")
     @FormUrlEncoded
-    Observable<PageListEntity<FeedBackEntity>> myFeedBackList(@Field("page") int page);
+    Observable<ConentEntity<FeedBackEntity>> myFeedBackList(@Field("page") int page);
 
     @POST("user/feedBackDetail")
     @FormUrlEncoded
@@ -844,9 +904,13 @@ public interface NetApi {
     @POST("userSecurity/pay/verifyPayPasswordInit")
     Observable<CooperationInfoNewEntity> cooperationInfoNew();
 
-    /*2.0合伙人状态*/
+    /*1.0合伙人状态*/
     @POST("partner/applyStatus")
     Observable<CooperationIdentityEntity> cooperationIentityInfo();
+
+    /*2.0合伙人状态*/
+    @POST("partner/applyStatus")
+    Observable<PartnershipStatusEntily> cooperationIentityInfotwo();
 
     /*2.0查看是否设置支付密码*/
     @POST("userSecurity/pay/verifyPayPasswordInit")
@@ -888,7 +952,8 @@ public interface NetApi {
 
     @POST("partner/apply")
     @FormUrlEncoded
-    Observable<String> cooperationApply(@Field("partnerName") String partnerName, @Field("phone") String phone, @Field("city") String city);
+//    Observable<String> cooperationApply(@Field("partnerName") String partnerName, @Field("phone") String phone, @Field("city") String city);
+    Observable<String> cooperationApply(@Field("cityCode") String city);
 
     @POST("partner/withdraw")
     @FormUrlEncoded
@@ -898,7 +963,7 @@ public interface NetApi {
 
     @POST("partner/withdrawList")
     @FormUrlEncoded
-    Observable<PageListEntity<WithdrawItemEntity>> partnerWithdrawList(@Field("page") int page);
+    Observable<WithdrawEntily<WithdrawEntily.PageContentBean<WithdrawItemEntity>> > partnerWithdrawList(@Field("page") int page);
 
     /*2.0*/
     @POST("partner/myCellList")
@@ -1012,15 +1077,12 @@ public interface NetApi {
     Observable<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>> getYesterdayIncomeDetailedList(@Field("page") int  page);
 
     /**
-     * 查询已提现的数据
+     * 2.0查询已提现的数据
      *
-     * @param startPosition
-     * @param size
-     * @return
      */
-    @POST("partner/getCashedList")
+    @POST("partner/getHaveWithdrawal")
     @FormUrlEncoded
-    Observable<List<YesterdayIncomeEntity>> getCashedList(@Field("start") String startPosition, @Field("size") String size);
+    Observable<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>> getCashedList(@Field("page") int  page);
 
 
     /**

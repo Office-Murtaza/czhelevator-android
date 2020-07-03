@@ -127,7 +127,7 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
                 if (queryRecommendEntity.image != null) {
                     List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
                     RecyclerView recyclerView = new RecyclerView(context);
-                    ImagAdapter imagAdapter = new ImagAdapter(context, list);
+                    ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false);
                     gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(gridLayoutManager);
@@ -179,24 +179,24 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
             public void onClick(View v) {
                 switch (queryRecommendEntity.type) {
                     case "wsq":
+                        LogUtils.e(queryRecommendEntity.id);
                         ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
-                                "conentEntity", JsonUtils.beanToJson(queryRecommendEntity));
+                                "contentId",queryRecommendEntity.id);
                         break;
                     case "video":
                         LogUtils.e(queryRecommendEntity.videoHorizontalVertical);
 
                         if (queryRecommendEntity.videoHorizontalVertical == 0) {
                             ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
-                                    "conentEntity", JsonUtils.beanToJson(queryRecommendEntity));
+                                    "contentId",queryRecommendEntity.id);
                         } else if (queryRecommendEntity.videoHorizontalVertical == 1) {
                             ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
-                                    "conentEntity", JsonUtils.beanToJson(queryRecommendEntity));
+                                    "contentId",queryRecommendEntity.id);
                         }
                         break;
                     case "article":
-
                         ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
-                                "conentEntity", JsonUtils.beanToJson(queryRecommendEntity));
+                                "contentId",queryRecommendEntity.id);
                         break;
                     default:
                 }
@@ -207,10 +207,12 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
             @Override
             public void onClick(View v) {
                 if (queryRecommendEntity.liked) {
+                    queryRecommendEntity.liked =false;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                     ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
                             HOME_CONTENT, CANCEL_LIKE, position, queryRecommendEntity, "1");
                 } else {
+                    queryRecommendEntity.liked =true;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like);
                     ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
                             HOME_CONTENT, LIKE, position, queryRecommendEntity, "1");
@@ -223,6 +225,24 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
             public void onClick(View v) {
 //                SharedUtils.shared(context,"内容","http://www.gzonehr.cn/","标题");
                 SharedUtils.shared(context, shareDialog, queryRecommendEntity.content, "www.baidu.com", queryRecommendEntity.title);
+            }
+        });
+
+        holder.tv_collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConentUtils.httpCancelCollect(String.valueOf(queryRecommendEntity.id), new ConentUtils.AddCollect() {
+                    @Override
+                    public void Collect(boolean is) {
+                        if (is) {
+                            conentEntity.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, conentEntity.size() - position);
+                        }else {
+                            context.showToast("失败");
+                        }
+                    }
+                });
             }
         });
 
@@ -276,6 +296,8 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
         LinearLayout ll_like;
         @BindView(R.id.ll_itme_root)
         LinearLayout ll_itme_root;
+        @BindView(R.id.tv_collect)
+        TextView tv_collect;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

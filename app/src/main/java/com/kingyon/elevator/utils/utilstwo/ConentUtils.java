@@ -7,9 +7,12 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -24,6 +27,7 @@ import java.util.List;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_IMAGE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.LIKE;
+import static com.kingyon.elevator.photopicker.UtilsHelper.getString;
 
 /**
  * @Created By Admin  on 2020/5/13
@@ -47,10 +51,10 @@ public class ConentUtils {
                     @Override
                     public void onNext(String s) {
                         if (likeType.equals(LIKE)){
-                            conent.liked = true;
+//                            conent.liked = true;
                             conent.likes = conent.likes++;
                         }else {
-                            conent.liked = false;
+//                            conent.liked = false;
                             conent.likes = conent.likes--;
                         }
                     }
@@ -188,7 +192,7 @@ public class ConentUtils {
     }
 
     public static void httpAddAttention(BaseActivity baseActivity,String handlerType,String beFollowerAccount,IsAddattention isAddattention){
-        NetService.getInstance().setAddAttention(handlerType,beFollowerAccount)
+        NetService.getInstance().setAddAttention(handlerType,beFollowerAccount,DataSharedPreferences.getCreatateAccount())
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
@@ -270,5 +274,70 @@ public class ConentUtils {
 
     }
 
+
+    /**2.0收藏点位及内容*/
+
+    public  static void httpAddCollect(String objectId,String type,AddCollect addCollect){
+        NetService.getInstance().setAddCollect(objectId,type)
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        addCollect.Collect(false);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        addCollect.Collect(true);
+                    }
+                });
+    }
+
+    /**2.0取消收藏*/
+    public  static void httpCancelCollect(String collectId,AddCollect addCollect){
+        NetService.getInstance().setCancelCollect(collectId)
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        addCollect.Collect(false);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        addCollect.Collect(true);
+                    }
+                });
+    }
+
+   public interface AddCollect{
+        void Collect(boolean is);
+    }
+
+    /*修改用户资料*/
+    public static void httpEidtProfile(BaseActivity baseActivity,String avatar,String nikeName,
+                           String sex,String city,String birthday,
+                           String intro,String cover,AddCollect addCollect){
+        baseActivity.showProgressDialog(getString(R.string.wait));
+        NetService.getInstance().userEidtProfile(avatar,nikeName,sex,city,birthday,intro,cover)
+                .compose(baseActivity.<UserEntity>bindLifeCycle())
+                .subscribe(new CustomApiCallback<UserEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        baseActivity.showToast(ex.getDisplayMessage());
+                        baseActivity.hideProgress();
+                        addCollect.Collect(false);
+                    }
+
+                    @Override
+                    public void onNext(UserEntity userEntity) {
+                        baseActivity.hideProgress();
+                        addCollect.Collect(true);
+                        if (userEntity != null) {
+                            DataSharedPreferences.saveUserBean(userEntity);
+                        }
+                    }
+                });
+
+    }
 
 }

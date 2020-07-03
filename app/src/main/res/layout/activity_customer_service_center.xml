@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <include layout="@layout/layout2_top"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/bg_help_top"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_15"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hi，迎春花开"
+                    android:textColor="#ff333333"
+                    android:layout_marginTop="@dimen/dp_26"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="感谢您的来访，我们将持续为您提供优质贴心的服务"
+                    android:textColor="#ff666666"
+                    android:textSize="12sp"
+                    android:paddingBottom="@dimen/dp20"
+                    />
+
+            </LinearLayout>
+
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/viewpagertab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45"
+                android:background="@drawable/ad_details_adv"
+                android:layout_marginTop="@dimen/dp5"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorColor="#FF3049"
+                app:stl_indicatorThickness="4dp"
+                app:stl_indicatorWidth="@dimen/dp_20"
+                app:stl_indicatorCornerRadius="2dp"
+                app:stl_overlineThickness="0dp"
+                app:stl_underlineThickness="0dp"
+                app:stl_dividerThickness="0dp"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_customTabTextLayoutId="@layout/view_tab_text"
+                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextColor="#333333"
+                app:stl_defaultTabTextSize="14sp"
+                app:stl_defaultTabTextHorizontalPadding="16dp"
+                app:stl_distributeEvenly="false"
+                app:stl_clickable="true"
+                app:stl_titleOffset="24dp"
+                app:stl_drawDecorationAfterTab="false"
+                />
+
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_15"
+        android:paddingLeft="@dimen/dp_15"
+        >
+
+        <TextView
+            android:id="@+id/tv_contact"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="联系客服"
+            android:gravity="center"
+            android:layout_margin="@dimen/dp10"
+            android:textColor="#ffff1330"
+            android:textSize="15sp"
+            android:padding="@dimen/dp_12"
+            android:background="@drawable/ad_map_screening"
+            />
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="意见反馈"
+            android:gravity="center"
+            android:textColor="#ffff1330"
+            android:layout_margin="@dimen/dp10"
+            android:padding="@dimen/dp_12"
+            android:textSize="15sp"
+            android:background="@drawable/ad_map_screening"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

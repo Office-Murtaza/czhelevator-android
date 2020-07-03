@@ -68,10 +68,11 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(),ex.getDisplayMessage());
-                        if (isViewAttached()) {
-                            getView().hideProgressDailog();
-                            getView().showShortToast(ex.getDisplayMessage());
-                        }
+//                        if (isViewAttached()) {
+//                            getView().hideProgressDailog();
+//                            getView().showShortToast(ex.getDisplayMessage());
+//                        }
+                        getView().showShortToast("绑定失败");
                     }
 
                     @Override
@@ -79,14 +80,14 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                         LogUtils.e(data);
                         getView().showShortToast("绑定成功");
                         getView().bindSuccess(bingType,account, name, kaihuhang);
-                        if (isViewAttached()) {
-                            getView().hideProgressDailog();
-                            if (data.equals("成功")) {
-
-                            } else {
-                                getView().showShortToast("绑定失败，请重试");
-                            }
-                        }
+//                        if (isViewAttached()) {
+//                            getView().hideProgressDailog();
+//                            if (data.equals("成功")) {
+//
+//                            } else {
+//                                getView().showShortToast("绑定失败，请重试");
+//                            }
+//                        }
                     }
                 });
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注册登录"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        android:padding="@dimen/dp10"
+        android:drawableRight="@mipmap/ic_arrow_right"
+        android:layout_marginBottom="@dimen/dp1"
+        />
+
+
+</LinearLayout>

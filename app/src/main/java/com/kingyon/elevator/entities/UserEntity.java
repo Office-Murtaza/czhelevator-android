@@ -21,6 +21,11 @@ public class UserEntity implements Parcelable {
      * role : normal
      * isAuthentication : false
      * isBindPhone : false
+     *  "objctId": 100014,
+     *     "bindAli": false,
+     *     "bindQq": false,
+     *     "bindWx": false
+     *
      */
 
     private Long recommendTime;
@@ -33,7 +38,42 @@ public class UserEntity implements Parcelable {
     private String authStatus;
     private String fullName;
     private boolean isBindPhone;
+    private boolean bindAli;
+    private boolean bindQq;
+    private boolean bindWx;
     private UserCenterAttrEntiy userCenterAttr;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public boolean isBindAli() {
+        return bindAli;
+    }
+
+    public void setBindAli(boolean bindAli) {
+        this.bindAli = bindAli;
+    }
+
+    public boolean isBindQq() {
+        return bindQq;
+    }
+
+    public void setBindQq(boolean bindQq) {
+        this.bindQq = bindQq;
+    }
+
+    public boolean isBindWx() {
+        return bindWx;
+    }
+
+    public void setBindWx(boolean bindWx) {
+        this.bindWx = bindWx;
+    }
 
     public UserCenterAttrEntiy getUserCenterAttr() {
         return userCenterAttr;

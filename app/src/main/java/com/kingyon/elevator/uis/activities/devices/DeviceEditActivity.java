@@ -93,6 +93,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
     private List<NormalParamEntity> oritationOptions;
     private OptionsPickerView typePicker;
     private List<NormalParamEntity> typeOptions;
+    private String regionName;
 
     @Override
     protected String getTitleText() {
@@ -187,6 +188,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                     Bundle bundle = new Bundle();
                     bundle.putLong(CommonUtil.KEY_VALUE_1, cellId);
                     bundle.putString(CommonUtil.KEY_VALUE_2, tvCell.getText().toString());
+                    bundle.putString(CommonUtil.KEY_VALUE_3,regionName);
                     startActivityForResult(BuildChooseActivity.class, CommonUtil.REQ_CODE_3, bundle);
                 } else {
                     showToast("请先选择小区");
@@ -384,6 +386,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                             tvCell.setTag(cell.getObjctId());
                             clearBelowCell();
                         }
+                        regionName = cell.getRegionName();
                         tvCell.setText(cell.getCellName());
                     }
                     break;

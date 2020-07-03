@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.czh.myversiontwo.utils.StringContent;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -20,6 +21,7 @@ import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.ArrayList;
@@ -144,7 +146,7 @@ public class FormatUtils {
                 fullVideo.setVisibility(View.VISIBLE);
                 fullImageImg.setVisibility(View.GONE);
                 incise.setVisibility(View.GONE);
-                GlideUtils.loadVideoFrame(context, adEntity.getVideoUrl(), fullVideoImg);
+                GlideUtils.loadRoundCornersImage(context, adEntity.getVideoUrl(), fullVideoImg,20);
                 break;
             case Constants.AD_SCREEN_TYPE.FULL_IMAGE:
                 fullVideo.setVisibility(View.GONE);
@@ -202,6 +204,29 @@ public class FormatUtils {
         }
         return result;
     }
+
+public static String incomeType(String  source){
+    if (source == null) {
+        return "";
+    }
+    String result;
+    switch (source) {
+        case Constants.INCOME_TYPE.EARNINGS:
+            result = "收益";
+            break;
+        case Constants.INCOME_TYPE.POINT_MONEY_PAY:
+            result = "物业支出";
+            break;
+        case Constants.INCOME_TYPE.BANDWIDTH_PAY:
+            result = "光纤支出";
+            break;
+        default:
+            result = "";
+            break;
+    }
+    return result;
+}
+
 
     public List<CellGroupEntity> getCellGroups(List<PointItemEntity> pointItemEntities, List<PointItemEntity> chooseds) {
         LinkedHashMap<String, CellGroupEntity> map = new LinkedHashMap<>();
@@ -528,13 +553,13 @@ public class FormatUtils {
         String result;
         switch (status) {
             case Constants.Withdraw_Status.DEALING:
-                result = "审核中";
+                result = String.format(StringContent.REVIEW_STATUS3,"审核中");
                 break;
             case Constants.Withdraw_Status.SUCCESS:
-                result = "通过";
+                result = String.format(StringContent.REVIEW_STATUS1,"未通过");
                 break;
             case Constants.Withdraw_Status.FAILED:
-                result = "未通过";
+                result = String.format(StringContent.REVIEW_STATUS2,"通过");
                 break;
             default:
                 result = "";
@@ -671,5 +696,29 @@ public class FormatUtils {
             }
         }
         return liftIds.size();
+    }
+
+
+    public String withdrawalType(String withDrawWay){
+        String result;
+        if (withDrawWay != null) {
+            switch (withDrawWay) {
+                case Constants.WithdrawType.ALI:
+                    result = "支付宝";
+                    break;
+                case Constants.WithdrawType.BANKCARD:
+                    result = "银行卡";
+                    break;
+                case Constants.WithdrawType.WX:
+                    result = "微信";
+                    break;
+                default:
+                    result = "";
+                    break;
+            }
+        } else {
+            result = "";
+        }
+        return result;
     }
 }

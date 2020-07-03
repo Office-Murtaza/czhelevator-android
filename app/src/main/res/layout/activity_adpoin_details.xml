@@ -102,15 +102,20 @@
                 <TextView
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"/>
 
                 <TextView
                     android:id="@+id/tv_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.35km"
                     android:textColor="#ffffffff"
                     android:textSize="11sp"
+                    android:text="123"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp_2"
+                    android:paddingTop="@dimen/dp_2"
+                    android:paddingRight="@dimen/dp5"
+                    android:background="@drawable/ad_dw"
                     />
             </LinearLayout>
 
@@ -201,26 +206,27 @@
 
                 <LinearLayout
                     android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/dp10"
                     >
                     <TextView
                         android:id="@+id/tv_building_number"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="楼栋数：12"
+                        android:text="楼栋数："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
+                        android:maxLines="1"
                         />
 
                     <TextView
                         android:id="@+id/tv_elevators_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="电梯数：12"
+                        android:text="电梯数："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -231,7 +237,7 @@
                         android:id="@+id/tv_lowest_floor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="最低楼层：12"
+                        android:text="最低楼层："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -243,7 +249,7 @@
                         android:id="@+id/tv_cars_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="车位数：12"
+                        android:text="车位数："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -254,10 +260,12 @@
                         android:id="@+id/tv_delivery_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="交房时间：2005-12-30"
+                        android:text="交房时间："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
+                        android:maxLines="1"
+
                         />
 
 
@@ -266,7 +274,7 @@
 
                 <LinearLayout
                     android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/dp10"
@@ -276,7 +284,7 @@
                         android:id="@+id/tv_units"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="单元数：24"
+                        android:text="单元数："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -287,7 +295,7 @@
                         android:id="@+id/tv_devices_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="设备数：24"
+                        android:text="设备数："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -299,7 +307,7 @@
                         android:id="@+id/tv_highest_floor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="最高楼层：30"
+                        android:text="最高楼层："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -310,7 +318,7 @@
                         android:id="@+id/tv_rent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="租金：2800元/平方/月"
+                        android:text="租金："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"
@@ -321,7 +329,7 @@
                         android:id="@+id/tv_property_costs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="物业费：120元/平方/月"
+                        android:text="物业费："
                         android:textColor="#ff666666"
                         android:textSize="@dimen/sp_14"
                         android:padding="@dimen/dp_5"

@@ -84,7 +84,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 OrdinaryActivity.CodeTextviewActivity(this,RESETPASSWORD,etPhone.getText().toString(),tvGetCode);
                 break;
             case R.id.tv_login_next:
-                OrdinaryActivity.httpResetPassword(this,etPhone.getText().toString(),edCode.getText().toString(),etPassword.getText().toString());
+                OrdinaryActivity.resetPassword(this,etPhone,edCode,etPassword,tvLoginNext);
                 break;
         }
     }

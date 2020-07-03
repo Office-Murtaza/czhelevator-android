@@ -83,37 +83,37 @@ public class YesterDayIncomePresenter extends BasePresenter<YesterDayIncomeView>
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getCashedList(startPosition + "", size + "")
-                .subscribe(new CustomApiCallback<List<YesterdayIncomeEntity>>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        if (isViewAttached()) {
-                            getView().hideProgressDailog();
-                            if (startPosition == 0) {
-                                getView().showErrorView();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onNext(List<YesterdayIncomeEntity> incomeDetailsEntities) {
-                        if (isViewAttached()) {
-                            getView().hideProgressDailog();
-                            getView().showContentView();
-                            if (reflashType == ReflashConstants.Refalshing) {
+//        NetService.getInstance().getCashedList(startPosition + "", size + "")
+//                .subscribe(new CustomApiCallback<List<EarningsYesterdayEnity>>() {
+//                    @Override
+//                    protected void onResultError(ApiException ex) {
+//                        if (isViewAttached()) {
+//                            getView().hideProgressDailog();
+//                            if (startPosition == 0) {
+//                                getView().showErrorView();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<EarningsYesterdayEnity> incomeDetailsEntities) {
+//                        if (isViewAttached()) {
+//                            getView().hideProgressDailog();
+//                            getView().showContentView();
+//                            if (reflashType == ReflashConstants.Refalshing) {
 //                                yesterdayIncomeEntityList = incomeDetailsEntities;
-                            } else {
+//                            } else {
 //                                yesterdayIncomeEntityList.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
-                                    getView().loadMoreIsComplete();
-                                }
-                            }
-                            startPosition = yesterdayIncomeEntityList.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
-                            getView().showDetailsListData(yesterdayIncomeEntityList);
-                        }
-                    }
-                });
+//                                if (incomeDetailsEntities.size() == 0) {
+//                                    getView().loadMoreIsComplete();
+//                                }
+//                            }
+//                            startPosition = yesterdayIncomeEntityList.size();
+//                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
+//                            getView().showDetailsListData(yesterdayIncomeEntityList);
+//                        }
+//                    }
+//                });
     }
 
 

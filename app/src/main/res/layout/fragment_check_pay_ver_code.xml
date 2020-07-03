@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg_color"
+
     tools:context=".uis.fragments.user.CheckPayVerCodeFragment">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
         android:background="@color/white"
+        android:padding="@dimen/sp_15"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="26dp"
-            android:text="@string/edit_pay_check_tips"
-            android:textColor="#ff7f7f7f"
-            android:textSize="15sp" />
+            android:layout_marginTop="@dimen/dp30"
+            android:text="当前账户"
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_14" />
 
 
         <TextView
             android:id="@+id/tv_phone_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:text="请输入111****1111手机号收到的验证码"
-            android:textColor="#ff383838"
-            android:textSize="15sp" />
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
+
+            />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="11dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_25"
             android:orientation="horizontal">
 
 
             <EditText
+                android:layout_weight="1"
                 android:id="@+id/tv_input_code"
-                android:layout_width="149dp"
+                android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:background="@drawable/shape_ver_code_et_bg"
+                android:background="@color/color_00000000"
                 android:hint="请输入短信验证码"
                 android:inputType="number"
                 android:maxLength="6"
                 android:paddingStart="3dp"
                 android:textColor="@color/default_text_color"
                 android:textColorHint="#939393"
-                android:textSize="13sp" />
+                android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:id="@+id/tv_get_code"
@@ -62,25 +64,33 @@
                 android:layout_marginStart="14dp"
                 android:gravity="center"
                 android:text="获取验证码"
-                android:textColor="#ffeb7a12"
-                android:textSize="13sp" />
+                android:textColor="#FF1330"
+                android:background="@drawable/bg_pay_code"
+                android:paddingRight="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:textSize="@dimen/sp_14" />
 
         </LinearLayout>
 
 
         <TextView
-            android:id="@+id/tv_next_confirm"
-            android:layout_width="274dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="86dp"
-            android:background="@drawable/shape_next_btn_bg"
-            android:gravity="center"
-            android:text="下一步"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="#E1E1E1"/>
 
     </LinearLayout>
 
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_next_confirm"
+        android:layout_width="274dp"
+        android:layout_height="@dimen/dp_40"
+        android:background="@drawable/shape_next_btn_bg"
+        android:gravity="center"
+        android:text="下一步"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+</RelativeLayout>

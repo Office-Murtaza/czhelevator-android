@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -170,7 +171,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 /*便民信息*/
                 tv_ad_type.setText("便民信息");
                 et_input_ad_name.setHint("请输入需投放的便民信息内容");
-                et_input_ad_name.setMaxLines(60);
+                et_input_ad_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(60)});
                 textNumber.setText("0/60");
                 et_input_ad_name.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -186,7 +187,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
-                        if (textLength < 60) {
+                        if (textLength <= 60) {
                             textNumber.setText(textLength + "/60");
                         } else {
                             ToastUtils.showToast(ConfirmOrderActivity.this,"最多输入60字",1000);
@@ -205,7 +206,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     GlideUtils.loadRoundCornersImage(this, mediaPath, ad_img_preview, 20);
                 }
                 et_input_ad_name.setHint("请输入广告名称");
-                et_input_ad_name.setMaxLines(20);
+                et_input_ad_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 textNumber.setText(et_input_ad_name.getText().toString().length()+"/20");
                 et_input_ad_name.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -221,7 +222,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
-                        if (textLength < 20) {
+                        if (textLength <= 20) {
                             textNumber.setText(textLength + "/20");
                         } else {
                             ToastUtils.showToast(ConfirmOrderActivity.this,"最多输入20字",1000);

@@ -60,7 +60,7 @@ public class TimeUtil {
     }
 
     public static String getYmdDliverCh(long time) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年\nMM月dd日");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date(time);
         return format.format(now);
     }
@@ -297,5 +297,25 @@ public class TimeUtil {
         int mm = duration / 60 % 60;
         int hh = duration / 60 / 60 % 60;
         return (hh == 0 ? "" : String.valueOf(hh) + ":") + CommonUtil.getTwoDigits(mm) + ":" + CommonUtil.getTwoDigits(ss);
+    }
+
+
+    /**
+     * 日期转换成秒数
+     * */
+    public static long getSecondsFromDate(String expireDate){
+        if(expireDate==null||expireDate.trim().equals(""))
+            return 0;
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date date=null;
+        try{
+            date=sdf.parse(expireDate);
+            return (long)(date.getTime()/1000);
+        }
+        catch(ParseException e)
+        {
+            e.printStackTrace();
+            return 0L;
+        }
     }
 }

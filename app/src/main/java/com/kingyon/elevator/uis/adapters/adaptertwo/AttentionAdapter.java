@@ -43,6 +43,9 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAIL
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
+import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -57,7 +60,8 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
     Parser mTagParser = new Parser();
     private ShareDialog shareDialog;
     public AttentionAdapter(BaseActivity context){
-        this.context = context;
+
+      this.context = context;
     }
     public void addData(List<QueryRecommendEntity> conentEntity){
         this.conentEntity = conentEntity;
@@ -120,12 +124,24 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         }
 
         switch (queryRecommendEntity.type){
+            case "video":
+//                视频
+                RoundImageView imageView2 = new RoundImageView(context);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
+                GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView2,20);
+                imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP );
+                holder.ll_conent_img.addView(imageView2,params);
+                holder.ll_xssjcs.setVisibility(View.VISIBLE);
+                holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次播放");
+                holder.tv_video_time.setText(TimeUtils.secondToTime(queryRecommendEntity.playTime/1000)+"");
+                holder.tv_title.setText(queryRecommendEntity.title);
+                break;
             case "wsq":
 //               社区
                 if (queryRecommendEntity.image!=null) {
                     List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
                     RecyclerView recyclerView = new RecyclerView(context);
-                    ImagAdapter imagAdapter = new ImagAdapter(context, list);
+                    ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false);
                     gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(gridLayoutManager);
@@ -136,18 +152,6 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                 }
                 holder.tv_title.setText(queryRecommendEntity.content);
                 break;
-            case "video":
-//                视频
-                    RoundImageView imageView2 = new RoundImageView(context);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
-                    GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView2,20);
-                    imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP );
-                    holder.ll_conent_img.addView(imageView2,params);
-                    holder.ll_xssjcs.setVisibility(View.VISIBLE);
-                    holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次播放");
-                    holder.tv_video_time.setText(TimeUtils.secondToTime(queryRecommendEntity.playTime/1000)+"");
-                    holder.tv_title.setText(queryRecommendEntity.title);
-                    break;
             case "article":
                 if (queryRecommendEntity.videoCover==null){
                     holder.ll_conent_img.setVisibility(View.GONE);
@@ -171,44 +175,56 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
         }
 
+        onClick(holder,queryRecommendEntity,position);
 
+
+
+    }
+
+    private void onClick(ViewHolder holder, QueryRecommendEntity queryRecommendEntity, int position) {
+        /*进入个人资料*/
+        holder.img_tx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isToken(context)) {
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",queryRecommendEntity.createAccount);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+            }
+        });
+        holder.tv_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isToken(context)) {
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",queryRecommendEntity.createAccount);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+            }
+        });
+
+        /*进入详情*/
         holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (queryRecommendEntity.type) {
-                    case "wsq":
-                        ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
-                                "conentEntity",JsonUtils.beanToJson(queryRecommendEntity));
-                        break;
-                    case "video":
-                        LogUtils.e(queryRecommendEntity.videoHorizontalVertical);
-
-                        if (queryRecommendEntity.videoHorizontalVertical==0) {
-                            ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
-                                    "conentEntity",JsonUtils.beanToJson(queryRecommendEntity));
-                        }else if (queryRecommendEntity.videoHorizontalVertical==1){
-                            ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
-                                    "conentEntity",JsonUtils.beanToJson(queryRecommendEntity));
-                        }
-                        break;
-                    case "article":
-
-                        ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
-                                "conentEntity",JsonUtils.beanToJson(queryRecommendEntity));
-                        break;
-                        default:
-                }
-
-                }
+                itmeonClick(queryRecommendEntity);
+            }
         });
+
+
+
+        /*点赞*/
         holder.img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (queryRecommendEntity.liked){
+                    queryRecommendEntity.liked =false;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                     ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
                             HOME_CONTENT,CANCEL_LIKE,position,queryRecommendEntity,"1");
                 }else {
+                    queryRecommendEntity.liked =true;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like);
                     ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
                             HOME_CONTENT,LIKE,position,queryRecommendEntity,"1");
@@ -216,6 +232,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             }
         });
 
+        /*分享*/
         holder.img_shared.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,26 +241,55 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             }
         });
 
+        /*举报及删除*/
         holder.img_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              if (TokenUtils.isToken(context)){
-                  LogUtils.e(DataSharedPreferences.getCreatateAccount(),queryRecommendEntity.createAccount);
-                if (TokenUtils.isCreateAccount(queryRecommendEntity.createAccount)){
-                    /*删除*/
-                    DeleteShareDialog deleteShareDialog = new DeleteShareDialog(context,queryRecommendEntity.id,
-                            AttentionAdapter.this,"1",position,conentEntity,null);
-                    deleteShareDialog.show();
+                if (TokenUtils.isToken(context)){
+                    LogUtils.e(DataSharedPreferences.getCreatateAccount(),queryRecommendEntity.createAccount);
+                    if (TokenUtils.isCreateAccount(queryRecommendEntity.createAccount)){
+                        /*删除*/
+                        DeleteShareDialog deleteShareDialog = new DeleteShareDialog(context,queryRecommendEntity.id,
+                                AttentionAdapter.this,"1",position,conentEntity,null);
+                        deleteShareDialog.show();
+                    }else {
+                        /*举报*/
+                        ReportShareDialog reportShareDialog = new ReportShareDialog(context,queryRecommendEntity.id,HOME_CONTENT);
+                        reportShareDialog.show();
+                    }
                 }else {
-                    /*举报*/
-                    ReportShareDialog reportShareDialog = new ReportShareDialog(context,queryRecommendEntity.id,HOME_CONTENT);
-                    reportShareDialog.show();
+                    ActivityUtils.setLoginActivity();
                 }
-              }else {
-                  ActivityUtils.setLoginActivity();
-              }
             }
         });
+
+    }
+
+    private void itmeonClick(QueryRecommendEntity queryRecommendEntity) {
+        switch (queryRecommendEntity.type) {
+            case "wsq":
+                LogUtils.e(queryRecommendEntity.id);
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
+                        "contentId",queryRecommendEntity.id);
+                break;
+            case "video":
+                LogUtils.e(queryRecommendEntity.videoHorizontalVertical);
+
+                if (queryRecommendEntity.videoHorizontalVertical==0) {
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
+                            "contentId",queryRecommendEntity.id);
+                }else if (queryRecommendEntity.videoHorizontalVertical==1){
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
+                            "contentId",queryRecommendEntity.id);
+                }
+                break;
+            case "article":
+
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
+                        "contentId",queryRecommendEntity.id);
+                break;
+            default:
+        }
 
     }
 

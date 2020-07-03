@@ -33,7 +33,9 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
      */
     public void getIncomeAndPayData(int type, int year, int month) {
         LogUtils.e(type,year,month);
-        getView().showProgressView();
+        if (isViewAttached()) {
+            getView().showProgressDialog("数据加载中", true);
+        }
         String currentMonth = month < 10 ? "0"+month :""+month;
         NetService.getInstance().setEarningsRecordMonth( year + "-" + currentMonth)
                 .subscribe(new CustomApiCallback<EarningsTopEntity<EarningsTwoYearlistEntity>>() {
@@ -41,14 +43,18 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(),ex.getCode());
                         if (isViewAttached()) {
+                            getView().hideProgressDailog();
                             getView().showErrorView();
                         }
+                        getView().showIncomeOrPayData(null);
                     }
 
                     @Override
                     public void onNext(EarningsTopEntity<EarningsTwoYearlistEntity> incomeOrPayEntity) {
                         LogUtils.e(incomeOrPayEntity.toString());
+
                         if (isViewAttached()) {
+                            getView().hideProgressDailog();
                             getView().showContentView();
                             getView().showIncomeOrPayData(incomeOrPayEntity);
                         }
@@ -105,6 +111,9 @@ public class IncomeRecordPresenter extends BasePresenter<IncomeRecordView> {
      */
     public void getIncomePayDataPerDay(int selectIncomeOrPay, int selectCatType, int year, int month) {
         LogUtils.e(selectIncomeOrPay,selectCatType,year,month);
+        if (isViewAttached()) {
+            getView().showProgressDialog("数据加载中", true);
+        }
 //        if (isViewAttached()) {
 //            getView().showChartLoadingTips("图表数据加载中...");
 //        }

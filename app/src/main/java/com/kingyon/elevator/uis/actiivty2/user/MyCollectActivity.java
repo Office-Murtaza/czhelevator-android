@@ -45,7 +45,7 @@ public class MyCollectActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        tvTopTitle.setText("收藏");
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new MyCollectConentFragment(), "内容");
         adapter.addFrag(new MyCollectPointFragment(), "点位");

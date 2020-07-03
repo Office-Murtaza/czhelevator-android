@@ -22,6 +22,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
+import com.kingyon.elevator.uis.activities.homepage.WikiListActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
@@ -49,6 +50,8 @@ import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ATTENTION_FANS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CUSTOMER_SERVICE_CENTER;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MYDYNAMIC;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MY_COLLECT;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ORDER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
@@ -139,7 +142,7 @@ public class PersonalFragment extends BaseFragment {
     TextView tvHx1;
     @BindView(R.id.tv_hx2)
     TextView tvHx2;
-
+    String otherUserAccount;
 
     @Override
     public int getContentViewId() {
@@ -157,6 +160,7 @@ public class PersonalFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         httpPersonal();
+        otherUserAccount = DataSharedPreferences.getCreatateAccount();
     }
 
     private void httpPersonal() {
@@ -273,6 +277,8 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        otherUserAccount = DataSharedPreferences.getCreatateAccount();
+
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -280,6 +286,7 @@ public class PersonalFragment extends BaseFragment {
             }
         });
     }
+
 
     @Override
     public void onDestroyView() {
@@ -315,7 +322,8 @@ public class PersonalFragment extends BaseFragment {
             case R.id.ll_portrait:
                 /*个人资料*/
                 if (isToken(getActivity())) {
-                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", 0);
+                    LogUtils.e(otherUserAccount);
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",otherUserAccount);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -333,10 +341,16 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.tv_dynamic_number:
             case R.id.ll_dynamic:
+                /*我的动态*/
+//                if (isToken(getActivity())) {
+//                    ActivityUtils.setActivity(ACTIVITY_MYDYNAMIC);
+//                } else {
+//                    ActivityUtils.setLoginActivity();
+//                }
                 if (isToken(getActivity())) {
-
+                    LogUtils.e(otherUserAccount);
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",otherUserAccount);
                 } else {
-                    /*动态*/
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -468,11 +482,7 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_customer:
                 /*客服电话*/
-                try {
-                    AFUtil.toCall(getContext(), getString(R.string.service_phone));
-                } catch (Exception e) {
-                    ToastUtils.showToast(getActivity(), "当前手机不允许拨打电话，请换手机操作", 2000);
-                }
+                ActivityUtils.setActivity(ACTIVITY_CUSTOMER_SERVICE_CENTER);
                 break;
             case R.id.ll_system:
                 /*系统设置*/

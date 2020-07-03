@@ -212,6 +212,12 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        autoRefresh();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK == resultCode && CommonUtil.REQ_CODE_1 == requestCode) {

@@ -19,7 +19,7 @@ public class PartnerIndexInfoEntity {
      * */
 
     public double total;
-    public double yesterday;
+    public double yesterdayMoney;
     public double withdrawal;
     public double canWithdraw;
     public String source;
@@ -30,7 +30,7 @@ public class PartnerIndexInfoEntity {
     public String toString() {
         return "PartnerIndexInfoEntity{" +
                 "total=" + total +
-                ", yesterday=" + yesterday +
+                ", yesterday=" + yesterdayMoney +
                 ", withdrawal=" + withdrawal +
                 ", canWithdraw=" + canWithdraw +
                 ", source='" + source + '\'' +

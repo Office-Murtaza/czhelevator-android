@@ -73,7 +73,7 @@ public class ModifyPhoneFirstActivity extends BaseSwipeBackActivity {
         }
         showProgressDialog(getString(R.string.wait));
         tvNext.setEnabled(false);
-        NetService.getInstance().unbindPhone(mobile, CommonUtil.getEditText(etCode), "OLD")
+        NetService.getInstance().unbindPhone(mobile, CommonUtil.getEditText(etCode), "UNBIND_OLD")
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override

@@ -132,6 +132,16 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
 
             holder.setVisible(R.id.tv_assign, !editMode);
             holder.setOnClickListener(R.id.tv_assign, onClickWithObjects);
+            holder.setOnClickListener(R.id.ll_is, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+            holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
             EditCountViewInList editCountView = holder.getView(R.id.ecv_count);
             editCountView.removeOnNumberChange();
             editCountView.setOnNumberChange(new EditCountViewInList.OnNumberChange() {

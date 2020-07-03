@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.actiivty2.user;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -103,26 +105,46 @@ public class AboutActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.img_top_back, R.id.tv_top_title, R.id.tv_right, R.id.tv_feed_bak, R.id.tv_version, R.id.ll_version, R.id.ll_user_privacy})
+    @OnClick({R.id.img_top_back, R.id.ll_email, R.id.ll_agreement, R.id.ll_recommended,
+            R.id.tv_version, R.id.ll_version, R.id.ll_user_privacy,R.id.ll_praise})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
                 finish();
                 break;
-            case R.id.tv_top_title:
+            case R.id.ll_email:
+                /*邮箱*/
+
                 break;
-            case R.id.tv_right:
+            case R.id.ll_agreement:
+                /*隐私协议*/
+
                 break;
-            case R.id.tv_feed_bak:
-                startActivity(FeedBackActivity.class);
-                break;
-            case R.id.tv_version:
+            case R.id.ll_recommended:
+                /*分享推荐*/
+
                 break;
             case R.id.ll_version:
+                /*版本跟新*/
                 requestUpdate(true);
                 break;
             case R.id.ll_user_privacy:
+                /*用户协议*/
+                break;
+            case R.id.ll_praise:
+                try {
+                    Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    ToastUtils.showToast(this,"您的手机没有安装Android应用市场",1000);
+                    e.printStackTrace();
+                }
                 break;
         }
     }
+
+
+
 }

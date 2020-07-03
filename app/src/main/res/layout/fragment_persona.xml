@@ -16,7 +16,9 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/my_action_bar"
             app:srlEnableAutoLoadMore="false"
-            app:srlEnableRefresh="true">
+            app:srlEnableRefresh="true"
+            app:srlEnableLoadMore="false"
+            >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -62,7 +64,7 @@
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="哥还能是传说"
+                        android:text="注册/登录"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"

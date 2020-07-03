@@ -35,7 +35,6 @@ import com.kingyon.elevator.uis.activities.user.IdentitySuccessActivity;
 import com.kingyon.elevator.uis.activities.user.InviteActivity;
 import com.kingyon.elevator.uis.activities.user.MessageCenterActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
-import com.kingyon.elevator.uis.activities.user.MyCollectActivity;
 import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
 import com.kingyon.elevator.uis.activities.user.MyInvoiceActivity;
 import com.kingyon.elevator.uis.activities.user.MyMateriaActivity;
@@ -350,7 +349,7 @@ public class UserFragment extends BaseStateRefreshFragment {
                 startActivity(MyMateriaActivity.class);
                 break;
             case R.id.tv_collect:
-                startActivity(MyCollectActivity.class);
+//                startActivity(MyCollectActivity.class);
                 break;
             case R.id.tv_plan:
                 startActivity(MyPlanActivity.class);

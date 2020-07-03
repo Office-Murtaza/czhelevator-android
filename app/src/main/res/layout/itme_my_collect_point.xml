@@ -94,7 +94,10 @@
             android:text="取消收藏"
             android:textColor="#ffff3049"
             android:textSize="14sp"
-            android:padding="@dimen/dp_7"
+            android:paddingTop="@dimen/dp5"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"
+            android:paddingBottom="@dimen/dp_5"
             android:background="@drawable/ad_caty_dqwz"
             />
 

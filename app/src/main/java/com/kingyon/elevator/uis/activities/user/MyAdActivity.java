@@ -101,14 +101,24 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
                         , (ImageView) holder.getView(R.id.img_full_image)
                         , holder.getView(R.id.ll_incise), (ImageView) holder.getView(R.id.img_top), (ImageView) holder.getView(R.id.img_bottom));
                 holder.setTextNotHide(R.id.tv_name, item.getTitle());
-//                holder.setOnClickListener(R.id.tv_status, new OnClickWithObjects(item) {
-//                    @Override
-//                    public void onClick(View view, Object[] objects) {
-//                        onStatusClick((ADEntity) (objects[0]));
-//                    }
-//                });
+
                 holder.setTextNotHide(R.id.tv_status, FormatUtils.getInstance().getAdStatus(item.getAdStatus()));
-            }
+                switch (item.getAdStatus()){
+                    case Constants.AD_STATUS.REVIEW_SUCCESS:
+//                        "审核通过";
+                        holder.setBackgroundRes(R.id.tv_status,R.mipmap.bg_advert_pass);
+                        break;
+                    case Constants.AD_STATUS.WAIT_REVIEW:
+//                        "待审核";
+                        holder.setBackgroundRes(R.id.tv_status,R.mipmap.bg_advert_review);
+                        break;
+                    case Constants.AD_STATUS.REVIEW_FAILED:
+//                        "审核失败";
+                        holder.setBackgroundRes(R.id.tv_status,R.mipmap.bg_advert_lose);
+
+                        break;
+
+                }            }
         };
     }
 

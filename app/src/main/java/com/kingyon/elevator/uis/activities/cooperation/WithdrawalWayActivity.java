@@ -71,7 +71,7 @@ public class WithdrawalWayActivity extends BaseActivity {
                     @Override
                     public void onNext(List<UserCashTypeListEnity> userCashTypeListEnities) {
                         hideProgress();
-                        WithdrawalWayAdapter withdrawalWayAdapter = new WithdrawalWayAdapter(WithdrawalWayActivity.this, userCashTypeListEnities);
+                        WithdrawalWayAdapter withdrawalWayAdapter = new WithdrawalWayAdapter(WithdrawalWayActivity.this, userCashTypeListEnities,entity,"1");
                         rcvList.setAdapter(withdrawalWayAdapter);
                         rcvList.setLayoutManager(new GridLayoutManager(WithdrawalWayActivity.this, 1, GridLayoutManager.VERTICAL, false));
 

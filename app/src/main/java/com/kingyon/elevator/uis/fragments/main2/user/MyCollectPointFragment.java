@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.fragments.main2.user;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.RelativeLayout;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.application.AppContent;
+import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -65,6 +68,7 @@ public class MyCollectPointFragment extends FoundFragemtUtils {
             smartRefreshLayout.autoRefresh(100);
         } else {
             list.clear();
+            showProgressDialog(getString(R.string.wait));
             httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
         }
 
@@ -78,28 +82,18 @@ public class MyCollectPointFragment extends FoundFragemtUtils {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        LocationEntity entity = AppContent.getInstance().getLocation();
+        if (entity!=null) {
+            latitude = String.valueOf(entity.getLatitude());
+            longitude = String.valueOf(entity.getLongitude());
+        }
 
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                list.clear();
-                page=1;
-                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
-            }
-        });
-        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page++;
-                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
-            }
-        });
     }
 
     private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
                                     String areaId, String pointType, String keyWord, String distance) {
         LogUtils.e(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance);
-        NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
+        NetService.getInstance().setmyCollects1(page, latitude, longitude)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<RecommendHouseEntiy>>() {
                     @Override
@@ -107,6 +101,7 @@ public class MyCollectPointFragment extends FoundFragemtUtils {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        hideProgress();
                         if (ex.getCode() == -102) {
                             if (page > 1) {
                                 ToastUtils.showShort("已经没有更多了");
@@ -125,12 +120,19 @@ public class MyCollectPointFragment extends FoundFragemtUtils {
 
                     @Override
                     public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
-                        hideProgress();
+                        LogUtils.e(conentEntity.getContent().toString());
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        rvComment.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
                         dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()>0||page>1) {
+                            rvComment.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }else {
+                            rvComment.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }
+                        hideProgress();
                     }
                 });
 
@@ -168,6 +170,27 @@ public class MyCollectPointFragment extends FoundFragemtUtils {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                list.clear();
+                page=1;
+                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
+            }
+        });
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
+            }
+        });
+
     }
 
     @Override

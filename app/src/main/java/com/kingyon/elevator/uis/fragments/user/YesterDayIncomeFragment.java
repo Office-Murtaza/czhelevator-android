@@ -74,9 +74,10 @@ public class YesterDayIncomeFragment extends MvpBaseFragment<YesterDayIncomePres
         if (dataType.equals(FragmentConstants.YesterDayIncomeFragment)) {
             //查询昨日收益
             yesterday_time.setText(DateUtils.getYesterDayTime());
-            total_money.setText("合计\t\t¥" + cooperationInfoNewEntity.getYesterdayIncome());
+            total_money.setText("合计\t\t¥" + cooperationInfoNewEntity.getSubtotal());
 
         } else {
+            /*已提现*/
             yesterday_time.setText(DateUtils.getCurrentTime());
             total_money.setText("合计\t\t¥" + cooperationInfoNewEntity.getFulfilledIncome());
         }
@@ -111,11 +112,23 @@ public class YesterDayIncomeFragment extends MvpBaseFragment<YesterDayIncomePres
             }
         });
         smart_refresh_layout.autoRefresh();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        income_list_container.setLayoutManager(linearLayoutManager);
-        incomeAdapter = new IncomeAdapter(getActivity(), presenter.getYesterdayIncomeEntityList());
-        income_list_container.setAdapter(incomeAdapter);
+        if (dataType.equals(FragmentConstants.YesterDayIncomeFragment)) {
+            //查询昨日收益
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            income_list_container.setLayoutManager(linearLayoutManager);
+            incomeAdapter = new IncomeAdapter(getActivity(), presenter.getYesterdayIncomeEntityList(),"1");
+            income_list_container.setAdapter(incomeAdapter);
+
+        } else {
+            /*已提现*/
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            income_list_container.setLayoutManager(linearLayoutManager);
+            incomeAdapter = new IncomeAdapter(getActivity(), presenter.getYesterdayIncomeEntityList(),"2");
+            income_list_container.setAdapter(incomeAdapter);
+        }
+
     }
 
 

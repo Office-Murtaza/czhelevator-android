@@ -1,5 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.advertis;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -14,7 +15,9 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -22,6 +25,7 @@ import com.kingyon.elevator.uis.adapters.adaptertwo.ContentImageAdapter;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main2.advertis.AdPointDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
+import com.kingyon.elevator.utils.TimeUtil;
 import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -39,6 +43,9 @@ import static com.czh.myversiontwo.utils.CodeType.ADV_BUSINESS;
 import static com.czh.myversiontwo.utils.CodeType.ADV_DAY;
 import static com.czh.myversiontwo.utils.CodeType.ADV_INFORMATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADPOINT_DETAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
+import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/5/29
@@ -98,6 +105,8 @@ public class AdPointDetailsActivity extends BaseActivity {
     CellDetailsEntity cellEntity;
     @Autowired
     String panID;
+    @Autowired
+     String distanceM;
     String adtype = ADV_BUSINESS;
     @BindView(R.id.tv_bumber)
     TextView tvBumber;
@@ -123,48 +132,75 @@ public class AdPointDetailsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+
         ARouter.getInstance().inject(this);
         httpDetails();
         AdUtils.httpPlannuber();
         handler.postDelayed(runnable, 500);
+        tvDistance.setText(distanceM + "");
+        LogUtils.e(distanceM);
     }
 
     private void httpDetails() {
-        showProgressDialog("加载中。。。");
+        showProgressDialog(getString(R.string.wait));
         LogUtils.e(panID);
-        NetService.getInstance().cellDetails(Long.parseLong(panID))
+        NetService.getInstance().cellDetails(Long.parseLong(panID),DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<CellDetailsEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
+                        ToastUtils.showToast(AdPointDetailsActivity.this,ex.getDisplayMessage(),1000);
                         hideProgress();
+                        finish();
                     }
 
                     @Override
                     public void onNext(CellDetailsEntity cellDetailsEntity) {
-                        LogUtils.e(cellDetailsEntity.toString());
                         cellEntity = cellDetailsEntity;
+                        tvAddress.setText(cellDetailsEntity.regionName);
+                        tvCommunityName.setText(cellDetailsEntity.name);
+                        tvConent.setText(cellDetailsEntity.communityIntroduction+"");
+                        tvType.setText("商业广告");
+                        adtype = ADV_BUSINESS;
+                        tvCurrentPrice.setText(cellEntity.priceBusiness+ "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.originalPriceBusiness + "元/台/天");
+                        tvOriginalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG);
+                        tvBuildingNumber.setText("楼栋数:"+cellDetailsEntity.numberBuilding);
+                        tvElevatorsNumber.setText("电梯数："+cellDetailsEntity.elevatorsNumber);
+                        tvLowestFloor.setText("建筑面积："+cellDetailsEntity.numberArea);
+                        tvCarsNumber.setText("车位数："+cellDetailsEntity.siteNumber);
+                        tvDeliveryTime.setText("交房时间："+ TimeUtil.getYmdDliverCh(cellDetailsEntity.deliveryTime));
+                        tvUnits.setText("单元数："+cellDetailsEntity.numberUnit);
+                        tvDevicesNumber.setText("设备数："+cellDetailsEntity.numberFacility);
+                        tvHighestFloor.setText("社区楼层楼层："+cellDetailsEntity.maxNumberFloor+"-"+cellDetailsEntity.maxNumberFloor);
+                        tvRent.setText("租金："+cellDetailsEntity.rent+"元/平方/月");
+                        tvPropertyCosts.setText("物业费："+cellDetailsEntity.propertyFee+"元/平方/月");
+                        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
+                        adapter.addFrag(new AdPointDetailsFragment(cellEntity, "1",panID), "商业广告");
+                        adapter.addFrag(new AdPointDetailsFragment(cellEntity, "2",panID), "DAY广告");
+                        adapter.addFrag(new AdPointDetailsFragment(cellEntity, "3",panID), "便民广告");
+                        vpPoindetails.setAdapter(adapter);
+                        vpPoindetails.setOffscreenPageLimit(adapter.getCount());
+                        viewpagertab.setViewPager(vpPoindetails);
+
+                        if (cellEntity.cellBanner!=null) {
+                            LogUtils.e(cellDetailsEntity.cellBanner);
+                            List<Object> list = new ArrayList<>();
+                            for (int c=0;c<cellDetailsEntity.cellBanner.size();c++){
+                                list.add(cellEntity.cellBanner.get(c));
+                            }
+                            ContentImageAdapter contentImageAdapter = new ContentImageAdapter(AdPointDetailsActivity.this, list);
+                            rvImage.setLayoutManager(new LinearLayoutManager(AdPointDetailsActivity.this));
+                            rvImage.setAdapter(contentImageAdapter);
+                            rvImage.setNestedScrollingEnabled(false);
+                        }
                         hideProgress();
-                        tvAddress.setText(cellDetailsEntity.getAddress());
-                        tvCommunityName.setText(cellDetailsEntity.getCellName());
-                        tvDistance.setText(cellDetailsEntity.getDistance() + "");
                     }
                 });
 
-        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "1"), "商业广告");
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "2"), "DAY广告");
-        adapter.addFrag(new AdPointDetailsFragment().setIndex(cellEntity, "3"), "便民广告");
-        vpPoindetails.setAdapter(adapter);
-        vpPoindetails.setOffscreenPageLimit(adapter.getCount());
-        viewpagertab.setViewPager(vpPoindetails);
-        List<Object> list = new ArrayList<>();
-//        list.add(cellEntity.getCellBanner());
-        ContentImageAdapter contentImageAdapter = new ContentImageAdapter(this, list);
-        rvImage.setLayoutManager(new LinearLayoutManager(this));
-        rvImage.setAdapter(contentImageAdapter);
-        rvImage.setNestedScrollingEnabled(false);
+
+
         vpPoindetails.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -176,20 +212,20 @@ public class AdPointDetailsActivity extends BaseActivity {
                     case 0:
                         tvType.setText("商业广告");
                         adtype = ADV_BUSINESS;
-                        tvCurrentPrice.setText(cellEntity.getBusinessAdPrice() + "元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getBusinessAdPrice() + "元/台/天");
+                        tvCurrentPrice.setText(cellEntity.priceBusiness + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.originalPriceBusiness + "元/台/天");
                         break;
                     case 1:
                         adtype = ADV_DAY;
                         tvType.setText("DAY广告");
-                        tvCurrentPrice.setText(cellEntity.getDiyAdPrice() + "元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getDiyAdPrice() + "元/台/天");
+                        tvCurrentPrice.setText(cellEntity.priceDiy + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.originalPriceDiy + "元/台/天");
                         break;
                     case 2:
                         adtype = ADV_INFORMATION;
                         tvType.setText("便民广告");
-                        tvCurrentPrice.setText(cellEntity.getInformationAdPrice() + "元/台/天");
-                        tvOriginalPrice.setText(cellEntity.getInformationAdPrice() + "元/台/天");
+                        tvCurrentPrice.setText(cellEntity.priceText + "元/台/天");
+                        tvOriginalPrice.setText(cellEntity.originalPriceText + "元/台/天");
                         break;
                     default:
                 }
@@ -218,14 +254,23 @@ public class AdPointDetailsActivity extends BaseActivity {
                 break;
             case R.id.rl_plan:
                 /*进入计划*/
-                startActivity(PlanNewFragment.class);
+                if (isToken(this)) {
+                    startActivity(PlanNewFragment.class);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.tv_conent:
 
                 break;
             case R.id.tv_program:
                 /*加入计划*/
-                addPlan(adtype, panID);
+                if (isToken(this)) {
+                    addPlan(adtype, panID);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
         }
     }

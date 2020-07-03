@@ -159,7 +159,7 @@ public class FragmentContainerActivity extends MvpBaseActivity<FragmentContainer
                 break;
             case FragmentConstants.EditPayPasswordFragment:
                 my_action_bar.setTitle("密码设置");
-                Boolean isRemember = getIntent().getBooleanExtra("isRememberPwd", false);
+                Boolean isRemember = getIntent().getBooleanExtra("isRememberPwd", true);
                 fragmentTransaction.replace(R.id.fragment_container, EditPayPasswordFragment.newInstance(isRemember));
                 fragmentTransaction.commit();
                 break;

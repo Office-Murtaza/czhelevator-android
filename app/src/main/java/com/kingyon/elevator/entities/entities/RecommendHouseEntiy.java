@@ -25,13 +25,28 @@ public class RecommendHouseEntiy {
          * urlCover : http://cdn.tlwgz.com/Fs7OAid31Yt7WGULaXNsDae78fy-
          * distanceM : 37291
          * urlHousing : http://cdn.tlwgz.com/Fi6_CTKTFxLo4rUxUq6O6AbehYVc,http://cdn.tlwgz.com/Fn-CZ1kfZ5AlEG0Hkufo791CR9h8,http://cdn.tlwgz.com/FohRD3DE0VPdUILit0z31pBrXg3B
-         * urlElevator : 
+         * urlElevator :
+         *
+         *
+         *    "id": 100042,
+         *         "name": "梯联网观光小区",
+         *         "address": "贵州省贵阳市观山湖区金岭社区服务中心都匀路金利大厦(百挑路)",
+         *         "numberBuilding": 2,
+         *         "numberUnit": 1,
+         *         "numberElevator": 3,
+         *         "numberFacility": 3,
+         *         "longitude": "106.648306",
+         *         "latitude": "26.616736",
+         *         "priceBusiness": 10,
+         *         "distanceM": 11420949
          */
         public int id;
         public String name;
         public String address;
         public int numberElevator;
         public int numberUnit;
+        public int numberBuilding;
+        public int numberFacility;
         public double longitude;
         public double latitude;
         public String stayIn;
@@ -41,7 +56,7 @@ public class RecommendHouseEntiy {
         public double priceDiy;
         public double priceText;
         public String urlCover;
-        public int distanceM;
+        public double distanceM;
         public String urlHousing;
         public String urlElevator;
 
@@ -53,6 +68,8 @@ public class RecommendHouseEntiy {
                         ", address='" + address + '\'' +
                         ", numberElevator=" + numberElevator +
                         ", numberUnit=" + numberUnit +
+                        ", numberBuilding=" + numberBuilding +
+                        ", numberFacility=" + numberFacility +
                         ", longitude=" + longitude +
                         ", latitude=" + latitude +
                         ", stayIn='" + stayIn + '\'' +

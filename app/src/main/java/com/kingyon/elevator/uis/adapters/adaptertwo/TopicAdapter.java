@@ -58,7 +58,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     LogUtils.e(conentEntity.get(position).id);
-                    ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",String.valueOf(conentEntity.get(position).id));
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",
+                            String.valueOf(conentEntity.get(position).id));
 //                    ARouter.getInstance().build(ACTIVITY_MAIN2_TOPIC_DETAILS)
 //                            .withString("conentEntity", JsonUtils.beanToJson(homeTopicConentEntity))
 //                            .navigation();

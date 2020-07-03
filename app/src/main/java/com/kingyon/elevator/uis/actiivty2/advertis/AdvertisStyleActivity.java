@@ -22,7 +22,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADVERTIS_STYLE;
  * @Created By Admin  on 2020/5/27
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:广告样式
  */
 @Route(path = ACTIVITY_ADVERTIS_STYLE)
 public class AdvertisStyleActivity extends BaseActivity {

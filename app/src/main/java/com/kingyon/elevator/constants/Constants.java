@@ -1,5 +1,7 @@
 package com.kingyon.elevator.constants;
 
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
+
 /**
  * Created by gongli on 2017/7/17 16:57
  * email: lc824767150@163.com
@@ -123,6 +125,14 @@ public interface Constants {
         String BUSINESS = "BUSINESS";
         String INFORMATION = "INFORMATION";
     }
+    interface INCOME_TYPE{
+        /*收益*/
+        String EARNINGS = "EARNINGS";
+        /*物业费支出*/
+        String POINT_MONEY_PAY = "POINT_MONEY_PAY";
+        /*光纤费支出*/
+        String BANDWIDTH_PAY = "BANDWIDTH_PAY";
+    }
 
     interface DEVICE_PLACE {//L左屏，C中屏，R右屏
         String LEFT = "L";
@@ -136,6 +146,14 @@ public interface Constants {
         String FAILD = "FAILD";
         String AUTHED = "AUTH";
     }
+
+    /*2.0合伙人审核状态*/
+    interface COOPERATION_STATUS{ /*成功，审核中 审核失败*/
+        String SUCCESS = "SUCCESS";
+        String AUDITING = "AUDITING";
+        String FAILD = "FAILD";
+    }
+
 
     interface IDENTITY_TYPE {//company:公司，person：个人。
         String COMPANY = "COMPANY";
@@ -242,5 +260,10 @@ public interface Constants {
     interface FROM_TYPE_TO_SELECT_MEDIA {//PLAN:来自于计划下单时选择图片和视频，MYADSELECT：来自于我的广告界面选择视频或图片。
         int PLAN = 1001;
         int MYADSELECT = 1002;
+    }
+
+    interface COLLECT_STATE{
+        String CONTENT = "CONTENT";
+        String POINT = "POINT";
     }
 }

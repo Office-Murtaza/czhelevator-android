@@ -1,5 +1,8 @@
 package com.kingyon.elevator.uis.fragments.main2.advertis;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +11,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellDetailsEntity;
+import com.kingyon.elevator.uis.actiivty2.content.ArticleDetailsActivity;
+import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.TimeUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 
 /**
  * @Created By Admin  on 2020/5/29
@@ -23,6 +35,7 @@ import butterknife.Unbinder;
  * @Author:Mrczh
  * @Instructions:
  */
+@SuppressLint("ValidFragment")
 public class AdPointDetailsFragment extends BaseFragment {
     @BindView(R.id.img_image)
     ImageView imgImage;
@@ -51,11 +64,14 @@ public class AdPointDetailsFragment extends BaseFragment {
     TextView tvTitle;
     private CellDetailsEntity cellDetailsEntity;
     private String type;
+    private String panID;
 
-    public AdPointDetailsFragment setIndex(CellDetailsEntity cellDetailsEntity,String type) {
+    @SuppressLint("ValidFragment")
+    public AdPointDetailsFragment (CellDetailsEntity cellDetailsEntity, String type, String panID ) {
         this.cellDetailsEntity = cellDetailsEntity;
         this.type = type;
-        return (this);
+        this.panID = panID;
+
     }
 
     @Override
@@ -65,24 +81,43 @@ public class AdPointDetailsFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-//        tvAttribute.setText(cellDetailsEntity.getCellType());
-//        tvOccupancy.setText(cellDetailsEntity.getCellType());
-//        tvPrice.setText(cellDetailsEntity.getBusinessAdPrice()+"");
-//        tvTime.setText(cellDetailsEntity.getEnterTime()+"");
+
+        tvOccupancy.setText(cellDetailsEntity.occupancyRate+"");
+        tvPrice.setText(cellDetailsEntity.averageSellingPrice+"");
+        LogUtils.e(cellDetailsEntity.deviceSwitchOff.substring(0,2));
+        tvTime.setText("每天"+(Integer.parseInt(cellDetailsEntity.deviceSwitchOff.substring(0,2))-Integer.parseInt(cellDetailsEntity.deviceSwitchOn.substring(0,2)))+"小时");
+        tvTraffic.setText(cellDetailsEntity.numberTraffic+"");
+        tvCoverage.setText(cellDetailsEntity.peopleCoverd+"");
+        tvWsp.setText(cellDetailsEntity.throwWay+""/*+FormatUtils.getInstance().getCellDistance()*/);
+        tvAttribute.setText(FormatUtils.getInstance().getCellType(cellDetailsEntity.type));
         switch (type) {
             case "1":
-                tvTitle.setText("广告时长30秒，以轮流播放的形式投放，经济实惠");
+                tvTitle.setText(cellDetailsEntity.businessIntro);
                 imgImage.setImageResource(R.mipmap.im_style_business_m);
                 break;
             case "2":
-                tvTitle.setText("广告时长60秒，以独占屏幕的形式投放，效果显著");
+                tvTitle.setText(cellDetailsEntity.diyIntro);
                 imgImage.setImageResource(R.mipmap.im_style_diy_m);
                 break;
             case "3":
-                tvTitle.setText("免费发布文字类信息");
+                tvTitle.setText(cellDetailsEntity.informationIntro);
                 imgImage.setImageResource(R.mipmap.im_style_service_m);
                 break;
             default:
+        }
+
+        if (cellDetailsEntity.isCollect){
+            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
+            Resources resources = getContext().getResources();
+            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
+            llAdCollect.setBackgroundDrawable(btnDrawable);
+            tvAdCollect.setText("已收藏此点位");
+        }else {
+            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
+            Resources resources = getContext().getResources();
+            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
+            llAdCollect.setBackgroundDrawable(btnDrawable);
+            tvAdCollect.setText("收藏此点位");
         }
 
     }
@@ -106,7 +141,64 @@ public class AdPointDetailsFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+      if (imgAdCollect!=null&&cellDetailsEntity!=null){
+          if (cellDetailsEntity.isCollect){
+              imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
+              Resources resources = getContext().getResources();
+              Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
+              llAdCollect.setBackgroundDrawable(btnDrawable);
+              tvAdCollect.setText("已收藏此点位");
+          }else {
+              imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
+              Resources resources = getContext().getResources();
+              Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
+              llAdCollect.setBackgroundDrawable(btnDrawable);
+              tvAdCollect.setText("收藏此点位");
+          }
+      }
+    }
+
     @OnClick(R.id.ll_ad_collect)
     public void onViewClicked() {
+        /*收藏*/
+        if (tvAdCollect.getText().toString().equals("收藏此点位")) {
+            ConentUtils.httpAddCollect(panID, Constants.COLLECT_STATE.POINT, new ConentUtils.AddCollect() {
+                @Override
+                public void Collect(boolean is) {
+                    if (is) {
+                        cellDetailsEntity.isCollect = true;
+                        imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
+                        Resources resources = getContext().getResources();
+                        Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
+                        llAdCollect.setBackgroundDrawable(btnDrawable);
+                        ToastUtils.showToast(getActivity(), "收藏成功", 1000);
+                        tvAdCollect.setText("已收藏此点位");
+                    } else {
+                        LogUtils.e("收藏失败");
+                        ToastUtils.showToast(getActivity(), "收藏失败", 1000);
+                    }
+                }
+            });
+        }else {
+            ConentUtils.httpCancelCollect(panID, new ConentUtils.AddCollect() {
+                @Override
+                public void Collect(boolean is) {
+                    if (is){
+                        cellDetailsEntity.isCollect = false;
+                        imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
+                        Resources resources = getContext().getResources();
+                        Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
+                        llAdCollect.setBackgroundDrawable(btnDrawable);
+                        tvAdCollect.setText("收藏此点位");
+                    }else {
+                        ToastUtils.showToast(getActivity(), "失败", 1000);
+                    }
+                }
+            });
+        }
     }
 }

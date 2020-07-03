@@ -18,6 +18,7 @@ import org.xml.sax.XMLReader;
 import java.util.Map;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
 
 /**
  * Created By Admin  on 2020/4/28
@@ -79,10 +80,9 @@ public class HtmlTagHandler implements Html.TagHandler {
               ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",t.id);
             }else {
               /*用户中心*/
-
-
+              ActivityUtils.setActivity(ACTIVITY_USER_CENTER,"type", "1","otherUserAccount",t.id);
             }
-            Toast.makeText(widget.getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(widget.getContext(), t.toString(), Toast.LENGTH_SHORT).show();
           }
         }, where, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       }

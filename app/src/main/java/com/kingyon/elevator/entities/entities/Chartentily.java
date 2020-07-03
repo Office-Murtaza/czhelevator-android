@@ -6,10 +6,13 @@ package com.kingyon.elevator.entities.entities;
  * @Author:Mrczh
  * @Instructions:
  */
-public class chartentily {
-    public int num;
-    public String title;
-    public double value;
-    public int step;
+public class Chartentily {
+ /**
+  *  "invoiced": 3100,
+  *     "waitting": 892430.42
+  *
+  * */
+ public String invoiced;
+ public String waitting;
 
 }

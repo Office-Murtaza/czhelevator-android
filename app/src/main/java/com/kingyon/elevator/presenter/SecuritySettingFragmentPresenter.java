@@ -57,22 +57,23 @@ public class SecuritySettingFragmentPresenter extends BasePresenter<SecuritySett
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
-                            getView().checkPayPwdIsSuccess();
+//                            getView().checkPayPwdIsSuccess();
                         }
                     }
 
                     @Override
                     public void onNext(String content) {
-                        if (isViewAttached()) {
-                            if (content.equals("成功")) {
-                                getView().hideProgressDailog();
-                                getView().showShortToast("支付密码验证成功");
-                                getView().checkPayPwdIsSuccess();
-                            } else {
-                                getView().showShortToast("支付密码验证失败");
-                                getView().hideProgressDailog();
-                            }
-                        }
+                        getView().hideProgressDailog();
+                        getView().showShortToast("支付密码验证成功");
+                        getView().checkPayPwdIsSuccess();
+//                        if (isViewAttached()) {
+//                            if (content.equals("成功")) {
+//
+//                            } else {
+//                                getView().showShortToast("支付密码验证失败");
+//                                getView().hideProgressDailog();
+//                            }
+//                        }
                     }
                 });
     }

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
@@ -62,6 +63,7 @@ public class RecommendFragment extends FoundFragemtUtils {
     AttentionAdapter attentionAdapter;
     RecommendtopAdapter recommendtopAdapter;
     List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
+    String account;
     @Override
     public int getContentViewId() {
         return R.layout.fragment_recommend;
@@ -73,6 +75,7 @@ public class RecommendFragment extends FoundFragemtUtils {
 
         smartRefreshLayout.setEnableRefresh(true);
         smartRefreshLayout.setEnableAutoLoadMore(true);
+
     }
 
 
@@ -110,7 +113,8 @@ public class RecommendFragment extends FoundFragemtUtils {
     }
 
     private void httpRecommend(int page, String title) {
-        NetService.getInstance().setQueryRecommend(page, title)
+        LogUtils.e(page, title,account);
+        NetService.getInstance().setQueryRecommend(page, title,account)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
                     @Override
@@ -205,6 +209,7 @@ public class RecommendFragment extends FoundFragemtUtils {
     @Override
     protected void lazyLoad() {
 //        if (recommendEntityList.size()<0) {
+        account = DataSharedPreferences.getCreatateAccount();
             if (smartRefreshLayout != null) {
                 smartRefreshLayout.autoRefresh(100);
             } else {

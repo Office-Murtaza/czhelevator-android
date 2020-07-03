@@ -71,6 +71,7 @@
                 android:background="@color/color_00000000"
                 android:layout_marginLeft="@dimen/dp10"
                 android:textSize="@dimen/sp_14"
+
                 />
 
         </LinearLayout>
@@ -107,6 +108,7 @@
             android:layout_height="@dimen/dp_180"
             android:src="@mipmap/im_attest_card"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:layout_margin="@dimen/dp_40"
             />
 

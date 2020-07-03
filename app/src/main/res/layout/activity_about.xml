@@ -37,6 +37,7 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_praise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item"
@@ -45,6 +46,7 @@
             android:paddingRight="@dimen/spacing_default">
 
             <TextView
+
                 style="@style/text_big_content"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_tab_bar"
@@ -71,6 +73,7 @@
             android:layout_marginRight="@dimen/spacing_default"
             android:background="@color/black_divider" />
         <LinearLayout
+            android:id="@+id/ll_recommended"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item"
@@ -219,6 +222,7 @@
             android:background="@color/black_divider" />
 
         <LinearLayout
+            android:id="@+id/ll_agreement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item"
@@ -254,6 +258,7 @@
             android:background="@color/black_divider" />
 
         <LinearLayout
+            android:id="@+id/ll_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item"

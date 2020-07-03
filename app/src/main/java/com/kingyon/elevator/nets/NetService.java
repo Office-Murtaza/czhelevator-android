@@ -87,7 +87,10 @@ import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
+import com.kingyon.elevator.entities.entities.AuthStatusEntily;
 import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
+import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
+import com.kingyon.elevator.entities.entities.Chartentily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -101,6 +104,7 @@ import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
+import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
 import com.kingyon.elevator.entities.entities.PublicEntity;
@@ -111,6 +115,8 @@ import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
+import com.kingyon.elevator.entities.entities.UserTwoEntity;
+import com.kingyon.elevator.entities.entities.WithdrawEntily;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
 import com.kingyon.elevator.utils.FormatUtils;
@@ -229,9 +235,14 @@ public class NetService {
         return addSchedulers(getApi().getQueryRecommendTop());
     }
     /*2.0推荐内容*/
-    public Observable<ConentEntity<QueryRecommendEntity>> setQueryRecommend(int page,String title){
-        return addSchedulers(getApi().getQueryRecommend(page,title));
+    public Observable<ConentEntity<QueryRecommendEntity>> setQueryRecommend(int page,String title,String account){
+        return addSchedulers(getApi().getQueryRecommend(page,title,account));
     }
+    /*2.0内容详情*/
+    public Observable<QueryRecommendEntity> setQueryContentById(String contentId ,String account){
+        return addSchedulers(getApi().getQueryContentById(contentId,account));
+    }
+
     /*2.0关注内容*/
     public Observable<ConentEntity<QueryRecommendEntity>> setQueryAttention(int page,String title,String orderBy){
         return addSchedulers(getApi().getQueryAttention(page,title,orderBy));
@@ -246,7 +257,7 @@ public class NetService {
         return addSchedulers(getApi().getQueryTopicLabel());
     }
     /*2.0话题内容*/
-    public Observable<ConentEntity<HomeTopicConentEntity>> setQueryTopicConetn(int page,int label,String title,int id){
+    public Observable<ConentEntity<HomeTopicConentEntity>> setQueryTopicConetn(int page,String label,String title,int id){
         if (id==0){
             return addSchedulers(getApi().getQueryTopicConetn(page, label, title, ""));
         }else {
@@ -288,8 +299,8 @@ public class NetService {
     }
 
     /*2.0用户关注*/
-    public Observable<String> setAddAttention( String handlerType,String beFollowerAccount){
-        return addSchedulers(getApi().getAddAttention(handlerType,beFollowerAccount));
+    public Observable<String> setAddAttention( String handlerType,String beFollowerAccount,String followerAccount ){
+        return addSchedulers(getApi().getAddAttention(handlerType,beFollowerAccount,followerAccount ));
     }
 
     /*2.0获取用户*/
@@ -348,6 +359,42 @@ public class NetService {
     public Observable<String> plansAddCells(String type, String cells) {
         return addSchedulers(getApi().plansAddCells(type, cells));
     }
+
+    /*2.0收藏内容点位*/
+    public Observable<String> setAddCollect(String objectId,String type){
+        return addSchedulers(getApi().getAddCollect(objectId,type));
+    }
+
+    /*2.0取消收藏*/
+    public Observable<String> setCancelCollect(String collectId){
+        return addSchedulers(getApi().getCancelCollect(collectId));
+    }
+
+    /*2.0获取开票内容*/
+    public Observable<Chartentily> setInvoiceInfo(){
+        return addSchedulers(getApi().getInvoiceInfo());
+    }
+
+    /*2.0获取用户动态*/
+    public Observable<ConentEntity<QueryRecommendEntity>> setUserCenterContent(int page,String otherUserAccount ){
+        return addSchedulers(getApi().userCenterContent(page,otherUserAccount));
+    }
+
+    /*2.0获取其他用户信息*/
+    public Observable<UserTwoEntity> setUserCenterInfo(String otherUserAccount){
+        return addSchedulers(getApi().userCenterInfo(otherUserAccount));
+    }
+
+    /*2.0获取用户认证状态*/
+    public Observable<AuthStatusEntily>getAuthStatus(){
+        return addSchedulers(getApi().getAuthStatus());
+    }
+
+    /*2.0获取第三方绑定用户*/
+    public Observable<UserEntity> getCheckBind3Rd(){
+        return addSchedulers(getApi().checkBind3Rd());
+    }
+
 
 
     //验证码
@@ -510,6 +557,7 @@ public class NetService {
         return addSchedulers(getApi().register(way, phone, vaildCode, password, unique, avatar, nickName));
     }
 
+    /*2.0跟换手机*/
     public Observable<String> unbindPhone(String phone, String code, String type) {
         return addSchedulers(getApi().unbindPhone(phone, code, type));
     }
@@ -683,27 +731,12 @@ public class NetService {
     }
 
     /*2.0小区详情*/
-    public Observable<CellDetailsEntity> cellDetails(long objectId) {
-        return addSchedulers(getApi().cellDetails(objectId));
+    public Observable<CellDetailsEntity> cellDetails(long objectId,String account) {
+        return addSchedulers(getApi().cellDetails(objectId,account));
     }
     /*2.0计划列表*/
     public Observable<ConentEntity<CellItemEntity>> plansList(String type
             , Long startTime, Long endTime, int page) {
-//        return addSchedulers(getApi().plansList(type, startTime, endTime)
-//                .doOnNext(new Action1<List<CellItemEntity>>() {
-//                    @Override
-//                    public void call(List<CellItemEntity> cellItemEntities) {
-//                        if (cellItemEntities != null && cellItemEntities.size() > 0) {
-//                            Iterator<CellItemEntity> iterator = cellItemEntities.iterator();
-//                            while (iterator.hasNext()) {
-//                                CellItemEntity next = iterator.next();
-//                                if (next.getTargetScreenNum() <= 0) {
-//                                    iterator.remove();
-//                                }
-//                            }
-//                        }
-//                    }
-//                }));
         return addSchedulers(getApi().plansList(type, startTime, endTime, page));
     }
     /*2.0小区单独指定*/
@@ -925,10 +958,10 @@ public class NetService {
 
     /*2.0支付宝认证*/
     public Observable<PlanNumberEntiy> setAliIdentityAuth(String cerName,String certNo){
-        return addSchedulers(getApi().getAliIdentityAuth(cerName,certNo));
+        return addSchedulers(getApi().getAliIdentityAuth(cerName,certNo,"CUSTOMER"));
     }
     /*2.0身份认证上传内容*/
-    public Observable<String> setIdentyAuth( String personName,String idCardNum,String idCardPic,String type){
+    public Observable<CertifiCationEntiy> setIdentyAuth(String personName, String idCardNum, String idCardPic, String type){
        return addSchedulers(getApi().getIdentyAuth(personName,idCardNum,idCardPic,type));
     }
     /*2.0合伙人首页内容*/
@@ -1023,6 +1056,7 @@ public class NetService {
         return addSchedulers(getApi().getCoupons(status, page));
     }
 
+    /*2.0赠送优惠卷*/
     public Observable<String> donateCoupons(String phone, String couponCounts, String couponIds) {
         return addSchedulers(getApi().donateCoupons(phone, couponCounts, couponIds));
     }
@@ -1046,8 +1080,11 @@ public class NetService {
         return addSchedulers(getApi().userProfile());
     }
 
-    public Observable<UserEntity> userEidtProfile(Map<String, String> params) {
-        return addSchedulers(getApi().userEidtProfile(params));
+    /*2.0用户资料修改*/
+    public Observable<UserEntity> userEidtProfile(String avatar,String nikeName,
+                                                  String sex,String city,String birthday,
+                                                  String intro,String cover) {
+        return addSchedulers(getApi().userEidtProfile(avatar,nikeName,sex,city,birthday,intro,cover));
     }
 
     public Observable<DataEntity<Float>> myWallet() {
@@ -1092,6 +1129,19 @@ public class NetService {
         return addSchedulers(getApi().setAliAuthQuery(certifyId));
     }
 
+    /*2.0个人收藏内容*/
+    public Observable<ConentEntity<QueryRecommendEntity>> setmyCollects(int page ){
+        return addSchedulers(getApi().getmyCollects(page, "CONTENT", 0, 0));
+    }
+    /*2.0个人收藏点位*/
+    public Observable<ConentEntity<RecommendHouseEntiy>> setmyCollects1(int page,String latitude,String longitude  ){
+        if (latitude!=null) {
+            return addSchedulers(getApi().getmyCollects1(page, "POINT", latitude, longitude));
+        }else {
+            return addSchedulers(getApi().getmyCollects1(page, "POINT", "26.578343", "106.713478"));
+        }
+    }
+
     public Observable<InvoiceInfoEntity> invoiceInfo() {
         return addSchedulers(getApi().invoiceInfo());
     }
@@ -1102,7 +1152,7 @@ public class NetService {
                 , invoiceAmount, receiveEmail, content));
     }
 
-    public Observable<PageListEntity<InvoiceEntity>> invoiceList(int page) {
+    public Observable<ConentEntity<InvoiceEntity>> invoiceList(int page) {
         return addSchedulers(getApi().invoiceList(page));
     }
 
@@ -1144,7 +1194,7 @@ public class NetService {
         return addSchedulers(getApi().cancelCollect(cellIds));
     }
 
-    public Observable<PageListEntity<FeedBackEntity>> myFeedBackList(int page) {
+    public Observable<ConentEntity<FeedBackEntity>> myFeedBackList(int page) {
         return addSchedulers(getApi().myFeedBackList(page));
     }
 
@@ -1224,7 +1274,7 @@ public class NetService {
                     @Override
                     public Observable<CooperationInfoNewEntity> call(CooperationIdentityEntity cooperationIdentityEntity) {
                         Observable<CooperationInfoNewEntity> observable;
-                        if (entity.isBePartner() || (cooperationIdentityEntity != null && TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, cooperationIdentityEntity.getStatus()))) {
+                        if (entity.isBePartner() || (cooperationIdentityEntity != null && TextUtils.equals(Constants.COOPERATION_STATUS.AUDITING, cooperationIdentityEntity.getStatus()))) {
                             observable = getApi().cooperationInfoNew();
                         } else {
                             observable = Observable.just(null);
@@ -1241,6 +1291,11 @@ public class NetService {
                     }
                 });
         return addSchedulers(observable);
+    }
+
+    /*2.0合伙人申请状态*/
+    public Observable<PartnershipStatusEntily> cooperationInfotwo(){
+        return addSchedulers(getApi().cooperationIentityInfotwo());
     }
 
     /*2.0 获取合伙人提现账户*/
@@ -1327,7 +1382,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 //                        }
 //                    });
 //        } else {
-    observable = getApi().cooperationApply(partnerName, phone, city);
+    observable = getApi().cooperationApply(city);
 //        }
     return addSchedulers(observable);
 }
@@ -1336,7 +1391,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
         return addSchedulers(getApi().partnerWithdraw(amount, withDrawWay, aliAcount, bankName, cardNo, cardholder));
     }
 
-    public Observable<PageListEntity<WithdrawItemEntity>> partnerWithdrawList(int page) {
+    public Observable<WithdrawEntily<WithdrawEntily.PageContentBean<WithdrawItemEntity>>> partnerWithdrawList(int page) {
         return addSchedulers(getApi().partnerWithdrawList(page));
     }
 
@@ -1550,12 +1605,12 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
     }
 
     /**
-     * 查询已提现数据
+     * 2.0查询已提现数据
      *
      * @return
      */
-    public Observable<List<YesterdayIncomeEntity>> getCashedList(String startPosition, String size) {
-        return addSchedulers(getApi().getCashedList(startPosition, size));
+    public Observable<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>> getCashedList(int  page) {
+        return addSchedulers(getApi().getCashedList(page));
     }
 
     /**
@@ -1588,7 +1643,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
     }
 
     /**
-     * 验证是否设置支付密码
+     * 2.0验证是否设置支付密码
      *
      * @return
      */
@@ -1598,7 +1653,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 用验证码修改支付密码
+     * 2.0用验证码修改支付密码
      *
      * @return
      */
@@ -1608,7 +1663,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 用原密码修改支付密码
+     * 2.0用原密码修改支付密码
      *
      * @return
      */
@@ -1618,7 +1673,7 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 
 
     /**
-     * 支付密码验证是否正确
+     * 2.0支付密码验证是否正确
      *
      * @return
      */

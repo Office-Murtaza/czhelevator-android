@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.baidu.ocr.ui.camera.CameraView;
+import com.blankj.utilcode.util.LogUtils;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
@@ -53,8 +54,8 @@ public class CameraViewActivit extends AppCompatActivity {
         jCameraView.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
-                Log.i("JCameraView", "bitmap = " + bitmap.getWidth());
-                String path = saveBitmap("Shulan", bitmap);
+                String path = saveBitmap("PDD", bitmap);
+                LogUtils.e("JCameraView", "bitmap = " + bitmap.getWidth(),path);
                 Intent intent = new Intent();
                 intent.putExtra("path", path);
                 setResult(101, intent);

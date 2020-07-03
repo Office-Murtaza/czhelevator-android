@@ -16,6 +16,8 @@ public class UserCashTypeListEnity implements Parcelable {
       "cashAccount": "123456",
       "cashName": "项瑞请",
       "openingBank": ""
+      *
+      *
     * */
     public int id;
     public int cashType;

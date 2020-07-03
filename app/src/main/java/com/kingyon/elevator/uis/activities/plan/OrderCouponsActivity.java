@@ -29,6 +29,7 @@ import butterknife.BindView;
 /**
  * Created by GongLi on 2019/1/3.
  * Email：lc824767150@163.com
+ * 优惠卷选择
  */
 
 public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Object> {
@@ -81,6 +82,7 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
 
     @Override
     protected void loadData(final int page) {
+
         if (choosedCoupons == null) {
             String choosedCouponType = getChoosedCouponType();
             if (TextUtils.equals(Constants.CouponType.VOUCHER, choosedCouponType)) {

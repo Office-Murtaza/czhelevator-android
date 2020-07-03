@@ -169,16 +169,17 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
 
                     @Override
                     public void onNext(String content) {
-                        if (isViewAttached()) {
-                            if (content.equals("成功")) {
-                                getView().hideProgressDailog();
-                                getView().showShortToast("支付密码修改成功");
-                                getView().payPasswordEditSuccess();
-                            } else {
-                                getView().showShortToast("密码修改失败");
-                                getView().hideProgressDailog();
-                            }
-                        }
+                        getView().hideProgressDailog();
+                        getView().showShortToast("支付密码修改成功");
+                        getView().payPasswordEditSuccess();
+//                        if (isViewAttached()) {
+//                            if (content.equals("成功")) {
+//
+//                            } else {
+//                                getView().showShortToast("密码修改失败");
+//                                getView().hideProgressDailog();
+//                            }
+//                        }
                     }
                 });
     }
@@ -199,16 +200,17 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
 
                     @Override
                     public void onNext(String content) {
-                        if (isViewAttached()) {
-                            if (content.equals("成功")) {
-                                getView().hideProgressDailog();
-                                getView().showShortToast("支付密码修改成功");
-                                getView().payPasswordEditSuccess();
-                            } else {
-                                getView().showShortToast("密码修改失败");
-                                getView().hideProgressDailog();
-                            }
-                        }
+                        getView().hideProgressDailog();
+                        getView().showShortToast("支付密码修改成功");
+                        getView().payPasswordEditSuccess();
+//                        if (isViewAttached()) {
+//                            if (content.equals("成功")) {
+//
+//                            } else {
+//                                getView().showShortToast("密码修改失败");
+//                                getView().hideProgressDailog();
+//                            }
+//                        }
                     }
                 });
     }

@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class MycollectPointAdapter extends RecyclerView.Adapter<MycollectPointAd
         holder.tv_address.setText(data.address);
         holder.tv_community_code.setText(String.format(STRING_COMMUNITY_CODE,data.numberUnit,data.numberElevator));
         holder.tv_community_name.setText(data.name);
-        holder.tv_distance.setText(distance(data.distanceM));
+        holder.tv_distance.setText(distance((int) data.distanceM));
 
         holder.tv_collect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +68,23 @@ public class MycollectPointAdapter extends RecyclerView.Adapter<MycollectPointAd
             public void onClick(View v) {
                 LogUtils.e(data.id);
                 ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(data.id));
+            }
+        });
+        holder.tv_collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConentUtils.httpCancelCollect(String.valueOf(data.id), new ConentUtils.AddCollect() {
+                    @Override
+                    public void Collect(boolean is) {
+                        if (is) {
+                            list.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, list.size() - position);
+                        }else {
+                            context.showToast("失败");
+                        }
+                    }
+                });
             }
         });
     }

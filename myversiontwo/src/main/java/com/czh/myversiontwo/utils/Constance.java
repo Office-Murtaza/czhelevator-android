@@ -91,12 +91,25 @@ public class Constance {
     public static final String ACTIVITY_USER_CENTER="/app/activity/usercenter";
     /**我都收藏*/
     public static final String ACTIVITY_MY_COLLECT="/app/activity/mycollect";
+    /**企业发票填写*/
+    public static final String ACTIVITY_ENTERPRISE="/app/activity/enterprise";
+    /**个人发票填写*/
+    public static final String ACTIVITY_PERSONAL="/app/activity/personaly";
+    /**我的动态*/
+    public static final String ACTIVITY_MYDYNAMIC="/app/activity/mydynamic";
+    /**客服中心*/
+    public static final String ACTIVITY_CUSTOMER_SERVICE_CENTER="/app/activity/customerservicecenter";
+    /**昵称编辑*/
+    public static final String ACTIVITY_USER_NICK="/app/activity/usernick";
+    /**选择地区*/
+    public static final String ACTIVITY_USER_REGION="/app/activity/userregion";
+    /**简介编辑*/
+    public static final String ACTIVITY_USER_INTRODUCTION="/app/activity/userintroduction";
+    /**昨日收益*/
+    public static final String ACTIVITY_EARNINGS_YESTERDAY="/app/activity/earningsyesterday";
 
-
-//    public static final String ACTIVITY_="/app/activity/attentionfans";
-//    public static final String ACTIVITY_="/app/activity/attentionfans";
-//    public static final String ACTIVITY_="/app/activity/attentionfans";
-//    public static final String ACTIVITY_="/app/activity/attentionfans";
+    /**显示已提现*/
+    public static final String ACTIVITY_HAVE_WITHDRAWAL="/app/activity/havewithdrawal";
 
 
 

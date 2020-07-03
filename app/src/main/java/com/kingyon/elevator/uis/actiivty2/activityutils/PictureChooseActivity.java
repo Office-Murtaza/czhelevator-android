@@ -76,6 +76,9 @@ public class PictureChooseActivity extends BaseActivity {
 
     }
 
+
+
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_picture_choose;

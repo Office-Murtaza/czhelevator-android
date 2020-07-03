@@ -20,9 +20,33 @@ public class CooperationInfoNewEntity implements Parcelable {
     private double realizableIncome;
     private double fulfilledIncome;
     private double yesterdayIncome;
+    private double subtotal;
     private boolean disable;
     private boolean setPayPassword;
     private boolean isCashing;
+
+    @Override
+    public String toString() {
+        return "CooperationInfoNewEntity{" +
+                "taxation=" + taxation +
+                ", totalIncome=" + totalIncome +
+                ", realizableIncome=" + realizableIncome +
+                ", fulfilledIncome=" + fulfilledIncome +
+                ", yesterdayIncome=" + yesterdayIncome +
+                ", subtotal=" + subtotal +
+                ", disable=" + disable +
+                ", setPayPassword=" + setPayPassword +
+                ", isCashing=" + isCashing +
+                '}';
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
 
     public double getTotalIncome() {
         return totalIncome;

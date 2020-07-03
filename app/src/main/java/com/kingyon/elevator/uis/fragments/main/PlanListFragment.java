@@ -128,6 +128,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
      */
     private Boolean isSelectAll = false;
 
+    private Boolean isfolding = false;
+
     private String planType;
     private Long startTime;
     private Long endTime;
@@ -498,7 +500,11 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                 break;
             case R.id.tv_folding:
                 /*折叠*/
+                if (isfolding){
 
+                }else {
+
+                }
 
                 break;
 
@@ -751,6 +757,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                     cell.setAllPoints(allPoints);
                                     cell.setPoints(points);
                                     cell.setChoosedScreenNum(points.size());
+                                    cell.setChoosed(true);
                                 }
                             }
                         }

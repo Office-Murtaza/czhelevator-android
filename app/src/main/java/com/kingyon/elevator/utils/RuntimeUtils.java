@@ -6,6 +6,7 @@ import com.kingyon.elevator.entities.ChartSelectParameterEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.entities.NewsEntity;
+import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.photopicker.MediaDirectory;
 

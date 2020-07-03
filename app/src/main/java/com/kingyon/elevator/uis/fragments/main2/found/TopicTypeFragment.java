@@ -82,7 +82,7 @@ public class TopicTypeFragment extends FoundFragemtUtils {
            smartRefreshLayoutTopic.autoRefresh(100);
        }else {
            list.clear();
-           httpTopicType(page,label,"",0);
+           httpTopicType(page, String.valueOf(label),"",0);
        }
     }
 
@@ -107,7 +107,7 @@ public class TopicTypeFragment extends FoundFragemtUtils {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 closeRefresh();
                 page++;
-                httpTopicType(page, label, "",0);
+                httpTopicType(page, String.valueOf(label), "",0);
             }
         });
         smartRefreshLayoutTopic.setOnRefreshListener(new OnRefreshListener() {
@@ -116,12 +116,12 @@ public class TopicTypeFragment extends FoundFragemtUtils {
                 closeRefresh();
                 list.clear();
                 page=1;
-                httpTopicType(page, label, "",0);
+                httpTopicType(page, String.valueOf(label), "",0);
             }
         });
     }
 
-    private void httpTopicType(int page, int label, String title,int id) {
+    private void httpTopicType(int page, String label, String title,int id) {
         LogUtils.e(label,page,title);
         NetService.getInstance().setQueryTopicConetn(page, label, title,id)
                 .compose(this.bindLifeCycle())
@@ -179,6 +179,6 @@ public class TopicTypeFragment extends FoundFragemtUtils {
 
     @OnClick(R.id.rl_error)
     public void onViewClicked() {
-        httpTopicType(1, label, "",0);
+        httpTopicType(1, String.valueOf(label), "",0);
     }
 }

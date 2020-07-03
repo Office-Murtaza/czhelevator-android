@@ -23,8 +23,9 @@ import java.util.List;
  */
 public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetailsView> {
 
-    private int startPosition = 1;
+    private int startPosition = 0;
     private int size = 40;
+    private int page = 1;
     private  List<BalancePaymentsEntily.PageContentBean.LstResponseBean> lstResponse;;
 
 
@@ -66,7 +67,12 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getMonthIncomeOrPayByDate(startPosition, type, date)
+        if (reflashType==ReflashConstants.LoadMore){
+            page ++;
+        }else {
+            page = 1;
+        }
+        NetService.getInstance().getMonthIncomeOrPayByDate(page, type, date)
                 .subscribe(new CustomApiCallback<BalancePaymentsEntily>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -107,7 +113,12 @@ public class IncomeOrPayDetailsPresenter extends BasePresenter<IncomeOrPayDetail
         if (reflashType == ReflashConstants.Refalshing) {
             startPosition = 0;
         }
-        NetService.getInstance().getYearIncomeOrPayByDate(startPosition, type, date)
+        if (reflashType==ReflashConstants.LoadMore){
+            page ++;
+        }else {
+            page = 1;
+        }
+        NetService.getInstance().getYearIncomeOrPayByDate(page, type, date)
                 .subscribe(new CustomApiCallback<BalancePaymentsEntily>() {
                     @Override
                     protected void onResultError(ApiException ex) {

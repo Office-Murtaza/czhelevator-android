@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.czh.myversiontwo.R;
+
+import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 
 /**
  * @Created By Admin  on 2020/4/20
@@ -49,8 +51,8 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder != null) {
             holder.tv_title.setText(pageContentBeanQueryTopicEntity.getContent().get(position).getTitle());
-//            holder.tv_user_participate.setText(pageContentBeanQueryTopicEntity.getPageContent().get(position).getPeopleNum());
-//            GlideUtils.loadImage(context,pageContentBeanQueryTopicEntity.getPageContent().get(position).getImage() , holder.imageView);
+            holder.tv_peoplenum.setText(pageContentBeanQueryTopicEntity.getContent().get(position).getPeopleNum()+"");
+            GlideUtils.loadImage(context,pageContentBeanQueryTopicEntity.getContent().get(position).getImage() , holder.imageView);
 
             // 点击事件一般都写在绑定数据这里，当然写到上边的创建布局时候也是可以的
             if (mItemClickListener != null) {
@@ -72,12 +74,12 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView tv_title,tv_user_participate;
+        TextView tv_title,tv_peoplenum;
         public ViewHolder(View itemView) {
             super(itemView);
-//            imageView = itemView.findViewById(R.id.img_hot);
+            imageView = itemView.findViewById(R.id.img_hot);
             tv_title = itemView.findViewById(R.id.tv_title);
-//            tv_user_participate = itemView.findViewById(R.id.tv_name);
+            tv_peoplenum = itemView.findViewById(R.id.tv_peoplenum);
         }
     }
 }

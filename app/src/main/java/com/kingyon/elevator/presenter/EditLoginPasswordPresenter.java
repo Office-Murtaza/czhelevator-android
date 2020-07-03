@@ -147,9 +147,9 @@ public class EditLoginPasswordPresenter extends BasePresenter<EditLoginPasswordV
             }
             return;
         }
-        if (password1.length() < 8) {
+        if (password1.length() < 6) {
             if (isViewAttached()) {
-                getView().showShortToast("密码长度低于8位数，请继续输入");
+                getView().showShortToast("密码长度低于6位数，请继续输入");
             }
             return;
         }

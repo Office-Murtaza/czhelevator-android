@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.RecommendFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.TopicFragment;

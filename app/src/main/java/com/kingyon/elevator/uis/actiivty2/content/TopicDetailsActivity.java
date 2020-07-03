@@ -35,6 +35,7 @@ import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
+import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
 
 /**
  * @Created By Admin  on 2020/4/22
@@ -70,6 +71,8 @@ public class TopicDetailsActivity extends BaseActivity {
     private ShareDialog shareDialog;
     @Autowired
     String topicid;
+    @Autowired
+    String title;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,7 @@ public class TopicDetailsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        isRefresh = false;
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
         StatusBarUtil.setTransparent(this);
@@ -94,17 +98,17 @@ public class TopicDetailsActivity extends BaseActivity {
 
     private void httpTopic() {
         LogUtils.e(topicid);
-        NetService.getInstance().setQueryTopicConetn(1, 0, "", Integer.parseInt(topicid))
+        NetService.getInstance().setQueryTopicConetn(1, "", "", Integer.parseInt(topicid))
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<HomeTopicConentEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+
                     }
 
                     @Override
                     public void onNext(ConentEntity<HomeTopicConentEntity> conentEntityConentEntity) {
-
                         homeTopicConentEntity  = conentEntityConentEntity.getContent().get(0);
                         tvTopicContetn.setText(homeTopicConentEntity.content);
                         tvTopicTitle.setText(homeTopicConentEntity.title);

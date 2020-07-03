@@ -1,6 +1,9 @@
 package com.kingyon.elevator.utils.utilstwo;
 
+import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,18 +21,24 @@ import com.kingyon.elevator.uis.actiivty2.login.CodeActivity;
 import com.kingyon.elevator.uis.actiivty2.login.LoginActiivty;
 import com.kingyon.elevator.uis.actiivty2.login.UserLoginActiivty;
 import com.kingyon.elevator.uis.actiivty2.main.CommunityReleasetyActivity;
+import com.kingyon.elevator.uis.dialogs.InvoiceSuccessDialog;
+import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.JumpUtils;
+import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.ActivityUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import static android.app.Activity.RESULT_OK;
 import static com.czh.myversiontwo.activity.ActivityUtils.setActivity;
 import static com.czh.myversiontwo.utils.CodeType.QQ;
 import static com.czh.myversiontwo.utils.CodeType.WX;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CODE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_PASSSWORD_SETTING;
 import static com.kingyon.elevator.constants.Constants.LoginType.ALI;
+import static com.kingyon.elevator.photopicker.UtilsHelper.getString;
 
 /**
  * @Created By Admin  on 2020/4/26
@@ -196,8 +205,9 @@ public class OrdinaryActivity {
                                     ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
                                 }
                             } else {
-                                LogUtils.e(codeEntity.getToken(), codeEntity.getUser(), codeEntity.isNeedFill());
+
                                 UserEntity userEntity = codeEntity.getUser();
+                                LogUtils.e(codeEntity.getToken(), codeEntity.getUser(), codeEntity.isNeedFill(),userEntity.getAccount());
                                 DataSharedPreferences.saveLoginName(phone);
                                 DataSharedPreferences.saveUserBean(userEntity);
                                 DataSharedPreferences.saveCreatateAccount(userEntity.getAccount());
@@ -289,6 +299,49 @@ public class OrdinaryActivity {
                 });
     }
 
+    /**2.0验证码找回密码*/
+    public static void resetPassword(BaseActivity baseActivity, EditText etMobile,EditText etCode,EditText etPassword,TextView tvLogin) {
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etMobile))) {
+            baseActivity. showToast("请输入手机号");
+            return;
+        }
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etCode))) {
+            baseActivity.showToast("请输入验证码");
+            return;
+        }
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etPassword))) {
+            baseActivity.showToast("请输入密码");
+            return;
+        }
+        if (CommonUtil.getEditText(etPassword).length() < 6) {
+            baseActivity.showToast("新密码长度不足6位");
+            return;
+        }
+        baseActivity.showProgressDialog(getString(R.string.wait));
+        tvLogin.setEnabled(false);
+        NetService.getInstance().resetPassword(CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode)
+                , CommonUtil.getEditText(etPassword))
+                .compose(baseActivity.<String>bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        baseActivity.showToast(ex.getDisplayMessage());
+                        tvLogin.setEnabled(true);
+                        baseActivity.hideProgress();
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        tvLogin.setEnabled(true);
+                        baseActivity.showToast("重置密码成功");
+                        ActivityUtil.finishAllNotThis("ResetPasswordActivity");
+                        baseActivity.startActivity(LoginActiivty.class);
+                        baseActivity.finish();
+                    }
+                });
+    }
+
+
     /***
      * 内容发布
      *
@@ -337,4 +390,82 @@ public class OrdinaryActivity {
         smartRefreshLayout.finishRefresh();
         smartRefreshLayout.finishLoadMore();
     }
+
+
+    public static void  onSubmitClick(BaseActivity baseActivitym,EditText etName,boolean companyType
+            ,EditText etTaxpayer,TextView etContent,EditText etSum,EditText etEmail,TextView tvSubmit,String invoiceType) {
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etName))) {
+            baseActivitym.showToast("请填写发票抬头");
+            return;
+        }
+        if (companyType && TextUtils.isEmpty(CommonUtil.getEditText(etTaxpayer))) {
+            baseActivitym.showToast("请填写税号");
+            return;
+        }
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etContent))) {
+            baseActivitym.showToast("请填写发票内容");
+            return;
+        }
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etSum))) {
+            baseActivitym. showToast("请填写开票金额");
+            return;
+        }
+        Float sum;
+        try {
+            sum = Float.parseFloat(etSum.getText().toString());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            sum = 0f;
+        }
+        if (sum <= 0) {
+            baseActivitym.showToast("输入的开票金额不正确");
+            return;
+        }
+
+        if (TextUtils.isEmpty(CommonUtil.getEditText(etEmail))) {
+            baseActivitym.showToast("请填写电子邮箱");
+            return;
+        }
+        KeyBoardUtils.closeKeybord(baseActivitym);
+        tvSubmit.setEnabled(false);
+        baseActivitym.showProgressDialog(getString(R.string.wait));
+        NetService.getInstance().createInvoice(invoiceType, etName.getText().toString()
+                , companyType ? etTaxpayer.getText().toString() : "",  ""
+                , sum, etEmail.getText().toString(), etContent.getText().toString())
+                .compose(baseActivitym.<String>bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        baseActivitym.showToast(ex.getDisplayMessage());
+                        baseActivitym. hideProgress();
+                        tvSubmit.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        baseActivitym. hideProgress();
+                        showSuccessDialog(baseActivitym);
+                    }
+                });
+    }
+
+    public static void showSuccessDialog(BaseActivity baseActivity) {
+        InvoiceSuccessDialog successDialog = null;
+        if (successDialog == null) {
+            successDialog = new InvoiceSuccessDialog(baseActivity);
+            successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+//                    loadData();
+//                    etSum.setText("");
+//                    etSum.setSelection(etSum.getText().length());
+//                    tvSubmit.setEnabled(true);
+                    baseActivity.setResult(RESULT_OK);
+                    baseActivity.finish();
+                }
+            });
+        }
+        successDialog.show();
+    }
+
 }

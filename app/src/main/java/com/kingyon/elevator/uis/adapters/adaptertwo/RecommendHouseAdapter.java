@@ -57,7 +57,7 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
             holder.tv_address.setText(data.address);
             holder.tv_community_code.setText(String.format(STRING_COMMUNITY_CODE,data.numberUnit,data.numberElevator));
             holder.tv_community_name.setText(data.name);
-            holder.tv_distance.setText(distance(data.distanceM));
+            holder.tv_distance.setText(distance((int) data.distanceM));
 
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,7 +82,7 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
                 @Override
                 public void onClick(View v) {
                     LogUtils.e(data.id);
-                    ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(data.id));
+                    ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS,"panID",String.valueOf(data.id),"distanceM",distance((int) data.distanceM));
                 }
             });
         }

@@ -6,18 +6,23 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.MusicUtils;
+import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.view.AlwaysMarqueeTextView;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -26,16 +31,22 @@ import butterknife.OnClick;
  */
 
 public class AdPreviewActivity extends BaseSwipeBackActivity {
+
+
+    @BindView(R.id.video_view)
+    StandardGSYVideoPlayer video_view;
     @BindView(R.id.fl_video)
     FrameLayout flVideo;
     @BindView(R.id.img_image)
     ImageView imgImage;
     @BindView(R.id.ll_incise)
     LinearLayout llIncise;
-    @BindView(R.id.video_view)
-    StandardGSYVideoPlayer video_view;
-
-
+    @BindView(R.id.img_top_back)
+    ImageView imgTopBack;
+    @BindView(R.id.tv_title)
+    AlwaysMarqueeTextView tvTitle;
+    @BindView(R.id.rl_top)
+    RelativeLayout rlTop;
     private ADEntity entity;
     private boolean firstPlay = true;
     private boolean hasVideo;
@@ -53,6 +64,9 @@ public class AdPreviewActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        StatusBarUtil.setHeadViewPadding(this, rlTop);
+        StatusBarUtil.setTransparent(this, false);
+        tvTitle.setText(entity.getTitle());
         switch (entity.getScreenType()) {
             case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
                 flVideo.setVisibility(View.VISIBLE);
@@ -125,8 +139,23 @@ public class AdPreviewActivity extends BaseSwipeBackActivity {
     }
 
 
-    @OnClick(R.id.fl_video)
-    public void onViewClicked() {
-        startPlay();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick({R.id.fl_video, R.id.img_top_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fl_video:
+                startPlay();
+                break;
+            case R.id.img_top_back:
+                finish();
+                break;
+        }
     }
 }

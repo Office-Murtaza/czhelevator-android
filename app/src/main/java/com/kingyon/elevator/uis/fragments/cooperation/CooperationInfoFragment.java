@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
@@ -53,6 +54,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_EARNINGS_YESTERDAY;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_HAVE_WITHDRAWAL;
+
+/**
+ *
+ * 合伙人首页
+ * */
+
 public class CooperationInfoFragment extends BaseFragment implements OnParamsChangeInterface {
 
 
@@ -83,7 +92,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     TextView tvTime;
     @BindView(R.id.ll_income_today)
     LinearLayout llIncomeToday;
-    private CooperationInfoNewEntity entity;
+    private CooperationInfoNewEntity cooperationInfoNewEntity;
     private TipDialog<String> tipDialog;
 
     public static CooperationInfoFragment newInstance(CooperationInfoNewEntity entity) {
@@ -102,11 +111,11 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     @Override
     public void init(Bundle savedInstanceState) {
         if (getArguments() != null) {
-            entity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
+            cooperationInfoNewEntity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
         } else {
-            entity = new CooperationInfoNewEntity();
+            cooperationInfoNewEntity = new CooperationInfoNewEntity();
         }
-        RuntimeUtils.cooperationInfoNewEntity = entity;
+        RuntimeUtils.cooperationInfoNewEntity = cooperationInfoNewEntity;
         StatusBarUtil.setHeadViewPadding(getActivity(), containerView);
 //        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         httpData();
@@ -139,7 +148,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 .subscribe(new CustomApiCallback<IdentityInfoEntity>() {
                     @Override
                     public void onNext(IdentityInfoEntity identityInfoEntity) {
-                        DataSharedPreferences.saveUesrName(identityInfoEntity.getCompanyName());
+                        DataSharedPreferences.saveUesrName(identityInfoEntity.getCompanyName().isEmpty()?identityInfoEntity.getPersonName():identityInfoEntity.getCompanyName());
                     }
 
                     @Override
@@ -152,7 +161,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
 
     @Override
     public void onParamsChange(Object... objects) {
-        entity = (CooperationInfoNewEntity) objects[0];
+        cooperationInfoNewEntity = (CooperationInfoNewEntity) objects[0];
 
     }
 
@@ -160,10 +169,13 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         tvTime.setText("总收益：("+ DateUtils.getCurrentTime1()+")");
         tvAllIncome.setText(getSumSpan(CommonUtil.getTwoFloat(entity.total)));
         tvCanCrash.setText(CommonUtil.getTwoFloat(entity.canWithdraw));
-        yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getMayTwoFloat(entity.yesterday));
-        CooperationInfoNewEntity cooperationInfoNewEntity = new CooperationInfoNewEntity();
-        cooperationInfoNewEntity.setYesterdayIncome(entity.yesterday);
+        yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getMayTwoFloat(entity.yesterdayMoney));
+         cooperationInfoNewEntity = new CooperationInfoNewEntity();
+        cooperationInfoNewEntity.setYesterdayIncome(entity.yesterdayMoney);
+        cooperationInfoNewEntity.setRealizableIncome(entity.canWithdraw);
+
         tvAlreadyCrash.setText(CommonUtil.getMayTwoFloat(entity.withdrawal));
+
     }
 
     private CharSequence getSumSpan(String twoFloat) {
@@ -227,24 +239,27 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 break;
             case R.id.yesterday_income:
                 /*昨日收益*/
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
+//                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
+                ActivityUtils.setActivity(ACTIVITY_EARNINGS_YESTERDAY);
                 break;
             case R.id.already_crash_container:
                 /*已提现*/
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
+//                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
+                ActivityUtils.setActivity(ACTIVITY_HAVE_WITHDRAWAL);
                 break;
             case R.id.btn_apply_crash:
-                if (entity.isDisable()) {
+                if (cooperationInfoNewEntity.isDisable()) {
                     showToast("您已被禁止提现，如有问题请联系客服！");
                 } else {
-                    if (entity.isCashing()) {
-                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+//                    if (entity.isCashing()) {
+                    LogUtils.e(cooperationInfoNewEntity.toString());
+                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, cooperationInfoNewEntity);
                         //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
 //                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
                         MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
-                    } else {
-                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
-                    }
+//                    } else {
+//                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
+//                    }
                 }
                 break;
             case R.id.ll_income_today:
@@ -272,6 +287,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
 ////                startActivity(CooperationIncomeActivity.class);
 //                break;
             case R.id.tv_device_manager:
+                /*设备管理*/
                 bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.PARTNER);
                 startActivity(CooperationDeviceActivity.class, bundle);
                 break;

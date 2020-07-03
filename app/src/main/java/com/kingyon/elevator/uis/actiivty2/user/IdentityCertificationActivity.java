@@ -16,15 +16,22 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.activityutils.CameraViewActivit;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.zhihu.matisse.Matisse;
 
+
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +61,7 @@ public class IdentityCertificationActivity extends BaseActivity {
     ImageView imgIdcard;
     @BindView(R.id.tv_rz)
     TextView tvRz;
-    String idCardPic;
+    String idCardPic = "";
     Uri mUri;
     @Override
     public int getContentViewId() {
@@ -82,7 +89,6 @@ public class IdentityCertificationActivity extends BaseActivity {
                 break;
             case R.id.img_idcard:
                 /*打开相机拍照*/
-//                takePhoto();
                 startActivityForResult(CameraViewActivit.class, 101);
                 break;
             case R.id.tv_rz:
@@ -90,40 +96,27 @@ public class IdentityCertificationActivity extends BaseActivity {
                 break;
         }
     }
-    private void takePhoto() {
-        // 步骤一：创建存储照片的文件
-        String path = getFilesDir() + File.separator + "images" + File.separator;
-        File file = new File(path, "test.jpg");
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //步骤二：Android 7.0及以上获取文件 Uri
-             mUri = FileProvider.getUriForFile(IdentityCertificationActivity.this, "com.kingyon.elevator.provider", file);
-        } else {
-            //步骤三：获取文件Uri
-            mUri = Uri.fromFile(file);
-        }
-        //步骤四：调取系统拍照
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-        startActivityForResult(intent, 101);
-    }
     private void httpSubmit() {
         if (etName.getText().toString().isEmpty()||etNumber.getText().toString().isEmpty()){
             ToastUtils.showToast(this,"姓名身份证号不能为空",1000);
+        }else if (idCardPic.isEmpty()){
+            ToastUtils.showToast(this,"请上传手持身份照",1000);
         }else {
-            NetService.getInstance().setIdentyAuth(etName.getText().toString(),etNumber.getText().toString(),"","")
+            showProgressDialog(getString(R.string.wait));
+            NetService.getInstance().setIdentyAuth(etName.getText().toString(),etNumber.getText().toString(),idCardPic,"CUSTOMER")
                     .compose(this.bindLifeCycle())
-                    .subscribe(new CustomApiCallback<String>() {
+                    .subscribe(new CustomApiCallback<CertifiCationEntiy>() {
                         @Override
                         protected void onResultError(ApiException ex) {
+                            hideProgress();
                             LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                            ToastUtils.showToast(IdentityCertificationActivity.this,ex.getDisplayMessage(),1000);
                         }
-
                         @Override
-                        public void onNext(String s) {
+                        public void onNext(CertifiCationEntiy s) {
+                            hideProgress();
                             ToastUtils.showToast(IdentityCertificationActivity.this,"提交成功",1000);
+                            finish();
                         }
                     });
         }
@@ -136,9 +129,26 @@ public class IdentityCertificationActivity extends BaseActivity {
         if (requestCode != RESULT_CANCELED){
             switch (requestCode){
                 case 101:
-//                    File tempFile = new File(Environment.getExternalStorageDirectory(),"fileImg.jpg");
-                    String path =data.getDataString().concat("path");
-                    LogUtils.e(path);
+                    String path =data.getStringExtra("path");
+                    showProgressDialog(getString(R.string.wait));
+                    NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
+                        @Override
+                        public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
+                            hideProgress();
+                            if (images != null && images.size() > 0) {
+                                idCardPic = images.get(0);
+                                GlideUtils.loadImage(IdentityCertificationActivity.this,idCardPic,imgIdcard);
+                            } else {
+                                hideProgress();
+                                showToast("上传失败");
+                            }
+                        }
+                        @Override
+                        public void uploadFailed(ApiException ex) {
+                            hideProgress();
+                            showToast("上传图片失败");
+                        }
+                    }, false);
                     break;
             }
         }

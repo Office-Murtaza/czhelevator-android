@@ -550,7 +550,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                     } else {
                         hideProgress();
                         tvPublish.setEnabled(true);
-                        showToast("上传图片失败");
+                        showToast("上传失败");
                     }
                 }
 

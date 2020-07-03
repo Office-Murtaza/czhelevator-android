@@ -167,6 +167,13 @@ public class PutcastAdvertisFragment extends BaseFragment {
 
     private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
                                     String areaId, String pointType, String keyWord, String distance) {
+        if (latitude==null) {
+            LocationEntity entity = AppContent.getInstance().getLocation();
+            if (entity!=null) {
+                latitude = String.valueOf(entity.getLatitude());
+                longitude = String.valueOf(entity.getLongitude());
+            }
+        }
         LogUtils.e(page,latitude,longitude,cityId,areaId,pointType,keyWord,distance);
         NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
                 .compose(this.bindLifeCycle())
@@ -352,6 +359,8 @@ public class PutcastAdvertisFragment extends BaseFragment {
                     LogUtils.e(choosed.getLatitude(), choosed.getLongitude(),
                             choosed.getCity(), choosed.describeContents(),
                             choosed.getCityCode(), choosed.getName());
+                    latitude = String.valueOf(choosed.getLatitude());
+                    longitude = String.valueOf(choosed.getLongitude());
                     if (choosed != null) {
                         CityUtils.getCityCode(getActivity(), choosed.getCity(), new CityUtils.CityCode() {
                             @Override

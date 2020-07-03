@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white_normal"
     android:orientation="horizontal"
-    android:paddingBottom="15dp"
-    android:paddingTop="15dp">
+    android:padding="15dp">
 
     <LinearLayout
         android:layout_weight="1"
@@ -16,6 +15,7 @@
         >
 
         <TextView
+            android:id="@+id/tv_txtype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="支付宝提现"
@@ -24,6 +24,7 @@
             android:textStyle="bold"
             />
         <TextView
+            android:id="@+id/tv_zh"
             android:layout_marginTop="@dimen/dp5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +92,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_tax"
             android:layout_marginTop="@dimen/dp5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

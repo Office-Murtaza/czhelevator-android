@@ -24,7 +24,7 @@ import butterknife.OnClick;
  * @Created By Admin  on 2020/6/23
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:提现添加账户
  */
 public class AppAccountDialog extends Dialog {
 

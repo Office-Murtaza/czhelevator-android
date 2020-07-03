@@ -55,7 +55,7 @@ public class AttentionFragment extends FoundFragemtUtils {
     RelativeLayout rl_notlogin;
     private View view;
     // 标志位，标志已经初始化完成。
-    private boolean isPrepared;
+    public static boolean isRefresh = true;
     AttentionAdapter attentionAdapter;
     List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
     private int page = 1;
@@ -200,7 +200,10 @@ public class AttentionFragment extends FoundFragemtUtils {
     @Override
     public void onResume() {
         super.onResume();
-        smartRefreshLayout.autoRefresh(100);
+        if (isRefresh){
+            smartRefreshLayout.autoRefresh(100);
+        }
+
     }
 
     @OnClick({R.id.rl_error, R.id.rl_notlogin})

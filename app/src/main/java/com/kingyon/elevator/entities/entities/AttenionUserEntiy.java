@@ -27,6 +27,7 @@ public class AttenionUserEntiy implements Serializable, InsertData {
     public String beFollowerAccount;
     public String nickname;
     public String photo;
+    public String personalizedSignature;
     public long createTime;
     public int isAttention;
 
@@ -86,7 +87,7 @@ public class AttenionUserEntiy implements Serializable, InsertData {
         }
 
         @Override public CharSequence formatCharSequence() {
-            return String.format(USER_FORMART, user.followerAccount,user.nickname, "@"+user.nickname);
+            return String.format(USER_FORMART, user.beFollowerAccount,user.nickname, "@"+user.nickname);
         }
     }
 }

@@ -32,5 +32,6 @@
         android:paddingLeft="@dimen/spacing_default"
         android:paddingRight="@dimen/spacing_default"
         android:text="编辑"
+        android:visibility="gone"
         android:textColor="#5C5C5C" />
 </LinearLayout>

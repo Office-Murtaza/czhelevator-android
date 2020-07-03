@@ -49,39 +49,28 @@ public class AdvertisingSectionActivity extends MvpBaseActivity<AdvertisingSecti
     }
 
     private void initData() {
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 6);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
+        rvList.setLayoutManager(layoutManage);
+        layoutManage.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
-                LogUtils.e(i);
-                int span = 1;
-
-                switch (i % 6){
-                    case 0:
-                        span = 6;
-                        break;
-                    case 1:
-                    case 2:
-                        span = 3;
-                        break;
-                    case 3:
-                    case 4:
-                    case 5:
-                        span = 2;
-                        break;
-                }
-
-                return span;
-//                return (4 - i % 4);
+                return setSpanSize(i);
             }
         });
-        rvList.setLayoutManager(gridLayoutManager);
         AdvertisingSectionAdapter advertisingSectionAdapter = new AdvertisingSectionAdapter(this);
         rvList.setAdapter(advertisingSectionAdapter);
 
     }
+    private int setSpanSize(int position) {
+        int count;
+        if (position%2==0) {
+            count = 2;
+        } else {
+            count = 1;
+        }
 
+        return count;
+    }
     @OnClick(R.id.tv_bake)
     public void onViewClicked() {
         finish();

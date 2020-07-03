@@ -42,6 +42,24 @@ public class QueryRecommendEntity<T> implements Serializable{
              * liked : false
              * delete : false
              * report : true
+             *
+             * "id": 100373,
+             *         "nickname": "＆",
+             *         "photo": "http://thirdqq.qlogo.cn/g?b=oidb&k=NABxwwWMHiajw9D3T7EaTlg&s=100&t=1571720286",
+             *         "title": "",
+             *         "content": "挂号费&nbsp;<tag id='100026' name='健身' style='color: #4dacee;'>#健身#</tag>&nbsp;规范化跟换&nbsp;<user id='6096907287229370962' name='Time' style='color: #4dacee;'>@Time</user>&nbsp;规范风格化发给电饭锅更方便",
+             *         "type": "wsq",
+             *         "image": "http://cdn.tlwgz.com/FvfLAM1uSfB4sUoB-j2zCjV_0JN-",
+             *         "video": null,
+             *         "videoCover": null,
+             *         "combination": 2,
+             *         "likeNum": 1,
+             *         "commentNum": 1,
+             *         "videoSize": 0,
+             *         "createTime": 1592884328000,
+             *         "createTimeF": "5天前"
+             *
+             *
              */
 
             public int id;
@@ -65,6 +83,8 @@ public class QueryRecommendEntity<T> implements Serializable{
             public String nickname;
             public String photo;
             public int likes;
+            public int likeNum;
+            public int commentNum;
             public int comments;
             public int shares;
             public int uAuthStatus;
@@ -75,6 +95,7 @@ public class QueryRecommendEntity<T> implements Serializable{
             public boolean report;
             public List<T> likesItem;
             public int isAttent;
+            public int isCollect;
             public boolean original;
 
     @Override
@@ -111,6 +132,7 @@ public class QueryRecommendEntity<T> implements Serializable{
                 ", report=" + report +
                 ", likesItem=" + likesItem +
                 ", isAttent=" + isAttent +
+                ", isCollect=" + isCollect +
                 ", original=" + original +
                 '}';
     }

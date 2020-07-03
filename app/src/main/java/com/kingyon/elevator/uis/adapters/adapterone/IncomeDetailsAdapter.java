@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.adapters.adapterone;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.IncomeDetailsEntity;
 import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.utils.DensityUtil;
+import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.TimeUtil;
 
 import java.util.List;
@@ -52,7 +54,8 @@ public class IncomeDetailsAdapter extends RecyclerView.Adapter<IncomeDetailsAdap
         try {
             BalancePaymentsEntily.PageContentBean.LstResponseBean incomeDetailsEntity = incomeDetailsEntityList.get(position);
             holder.tv_income_date.setText(TimeUtil.getAllTime(incomeDetailsEntity.getCreateTime())+"");
-            holder.tv_income_type.setText("来源："+incomeDetailsEntity.getType());
+            String str3 = "<font color='#FF0000'><big>·</big></font>来源:"+ FormatUtils.getInstance().incomeType(incomeDetailsEntity.getSource());
+            holder.tv_income_type.setText(Html.fromHtml(str3));
             holder.tv_income_money.setText("¥" + incomeDetailsEntity.getTotal());
             RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) holder.item_container.getLayoutParams();
 //            if (incomeDetailsEntity.getTotal().equals("0.00")) {

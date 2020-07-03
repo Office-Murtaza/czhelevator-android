@@ -12,16 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_invoice_time"
-            android:drawablePadding="5dp"
-            android:textColor="#ff333333"
-            android:textSize="@dimen/txt_normal_content"
-            android:textStyle="bold"
-            tools:text="2018.11.27 09:25" />
+
 
         <TextView
             android:layout_width="match_parent"
@@ -31,6 +22,7 @@
             android:drawableRight="@drawable/ic_homepage_right"
             android:gravity="center_vertical|right"
             android:text="查看详情"
+            android:visibility="gone"
             android:textColor="#ffababab"
             android:textSize="@dimen/txt_tips" />
     </LinearLayout>
@@ -50,38 +42,57 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_type"
+                android:id="@+id/tv_spf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ff808080"
-                android:textSize="@dimen/txt_normal_content"
-                tools:text="企业发票" />
+                android:text="收票方：梯联网（贵州）科技有限公司"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_two"
-                android:textColor="#ff808080"
-                android:textSize="@dimen/txt_normal_content"
-                tools:text="广告服务费" />
+                android:text="开票内容：广告服务"
+                android:textColor="#ff666666"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开票时间：2020-04-12"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开票金额：¥1000.00"
+                android:textColor="#ff666666"
+                android:textSize="14sp"
+                android:visibility="gone"
+            />
+
+
+            <TextView
+                android:id="@+id/tv_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开票金额：¥1000.00"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_sum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxWidth="220dp"
-            android:textColor="#ff333333"
-            android:textSize="@dimen/txt_larger_title"
-            tools:text="2051.54" />
 
         <TextView
+            android:id="@+id/tv_zt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_two"
-            android:text="元"
-            android:textColor="#ff808080"
-            android:textSize="@dimen/txt_tips" />
+            android:text="暂未开票"
+            android:textColor="#ff316ffa"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

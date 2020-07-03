@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.FragmentConstants;
+import com.kingyon.elevator.customview.PayPasswordEditView1;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.EditPayPasswordFragmentPresenter;
+import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
@@ -38,8 +41,7 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
     @BindView(R.id.input_pwd_tips)
     TextView input_pwd_tips;
     @BindView(R.id.pay_password_input_view)
-    PhoneCode pay_password_input_view;
-//    PayPasswordEditView
+    PayPasswordEditView1 pay_password_input_view;
     @BindView(R.id.tv_xgzfmm)
     TextView tvXgzfmm;
     @BindView(R.id.tv_wjmi)
@@ -56,51 +58,25 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
     @Override
     public EditPayPasswordFragmentPresenter initPresenter() {
         return new EditPayPasswordFragmentPresenter(getActivity());
+
     }
 
     @Override
     public void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this, getContentView());
         userEntity = DataSharedPreferences.getUserBean();
-
+        userEntity = DataSharedPreferences.getUserBean();
         if (userEntity != null) {
             isRememberPwd = getArguments().getBoolean("isRememberPwd");
-
-            pay_password_input_view.setOnInputListener(new PhoneCode.OnInputListener() {
-                @Override
-                public void onSucess(String pwd) {
-                    if (isRememberPwd) {
-                        if (oldPwd.isEmpty()) {
-                            oldPwd = pwd;
-                            pay_password_input_view.clearAllText();
-                            pay_password_input_view.clearEditText();
-                            input_pwd_tips.setText(getString(R.string.input_pwd));
-                        } else {
-                            if (newPwd1.isEmpty()) {
-                                newPwd1 = pwd;
-                                pay_password_input_view.clearAllText();
-                                pay_password_input_view.clearEditText();
-                                input_pwd_tips.setText(getString(R.string.again_input_pwd));
-                            } else {
-                                if (newPwd2.isEmpty()) {
-                                    newPwd2 = pwd;
-                                    if (newPwd2.equals(newPwd1)) {
-                                        //进行回调设置
-                                        pay_password_input_view.clearAllText();
-                                        pay_password_input_view.clearEditText();
-                                        KeyBoardUtils.closeKeybord(pay_password_input_view.getEt_input_password(), getActivity());
-                                        presenter.oldPasswordEditPayPwd(oldPwd, newPwd1);
-                                    } else {
-                                        pay_password_input_view.clearAllText();
-                                        pay_password_input_view.clearEditText();
-                                        newPwd1 = "";
-                                        newPwd2 = "";
-                                        showShortToast("两次输入的新支付密码不一致，请重新输入");
-                                        input_pwd_tips.setText(getString(R.string.input_pwd));
-                                    }
-                                }
-                            }
-                        }
+            tvXgzfmm.setText("正在为您的账号"+AccountNumUtils.hidePhoneNum(userEntity.getPhone())+"修改支付密码");
+            LogUtils.e(isRememberPwd);
+            pay_password_input_view.setPayPasswordListener(pwd -> {
+                if (isRememberPwd) {
+                    if (oldPwd.isEmpty()) {
+                        oldPwd = pwd;
+                        pay_password_input_view.clearAllText();
+                        pay_password_input_view.clearEditText();
+                        input_pwd_tips.setText(getString(R.string.input_pwd));
                     } else {
                         if (newPwd1.isEmpty()) {
                             newPwd1 = pwd;
@@ -115,7 +91,7 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
                                     pay_password_input_view.clearAllText();
                                     pay_password_input_view.clearEditText();
                                     KeyBoardUtils.closeKeybord(pay_password_input_view.getEt_input_password(), getActivity());
-                                    presenter.changePwdByCode(userEntity.getPhone(), verCode, newPwd1);
+                                    presenter.oldPasswordEditPayPwd(oldPwd, newPwd1);
                                 } else {
                                     pay_password_input_view.clearAllText();
                                     pay_password_input_view.clearEditText();
@@ -127,22 +103,41 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
                             }
                         }
                     }
-                    if (isRememberPwd) {
-                        input_pwd_tips.setText(getString(R.string.input_old_pwd));
+                } else {
+                    if (newPwd1.isEmpty()) {
+                        newPwd1 = pwd;
+                        pay_password_input_view.clearAllText();
+                        pay_password_input_view.clearEditText();
+                        input_pwd_tips.setText(getString(R.string.again_input_pwd));
                     } else {
-                        input_pwd_tips.setText(getString(R.string.input_pwd));
-                        verCode = RuntimeUtils.payVerCode;
-
+                        if (newPwd2.isEmpty()) {
+                            newPwd2 = pwd;
+                            if (newPwd2.equals(newPwd1)) {
+                                //进行回调设置
+                                pay_password_input_view.clearAllText();
+                                pay_password_input_view.clearEditText();
+                                KeyBoardUtils.closeKeybord(pay_password_input_view.getEt_input_password(), getActivity());
+                                presenter.changePwdByCode(userEntity.getPhone(), verCode, newPwd1);
+                            } else {
+                                pay_password_input_view.clearAllText();
+                                pay_password_input_view.clearEditText();
+                                newPwd1 = "";
+                                newPwd2 = "";
+                                showShortToast("两次输入的新支付密码不一致，请重新输入");
+                                input_pwd_tips.setText(getString(R.string.input_pwd));
+                            }
+                        }
                     }
-                    pay_password_input_view.postDelayed(() -> KeyBoardUtils.openKeybord(pay_password_input_view.getEt_input_password(), getActivity()), 150);
-
-                }
-                @Override
-                public void onInput() {
-
                 }
             });
+            if (isRememberPwd) {
+                input_pwd_tips.setText(getString(R.string.input_old_pwd));
+            } else {
+                input_pwd_tips.setText(getString(R.string.input_pwd));
+                verCode = RuntimeUtils.payVerCode;
 
+            }
+            pay_password_input_view.postDelayed(() -> KeyBoardUtils.openKeybord(pay_password_input_view.getEt_input_password(), getActivity()), 150);
         } else {
             ToastUtils.showToast(getActivity(), "您还未登录", Toast.LENGTH_SHORT);
             getActivity().finish();

@@ -15,6 +15,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.user.IdentitySuccessActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -53,6 +54,7 @@ public class CertificationActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        tvTopTitle.setText("资质认证");
         NetService.getInstance().getIdentityInformation()
                 .compose(this.<IdentityInfoEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<IdentityInfoEntity>() {
@@ -69,7 +71,9 @@ public class CertificationActivity extends BaseActivity {
                                             super.run();
                                             try {
                                                 Thread.sleep(1000);//休眠3秒
-
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHING);
+                                                startActivity(IdentitySuccessActivity.class,bundle);
                                                 finish();
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
@@ -88,8 +92,29 @@ public class CertificationActivity extends BaseActivity {
                                             super.run();
                                             try {
                                                 Thread.sleep(1000);//休眠3秒
-//                                                startActivity(IdentitySuccessActivity.class);
-                                                    finish();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
+                                                startActivity(IdentitySuccessActivity.class,bundle);
+                                                finish();
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }.start();
+                                }
+                                break;
+                            case 9004:
+                                if (!jumping) {
+                                    jumping = true;
+                                    new Thread() {
+                                        @Override
+                                        public void run() {
+                                            super.run();
+                                            try {
+                                                Thread.sleep(1000);//休眠3秒
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("type",Constants.IDENTITY_STATUS.FAILD);
+                                                startActivity(IdentitySuccessActivity.class,bundle);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -111,6 +136,9 @@ public class CertificationActivity extends BaseActivity {
                         }
                         if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
                             throw new ResultException(9003, "新的认证资料已通过，即将跳转");
+                        }
+                        if (TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus())) {
+                            throw new ResultException(9004, "新的认证失败，即将跳转");
                         }
                     }
                 });

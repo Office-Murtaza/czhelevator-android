@@ -97,7 +97,23 @@ public class IdentityCompanyActivity extends BaseStateLoadingActivity {
                                     stateLayout.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            startActivity(IdentitySuccessActivity.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
+                                            startActivity(IdentitySuccessActivity.class,bundle);
+                                            finish();
+                                        }
+                                    }, 1000);
+                                }
+                                break;
+                            case 9004:
+                                if (!jumping) {
+                                    jumping = true;
+                                    stateLayout.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("type",Constants.IDENTITY_STATUS.FAILD);
+                                            startActivity(IdentitySuccessActivity.class,bundle);
                                             finish();
                                         }
                                     }, 1000);
@@ -117,6 +133,10 @@ public class IdentityCompanyActivity extends BaseStateLoadingActivity {
                         if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
                             throw new ResultException(9003, "新的认证资料已通过，即将跳转");
                         }
+                        if (TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus())) {
+                            throw new ResultException(9004, "新的认证失败，即将跳转");
+                        }
+
                         tvReason.setText(identityInfoEntity.getFaildReason() != null ? identityInfoEntity.getFaildReason() : "");
                         boolean failed = TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus());
                         llFailed.setVisibility(failed ? View.VISIBLE : View.GONE);

@@ -47,6 +47,10 @@ public class PlanPointChildrenAdapter extends BaseAdapterWithHF<PointItemEntity>
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+    @Override
     public void onBindViewHolder(@NonNull BaseAdapterWithHF.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
         PointItemEntity item = getItemData(position);

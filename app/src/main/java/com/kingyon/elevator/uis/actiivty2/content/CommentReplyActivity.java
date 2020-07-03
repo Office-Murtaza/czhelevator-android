@@ -186,6 +186,7 @@ public class CommentReplyActivity extends BaseActivity {
                                     @Override
                                     public void onisSucced(boolean isSucced) {
                                         if (isSucced) {
+                                            listEntities.clear();
                                             httpCommentBy(page, contentId, onId);
                                         }
                                     }

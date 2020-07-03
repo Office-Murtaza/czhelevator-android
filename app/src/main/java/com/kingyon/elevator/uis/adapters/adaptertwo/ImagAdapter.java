@@ -8,10 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.R;
+import com.czh.myversiontwo.activity.ActivityUtils;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
+import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.List;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
 
 /**
  * Created By Admin  on 2020/4/16
@@ -22,9 +28,11 @@ import java.util.List;
 public class ImagAdapter extends RecyclerView.Adapter<ImagAdapter.ViewHolder> {
     Context context;
     List<Object> list;
-    public ImagAdapter(Context context,  List<Object> list){
+    QueryRecommendEntity queryRecommendEntity;
+    public ImagAdapter(Context context,  List<Object> list,  QueryRecommendEntity queryRecommendEntity ){
         this.context = context;
         this.list = list;
+        this.queryRecommendEntity = queryRecommendEntity;
     }
 
     @NonNull
@@ -38,12 +46,14 @@ public class ImagAdapter extends RecyclerView.Adapter<ImagAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GlideUtils.loadRoundCornersImage(context, String.valueOf(list.get(position)),holder.imageView,20);
-//        holder.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                ARouter.getInstance().build(ACTIVITY_MAIN2_ARTICLE_DRTAILS).navigation();
-//            }
-//        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtils.e(queryRecommendEntity.id);
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
+                        "contentId ",queryRecommendEntity.id);
+            }
+        });
     }
 
     @Override

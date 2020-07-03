@@ -8,12 +8,6 @@
 
     <include layout="@layout/layout2_top"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp1"
-        android:background="#E1E1E1"
-        android:layout_marginBottom="@dimen/dp10"
-        />
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/viewpagertab"
@@ -40,7 +34,7 @@
         app:stl_defaultTabTextAllCaps="true"
         app:stl_defaultTabTextColor="#333333"
         app:stl_defaultTabTextSize="@dimen/sp_14"
-        app:stl_defaultTabTextHorizontalPadding="16dp"
+        app:stl_defaultTabTextHorizontalPadding="5dp"
         app:stl_defaultTabTextMinWidth="@dimen/dp_100"
         app:stl_distributeEvenly="true"
         app:stl_clickable="true"
@@ -49,9 +43,10 @@
         />
 
     <View
-        android:layout_marginTop="@dimen/dp10"
+
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
+        android:layout_marginTop="@dimen/dp5"
         android:background="#E1E1E1"
         />
 

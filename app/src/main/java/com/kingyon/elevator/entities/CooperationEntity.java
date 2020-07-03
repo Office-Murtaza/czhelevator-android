@@ -5,6 +5,15 @@ public class CooperationEntity {
     private CooperationInfoNewEntity info;
     private CooperationIdentityEntity identity;
 
+    @Override
+    public String toString() {
+        return "CooperationEntity{" +
+                "bePartner=" + bePartner +
+                ", info=" + info +
+                ", identity=" + identity +
+                '}';
+    }
+
     public CooperationInfoNewEntity getInfo() {
         return info;
     }

@@ -15,7 +15,7 @@ public class CooperationIdentityEntity implements Parcelable {
     private String personName;
     private String phone;
     private String faildReason;
-    private String status;
+    private String auditStatus;
     private AMapCityEntity city;
 
     @Override
@@ -24,7 +24,7 @@ public class CooperationIdentityEntity implements Parcelable {
                 "personName='" + personName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", faildReason='" + faildReason + '\'' +
-                ", status='" + status + '\'' +
+                ", status='" + auditStatus + '\'' +
                 ", city=" + city +
                 '}';
     }
@@ -54,11 +54,11 @@ public class CooperationIdentityEntity implements Parcelable {
     }
 
     public String getStatus() {
-        return status;
+        return auditStatus;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.auditStatus = status;
     }
 
     public AMapCityEntity getCity() {
@@ -79,7 +79,7 @@ public class CooperationIdentityEntity implements Parcelable {
         dest.writeString(this.personName);
         dest.writeString(this.phone);
         dest.writeString(this.faildReason);
-        dest.writeString(this.status);
+        dest.writeString(this.auditStatus);
         dest.writeParcelable(this.city, flags);
     }
 
@@ -90,7 +90,7 @@ public class CooperationIdentityEntity implements Parcelable {
         this.personName = in.readString();
         this.phone = in.readString();
         this.faildReason = in.readString();
-        this.status = in.readString();
+        this.auditStatus = in.readString();
         this.city = in.readParcelable(AMapCityEntity.class.getClassLoader());
     }
 

@@ -336,7 +336,7 @@
         <activity
             android:name=".uis.activities.user.IdentityCompanyActivity"
             android:screenOrientation="portrait" />
-<!--        认证成功-->
+<!--        2.0认证状态-->
         <activity
             android:name=".uis.activities.user.IdentitySuccessActivity"
             android:screenOrientation="portrait" />
@@ -357,7 +357,7 @@
         <activity
             android:name=".uis.activities.user.SettingActivity"
             android:screenOrientation="portrait" />
-<!--        反馈-->
+<!--        2.0意见反馈-->
         <activity
             android:name=".uis.activities.user.FeedBackActivity"
             android:screenOrientation="portrait" />
@@ -402,10 +402,7 @@
             android:name=".uis.activities.user.InvoiceApplyActivity"
             android:screenOrientation="portrait" />
 <!--        我的收藏-->
-        <activity
-            android:name=".uis.activities.user.MyCollectActivity"
-            android:screenOrientation="portrait" />
-<!--        邀请好友-->
+        <!--        邀请好友-->
         <activity
             android:name=".uis.activities.user.InviteActivity"
             android:screenOrientation="portrait" />
@@ -777,6 +774,43 @@
         <activity android:name=".uis.activities.cooperation.WithdrawalWayActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0添加企业发票-->
+        <activity android:name=".uis.actiivty2.user.invoice.EnterpriseActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0添加个人发票-->
+        <activity android:name=".uis.actiivty2.user.invoice.PersonalActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0我的动态-->
+        <activity android:name=".uis.actiivty2.user.MyDynamicActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0联系客服-->
+        <activity android:name=".uis.actiivty2.user.CustomerServiceCenterActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0昵称编辑-->
+        <activity android:name=".uis.activities.user.UserNickActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0简介编辑-->
+        <activity android:name=".uis.activities.user.UserIntroductionActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0地区选择-->
+        <activity android:name=".uis.activities.user.UserRegionActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0昨日收益-->
+        <activity android:name=".uis.activities.cooperation.EarningsYesterdayActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0已提现-->
+        <activity android:name=".uis.activities.cooperation.HaveWithdrawalActivity"
+            android:screenOrientation="portrait"
+            />
+
 
         <!-- ****************友盟配置****************************** -->
         <meta-data

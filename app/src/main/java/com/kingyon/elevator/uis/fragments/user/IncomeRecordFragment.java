@@ -28,7 +28,6 @@ import com.kingyon.elevator.entities.IncomeOrPayEntity;
 import com.kingyon.elevator.entities.MonthOrDayIncomeOrPayEntity;
 import com.kingyon.elevator.entities.entities.EarningsTopEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
-import com.kingyon.elevator.entities.entities.chartentily;
 import com.kingyon.elevator.mvpbase.MvpBaseFragment;
 import com.kingyon.elevator.presenter.IncomeRecordPresenter;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -107,8 +106,8 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
         creatButton();
         initChartView();
         LogUtils.e(selectCatType, currentSelectYear, currentSelectMonth);
-        presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
-//        presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
+//        presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
+        presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
     }
 
 
@@ -228,7 +227,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                         tv_select_time.setText(currentSelectYear + "年" + currentSelectMonth + "月");
                     }
                     myMarkView.setShowType(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
-                    presenter.filterIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
+//                    presenter.filterIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
                     presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                     if (selectIncomeOrPay == 0) {
                         setIncomeDesc();
@@ -257,7 +256,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 break;
             case R.id.tv_no_chart_data:
                 LogUtils.e(selectCatType, currentSelectYear, currentSelectMonth);
-                presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
+//                presenter.getIncomeAndPayData(selectCatType, currentSelectYear, currentSelectMonth);
                 presenter.getIncomePayDataPerDay(selectIncomeOrPay, selectCatType, currentSelectYear, currentSelectMonth);
                 break;
         }
@@ -393,14 +392,15 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
             tv_user_all_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalEarning));
             user_income.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalIncome));
             user_pay_money.setMainTitleText(CommonUtil.getMayTwoFloat(incomeOrPayEntity.totalPay));
+
             if (incomeOrPayEntity.lstDayItem!=null&&incomeOrPayEntity.lstDayItem.size()>0){
                 /*月*/
                 MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity = new MonthOrDayIncomeOrPayEntity();
-                monthOrDayIncomeOrPayEntity.setMaxValue(incomeOrPayEntity.totalIncome);
                 List<MonthOrDayIncomeOrPayEntity.ListBean> list = new ArrayList<>();
                 list.clear();
                 if (selectIncomeOrPay==0){
                     /*收入*/
+                    monthOrDayIncomeOrPayEntity.setMaxValue(Math.abs(incomeOrPayEntity.maxIncomeDay));
                     for (int i= 0;i<incomeOrPayEntity.lstDayItem.size();i++){
                                 MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
                                 listBean.setStep(incomeOrPayEntity.lstDayItem.get(i).day);
@@ -410,6 +410,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                     }
                 }else {
                     /*支出*/
+                    monthOrDayIncomeOrPayEntity.setMaxValue(Math.abs(incomeOrPayEntity.maxPayDay));
                     for (int i= 0;i<incomeOrPayEntity.lstDayItem.size();i++){
                         MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
                         listBean.setStep(incomeOrPayEntity.lstDayItem.get(i).day);
@@ -420,15 +421,16 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 }
                 monthOrDayIncomeOrPayEntity.setList(list);
                 showMonthData(monthOrDayIncomeOrPayEntity);
-
             }
+
             if (incomeOrPayEntity.lstMonthItem!=null&&incomeOrPayEntity.lstMonthItem.size()>0){
                 /*年*/
                 MonthOrDayIncomeOrPayEntity monthOrDayIncomeOrPayEntity = new MonthOrDayIncomeOrPayEntity();
-                monthOrDayIncomeOrPayEntity.setMaxValue(incomeOrPayEntity.totalIncome);
+
                 List<MonthOrDayIncomeOrPayEntity.ListBean> list = new ArrayList<>();
                 list.clear();
                 if (selectIncomeOrPay==0) {
+                    monthOrDayIncomeOrPayEntity.setMaxValue(Math.abs(incomeOrPayEntity.maxIncomeDay));
                     for (int i = 0; i < incomeOrPayEntity.lstMonthItem.size(); i++) {
                         MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
                         listBean.setStep(incomeOrPayEntity.lstMonthItem.get(i).month);
@@ -437,6 +439,7 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                         list.add(listBean);
                     }
                 }else {
+                    monthOrDayIncomeOrPayEntity.setMaxValue(Math.abs(incomeOrPayEntity.maxPayDay));
                     for (int i = 0; i < incomeOrPayEntity.lstMonthItem.size(); i++) {
                         MonthOrDayIncomeOrPayEntity.ListBean listBean = new MonthOrDayIncomeOrPayEntity.ListBean();
                         listBean.setStep(incomeOrPayEntity.lstMonthItem.get(i).month);
@@ -447,6 +450,11 @@ public class IncomeRecordFragment extends MvpBaseFragment<IncomeRecordPresenter>
                 }
                 monthOrDayIncomeOrPayEntity.setList(list);
                 showYeardata(monthOrDayIncomeOrPayEntity);
+            }
+            if (incomeOrPayEntity.lstMonthItem==null&&incomeOrPayEntity.lstDayItem==null){
+                line_chart_view.setVisibility(View.GONE);
+            }else {
+                line_chart_view.setVisibility(View.VISIBLE);
             }
         }
     }

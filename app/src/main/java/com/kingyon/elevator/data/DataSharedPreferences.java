@@ -192,6 +192,7 @@ public class DataSharedPreferences {
 //        saveMineString("");
         saveLoginResult("");
         saveToken("");
+        saveCreatateAccount("");
         AppContent.getInstance().clear();
     }
 

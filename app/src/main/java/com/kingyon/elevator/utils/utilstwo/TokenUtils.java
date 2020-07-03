@@ -1,6 +1,16 @@
 package com.kingyon.elevator.utils.utilstwo;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.constants.Constants;
@@ -10,6 +20,11 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.ToastUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
 /**
  * @Created By Admin  on 2020/5/13
@@ -87,5 +102,6 @@ public class TokenUtils {
     interface GetToke{
         boolean setToken(boolean is);
     }
+
 
 }

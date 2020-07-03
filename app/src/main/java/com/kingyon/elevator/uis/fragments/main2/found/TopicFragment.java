@@ -64,7 +64,7 @@ public class TopicFragment extends FoundFragemtUtils {
 
                     @Override
                     public void onNext(ConentEntity<HomeTopicEntity> conentEntity) {
-                        hideProgress();
+
                         tabLayout.setViewHeight(dp2px(30));
                         tabLayout.setBottomLineWidth(dp2px(10));
                         tabLayout.setBottomLineHeight(dp2px(3));

@@ -1,5 +1,6 @@
 package com.kingyon.elevator.entities.entities;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,8 +21,11 @@ public class EarningsTopEntity<T> {
     public double totalEarning;
     public double totalIncome;
     public double totalPay;
+    public double maxIncomeDay;
+    public double maxPayDay;
     public List<T> lstMonthItem;
     public List<T> lstDayItem;
+
 
     @Override
     public String toString() {

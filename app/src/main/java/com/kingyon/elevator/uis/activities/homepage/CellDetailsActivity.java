@@ -22,6 +22,7 @@ import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.gerry.scaledelete.ScanleImageUrl;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.entities.ToPlanTab;
@@ -158,7 +159,7 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
 
     @Override
     public void onRefresh() {
-        NetService.getInstance().cellDetails(cellId)
+        NetService.getInstance().cellDetails(cellId, DataSharedPreferences.getCreatateAccount())
                 .compose(this.<CellDetailsEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<CellDetailsEntity>() {
                     @Override
@@ -183,28 +184,28 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
     }
 
     private void updateUi(CellDetailsEntity entity) {
-        updateBanner(entity.getCellBanner());
-        preVRight.setSelected(entity.isCollect());
-        tvName.setText(entity.getCellName());
-        tvAddress.setText(entity.getAddress());
+        updateBanner(entity.cellBanner);
+        preVRight.setSelected(entity.isCollect);
+        tvName.setText(entity.name);
+        tvAddress.setText(entity.regionName);
         iv_gouwuche.setVisibility(View.VISIBLE);
-        Double cellDistance = FormatUtils.getInstance().getCellDistanceNum(entity.getLongitude(), entity.getLatitude(), entity.getDistance());
-        if (cellDistance != null) {
-            if (cellDistance >= 1000) {
-                tvDistance.setText(String.format("距你%skm", CommonUtil.getMayOneFloat(cellDistance / 1000)));
-            } else {
-                tvDistance.setText(String.format("距你%sm", CommonUtil.getOneDigits(cellDistance)));
-            }
-        } else {
-            tvDistance.setText("");
-        }
-        tvTime.setText(TimeUtil.getYMdTime(entity.getEnterTime()));
-        tvFlow.setText(String.format("%s人次", entity.getHumanTraffic()));
-        llFlow.setVisibility(entity.getHumanTraffic() > 0 ? View.VISIBLE : View.GONE);
-        tvCellType.setText(FormatUtils.getInstance().getCellType(entity.getCellType()));
-        tvLift.setText(FormatUtils.getInstance().getCellLift(entity.getLiftNum()));
-        tvUnit.setText(FormatUtils.getInstance().getCellUnit(entity.getUnitNum()));
-        GlideUtils.loadImage(this, entity.getCellLogo(), iv_home_logo);
+//        Double cellDistance = FormatUtils.getInstance().getCellDistanceNum(entity.getLongitude(), entity.getLatitude(), entity.getDistance());
+//        if (cellDistance != null) {
+//            if (cellDistance >= 1000) {
+//                tvDistance.setText(String.format("距你%skm", CommonUtil.getMayOneFloat(cellDistance / 1000)));
+//            } else {
+//                tvDistance.setText(String.format("距你%sm", CommonUtil.getOneDigits(cellDistance)));
+//            }
+//        } else {
+//            tvDistance.setText("");
+//        }
+//        tvTime.setText(TimeUtil.getYMdTime(entity.getEnterTime()));
+//        tvFlow.setText(String.format("%s人次", entity.numberTraffic));
+//        llFlow.setVisibility(entity.numberTraffic > 0 ? View.VISIBLE : View.GONE);
+//        tvCellType.setText(FormatUtils.getInstance().getCellType(entity.type));
+//        tvLift.setText(FormatUtils.getInstance().getCellLift(entity.numberFacility));
+//        tvUnit.setText(FormatUtils.getInstance().getCellUnit(entity.numberUnit));
+//        GlideUtils.loadImage(this, entity.urlCover, iv_home_logo);
     }
 
     private void updateBanner(List<String> banners) {
@@ -375,35 +376,35 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
                 break;
             }
         }
-        switch (selectId) {
-            case R.id.tv_business:
-                tvAdType.setText("商业广告");
-                tvPrice.setText(getPriceSpan(details.getBusinessAdPrice()));
-                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_normal);
-//                tvAdTip.setText("商业广告，以轮流播放的形式投放广告，价格实惠。");
-                tvAdTip.setText(details.getBusinessIntro() != null ? details.getBusinessIntro() : "");
-                break;
-            case R.id.tv_diy:
-                tvAdType.setText("DIY广告");
-                tvPrice.setText(getPriceSpan(details.getDiyAdPrice()));
-                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_normal);
-//                tvAdTip.setText("DIY广告，以独占屏幕播放的形式投放广告，投放效果好。");
-                tvAdTip.setText(details.getDiyIntro() != null ? details.getDiyIntro() : "");
-                break;
-            case R.id.tv_info:
-                tvAdType.setText("便民信息");
-                tvPrice.setText(getPriceSpan(details.getInformationAdPrice()));
-                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_info);
-//                tvAdTip.setText("便民信息，在屏幕顶部展示，物业通知等便民信息。");
-                tvAdTip.setText(details.getInformationIntro() != null ? details.getInformationIntro() : "");
-                break;
-            default:
-                tvAdType.setText("请先选择广告和屏幕类型");
-                tvPrice.setText(getPriceSpan(0));
-                imgAdShow.setImageDrawable(null);
-                tvAdTip.setText("");
-                break;
-        }
+//        switch (selectId) {
+//            case R.id.tv_business:
+//                tvAdType.setText("商业广告");
+//                tvPrice.setText(getPriceSpan(details.priceBusiness));
+//                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_normal);
+////                tvAdTip.setText("商业广告，以轮流播放的形式投放广告，价格实惠。");
+//                tvAdTip.setText(details.getBusinessIntro() != null ? details.getBusinessIntro() : "");
+//                break;
+//            case R.id.tv_diy:
+//                tvAdType.setText("DIY广告");
+//                tvPrice.setText(getPriceSpan(details.getDiyAdPrice()));
+//                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_normal);
+////                tvAdTip.setText("DIY广告，以独占屏幕播放的形式投放广告，投放效果好。");
+//                tvAdTip.setText(details.getDiyIntro() != null ? details.getDiyIntro() : "");
+//                break;
+//            case R.id.tv_info:
+//                tvAdType.setText("便民信息");
+//                tvPrice.setText(getPriceSpan(details.getInformationAdPrice()));
+//                imgAdShow.setImageResource(R.drawable.img_lift_ad_show_info);
+////                tvAdTip.setText("便民信息，在屏幕顶部展示，物业通知等便民信息。");
+//                tvAdTip.setText(details.getInformationIntro() != null ? details.getInformationIntro() : "");
+//                break;
+//            default:
+//                tvAdType.setText("请先选择广告和屏幕类型");
+//                tvPrice.setText(getPriceSpan(0));
+//                imgAdShow.setImageDrawable(null);
+//                tvAdTip.setText("");
+//                break;
+//        }
     }
 
     private CharSequence getPriceSpan(float price) {
@@ -418,8 +419,8 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
 
     private void requestCollect(final CellDetailsEntity details) {
         preVRight.setEnabled(false);
-        if (details.isCollect()) {
-            NetService.getInstance().cancelCollect(String.valueOf(details.getObjctId()))
+        if (details.isCollect) {
+            NetService.getInstance().cancelCollect(String.valueOf(details.id))
                     .compose(this.<String>bindLifeCycle())
                     .subscribe(new CustomApiCallback<String>() {
                         @Override
@@ -431,33 +432,33 @@ public class CellDetailsActivity extends BaseStateRefreshingActivity implements 
                         @Override
                         public void onNext(String s) {
                             showToast("取消成功");
-                            details.setCollect(false);
+//                            details.setCollect(false);
                             updateCollectState();
                         }
                     });
         } else {
-            NetService.getInstance().collectCell(details.getObjctId())
-                    .compose(this.<String>bindLifeCycle())
-                    .subscribe(new CustomApiCallback<String>() {
-                        @Override
-                        protected void onResultError(ApiException ex) {
-                            showToast(ex.getDisplayMessage());
-                            preVRight.setEnabled(true);
-                        }
-
-                        @Override
-                        public void onNext(String s) {
-                            showToast("收藏成功");
-                            details.setCollect(true);
-                            updateCollectState();
-                        }
-                    });
+//            NetService.getInstance().collectCell(details.getObjctId())
+//                    .compose(this.<String>bindLifeCycle())
+//                    .subscribe(new CustomApiCallback<String>() {
+//                        @Override
+//                        protected void onResultError(ApiException ex) {
+//                            showToast(ex.getDisplayMessage());
+//                            preVRight.setEnabled(true);
+//                        }
+//
+//                        @Override
+//                        public void onNext(String s) {
+//                            showToast("收藏成功");
+//                            details.setCollect(true);
+//                            updateCollectState();
+//                        }
+//                    });
         }
     }
 
     private void updateCollectState() {
         preVRight.setEnabled(true);
-        preVRight.setSelected(details.isCollect());
+//        preVRight.setSelected(details.isCollect());
     }
 
     @Override

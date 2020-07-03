@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.activities.user;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,8 +12,10 @@ import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.ImageScan;
 import com.kingyon.elevator.entities.InvoiceEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.dialogs.InvoiceDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.TimeUtil;
@@ -59,10 +62,18 @@ public class MyInvoiceActivity extends BaseStateRefreshingLoadingActivity<Invoic
         return new BaseAdapter<InvoiceEntity>(this, R.layout.activity_my_invoice_item, mItems) {
             @Override
             protected void convert(CommonHolder holder, InvoiceEntity item, int position) {
-                holder.setTextNotHide(R.id.tv_time, TimeUtil.getAllTimeNoSecond(item.getTime()));
+                holder.setTextNotHide(R.id.tv_time, "开票时间："+TimeUtil.getAllTimeNoSecond(item.getTime()));
                 holder.setTextNotHide(R.id.tv_type, FormatUtils.getInstance().getInvoiceType(item.getInvoiceType()));
-                holder.setTextNotHide(R.id.tv_content, item.getContent());
-                holder.setTextNotHide(R.id.tv_sum, CommonUtil.getTwoFloat(item.getInvoiceAmount()));
+                holder.setTextNotHide(R.id.tv_content, "开票内容："+item.getContent());
+                holder.setTextNotHide(R.id.tv_sum, "开票金额："+CommonUtil.getTwoFloat(item.getInvoiceAmount()));
+                holder.setTextNotHide(R.id.tv_spf, "收票方："+item.getInvoiceStart());
+                if (item.getInvoiceImg().isEmpty()){
+                    holder.setTextNotHide(R.id.tv_zt,"暂未开票");
+                    holder.setTextColor(R.id.tv_zt, Color.parseColor("#316FFA"));
+                }else {
+                    holder.setTextNotHide(R.id.tv_zt,"查看详情");
+                    holder.setTextColor(R.id.tv_zt, Color.parseColor("#FF3049"));
+                }
             }
         };
     }
@@ -83,8 +94,8 @@ public class MyInvoiceActivity extends BaseStateRefreshingLoadingActivity<Invoic
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().invoiceList(page)
-                .compose(this.<PageListEntity<InvoiceEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<InvoiceEntity>>() {
+                .compose(this.<ConentEntity<InvoiceEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<InvoiceEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -92,7 +103,7 @@ public class MyInvoiceActivity extends BaseStateRefreshingLoadingActivity<Invoic
                     }
 
                     @Override
-                    public void onNext(PageListEntity<InvoiceEntity> invoiceEntityPageListEntity) {
+                    public void onNext(ConentEntity<InvoiceEntity> invoiceEntityPageListEntity) {
                         if (invoiceEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -117,7 +128,10 @@ public class MyInvoiceActivity extends BaseStateRefreshingLoadingActivity<Invoic
 
     @OnClick(R.id.pre_v_right)
     public void onViewClicked() {
-        startActivityForResult(InvoiceApplyActivity.class, CommonUtil.REQ_CODE_1);
+//        startActivityForResult(InvoiceApplyActivity.class, CommonUtil.REQ_CODE_1);
+        InvoiceDialog invoiceDialog = new InvoiceDialog(this);
+        invoiceDialog.show();
+
     }
 
     @Override

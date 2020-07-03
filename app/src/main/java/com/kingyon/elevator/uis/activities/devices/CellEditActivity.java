@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AMapCityEntity;
 import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.entities.IndustryEntity;
@@ -197,7 +198,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     @Override
     protected void loadData() {
         if (edit) {
-            NetService.getInstance().cellDetails(editCellId)
+            NetService.getInstance().cellDetails(editCellId, DataSharedPreferences.getCreatateAccount())
                     .compose(this.<CellDetailsEntity>bindLifeCycle())
                     .subscribe(new CustomApiCallback<CellDetailsEntity>() {
                         @Override
@@ -211,23 +212,23 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                             if (entity == null) {
                                 throw new ResultException(9001, "返回参数异常");
                             }
-                            location = String.format("%s,%s", entity.getLongitude(), entity.getLatitude());
+//                            location = String.format("%s,%s", entity.getLongitude(), entity.getLatitude());
+//
+//                            tvArea.setTag(entity.getRegionCode());
+//                            tvArea.setText(entity.getRegionName());
 
-                            tvArea.setTag(entity.getRegionCode());
-                            tvArea.setText(entity.getRegionName());
-
-                            etAddress.setText(entity.getAddress());
+                            etAddress.setText(entity.regionName);
                             etAddress.setSelection(etAddress.getText().length());
 
-                            etName.setText(entity.getCellName());
+                            etName.setText(entity.name);
 
-                            tvType.setTag(entity.getCellType());
-                            tvType.setText(FormatUtils.getInstance().getCellType(entity.getCellType()));
+                            tvType.setTag(entity.type);
+                            tvType.setText(FormatUtils.getInstance().getCellType(entity.type));
 
 //                            etFlow.setText(String.valueOf(entity.getHumanTraffic()));
 
-                            logoAdapter.addData(entity.getCellLogo());
-                            imagesAdapter.addDatas(entity.getCellBanner());
+                            logoAdapter.addData(entity.urlCover);
+                            imagesAdapter.addDatas(entity.cellBanner);
 
                             loadingComplete(STATE_CONTENT);
                             preVRight.setVisibility(View.GONE);

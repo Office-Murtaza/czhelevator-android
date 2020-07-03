@@ -11,6 +11,7 @@ import com.gerry.scaledelete.ScanleImageUrl;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.FeedBackEntity;
 import com.kingyon.elevator.entities.ImageScan;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
@@ -38,6 +39,8 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/10.
  * Email：lc824767150@163.com
+ *
+ *意见反馈
  */
 
 public class FeedBackActivity extends BaseStateRefreshingLoadingActivity<FeedBackEntity> {
@@ -119,8 +122,8 @@ public class FeedBackActivity extends BaseStateRefreshingLoadingActivity<FeedBac
     @Override
     protected void loadData(final int page) {
         NetService.getInstance().myFeedBackList(page)
-                .compose(this.<PageListEntity<FeedBackEntity>>bindLifeCycle())
-                .subscribe(new CustomApiCallback<PageListEntity<FeedBackEntity>>() {
+                .compose(this.<ConentEntity<FeedBackEntity>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<FeedBackEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -128,7 +131,7 @@ public class FeedBackActivity extends BaseStateRefreshingLoadingActivity<FeedBac
                     }
 
                     @Override
-                    public void onNext(PageListEntity<FeedBackEntity> feedBackEntityPageListEntity) {
+                    public void onNext(ConentEntity<FeedBackEntity> feedBackEntityPageListEntity) {
                         if (feedBackEntityPageListEntity == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }

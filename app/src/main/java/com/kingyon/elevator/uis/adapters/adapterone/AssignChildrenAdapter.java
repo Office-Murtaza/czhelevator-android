@@ -44,7 +44,10 @@ public class AssignChildrenAdapter extends BaseAdapterWithHF<PointItemEntity> {
         View view = inflater.inflate(resId, parent, false);
         return new ViewHolder(view);
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public void onBindViewHolder(@NonNull BaseAdapterWithHF.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;

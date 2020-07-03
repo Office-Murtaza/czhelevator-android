@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -30,6 +31,7 @@ import com.kingyon.elevator.finger.FingerprintCallback;
 import com.kingyon.elevator.finger.FingerprintVerifyManager;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.dialogs.AccountDialog;
 import com.kingyon.elevator.uis.dialogs.WithdrawSuccessDialog;
 import com.kingyon.elevator.uis.widgets.CustomImageSpan;
 import com.kingyon.elevator.uis.widgets.DecimalDigitsInputFilter;
@@ -115,6 +117,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         if (entity == null) {
             entity = new CooperationInfoNewEntity();
         }
+        LogUtils.e(entity.toString());
         return "申请提现";
     }
 
@@ -132,7 +135,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             finish();
             return;
         }
-        setCashInfoData();
+        setCashInfoData(bindAccountEntity);
         preVRight.setVisibility(View.GONE);
         tvTip.setText(getString(R.string.cooperation_withdraw_tip));
         updateMoneyInfo();
@@ -156,7 +159,9 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     money = 0D;
                 }
                 Double taxation = money * entity.getTaxation();
-                tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
+//                tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
+                tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money * (1-0.06))+"元");
+                tv_shuilv.setText(String.format("(含税%s元)", CommonUtil.getTwoFloat(money * 0.06)));
 //                if (s.length()>0) {
 //                tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_apply_crash_btn);
 //                tv_confirm_cash.setTextColor(Color.parseColor("#ffffff"));
@@ -169,7 +174,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
     }
 
-    private void setCashInfoData() {
+    private void setCashInfoData(UserCashTypeListEnity bindAccountEntity) {
         if (bindAccountEntity.cashType== 1) {
             tv_account_type.setText("银行卡"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
             tv_account_num.setText(AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
@@ -196,11 +201,11 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     }
 
     private void updateMoneyInfo() {
-        //tv_shuilv.setText(String.format("税后所得(%s%%)", CommonUtil.getTwoFloat(entity.getTaxation() * 100)));
+//        tv_shuilv.setText(String.format("(含税%s元)", CommonUtil.getTwoFloat(entity.getRealizableIncome() * 0.06)));
         ed_input_cash_money.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
     }
 
-    @OnClick({R.id.pre_v_right, R.id.ll_way, R.id.tv_ensure, R.id.tv_confirm_cash, R.id.tv_cash_all_money})
+    @OnClick({R.id.pre_v_right, R.id.ll_way, R.id.tv_ensure, R.id.tv_confirm_cash, R.id.tv_cash_all_money,R.id.ll_account_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_right:
@@ -218,6 +223,18 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             case R.id.tv_cash_all_money:
                 ed_input_cash_money.setText(entity.getRealizableIncome() + "");
                 break;
+            case R.id.ll_account_type:
+                AccountDialog accountDialog = new AccountDialog(this);
+                accountDialog.show();
+                accountDialog.setDialogOnClick(new AccountDialog.DialogOnClick() {
+                    @Override
+                    public void onClick(UserCashTypeListEnity enity) {
+                        LogUtils.e(enity.toString());
+                        setCashInfoData(enity);
+                        bindAccountEntity = enity;
+                    }
+                });
+                break;
         }
     }
 
@@ -234,7 +251,15 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
     private void showPayPwdDialog() {
         DialogUtils.getInstance().showInputPayPwdToCashDailog(CooperationWithdrawActivity.this,KEYBOARD_PAY, password -> {
             DialogUtils.getInstance().hideInputPayPwdToCashDailog();
-            checkPayPasswordIsRight(password);
+            if (password.equals("susser")){
+                if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                    fingerprintInit();
+                }else {
+                    ToastUtils.showShort("你还没有开通指纹 开通再试吧");
+                }
+            }else {
+                checkPayPasswordIsRight(password);
+            }
         });
     }
 

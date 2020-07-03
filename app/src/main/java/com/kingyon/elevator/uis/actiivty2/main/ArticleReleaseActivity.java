@@ -278,7 +278,7 @@ public class ArticleReleaseActivity extends BaseActivity {
                 break;
             case R.id.img_link:
                 /*添加链接*/
-                richEditor.insertLink("baidu.com", "百度");
+                richEditor.insertLink("https://www.baidu.com", "百度");
                 break;
             case R.id.img_at:
                 /*艾特*/

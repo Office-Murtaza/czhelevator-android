@@ -72,6 +72,7 @@ import butterknife.Unbinder;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADPOINT_DETAILS;
 import static com.czh.myversiontwo.utils.DistanceUtils.distance;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created by GongLi on 2018/12/27.
@@ -127,6 +128,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private int[] clickPosition = new int[2];
     boolean isdisplay = true;
+    private String distanceM;
+
 
     public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2, double latitude, double longitude) {
         this.entiyConentEntity = entiyConentEntity2;
@@ -268,8 +271,9 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             if (clickCellId == recommendHouseEntiy.id) {
                 tvAddress.setText(recommendHouseEntiy.address);
                 tvCommunityName.setText(recommendHouseEntiy.name);
-                tvCommunityNumber.setText(String.format("%s · %s台电梯", distance(recommendHouseEntiy.distanceM)
+                tvCommunityNumber.setText(String.format("%s · %s台电梯", distance((int) recommendHouseEntiy.distanceM)
                         , recommendHouseEntiy.numberElevator));
+                distanceM = distance((int) recommendHouseEntiy.distanceM);
                 planId = recommendHouseEntiy.id;
                 communityName = recommendHouseEntiy.name;
 
@@ -606,17 +610,28 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
                 break;
             case R.id.img_add:
-                if (isCertification()) {
-                    DialogUtils.shwoCertificationDialog(getActivity());
-                } else {
-                    AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
-                    advertisPutDialog.show();
+//                if (isCertification()) {
+//                    DialogUtils.shwoCertificationDialog(getActivity());
+//                } else {
+//                    AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
+//                    advertisPutDialog.show();
+//                }
+                if (isToken(getActivity())){
+                    if (isCertification()){
+                        DialogUtils.shwoCertificationDialog(getActivity());
+                    }else {
+                        AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
+                        advertisPutDialog.show();
+                    }
+                }else {
+                    ActivityUtils.setLoginActivity();
                 }
+
 
                 break;
             case R.id.ll_point:
-                LogUtils.e(planId);
-                ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS, "panID", String.valueOf(planId));
+                LogUtils.e(planId,distanceM);
+                ActivityUtils.setActivity(ACTIVITY_ADPOINT_DETAILS, "panID", String.valueOf(planId),"distanceM", distanceM);
                 break;
             default:
         }

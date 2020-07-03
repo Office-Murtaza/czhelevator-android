@@ -78,7 +78,7 @@ public class ModifyPhoneSecondActivity extends BaseSwipeBackActivity {
         }
         showProgressDialog(getString(R.string.wait));
         tvEnsure.setEnabled(false);
-        NetService.getInstance().unbindPhone(CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode), "NEW")
+        NetService.getInstance().unbindPhone(CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode), "BIND_NEW")
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
