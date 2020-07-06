@@ -42,7 +42,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_HAVE_WITHDRAWAL;
  * @Created By Admin  on 2020/7/2
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:昨日收益
+ * @Instructions:已提现
  */
 @Route(path = ACTIVITY_HAVE_WITHDRAWAL)
 public class HaveWithdrawalActivity extends BaseActivity {
@@ -80,7 +80,7 @@ public class HaveWithdrawalActivity extends BaseActivity {
 
         getYesterdayIncomeData(page);
 
-        tvTopTitle.setText("昨日收益");
+        tvTopTitle.setText("已提现");
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {

@@ -820,6 +820,10 @@ public interface NetApi {
                                                                   @Field("latitude") String latitude,
                                                                   @Field("longitude") String longitude );
 
+    /*2.0第三方绑定*/
+    @POST("user/bind3Rd")
+    @FormUrlEncoded
+    Observable<String> getBinRd(@Field("thirdId") String thirdId,@Field("bindType") String bindType);
 
 
 

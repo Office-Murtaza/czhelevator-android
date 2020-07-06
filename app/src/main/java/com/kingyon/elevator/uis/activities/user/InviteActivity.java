@@ -30,17 +30,18 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/11.
  * Email：lc824767150@163.com
+ * 2.0邀请界面
  */
 
 public class InviteActivity extends BaseStateRefreshingActivity {
-    @BindView(R.id.pre_v_right)
-    TextView preVRight;
-    @BindView(R.id.tv_invite_award)
-    TextView tvInviteAward;
-    @BindView(R.id.tv_invite_person)
-    TextView tvInvitePerson;
-    @BindView(R.id.tv_coupons)
-    TextView tvCoupons;
+//    @BindView(R.id.pre_v_right)
+//    TextView preVRight;
+//    @BindView(R.id.tv_invite_award)
+//    TextView tvInviteAward;
+//    @BindView(R.id.tv_invite_person)
+//    TextView tvInvitePerson;
+//    @BindView(R.id.tv_coupons)
+//    TextView tvCoupons;
     @BindView(R.id.rv_coupons)
     RecyclerView rvCoupons;
 
@@ -55,15 +56,14 @@ public class InviteActivity extends BaseStateRefreshingActivity {
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_invite;
+        return R.layout.activity_invitetwo;
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
         couponsAdapter = new InviteCouponsAdapter(this);
-        DealScrollRecyclerView.getInstance().dealAdapter(couponsAdapter, rvCoupons, new FullyLinearLayoutManager(this));
-        preVRight.setText("邀请名单");
+
     }
 
     @Override
@@ -74,7 +74,7 @@ public class InviteActivity extends BaseStateRefreshingActivity {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
-                        loadingComplete(STATE_ERROR);
+                        loadingComplete(STATE_CONTENT);
                     }
 
                     @Override
@@ -83,10 +83,10 @@ public class InviteActivity extends BaseStateRefreshingActivity {
                             throw new ResultException(9001, "返回参数异常");
                         }
                         recommendInfo = recommendInfoEntity;
-                        tvInviteAward.setText(getSpan(String.format("%s张", recommendInfoEntity.getReceiveCoupons())));
-                        tvInvitePerson.setText(getSpan(String.format("%s人", recommendInfoEntity.getRecommendPersons())));
+//                        tvInviteAward.setText(getSpan(String.format("%s张", recommendInfoEntity.getReceiveCoupons())));
+//                        tvInvitePerson.setText(getSpan(String.format("%s人", recommendInfoEntity.getRecommendPersons())));
                         List<CouponItemEntity> coupons = recommendInfoEntity.getCoupons();
-                        tvCoupons.setText(String.format("邀请一名好友，则获得优惠券%s张", coupons != null ? coupons.size() : 0));
+//                        tvCoupons.setText(String.format("邀请一名好友，则获得优惠券%s张", coupons != null ? coupons.size() : 0));
                         couponsAdapter.refreshDatas(recommendInfoEntity.getCoupons());
                         loadingComplete(STATE_CONTENT);
                     }
@@ -99,13 +99,14 @@ public class InviteActivity extends BaseStateRefreshingActivity {
         return spannableString;
     }
 
-    @OnClick({R.id.pre_v_right, R.id.img_invite})
+    @OnClick({R.id.img_back, R.id.tv_invite})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.pre_v_right:
-                startActivity(InviteListActivity.class);
+            case R.id.img_back:
+//                startActivity(InviteListActivity.class);
+                finish();
                 break;
-            case R.id.img_invite:
+            case R.id.tv_invite:
                 if (recommendInfo == null) {
                     return;
                 }

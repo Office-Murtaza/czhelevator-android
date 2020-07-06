@@ -84,7 +84,6 @@ public class AdPointDetailsFragment extends BaseFragment {
 
         tvOccupancy.setText(cellDetailsEntity.occupancyRate+"");
         tvPrice.setText(cellDetailsEntity.averageSellingPrice+"");
-        LogUtils.e(cellDetailsEntity.deviceSwitchOff.substring(0,2));
         tvTime.setText("每天"+(Integer.parseInt(cellDetailsEntity.deviceSwitchOff.substring(0,2))-Integer.parseInt(cellDetailsEntity.deviceSwitchOn.substring(0,2)))+"小时");
         tvTraffic.setText(cellDetailsEntity.numberTraffic+"");
         tvCoverage.setText(cellDetailsEntity.peopleCoverd+"");

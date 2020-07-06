@@ -149,6 +149,11 @@ public class ContentDetailsActivity extends BaseActivity {
                         Parser mTagParser = new Parser();
                         tvContent.setMovementMethod(new LinkMovementMethod());
                         tvContent.setParserConverter(mTagParser);
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                            tvAttention.setVisibility(View.GONE);
+                        }else {
+                            tvAttention.setVisibility(View.VISIBLE);
+                        }
                         if (recommendEntity.isAttent == 0) {
                             tvAttention.setText("关注");
                             tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));

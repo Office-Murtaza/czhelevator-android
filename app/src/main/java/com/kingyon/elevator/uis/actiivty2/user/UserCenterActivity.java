@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.actiivty2.user;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -187,6 +188,7 @@ public class UserCenterActivity extends BaseActivity {
 
                     @Override
                     public void onNext(UserTwoEntity userTwoEntity) {
+                        LogUtils.e(userTwoEntity.toString());
                         hideProgress();
                         userTwoEntity1 = userTwoEntity;
                         GlideUtils.loadCircleImage(UserCenterActivity.this, userTwoEntity.photo, imgPlaceholder);
@@ -199,9 +201,13 @@ public class UserCenterActivity extends BaseActivity {
                         tvContent.setText("" + userTwoEntity.personalizedSignature);
                         tvDtnum.setText("全部动态 " + userTwoEntity.contentNum + " 条");
                         if (userTwoEntity.sex.equals("S")) {
-                            tvName.setCompoundDrawables(null, null, getResources().getDrawable(R.mipmap.ic_sexy_man), null);
+                            Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_man);
+                            drawable.setBounds(0, 0, 32, 32);
+                            tvName.setCompoundDrawables(null, null, drawable, null);
                         } else {
-                            tvName.setCompoundDrawables(null, null, getResources().getDrawable(R.mipmap.ic_sexy_woman), null);
+                            Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_woman);
+                            drawable.setBounds(0, 0, 32, 32);
+                            tvName.setCompoundDrawables(null, null, drawable, null);
                         }
                         if (userTwoEntity.isAttent == 0) {
                             tvAttention.setText("关注");
@@ -331,6 +337,9 @@ public class UserCenterActivity extends BaseActivity {
                     tvAttention.setText("已关注");
                     tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention1));
                     tvAttention.setTextColor(Color.parseColor("#ffffff"));
+                    tvAttention1.setText("已关注");
+                    tvAttention1.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
+                    tvAttention1.setTextColor(Color.parseColor("#FF1330"));
                 }
 
                 @Override
@@ -346,6 +355,9 @@ public class UserCenterActivity extends BaseActivity {
                     tvAttention.setText("关注");
                     tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention1));
                     tvAttention.setTextColor(Color.parseColor("#ffffff"));
+                    tvAttention1.setText("关注");
+                    tvAttention1.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention1));
+                    tvAttention1.setTextColor(Color.parseColor("#ffffff"));
                 }
 
                 @Override

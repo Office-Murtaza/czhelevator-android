@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.adapters.adapterone;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -61,9 +62,12 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
                 holder.tv_income_type.setText(Html.fromHtml(str3));
             }else {
                 holder.tv_income_money.setText("¥\t" + yesterdayIncomeEntity.withdrawal);
+                holder.tv_income_money.setTextColor(Color.parseColor("#333333"));
                 holder.tv_income_time.setText(TimeUtil.getAllTime(Long.parseLong(yesterdayIncomeEntity.createTime)));
-                String str3 = "<font color='#FF0000'><big>·</big></font>来源:"+ FormatUtils.getInstance().incomeType(yesterdayIncomeEntity.source);
-                holder.tv_income_type.setText(Html.fromHtml(str3));
+//                String str3 = "<font color='#FF0000'><big>·</big></font>来源:"+ FormatUtils.getInstance().incomeType(yesterdayIncomeEntity.source);
+//                holder.tv_income_type.setText(Html.fromHtml(str3));
+                holder.tv_income_type.setVisibility(View.GONE);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

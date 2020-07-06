@@ -61,70 +61,67 @@ public class CertificationActivity extends BaseActivity {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
-                        switch (ex.getCode()) {
-                            case 9002:
-                                if (!jumping) {
-                                    jumping = true;
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            super.run();
-                                            try {
-                                                Thread.sleep(1000);//休眠3秒
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHING);
-                                                startActivity(IdentitySuccessActivity.class,bundle);
-                                                finish();
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }.start();
-
-                                }
-                                break;
-                            case 9003:
-                                if (!jumping) {
-                                    jumping = true;
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            super.run();
-                                            try {
-                                                Thread.sleep(1000);//休眠3秒
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
-                                                startActivity(IdentitySuccessActivity.class,bundle);
-                                                finish();
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }.start();
-                                }
-                                break;
-                            case 9004:
-                                if (!jumping) {
-                                    jumping = true;
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            super.run();
-                                            try {
-                                                Thread.sleep(1000);//休眠3秒
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("type",Constants.IDENTITY_STATUS.FAILD);
-                                                startActivity(IdentitySuccessActivity.class,bundle);
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }.start();
-                                }
-                                break;
-                        }
+//                        switch (ex.getCode()) {
+//                            case 9002:
+//                                if (!jumping) {
+//                                    jumping = true;
+//                                    new Thread() {
+//                                        @Override
+//                                        public void run() {
+//                                            super.run();
+//                                            try {
+//                                                Thread.sleep(1000);//休眠3秒
+//                                                Bundle bundle = new Bundle();
+//                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHING);
+//                                                startActivity(IdentitySuccessActivity.class,bundle);
+//                                                finish();
+//                                            } catch (InterruptedException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    }.start();
+//
+//                                }
+//                                break;
+//                            case 9003:
+//                                if (!jumping) {
+//                                    jumping = true;
+//                                    new Thread() {
+//                                        @Override
+//                                        public void run() {
+//                                            super.run();
+//                                            try {
+//                                                Thread.sleep(1000);//休眠3秒
+//                                                Bundle bundle = new Bundle();
+//                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
+//                                                startActivity(IdentitySuccessActivity.class,bundle);
+//                                                finish();
+//                                            } catch (InterruptedException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    }.start();
+//                                }
+//                                break;
+//                            case 9004:
+//                                if (!jumping) {
+//                                    jumping = true;
+//                                    new Thread() {
+//                                        @Override
+//                                        public void run() {
+//                                            super.run();
+//                                            try {
+//                                                Thread.sleep(1000);//休眠3秒
+//
+//                                            } catch (InterruptedException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    }.start();
+//                                }
+//                                break;
+//                        }
                     }
-
                     @Override
                     public void onNext(IdentityInfoEntity identityInfoEntity) {
                         LogUtils.e(identityInfoEntity.getStatus());
@@ -132,14 +129,25 @@ public class CertificationActivity extends BaseActivity {
                             throw new ResultException(9001, "返回参数异常");
                         }
                         if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHING, identityInfoEntity.getStatus())) {
-                            throw new ResultException(9002, "新的认证资料审核中，即将跳转");
+//                            throw new ResultException(9002, "新的认证资料审核中，即将跳转");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("type",Constants.IDENTITY_STATUS.AUTHING);
+                            startActivity(IdentitySuccessActivity.class,bundle);
+                            finish();
                         }
-                        if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
-                            throw new ResultException(9003, "新的认证资料已通过，即将跳转");
-                        }
-                        if (TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus())) {
-                            throw new ResultException(9004, "新的认证失败，即将跳转");
-                        }
+//                        if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
+////                            throw new ResultException(9003, "新的认证资料已通过，即将跳转");
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
+//                            startActivity(IdentitySuccessActivity.class,bundle);
+//                            finish();
+//                        }
+//                        if (TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus())) {
+////                            throw new ResultException(9004, "新的认证失败，即将跳转");
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("type",Constants.IDENTITY_STATUS.FAILD);
+//                            startActivity(IdentitySuccessActivity.class,bundle);
+//                        }
                     }
                 });
 

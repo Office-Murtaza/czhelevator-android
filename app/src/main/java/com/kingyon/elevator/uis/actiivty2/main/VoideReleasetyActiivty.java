@@ -120,6 +120,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
         super.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
+        tvTitle.setText("视频发布");
 
     }
 
@@ -222,7 +223,13 @@ public class VoideReleasetyActiivty extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_releaset:
-                httpUbdata();
+                if (editTitle.getText().toString().isEmpty()){
+                    showToast("标题不能为空");
+                }else if (editConent.getText().toString().isEmpty()){
+                    showToast("内容不能为空");
+                }else {
+                    httpUbdata();
+                }
                 break;
             case R.id.img_icon:
             /*表情*/

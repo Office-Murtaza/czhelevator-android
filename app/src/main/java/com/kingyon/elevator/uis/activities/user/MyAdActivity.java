@@ -88,7 +88,8 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
     @Override
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
-        preVRight.setText("免费制作");
+//        preVRight.setText("免费制作");
+        preVRight.setVisibility(View.GONE);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.kingyon.elevator.R;
@@ -199,7 +200,9 @@ public class CityActivity extends BaseStateRefreshingActivity implements BaseAda
                     break;
                 case R.id.tv_city:
                     if (location != null) {
-                        onCityChoosed(new AMapCityEntity(location.getCity()));
+                        onCityChoosed(new AMapCityEntity(location.getCity(),location.getLongitude()+","+location.getLatitude(),location.toString()));
+                        LogUtils.e(location.toString());
+
                     }
                     break;
                 case R.id.tv_location:
@@ -230,6 +233,7 @@ public class CityActivity extends BaseStateRefreshingActivity implements BaseAda
     }
 
     private void onCityChoosed(AMapCityEntity entity) {//查询城市code
+        LogUtils.e(entity.toString());
         if (entity != null) {
             LocationEntity result = new LocationEntity();
             result.setName(FormatUtils.getInstance().getCityName(entity.getName()));

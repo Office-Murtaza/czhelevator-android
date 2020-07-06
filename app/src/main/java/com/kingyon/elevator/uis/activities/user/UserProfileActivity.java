@@ -145,48 +145,15 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
         tvNick.setText(userEntity.getNikeName() != null ? userEntity.getNikeName() : "");
         tvPwd.setText("******");
         tvMobile.setText(CommonUtil.getHideMobile(userEntity.getPhone()));
-    }
-
-//    @OnClick({R.id.ll_head, R.id.ll_nick, R.id.ll_pwd, R.id.ll_mobile})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.ll_head:
-//                PictureSelectorUtil.showPictureSelector(this, headCode);
-//                break;
-//            case R.id.ll_nick:
-//                InputActivity.start(this, nickCode, new InputEntity(10, InputType.TYPE_CLASS_TEXT, "昵称", tvNick.getText().toString(), "请输入昵称", 1));
-//                break;
-//            case R.id.ll_pwd:
-//                startActivity(ModifyPasswordActivity.class);
-//                break;
-//            case R.id.ll_mobile:
-//                UserEntity userBean = DataSharedPreferences.getUserBean();
-//                Bundle bundle = new Bundle();
-//                if (userBean != null && !TextUtils.isEmpty(userBean.getPhone())) {
-//                    bundle.putString(CommonUtil.KEY_VALUE_1, userBean.getPhone());
-//                    startActivity(ModifyPhoneFirstActivity.class, bundle);
-//                } else {
-//                    bundle.putBoolean(CommonUtil.KEY_VALUE_1, true);
-//                    startActivity(LoginActiivty.class, bundle);
-//                }
-//                break;
-//        }
-//    }
-
-
-
-    public String getKey(int id) {
-        String result = "";
-        switch (id) {
-            case R.id.ll_head:
-                result = "avatar";
-                break;
-            case R.id.ll_nick:
-                result = "nikeName";
-                break;
+        tvIntroduction.setText(userEntity.getPersonalizedSignature());
+        tvBirthday.setText(TimeUtil.getYMdTime(userEntity.getBirthday()));
+        if (userEntity.getSex().equals("M")){
+            tvSex.setText("男");
+        }else {
+            tvSex.setText("女");
         }
-        return result;
     }
+
 
     @Override
     protected void onResume() {
@@ -243,7 +210,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                             public void cityCode(int cityCode1) {
                                 LogUtils.e(cityCode1);
                                 ConentUtils.httpEidtProfile(UserProfileActivity.this, "",
-                                        "", String.valueOf(cityCode1), "", "", "", "", new ConentUtils.AddCollect() {
+                                        "","" , String.valueOf(cityCode1), "", "", "", new ConentUtils.AddCollect() {
                                             @Override
                                             public void Collect(boolean is) {
                                                 if (is) {

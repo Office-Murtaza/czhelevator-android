@@ -546,7 +546,7 @@ public static String incomeType(String  source){
         return result;
     }
 
-    public CharSequence getWithdrawState(String status) {
+    public CharSequence getWithdrawState(String status,String faildReason) {
         if (status == null) {
             return "";
         }
@@ -556,10 +556,10 @@ public static String incomeType(String  source){
                 result = String.format(StringContent.REVIEW_STATUS3,"审核中");
                 break;
             case Constants.Withdraw_Status.SUCCESS:
-                result = String.format(StringContent.REVIEW_STATUS1,"未通过");
+                result = String.format(StringContent.REVIEW_STATUS1,"通过");
                 break;
             case Constants.Withdraw_Status.FAILED:
-                result = String.format(StringContent.REVIEW_STATUS2,"通过");
+                result = String.format(StringContent.REVIEW_STATUS2,"未通过("+faildReason+")");
                 break;
             default:
                 result = "";

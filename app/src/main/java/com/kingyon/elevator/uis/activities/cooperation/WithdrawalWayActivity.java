@@ -55,6 +55,7 @@ public class WithdrawalWayActivity extends BaseActivity {
             entity = new CooperationInfoNewEntity();
         }
         initData(page);
+        tvTopTitle.setText("选择提现方式");
 
     }
 

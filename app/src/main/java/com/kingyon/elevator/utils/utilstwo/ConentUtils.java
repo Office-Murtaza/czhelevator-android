@@ -14,6 +14,7 @@ import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.adapters.adaptertwo.partnership.WithdrawalWayAdapter;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
@@ -338,6 +339,29 @@ public class ConentUtils {
                     }
                 });
 
+    }
+
+    public static  void httpBin3Rd(String thirdId, String bindType,OnSuccess onSuccess ){
+        NetService.getInstance().setBin3Rd(thirdId, bindType)
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        onSuccess.onSuccess(false);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        LogUtils.e("成功");
+                        onSuccess.onSuccess(true);
+
+                    }
+                });
+
+    }
+
+    public  interface OnSuccess{
+        void onSuccess(boolean isSuccess);
     }
 
 }

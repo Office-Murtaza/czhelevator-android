@@ -21,6 +21,7 @@ import com.kingyon.elevator.uis.activities.password.ModifyPhoneFirstActivity;
 import com.kingyon.elevator.uis.dialogs.BindingDialog;
 import com.kingyon.elevator.utils.AccountNumUtils;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.library.social.AuthorizeUser;
 import com.kingyon.library.social.AuthorizeUtils;
@@ -101,21 +102,26 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                         tvPhone.setText(AccountNumUtils.hidePhoneNum(userEntity.getPhone()));
                         if (userEntity.isBindAli()){
                             tvPay.setText("已绑定");
+                            tvPay.setTextColor(Color.parseColor("#ABABAB"));
                         }else {
                             tvPay.setText("未绑定");
                             tvPay.setTextColor(Color.parseColor("#FF1330"));
                         }
                         if (userEntity.isBindQq()){
                             tvQq.setText("已绑定");
+                            tvQq.setTextColor(Color.parseColor("#ABABAB"));
                         }else {
                             tvQq.setText("未绑定");
                             tvQq.setTextColor(Color.parseColor("#FF1330"));
+
                         }
                         if (userEntity.isBindWx()){
                             tvWx.setText("已绑定");
+                            tvWx.setTextColor(Color.parseColor("#ABABAB"));
                         }else {
                             tvWx.setText("未绑定");
                             tvWx.setTextColor(Color.parseColor("#FF1330"));
+
                         }
                     }
                 });
@@ -147,6 +153,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                 dialog1.setDialogOnClick(new BindingDialog.DialogOnClick() {
                     @Override
                     public void onClick() {
+                        dialog1.dismiss();
                         UserEntity userBean = DataSharedPreferences.getUserBean();
                         Bundle bundle = new Bundle();
                         if (userBean != null && !TextUtils.isEmpty(userBean.getPhone())) {
@@ -168,6 +175,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                     dialog2.setDialogOnClick(new BindingDialog.DialogOnClick() {
                         @Override
                         public void onClick() {
+                            dialog2.dismiss();
                             if (authorizeUtils == null) {
                                 authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
                                 authorizeUtils.setAuthorizeListener(AccountBindingActivity.this);
@@ -197,6 +205,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                     dialog3.setDialogOnClick(new BindingDialog.DialogOnClick() {
                         @Override
                         public void onClick() {
+                            dialog3.dismiss();
                             /*绑定*/
                             ALiLoginUtils aLiLogin = new ALiLoginUtils(AccountBindingActivity.this) {
                                 @Override
@@ -213,6 +222,16 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                         @Override
                         protected void getOpentid(String unique1) {
                           LogUtils.e(unique1);
+                            ConentUtils.httpBin3Rd(unique1, Constants.LoginType.ALI, new ConentUtils.OnSuccess() {
+                                @Override
+                                public void onSuccess(boolean isSuccess) {
+                                    if (isSuccess) {
+                                        httpData();
+                                    }else {
+                                        showToast("绑定失败");
+                                    }
+                                }
+                            });
                         }
                     };
                     aLiLogin.authV2();
@@ -226,6 +245,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                     dialog4.setDialogOnClick(new BindingDialog.DialogOnClick() {
                         @Override
                         public void onClick() {
+                            dialog4.dismiss();
                             /*绑定*/
                             if (authorizeUtils == null) {
                                 authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
@@ -273,16 +293,35 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                                 case "TENCENT_WEI_XIN":
                                     hideProgress();
                                     LogUtils.e(Constants.LoginType.WX, user.getUsername(), user.getHeadimgurl(), user.getNickname());
-
+                                    ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.WX,new ConentUtils.OnSuccess() {
+                                        @Override
+                                        public void onSuccess(boolean isSuccess) {
+                                            if (isSuccess) {
+                                                httpData();
+                                            }else {
+                                                showToast("绑定失败");
+                                            }
+                                        }
+                                    });
                                     break;
                                 case "TENCENT_QQ":
                                     hideProgress();
                                     LogUtils.e(QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname());
-
+                                    ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.QQ,new ConentUtils.OnSuccess() {
+                                        @Override
+                                        public void onSuccess(boolean isSuccess) {
+                                            if (isSuccess) {
+                                                httpData();
+                                            }else {
+                                                showToast("绑定失败");
+                                            }
+                                        }
+                                    });
                                     break;
                                 case "XINLAN_WEIBO":
                                     hideProgress();
                                     LogUtils.e(Constants.LoginType.SINA, user.getUsername(), user.getHeadimgurl(), user.getNickname());
+
                                     break;
                             }
                             setThirdLoginEnabled(true);

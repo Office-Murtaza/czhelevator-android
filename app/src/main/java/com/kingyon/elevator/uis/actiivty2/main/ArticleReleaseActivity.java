@@ -137,6 +137,7 @@ public class ArticleReleaseActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        tvTitle.setText("文章发布");
     }
 
     @Override

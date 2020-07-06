@@ -47,6 +47,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
 
@@ -159,6 +160,11 @@ public class VoideDetailsActivity extends BaseActivity {
                         tvNumber.setText(recommendEntity.browseTimes + "次播放");
                         tvVideoTime.setText(TimeUtils.secondToTime(recommendEntity.playTime / 1000) + "");
                         GlideUtils.loadRoundImage(VoideDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                            tvAttention.setVisibility(View.GONE);
+                        }else {
+                            tvAttention.setVisibility(View.VISIBLE);
+                        }
                         if (recommendEntity.isAttent == 0) {
                             tvAttention.setText("关注");
                             tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));
@@ -297,6 +303,9 @@ public class VoideDetailsActivity extends BaseActivity {
                 }
                 break;
             case R.id.img_screen:
+
+                GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
+
                 break;
             case R.id.tv_like_comments:
                 break;

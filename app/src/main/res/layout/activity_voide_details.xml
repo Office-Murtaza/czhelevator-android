@@ -23,8 +23,9 @@
             <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
                 android:id="@+id/video"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_180"/>
+                android:layout_height="@dimen/dp_180"
 
+                />
 
             <LinearLayout
                 android:id="@+id/ll_xssjcs"

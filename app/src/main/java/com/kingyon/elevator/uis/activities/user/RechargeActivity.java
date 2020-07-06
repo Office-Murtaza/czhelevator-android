@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -178,10 +179,12 @@ public class RechargeActivity extends BaseSwipeBackActivity implements IWeakHand
                             showToast(ex.getDisplayMessage());
                             hideProgress();
                         }
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
                     }
 
                     @Override
                     public void onNext(WxPayEntity wxPayEntity) {
+                        LogUtils.e(wxPayEntity.toString());
                         if (wxPayEntity == null) {
                             throw new ResultException(9000, "返回参数异常");
                         }

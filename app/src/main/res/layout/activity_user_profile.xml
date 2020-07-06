@@ -214,7 +214,7 @@
                                 android:textColor="#666666"
                                 android:layout_marginLeft="@dimen/dp20"
                                 android:textSize="14sp"
-                                android:text="19990909" />
+                                android:text="1999-09-09" />
                         </LinearLayout>
 
 

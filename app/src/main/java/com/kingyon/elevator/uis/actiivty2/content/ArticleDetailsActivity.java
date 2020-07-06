@@ -148,6 +148,12 @@ public class ArticleDetailsActivity extends BaseActivity {
                         tvTitle.setText(recommendEntity.title + "");
                         tvLikeComments.setText(String.format("%s 点赞    %s 评论    ", recommendEntity.likes, recommendEntity.comments));
                         tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
+
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                            tvAttention.setVisibility(View.GONE);
+                        }else {
+                            tvAttention.setVisibility(View.VISIBLE);
+                        }
                         if (recommendEntity.isAttent == 0) {
                             tvAttention.setText("关注");
                             tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));

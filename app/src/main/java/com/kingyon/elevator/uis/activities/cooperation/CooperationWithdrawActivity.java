@@ -139,6 +139,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         preVRight.setVisibility(View.GONE);
         tvTip.setText(getString(R.string.cooperation_withdraw_tip));
         updateMoneyInfo();
+        ed_input_cash_money.setFilters( new InputFilter[]{new InputFilter.LengthFilter(10)});
         ed_input_cash_money.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
         ed_input_cash_money.addTextChangedListener(new TextWatcher() {
             @Override
@@ -161,14 +162,8 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                 Double taxation = money * entity.getTaxation();
 //                tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money - Float.parseFloat(CommonUtil.getTwoFloat(taxation))));
                 tv_shuihou_suode.setText(CommonUtil.getMayTwoFloat(money * (1-0.06))+"元");
-                tv_shuilv.setText(String.format("(含税%s元)", CommonUtil.getTwoFloat(money * 0.06)));
-//                if (s.length()>0) {
-//                tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_apply_crash_btn);
-//                tv_confirm_cash.setTextColor(Color.parseColor("#ffffff"));
-//            }else {
-//                tv_confirm_cash.setBackgroundResource(R.drawable.shape_bg_device_manager_btn);
-//                tv_confirm_cash.setTextColor(Color.parseColor("#EB7A12"));
-//            }
+                tv_shuilv.setText(String.format("（扣除%s元税费）", CommonUtil.getTwoFloat(money * 0.06)));
+
         }
         });
         updateWayUi(Constants.WithdrawType.BANKCARD, "银行卡");
@@ -176,21 +171,21 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
     private void setCashInfoData(UserCashTypeListEnity bindAccountEntity) {
         if (bindAccountEntity.cashType== 1) {
-            tv_account_type.setText("银行卡"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_type.setText(bindAccountEntity.openingBank+"("+(bindAccountEntity.cashAccount.substring(bindAccountEntity.cashAccount.length()-4))+")");
             tv_account_num.setText(AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
             Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_bank);
             Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
             rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());  // left, top, right, bottom
             tv_account_type.setCompoundDrawables(rightDrawable, null, rightDrawable1, null);
         } else if (bindAccountEntity.cashType == 2){
-            tv_account_type.setText("支付宝"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_type.setText("支付宝（"+AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount)+")");
             tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount));
             Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_alipay);
             Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
             rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());  // left, top, right, bottom
             tv_account_type.setCompoundDrawables(rightDrawable, null, rightDrawable1, null);
         }else {
-            tv_account_type.setText("微信"+AccountNumUtils.hideBankCardNum(bindAccountEntity.cashAccount));
+            tv_account_type.setText("微信("+AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount)+")");
             tv_account_num.setText(AccountNumUtils.hidePhoneNum(bindAccountEntity.cashAccount));
             Drawable rightDrawable = getResources().getDrawable(R.mipmap.ic_cashout_wechat);
             Drawable rightDrawable1 = getResources().getDrawable(R.mipmap.ic_arrow_right);
@@ -202,7 +197,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
     private void updateMoneyInfo() {
 //        tv_shuilv.setText(String.format("(含税%s元)", CommonUtil.getTwoFloat(entity.getRealizableIncome() * 0.06)));
-        ed_input_cash_money.setHint(String.format("您当前最多可提现￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
+        ed_input_cash_money.setHint(String.format("可提现金额为￥%s元", CommonUtil.getTwoFloat(entity.getRealizableIncome())));
     }
 
     @OnClick({R.id.pre_v_right, R.id.ll_way, R.id.tv_ensure, R.id.tv_confirm_cash, R.id.tv_cash_all_money,R.id.ll_account_type})

@@ -29,6 +29,11 @@ public class AMapCityEntity implements Parcelable {
         this.name = name;
         this.adcode = adcode;
     }
+  public AMapCityEntity(String name, String center,String adcode) {
+        this.name = name;
+        this.center = center;
+        this.adcode = adcode;
+    }
 
     public String getCitycode() {
         return citycode;
@@ -141,4 +146,5 @@ public class AMapCityEntity implements Parcelable {
             return new AMapCityEntity[size];
         }
     };
+
 }

@@ -18,6 +18,17 @@ public class LocationEntity implements Parcelable {
     public LocationEntity() {
     }
 
+    @Override
+    public String toString() {
+        return "LocationEntity{" +
+                "name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                '}';
+    }
+
     public LocationEntity(String name, String city, String cityCode, Double longitude, Double latitude) {
         this.name = name;
         this.city = city;

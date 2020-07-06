@@ -39,12 +39,12 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                 return;
             }
         } else if (bingType.equals("3")) {
-//            if (PublicFuncation.isMobileNO(account) || PublicFuncation.checkEmail(account)) {
+            if (account.length()>6) {
                 addAccount("3", account, name, kaihuhang);
-//            } else {
-//                    getView().showShortToast("请输入正确的微信账号");
-//                return;
-//            }
+            } else {
+                    getView().showShortToast("请输入正确的微信账号");
+                return;
+            }
         } else {
             if (!AccountNumUtils.checkBankCard(account)) {
                     getView().showShortToast("请输入正确的银行卡号");
@@ -68,10 +68,6 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(),ex.getDisplayMessage());
-//                        if (isViewAttached()) {
-//                            getView().hideProgressDailog();
-//                            getView().showShortToast(ex.getDisplayMessage());
-//                        }
                         getView().showShortToast("绑定失败");
                     }
 
@@ -80,14 +76,6 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                         LogUtils.e(data);
                         getView().showShortToast("绑定成功");
                         getView().bindSuccess(bingType,account, name, kaihuhang);
-//                        if (isViewAttached()) {
-//                            getView().hideProgressDailog();
-//                            if (data.equals("成功")) {
-//
-//                            } else {
-//                                getView().showShortToast("绑定失败，请重试");
-//                            }
-//                        }
                     }
                 });
 

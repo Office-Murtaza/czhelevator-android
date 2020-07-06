@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <include layout="@layout/layout_header_with_right" />
 
@@ -157,4 +158,5 @@
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
     </com.leo.afbaselibrary.widgets.StateLayout>
+
 </LinearLayout>

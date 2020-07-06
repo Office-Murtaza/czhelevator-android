@@ -121,7 +121,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
                     public void onNext(PointItemEntity pointItemEntity) {
                         tvDeviceId.setText(CommonUtil.getDeviceId(pointItemEntity.getObjectId()));
                         tvDeviceNo.setText(pointItemEntity.getDeviceNo());
-                        tvDeviceTime.setText(TimeUtil.getAllTimeNoSecond(pointItemEntity.getNetTime()));
+                        tvDeviceTime.setText(TimeUtil.getYmdWithDot(pointItemEntity.getNetTime()));
                         tvCellAddress.setText(pointItemEntity.getCellAddress());
                         tvLiftNo.setText(pointItemEntity.getLiftNo());
                         StringBuilder stringBuilder = new StringBuilder();

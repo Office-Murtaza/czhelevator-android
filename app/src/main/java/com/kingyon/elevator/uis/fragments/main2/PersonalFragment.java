@@ -26,6 +26,7 @@ import com.kingyon.elevator.uis.activities.homepage.WikiListActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
+import com.kingyon.elevator.uis.activities.user.IdentitySuccessActivity;
 import com.kingyon.elevator.uis.activities.user.InviteActivity;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
@@ -143,7 +144,7 @@ public class PersonalFragment extends BaseFragment {
     @BindView(R.id.tv_hx2)
     TextView tvHx2;
     String otherUserAccount;
-
+    String authStatus;
     @Override
     public int getContentViewId() {
         return R.layout.fragment_persona;
@@ -202,7 +203,7 @@ public class PersonalFragment extends BaseFragment {
             tvTCurrency.setText("T币：￥" + user.getUserCenterAttr().tlwMoney + "");
             tvIntegral.setText("积分：" + user.getUserCenterAttr().integral + "");
             LogUtils.e(user.getRole());
-            String authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
+             authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
             switch (authStatus) {
                 case Constants.IDENTITY_STATUS.AUTHING:
                     /*认证中*/
@@ -314,7 +315,38 @@ public class PersonalFragment extends BaseFragment {
             case R.id.img_certification:
                 /*认证*/
                 if (isToken(getActivity())) {
-                    ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
+                    if (!authStatus.isEmpty()) {
+                        switch (authStatus) {
+                            case Constants.IDENTITY_STATUS.AUTHING:
+                                /*认证中*/
+                                Bundle bundle = new Bundle();
+                                bundle.putString("type", Constants.IDENTITY_STATUS.AUTHING);
+                                startActivity(IdentitySuccessActivity.class, bundle);
+                                break;
+                            case Constants.IDENTITY_STATUS.FAILD:
+                                /*认证失败*/
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString("type", Constants.IDENTITY_STATUS.FAILD);
+                                startActivity(IdentitySuccessActivity.class, bundle1);
+                                break;
+                            case Constants.IDENTITY_STATUS.AUTHED:
+                                /*已认证*/
+                                Bundle bundle2 = new Bundle();
+                                bundle2.putString("type", Constants.IDENTITY_STATUS.AUTHED);
+                                startActivity(IdentitySuccessActivity.class, bundle2);
+                                break;
+                            case Constants.IDENTITY_STATUS.NO_AUTH:
+                                /*未认证*/
+                                ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
+                                break;
+                            default:
+                                ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
+                                break;
+                        }
+                    }else {
+                        showToast("数据错误 请重试");
+                        httpPersonal();
+                    }
                 } else {
                     ActivityUtils.setLoginActivity();
                 }

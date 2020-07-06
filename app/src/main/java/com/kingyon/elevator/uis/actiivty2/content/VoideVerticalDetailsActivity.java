@@ -141,7 +141,11 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         tvLikeNumer.setText(recommendEntity.likes + "");
                         tvCommentsNumber.setText(recommendEntity.comments + "");
                         GlideUtils.loadRoundImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
-//        httpComment(page,recommendEntity.id);
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                            tvAttention.setVisibility(View.GONE);
+                        }else {
+                            tvAttention.setVisibility(View.VISIBLE);
+                        }
                         if (recommendEntity.isAttent == 0) {
                             tvAttention.setText("关注");
                             tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));

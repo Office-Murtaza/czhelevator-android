@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.entities.AuthStatusEntily;
@@ -20,14 +21,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
+
 /**
  * Created by GongLi on 2019/1/9.
  * Email：lc824767150@163.com
  */
 
 public class IdentitySuccessActivity extends BaseActivity {
-
-
     String type;
     @BindView(R.id.img_top_back)
     ImageView imgTopBack;
@@ -127,7 +128,10 @@ public class IdentitySuccessActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
+                finish();
+                break;
             case R.id.tv_next:
+                ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
                 finish();
                 break;
         }

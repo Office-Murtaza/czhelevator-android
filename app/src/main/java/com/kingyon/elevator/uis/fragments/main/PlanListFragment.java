@@ -128,7 +128,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
      */
     private Boolean isSelectAll = false;
 
-    private Boolean isfolding = false;
+    private Boolean isfolding = true;
 
     private String planType;
     private Long startTime;
@@ -501,11 +501,12 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             case R.id.tv_folding:
                 /*折叠*/
                 if (isfolding){
-
+                    isSelectAll = false;
+                    preRecyclerView.setVisibility(View.GONE);
                 }else {
-
+                    isSelectAll = true;
+                    preRecyclerView.setVisibility(View.VISIBLE);
                 }
-
                 break;
 
         }

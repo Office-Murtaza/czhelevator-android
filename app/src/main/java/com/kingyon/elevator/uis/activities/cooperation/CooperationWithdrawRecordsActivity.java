@@ -49,14 +49,14 @@ public class CooperationWithdrawRecordsActivity extends BaseStateRefreshingLoadi
                 holder.setText(R.id.tv_zh, AccountNumUtils.hideBankCardNum(item.getAliAcount()));
                 holder.setTextNotHide(R.id.tv_time, TimeUtil.getAllTimeNoSecond(item.getTime()));
 //                holder.setTextNotHide(R.id.tv_state, "审核状态:"+FormatUtils.getInstance().getWithdrawState(item.getStatus()));
-                holder.setText(R.id.tv_state, Html.fromHtml(String.valueOf(FormatUtils.getInstance().getWithdrawState(item.getStatus()))));
-                holder.setText(R.id.tv_tax,"（税收）");
+                holder.setText(R.id.tv_state, Html.fromHtml(String.valueOf(FormatUtils.getInstance().getWithdrawState(item.getStatus(),item.getFaildReason()))));
+                holder.setText(R.id.tv_tax,"（扣税"+CommonUtil.getTwoFloat(item.getAmount()*0.06)+"）");
 
                 holder.setTextNotHide(R.id.tv_sum, CommonUtil.getTwoFloat(item.getAmount()));
                 boolean failed = TextUtils.equals(item.getStatus(), Constants.Withdraw_Status.FAILED);
-                holder.setTextColor(R.id.tv_state, failed ? 0xFFEE4E33 : 0xFF808080);
-                holder.setTextNotHide(R.id.tv_reason, String.format("失败原因：%s", item.getFaildReason()));
-                holder.setVisible(R.id.tv_reason, failed && !TextUtils.isEmpty(item.getFaildReason()));
+//                holder.setTextColor(R.id.tv_state, failed ? 0xFFEE4E33 : 0xFF808080);
+//                holder.setTextNotHide(R.id.tv_reason, String.format("失败原因：%s", item.getFaildReason()));
+//                holder.setVisible(R.id.tv_reason, failed && !TextUtils.isEmpty(item.getFaildReason()));
             }
         };
     }

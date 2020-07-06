@@ -169,12 +169,12 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         tvTime.setText("总收益：("+ DateUtils.getCurrentTime1()+")");
         tvAllIncome.setText(getSumSpan(CommonUtil.getTwoFloat(entity.total)));
         tvCanCrash.setText(CommonUtil.getTwoFloat(entity.canWithdraw));
-        yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getMayTwoFloat(entity.yesterdayMoney));
+        yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getTwoFloat(entity.yesterdayMoney));
          cooperationInfoNewEntity = new CooperationInfoNewEntity();
         cooperationInfoNewEntity.setYesterdayIncome(entity.yesterdayMoney);
         cooperationInfoNewEntity.setRealizableIncome(entity.canWithdraw);
 
-        tvAlreadyCrash.setText(CommonUtil.getMayTwoFloat(entity.withdrawal));
+        tvAlreadyCrash.setText(CommonUtil.getTwoFloat(entity.withdrawal));
 
     }
 
@@ -233,18 +233,12 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 /*提现记录*/
                 startActivity(CooperationWithdrawRecordsActivity.class);
                 break;
-            case R.id.tv_all_income:
-                /*总余额*/
-                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
-                break;
             case R.id.yesterday_income:
                 /*昨日收益*/
-//                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.YesterDayIncomeFragment);
                 ActivityUtils.setActivity(ACTIVITY_EARNINGS_YESTERDAY);
                 break;
             case R.id.already_crash_container:
                 /*已提现*/
-//                MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.AlreadyCrashFragment);
                 ActivityUtils.setActivity(ACTIVITY_HAVE_WITHDRAWAL);
                 break;
             case R.id.btn_apply_crash:
@@ -263,42 +257,15 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 }
                 break;
             case R.id.ll_income_today:
-//                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.DAY);
-//                startActivity(CooperationIncomeActivity.class, bundle);
+            case R.id.tv_all_income:
                 /*总余额*/
                 MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.IncomeRecordFragment);
                 break;
-//            case R.id.ll_income_month:
-//                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.MONTH);
-//                startActivity(CooperationIncomeActivity.class, bundle);
-//                break;
-//            case R.id.ll_income_year:
-//                bundle.putString(CommonUtil.KEY_VALUE_1, Constants.INCOME_FILTER.YEAR);
-//                startActivity(CooperationIncomeActivity.class, bundle);
-//                break;
-//            case R.id.ll_fee_property:
-//                startActivity(PropertyFeeActivity.class);
-//                break;
-//            case R.id.ll_fee_optical:
-//                startActivity(OpticalFeeActivity.class);
-//                break;
-//            case R.id.tv_income:
-//                startActivity(CooperationEarningsActivity.class);
-////                startActivity(CooperationIncomeActivity.class);
-//                break;
             case R.id.tv_device_manager:
                 /*设备管理*/
                 bundle.putString(CommonUtil.KEY_VALUE_1, Constants.RoleType.PARTNER);
                 startActivity(CooperationDeviceActivity.class, bundle);
                 break;
-//            case R.id.ll_cells:
-////                bundle.putBoolean(CommonUtil.KEY_VALUE_3, true);
-////                startActivity(CellChooseActivity.class, bundle);
-//                startActivity(SalesmanActivity.class);
-//                break;
-//            case R.id.pre_v_right:
-//                onTipClick();
-//                break;
         }
     }
 

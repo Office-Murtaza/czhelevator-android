@@ -41,7 +41,34 @@ public class UserEntity implements Parcelable {
     private boolean bindAli;
     private boolean bindQq;
     private boolean bindWx;
+    private String personalizedSignature;
+    private String sex;
+    private long birthday;
     private UserCenterAttrEntiy userCenterAttr;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public long getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(long birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPersonalizedSignature() {
+        return personalizedSignature;
+    }
+
+    public void setPersonalizedSignature(String personalizedSignature) {
+        this.personalizedSignature = personalizedSignature;
+    }
 
     public String getFullName() {
         return fullName;

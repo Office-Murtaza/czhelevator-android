@@ -1061,6 +1061,11 @@ public class NetService {
         return addSchedulers(getApi().donateCoupons(phone, couponCounts, couponIds));
     }
 
+    /*2.0第三方绑定*/
+    public Observable<String> setBin3Rd(String thirdId, String bindType){
+        return addSchedulers(getApi().getBinRd(thirdId, bindType));
+    }
+
     public Observable<IdentityInfoEntity> getIdentityInformation() {
         return addSchedulers(getApi().getIdentityInformation());
     }
