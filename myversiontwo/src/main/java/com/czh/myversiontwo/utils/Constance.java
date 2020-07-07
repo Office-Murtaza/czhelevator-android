@@ -107,9 +107,10 @@ public class Constance {
     public static final String ACTIVITY_USER_INTRODUCTION="/app/activity/userintroduction";
     /**昨日收益*/
     public static final String ACTIVITY_EARNINGS_YESTERDAY="/app/activity/earningsyesterday";
-
     /**显示已提现*/
     public static final String ACTIVITY_HAVE_WITHDRAWAL="/app/activity/havewithdrawal";
+    /**选择用户封面*/
+    public static final String ACTIVITY_COVER = "/app/activity/coveractivity";
 
 
 

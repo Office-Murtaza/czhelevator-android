@@ -59,6 +59,7 @@
                 android:hint="在这里写下简介，方便大家认识你"
                 android:gravity="top"
                 android:padding="@dimen/dp_15"
+                android:maxLength="140"
                 ></EditText>
 
 

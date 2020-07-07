@@ -147,6 +147,12 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
         tvMobile.setText(CommonUtil.getHideMobile(userEntity.getPhone()));
         tvIntroduction.setText(userEntity.getPersonalizedSignature());
         tvBirthday.setText(TimeUtil.getYMdTime(userEntity.getBirthday()));
+        CityUtils.getCityStr(this, userEntity.getCity(), new CityUtils.CityStr() {
+            @Override
+            public void cityCode(String cityCode) {
+                tvRegion.setText(cityCode);
+            }
+        });
         if (userEntity.getSex().equals("M")){
             tvSex.setText("男");
         }else {

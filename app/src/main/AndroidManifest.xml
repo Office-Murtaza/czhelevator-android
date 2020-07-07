@@ -810,6 +810,10 @@
         <activity android:name=".uis.activities.cooperation.HaveWithdrawalActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0封面选择-->
+        <activity android:name=".uis.actiivty2.user.CoverActivity"
+            android:screenOrientation="portrait"
+            />
 
 
         <!-- ****************友盟配置****************************** -->

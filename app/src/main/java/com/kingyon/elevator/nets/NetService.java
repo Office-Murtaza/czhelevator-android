@@ -103,6 +103,9 @@ import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
+import com.kingyon.elevator.entities.entities.MassageListMentiy;
+import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -395,7 +398,19 @@ public class NetService {
         return addSchedulers(getApi().checkBind3Rd());
     }
 
+    /*2.0消息首页数据*/
+    public Observable<MassageHomeEntiy<MassageLitsEntiy>> getMsgOverview(int page,int rows){
+        return addSchedulers(getApi().getMsgOverview(page, rows));
+    }
+    /*2.0消息列表*/
+    public Observable<List<MassageListMentiy>> getMessageList(int page,int rows){
+        return addSchedulers(getApi().getMessageList(page, rows));
+    }
 
+    /*2.0删除消息机器人*/
+    public Observable<String> removeRobot(String robot_id){
+        return addSchedulers(getApi().removeRobot(robot_id));
+    }
 
     //验证码
     public Observable<String> sendVerifyCode(String mobile, CheckCodePresenter.VerifyCodeType type) {
@@ -1400,8 +1415,8 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
         return addSchedulers(getApi().partnerWithdrawList(page));
     }
 
-    public Observable<ConentEntity<CellItemEntity>> partnerCellList(Double longitude, Double latitude, int page) {
-        return addSchedulers(getApi().partnerCellList(longitude, latitude, page).doOnNext(new Action1<ConentEntity<CellItemEntity>>() {
+    public Observable<ConentEntity<CellItemEntity>> partnerCellList(Double longitude, Double latitude, int page,String keywords) {
+        return addSchedulers(getApi().partnerCellList(longitude, latitude, page,keywords).doOnNext(new Action1<ConentEntity<CellItemEntity>>() {
             @Override
             public void call(ConentEntity<CellItemEntity> cellItemEntityPageListEntity) {
                 if (cellItemEntityPageListEntity != null && cellItemEntityPageListEntity.getContent() != null) {

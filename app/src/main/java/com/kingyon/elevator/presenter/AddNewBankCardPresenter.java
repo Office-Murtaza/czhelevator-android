@@ -39,7 +39,7 @@ public class AddNewBankCardPresenter extends BasePresenter<AddNewBankCardView> {
                 return;
             }
         } else if (bingType.equals("3")) {
-            if (account.length()>6) {
+            if (account.length()>=6) {
                 addAccount("3", account, name, kaihuhang);
             } else {
                     getView().showShortToast("请输入正确的微信账号");

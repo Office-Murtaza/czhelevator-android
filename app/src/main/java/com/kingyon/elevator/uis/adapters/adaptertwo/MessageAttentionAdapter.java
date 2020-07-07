@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.uis.dialogs.NotAttentionDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
@@ -71,7 +72,8 @@ public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttenti
         holder.llTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",userEntiy.followerAccount);
+                LogUtils.e(userEntiy.followerAccount, userEntiy.beFollowerAccount,DataSharedPreferences.getCreatateAccount());
+                ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",userEntiy.beFollowerAccount);
             }
         });
 

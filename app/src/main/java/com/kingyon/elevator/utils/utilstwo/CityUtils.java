@@ -50,4 +50,43 @@ public class CityUtils {
    public interface CityCode{
         void cityCode(int cityCode);
     }
+
+    public interface CityStr{
+        void cityCode(String cityCode);
+    }
+
+    public static  void getCityStr(Context context,int city,CityStr cityStr){
+        if (city<=0){
+            cityStr.cityCode("未选择");
+        }else {
+            try {
+                InputStreamReader isr = new InputStreamReader(context.getAssets().open("gd_district.json"), "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+                StringBuilder builder = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    builder.append(line);
+                }
+                br.close();
+                isr.close();
+                //直接传入JSONObject来构造一个实例
+                JSONArray jsonArray = new JSONArray(builder.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    JSONArray jsonArray1 = jsonObject.optJSONArray("districts");
+                    for (int c = 0; c < jsonArray1.length(); c++) {
+                        JSONObject object1 = jsonArray1.optJSONObject(c);
+                        if (object1.optInt("adcode") == city) {
+                            cityStr.cityCode(object1.getString("name"));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LogUtils.e(e.toString());
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

@@ -43,8 +43,17 @@ public class UserEntity implements Parcelable {
     private boolean bindWx;
     private String personalizedSignature;
     private String sex;
+    private int city;
     private long birthday;
     private UserCenterAttrEntiy userCenterAttr;
+
+    public int getCity() {
+        return city;
+    }
+
+    public void setCity(int city) {
+        this.city = city;
+    }
 
     public String getSex() {
         return sex;

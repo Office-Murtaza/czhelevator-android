@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -43,7 +44,10 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.application.AppContent;
+import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.uis.adapters.adapterone.SearchResultAdapter;
 import com.kingyon.elevator.uis.widgets.SegmentedGroup;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -53,6 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -73,9 +78,15 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     SegmentedGroup mSegmentedGroup;
     @BindView(R.id.listview)
     ListView listView;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.tv_positioning)
+    TextView tvPositioning;
+    @BindView(R.id.activity_main)
+    LinearLayout activityMain;
 
     private AMap aMap;
-    private LocationSource.OnLocationChangedListener mListener;
+    private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
 
@@ -107,10 +118,12 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
 
     private boolean isInputKeySearch;
     private String inputSearchKey;
+    double longitude = 106.648358;
+    double latitude = 26.616943;
 
     @Override
     protected String getTitleText() {
-        return "选取定位";
+        return "选取地址";
     }
 
     @Override
@@ -122,40 +135,51 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     protected void initViews(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
         initMap();
+        geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(this);
+        LocationEntity entity = AppContent.getInstance().getLocation();
+        LogUtils.e(entity.toString());
+        tvAddress.setText("为你找到"+entity.getName()+"附近的小区");
+        if (entity != null) {
+            latitude = entity.getLatitude();
+            longitude = entity.getLongitude();
+            searchLatlonPoint = new LatLonPoint(latitude, longitude);
+            geoAddress(searchLatlonPoint);
+            LogUtils.e(latitude, longitude);
+        } else {
+            geoAddress(searchLatlonPoint);
+        }
         searchResultAdapter = new SearchResultAdapter(this);
         listView.setAdapter(searchResultAdapter);
-
         listView.setOnItemClickListener(onItemClickListener);
 
-        mSegmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_group);
-        mSegmentedGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                searchType = items[0];
-                switch (checkedId) {
-                    case R.id.radio0:
-                        searchType = items[0];
-                        break;
-                    case R.id.radio1:
-                        searchType = items[1];
-                        break;
-                    case R.id.radio2:
-                        searchType = items[2];
-                        break;
-//                    case R.id.radio3:
-//                        searchType = items[3];
+//        mSegmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_group);
+//        mSegmentedGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                searchType = items[0];
+//                switch (checkedId) {
+//                    case R.id.radio0:
+//                        searchType = items[0];
 //                        break;
-                }
-                geoAddress();
-            }
-        });
+//                    case R.id.radio1:
+//                        searchType = items[1];
+//                        break;
+//                    case R.id.radio2:
+//                        searchType = items[2];
+//                        break;
+////                    case R.id.radio3:
+////                        searchType = items[3];
+////                        break;
+//                }
+//
+//            }
+//        });
 
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String newText = s.toString().trim();
@@ -184,9 +208,6 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
                 }
             }
         });
-
-        geocoderSearch = new GeocodeSearch(this);
-        geocoderSearch.setOnGeocodeSearchListener(this);
 
         hideSoftKey(searchText);
     }
@@ -239,26 +260,40 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
             }
         }
     };
+
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (position != searchResultAdapter.getSelectedPosition()) {
-                PoiItem poiItem = (PoiItem) searchResultAdapter.getItem(position);
-                LatLng curLatlng = new LatLng(poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude());
+//            if (position != searchResultAdapter.getSelectedPosition()) {
+            PoiItem poiItem = (PoiItem) searchResultAdapter.getItem(position);
+            LatLng curLatlng = new LatLng(poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude());
 
-                isItemClickAction = true;
+            isItemClickAction = true;
 
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatlng, 16f));
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatlng, 16f));
 
-                searchResultAdapter.setSelectedPosition(position);
-                searchResultAdapter.notifyDataSetChanged();
+            searchResultAdapter.setSelectedPosition(position);
+            searchResultAdapter.notifyDataSetChanged();
+//            location = String.format("%s,%s", poi.getLatLonPoint().getLongitude(), poi.getLatLonPoint().getLatitude());
+////                        tvArea.setTag(Long.parseLong(poi.getAdCode()));
+//            tvArea.setText(String.format("%s%s%s", poi.getProvinceName(), poi.getCityName(), poi.getAdName()));
+//            etAddress.setText(poi.getSnippet());
+
+            LogUtils.e(poiItem.getLatLonPoint().getLongitude(),
+                    poiItem.getLatLonPoint().getLatitude(),
+                    poiItem.getAdCode(),
+                    poiItem.getProvinceName(),
+                    poiItem.getCityName(),
+                    poiItem.getAdName(),
+                    poiItem.getSnippet()
+            );
 
                 Intent intent = new Intent();
                 intent.putExtra(CommonUtil.KEY_VALUE_1, poiItem);
                 setResult(RESULT_OK, intent);
                 finish();
-            }
         }
+//        }
     };
 
     private void initMap() {
@@ -281,7 +316,7 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
                 if (!isItemClickAction && !isInputKeySearch) {
-                    geoAddress();
+//                    geoAddress();
 //                    startJumpAnimation();
                 }
                 searchLatlonPoint = new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude);
@@ -350,11 +385,12 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     /**
      * 响应逆地理编码
      */
-    public void geoAddress() {
+    public void geoAddress(LatLonPoint searchLatlonPoint) {
 //        Log.i("MY", "geoAddress"+ searchLatlonPoint.toString());
         showProgressDialog("正在加载...");
         searchText.setText("");
         if (searchLatlonPoint != null) {
+            LogUtils.e(searchLatlonPoint, GeocodeSearch.AMAP);
             RegeocodeQuery query = new RegeocodeQuery(searchLatlonPoint, 200, GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
             geocoderSearch.getFromLocationAsyn(query);
         }
@@ -371,12 +407,25 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
 //        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
     }
 
-    @OnClick({R.id.img_clear, R.id.tv_search})
+    @OnClick({R.id.img_clear, R.id.tv_search,R.id.tv_positioning})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_clear:
                 break;
             case R.id.tv_search:
+                break;
+            case R.id.tv_positioning:
+                LocationEntity entity = AppContent.getInstance().getLocation();
+                if (entity != null) {
+                    latitude = entity.getLatitude();
+                    longitude = entity.getLongitude();
+                    searchLatlonPoint = new LatLonPoint(latitude, longitude);
+                    geoAddress(searchLatlonPoint);
+                    LogUtils.e(latitude, longitude);
+                } else {
+                    geoAddress(searchLatlonPoint);
+                }
+                searchText.setText("");
                 break;
         }
     }
@@ -501,9 +550,9 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     protected void doSearchQuery() {
 //        Log.i("MY", "doSearchQuery");
         currentPage = 0;
-        query = new PoiSearch.Query(searchKey, searchType, "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query(searchKey, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setCityLimit(false);
-        query.setPageSize(20);
+        query.setPageSize(100);
         query.setPageNum(currentPage);
 
         if (searchLatlonPoint != null) {
@@ -551,7 +600,7 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     private void updateListview(List<PoiItem> poiItems) {
         resultData.clear();
         searchResultAdapter.setSelectedPosition(0);
-        resultData.add(firstItem);
+//        resultData.add(firstItem);
         resultData.addAll(poiItems);
 
         searchResultAdapter.setData(resultData);
@@ -576,5 +625,12 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

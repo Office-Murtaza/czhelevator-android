@@ -79,7 +79,7 @@ public class RechargeActivity extends BaseSwipeBackActivity implements IWeakHand
     @Override
     protected void initViews(Bundle savedInstanceState) {
         payViews = new View[]{tvAliPay, tvWxPay};
-        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
+        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"")});
         etSum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

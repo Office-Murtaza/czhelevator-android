@@ -32,6 +32,7 @@ public class UserTwoEntity {
     public int contentNum;
     public int isAttent;
     public String account;
+    public String coverImgUrl;
 
     @Override
     public String toString() {

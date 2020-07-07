@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_00000000"
                 android:hint="昵称"
+                android:maxLength="20"
                 ></EditText>
 
             <ImageView

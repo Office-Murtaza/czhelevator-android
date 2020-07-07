@@ -503,7 +503,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
     }
 
     private void requestCell(double longitude, double latitude) {
-        NetService.getInstance().partnerCellList(longitude, latitude, 1)
+        NetService.getInstance().partnerCellList(longitude, latitude, 1,"")
                 .flatMap(new Func1<ConentEntity<CellItemEntity>, Observable<CellItemEntity>>() {
                     @Override
                     public Observable<CellItemEntity> call(ConentEntity<CellItemEntity> pageListEntity) {

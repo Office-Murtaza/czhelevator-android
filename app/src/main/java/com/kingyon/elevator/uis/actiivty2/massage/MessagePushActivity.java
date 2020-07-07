@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessagePushAdapter;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -33,6 +35,8 @@ public class MessagePushActivity extends BaseActivity {
     TextView tvRight;
     @BindView(R.id.rv_robot)
     RecyclerView rvRobot;
+    @Autowired
+    int robotId;
 
     MessagePushAdapter messagePushAdapter;
     @Override
@@ -42,7 +46,8 @@ public class MessagePushActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        tvTopTitle.setText("消息");
+        ARouter.getInstance().inject(this);
+        tvTopTitle.setText("消息"+robotId);
         rvRobot.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));
         messagePushAdapter = new MessagePushAdapter(this,20);
         rvRobot.setAdapter(messagePushAdapter);

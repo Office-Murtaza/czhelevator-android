@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.activities.cooperation;
 import android.text.Html;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.utils.StringContent;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -48,8 +49,7 @@ public class CooperationWithdrawRecordsActivity extends BaseStateRefreshingLoadi
                 holder.setText(R.id.tv_txtype,FormatUtils.getInstance().withdrawalType(item.getWithDrawWay())+"提现");
                 holder.setText(R.id.tv_zh, AccountNumUtils.hideBankCardNum(item.getAliAcount()));
                 holder.setTextNotHide(R.id.tv_time, TimeUtil.getAllTimeNoSecond(item.getTime()));
-//                holder.setTextNotHide(R.id.tv_state, "审核状态:"+FormatUtils.getInstance().getWithdrawState(item.getStatus()));
-                holder.setText(R.id.tv_state, Html.fromHtml(String.valueOf(FormatUtils.getInstance().getWithdrawState(item.getStatus(),item.getFaildReason()))));
+                holder.setText(R.id.tv_state, Html.fromHtml(FormatUtils.getInstance().getWithdrawState(item.getStatus(),item.getFaildReason())));
                 holder.setText(R.id.tv_tax,"（扣税"+CommonUtil.getTwoFloat(item.getAmount()*0.06)+"）");
 
                 holder.setTextNotHide(R.id.tv_sum, CommonUtil.getTwoFloat(item.getAmount()));

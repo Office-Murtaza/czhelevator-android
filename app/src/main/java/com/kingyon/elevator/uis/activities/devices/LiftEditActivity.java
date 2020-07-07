@@ -19,6 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/18.
  * Email：lc824767150@163.com
+ * 电梯编辑
  */
 
 public class LiftEditActivity extends BaseSwipeBackActivity {

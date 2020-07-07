@@ -11,80 +11,104 @@
     app:swipeEnable="true">
 
     <LinearLayout
-        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_item"
-        android:padding="@dimen/dp_10"
-        android:orientation="horizontal">
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_message_notice"
-            ></ImageView>
-
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
 
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_5"
-            android:layout_marginLeft="@dimen/dp_10"
-            >
+            android:background="@drawable/bg_item"
+            android:padding="@dimen/dp_10"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <TextView
+
+            <ImageView
+                android:id="@+id/img_robotphoto"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:src="@mipmap/ic_message_notice"
+                ></ImageView>
+
+
+            <LinearLayout
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="多多助手"
-                android:textColor="#ff333333"
-                android:textSize="14sp"
-                />
+                android:orientation="vertical"
+                android:padding="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_10"
+                >
 
-            <TextView
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="多多助手"
+                    android:textColor="#ff333333"
+                    android:textSize="14sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_conent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="系统维护通知：因假期放假3天4月系统…"
+                    android:textColor="#ff999999"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
-                android:text="系统维护通知：因假期放假3天4月系统…"
-                android:textColor="#ff999999"
-                android:textSize="12sp"
-                />
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03-28"
+                    android:textColor="#ff999999"
+                    android:textSize="11sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_number"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:text="8"
+                    android:gravity="center"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/sp_10"
+                    android:padding="@dimen/dp_2"
+                    android:layout_gravity="end"
+                    android:background="@drawable/bg_masg_number"
+
+                    />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="03-28"
-                android:textColor="#ff999999"
-                android:textSize="11sp"
-                />
-
-            <TextView
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:text="8"
-                android:gravity="center"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/sp_10"
-                android:padding="@dimen/dp_2"
-                android:layout_gravity="end"
-                android:background="@drawable/bg_masg_number"
-
-                />
-
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="#e1e1e1"/>
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"

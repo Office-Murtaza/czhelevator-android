@@ -9,10 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.services.core.PoiItem;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.czh.myversiontwo.utils.DistanceUtils.distance;
 
 /**
  * 包名： com.amap.searchdemo
@@ -88,12 +91,13 @@ public class SearchResultAdapter extends BaseAdapter {
     class ViewHolder {
         TextView textTitle;
         TextView textSubTitle;
-        ImageView imageCheck;
+        TextView tv_getdistance;
+
 
         public ViewHolder(View view) {
             textTitle = (TextView) view.findViewById(R.id.text_title);
             textSubTitle = (TextView) view.findViewById(R.id.text_title_sub);
-            imageCheck = (ImageView) view.findViewById(R.id.image_check);
+            tv_getdistance = (TextView) view.findViewById(R.id.tv_getdistance);
         }
 
         public void bindView(int position) {
@@ -102,11 +106,13 @@ public class SearchResultAdapter extends BaseAdapter {
 
             PoiItem poiItem = data.get(position);
 
-            textTitle.setText(poiItem.getTitle());
+            textTitle.setText(poiItem.getTitle()+"");
             textSubTitle.setText(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
+//            textSubTitle.setText( poiItem.getSnippet());
 
-            imageCheck.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
-            textSubTitle.setVisibility((position == 0 && poiItem.getPoiId().equals("regeo")) ? View.GONE : View.VISIBLE);
+            tv_getdistance.setText(distance(poiItem.getDistance()));
+
+//            textSubTitle.setVisibility((position == 0 && poiItem.getPoiId().equals("regeo")) ? View.GONE : View.VISIBLE);
         }
     }
 }

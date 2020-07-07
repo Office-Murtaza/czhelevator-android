@@ -14,4 +14,6 @@ public class MessageNewsPresenter extends BasePresenter {
     public MessageNewsPresenter(Context mContext) {
         super(mContext);
     }
+
+
 }

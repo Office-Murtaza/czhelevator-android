@@ -77,6 +77,9 @@ import com.kingyon.elevator.entities.entities.EarningsYesterdayEnity;
 import com.kingyon.elevator.entities.entities.EquipmentDetailsRevenueEntiy;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
+import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
+import com.kingyon.elevator.entities.entities.MassageListMentiy;
+import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -118,6 +121,7 @@ public interface NetApi {
 //    2.0测试接口
     String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
@@ -460,6 +464,18 @@ public interface NetApi {
     @POST("userSecurity/getAuthStatus")
     Observable<AuthStatusEntily> getAuthStatus();
 
+    /*2.0消息首页内容*/
+    @GET("massage/getMsgOverview")
+    Observable<MassageHomeEntiy<MassageLitsEntiy>> getMsgOverview(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息列表*/
+    @GET("massage/getMessageList")
+    Observable<List<MassageListMentiy>> getMessageList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0删除机器人消息*/
+    @POST("massage/removeRobot")
+    @FormUrlEncoded
+    Observable<String> removeRobot (@Field("robot_id") String robot_id);
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -973,7 +989,7 @@ public interface NetApi {
     @POST("partner/myCellList")
     @FormUrlEncoded
     Observable<ConentEntity<CellItemEntity>> partnerCellList(@Field("longitude") Double longitude
-            , @Field("latitude") Double latitude, @Field("page") int page);
+            , @Field("latitude") Double latitude, @Field("page") int page, @Field("keywords")String keywords);
 
 //    @POST("partner/myCellDevices")
 //    @FormUrlEncoded

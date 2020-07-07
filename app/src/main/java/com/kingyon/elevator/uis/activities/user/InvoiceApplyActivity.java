@@ -69,7 +69,7 @@ public class InvoiceApplyActivity extends BaseStateLoadingActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
+        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"")});
         updateType(tvCompany);
     }
 

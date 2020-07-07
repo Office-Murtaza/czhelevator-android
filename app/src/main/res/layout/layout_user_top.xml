@@ -7,6 +7,7 @@
     >
 
     <RelativeLayout
+        android:id="@+id/rl_bj"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_220"
         >
@@ -42,7 +43,6 @@
             android:layout_marginTop="@dimen/dp10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="哥曾经是传说"
             android:textColor="#ffffffff"
             android:layout_below="@+id/img_placeholder"
             android:layout_centerHorizontal="true"
@@ -80,7 +80,6 @@
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="简介：如果可以我还要做大哥"
             android:textColor="#ffe3e3e3"
             android:textSize="12sp"
             android:layout_below="@+id/tv_attention_number"

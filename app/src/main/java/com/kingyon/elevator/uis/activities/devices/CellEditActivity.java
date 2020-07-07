@@ -245,19 +245,8 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_right:
-//                startActivityForResult(CellLocationChooseActivity.class, CommonUtil.REQ_CODE_1);
                 break;
             case R.id.ll_area:
-//                KeyBoardUtils.closeKeybord(this);
-//                tvArea.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        addressUtil.showPicker();
-//                    }
-//                }, 100);
-//                if (tvArea.getTag() == null) {
-//                    showToast("请选择定位");
-//                }
                 startActivityForResult(CellLocationChooseActivity.class, CommonUtil.REQ_CODE_1);
                 break;
             case R.id.ll_address:
@@ -268,8 +257,6 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             case R.id.ll_name:
                 break;
             case R.id.ll_type:
-//                KeyBoardUtils.closeKeybord(this);
-//                showCellTypePicker();
                 CommunityTypeDialog communityTypeDialog = new CommunityTypeDialog(this, new CommunityTypeDialog.OnClickzhi() {
                     @Override
                     public void getIdStr(String title, int id) {
@@ -544,7 +531,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                     PoiItem poi = data.getParcelableExtra(CommonUtil.KEY_VALUE_1);
                     if (poi != null) {
                         location = String.format("%s,%s", poi.getLatLonPoint().getLongitude(), poi.getLatLonPoint().getLatitude());
-                        tvArea.setTag(Long.parseLong(poi.getAdCode()));
+//                        tvArea.setTag(Long.parseLong(poi.getAdCode()));
                         tvArea.setText(String.format("%s%s%s", poi.getProvinceName(), poi.getCityName(), poi.getAdName()));
                         etAddress.setText(poi.getSnippet());
                         etAddress.setSelection(etAddress.getText().length());

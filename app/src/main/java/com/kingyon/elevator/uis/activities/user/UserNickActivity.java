@@ -45,6 +45,7 @@ public class UserNickActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        tvTopTitle.setText("编辑资料");
 
     }
 

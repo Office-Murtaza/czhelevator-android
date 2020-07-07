@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
 
@@ -61,215 +61,244 @@
         android:layout_marginBottom="@dimen/dp_10"
         ></TextView>
 
-    <LinearLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_action_bar"
+        app:srlEnableAutoLoadMore="true"
+        app:srlEnableRefresh="true">
 
         <LinearLayout
-            android:id="@+id/ll_msagger"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="@dimen/dp_10"
             >
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_message_notice"
-                ></ImageView>
+                android:orientation="horizontal"
+                >
 
-                <TextView
-                    android:id="@+id/tv_massage_number"
+                <LinearLayout
+                    android:id="@+id/ll_msagger"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="28"
-                    android:textColor="#ffffffff"
-                    android:textSize="@dimen/sp_10"
-                    android:background="@drawable/bg_masg_number"
-                    android:padding="@dimen/dp_2"
-                    android:layout_marginLeft="@dimen/dp_40"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    >
 
-                    />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-            </RelativeLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/ic_message_notice"
+                            ></ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_massage_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28"
+                            android:textColor="#ffffffff"
+                            android:textSize="@dimen/sp_10"
+                            android:background="@drawable/bg_masg_number"
+                            android:padding="@dimen/dp_2"
+                            android:layout_marginLeft="@dimen/dp_40"
+
+                            />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="消息"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_attention"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/ic_message_follow"
+                            ></ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_attention_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28"
+                            android:textColor="#ffffffff"
+                            android:textSize="@dimen/sp_10"
+                            android:background="@drawable/bg_masg_number"
+                            android:padding="@dimen/dp_2"
+                            android:layout_marginLeft="@dimen/dp_40"
+                            android:visibility="gone"
+                            />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关注"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_like"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/ic_message_like"
+                            ></ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_like_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28"
+                            android:textColor="#ffffffff"
+                            android:textSize="@dimen/sp_10"
+                            android:background="@drawable/bg_masg_number"
+                            android:padding="@dimen/dp_2"
+                            android:layout_marginLeft="@dimen/dp_40"
+                            android:visibility="gone"
+                            />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="点赞"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_comment"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/ic_message_comment"
+                            ></ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_comment_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28"
+                            android:textColor="#ffffffff"
+                            android:textSize="@dimen/sp_10"
+                            android:background="@drawable/bg_masg_number"
+                            android:padding="@dimen/dp_2"
+                            android:layout_marginLeft="@dimen/dp_40"
+                            android:visibility="gone"
+                            />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pinglun"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_1"
+                android:background="#E1E1E1"
+                android:layout_margin="@dimen/dp_10"
+                ></TextView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_list_massage"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="消息"
-                android:textColor="#ff999999"
-                android:textSize="@dimen/sp_12"
+                android:visibility="gone"/>
+
+            <include layout="@layout/layout_error"
+                android:visibility="gone"
+                />
+            <include layout="@layout/layout_null"
+                android:visibility="gone"
+                />
+            <include layout="@layout/layout_notlogin"
+                android:visibility="gone"
                 />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_attention"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/ic_message_follow"
-                    ></ImageView>
-
-                <TextView
-                    android:id="@+id/tv_attention_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="28"
-                    android:textColor="#ffffffff"
-                    android:textSize="@dimen/sp_10"
-                    android:background="@drawable/bg_masg_number"
-                    android:padding="@dimen/dp_2"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:visibility="gone"
-                    />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="关注"
-                android:textColor="#ff999999"
-                android:textSize="@dimen/sp_12"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_like"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/ic_message_like"
-                    ></ImageView>
-
-                <TextView
-                    android:id="@+id/tv_like_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="28"
-                    android:textColor="#ffffffff"
-                    android:textSize="@dimen/sp_10"
-                    android:background="@drawable/bg_masg_number"
-                    android:padding="@dimen/dp_2"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:visibility="gone"
-                    />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="点赞"
-                android:textColor="#ff999999"
-                android:textSize="@dimen/sp_12"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_comment"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/ic_message_comment"
-                    ></ImageView>
-
-                <TextView
-                    android:id="@+id/tv_comment_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="28"
-                    android:textColor="#ffffffff"
-                    android:textSize="@dimen/sp_10"
-                    android:background="@drawable/bg_masg_number"
-                    android:padding="@dimen/dp_2"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:visibility="gone"
-                    />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pinglun"
-                android:textColor="#ff999999"
-                android:textSize="@dimen/sp_12"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0_1"
-        android:background="#E1E1E1"
-        android:layout_margin="@dimen/dp_10"
-        ></TextView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcv_list_massage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 
 

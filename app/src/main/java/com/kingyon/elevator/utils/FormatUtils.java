@@ -212,13 +212,13 @@ public static String incomeType(String  source){
     String result;
     switch (source) {
         case Constants.INCOME_TYPE.EARNINGS:
-            result = "收益";
+            result = "广告";
             break;
         case Constants.INCOME_TYPE.POINT_MONEY_PAY:
-            result = "物业支出";
+            result = "物业";
             break;
         case Constants.INCOME_TYPE.BANDWIDTH_PAY:
-            result = "光纤支出";
+            result = "光纤";
             break;
         default:
             result = "";
@@ -546,7 +546,7 @@ public static String incomeType(String  source){
         return result;
     }
 
-    public CharSequence getWithdrawState(String status,String faildReason) {
+    public String getWithdrawState(String status,String faildReason) {
         if (status == null) {
             return "";
         }

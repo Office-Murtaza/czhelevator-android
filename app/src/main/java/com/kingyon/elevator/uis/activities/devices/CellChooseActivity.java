@@ -3,12 +3,19 @@ package com.kingyon.elevator.uis.activities.devices;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -19,7 +26,6 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RoleUtils;
 import com.leo.afbaselibrary.listeners.OnClickWithObjects;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
@@ -28,6 +34,7 @@ import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -39,12 +46,14 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 
     @BindView(R.id.tv_create)
     TextView tvCreate;
+    @BindView(R.id.edit_search)
+    EditText editSearch;
 
     private Double longitude;
     private Double latitude;
     //    private boolean beFromManager;
     private boolean beInstaller;
-
+    String keywords = "";
     @Override
     protected String getTitleText() {
         longitude = getIntent().getDoubleExtra(CommonUtil.KEY_VALUE_1, 0);
@@ -56,6 +65,7 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
         if (latitude == 0) {
             latitude = null;
         }
+
         return "小区管理";
     }
 
@@ -70,13 +80,16 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 //        beInstaller = TextUtils.isEmpty(myUserRole) || TextUtils.equals(Constants.RoleType.INSTALLER, myUserRole);
         beInstaller = TextUtils.isEmpty(myUserRole) || RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, myUserRole);
         super.init(savedInstanceState);
+
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
         tvCreate.setVisibility(beInstaller ? View.GONE : View.VISIBLE);
+
     }
+
 
     @Override
     protected MultiItemTypeAdapter<CellItemEntity> getAdapter() {
@@ -164,7 +177,12 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 
     @Override
     protected void loadData(final int page) {
-        NetService.getInstance().partnerCellList(longitude, latitude, page)
+        httpData(page,keywords);
+
+    }
+
+    public void httpData(int page,String keywords){
+        NetService.getInstance().partnerCellList(longitude, latitude, page, keywords)
                 .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                     @Override
@@ -207,5 +225,13 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
     @Override
     protected boolean isShowDivider() {
         return false;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+
     }
 }

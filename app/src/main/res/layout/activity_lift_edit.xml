@@ -55,7 +55,7 @@
                             android:background="@null"
                             android:gravity="center_vertical"
                             android:hint="请输入电梯注册代码"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:paddingLeft="@dimen/spacing_default"
                             android:paddingRight="@dimen/spacing_default"
                             android:maxLength="20"

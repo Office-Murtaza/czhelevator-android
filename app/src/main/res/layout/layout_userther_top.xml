@@ -23,7 +23,7 @@
         android:id="@+id/img_portrait1"
         android:layout_width="@dimen/dp30"
         android:layout_height="@dimen/dp30"
-        android:src="@mipmap/btn_add"
+        android:src="@mipmap/im_head_placeholder"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/img_top_back1"
         android:scaleType="centerCrop"

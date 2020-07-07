@@ -38,6 +38,7 @@ import butterknife.OnClick;
 /**
  * Created by GongLi on 2019/1/17.
  * Email：lc824767150@163.com
+ * 楼栋管理
  */
 
 public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<NormalElemEntity> implements EditDialog.OnChangeClickListener<NormalElemEntity> {

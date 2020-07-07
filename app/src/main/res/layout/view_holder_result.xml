@@ -31,10 +31,11 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/image_check"
+    <TextView
+        android:id="@+id/tv_getdistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:src="@drawable/ic_check_big_sec" />
+        android:text="12.1KM"
+       />
 </LinearLayout>

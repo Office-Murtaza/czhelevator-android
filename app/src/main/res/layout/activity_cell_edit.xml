@@ -307,7 +307,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -348,7 +348,7 @@
                             android:paddingRight="@dimen/spacing_default"
                             android:textColor="#333333"
                             android:textColorHint="#ABABAB"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
                             android:textStyle="bold" />
@@ -436,7 +436,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -511,7 +511,7 @@
                             />
                         <EditText
                             android:id="@+id/et_rent"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawablePadding="5dp"
@@ -565,7 +565,7 @@
                             android:textColorHint="#ABABAB"
                             android:background="@color/color_00000000"
                             android:textSize="@dimen/txt_normal_content"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:textStyle="bold" />
                     </LinearLayout>
 

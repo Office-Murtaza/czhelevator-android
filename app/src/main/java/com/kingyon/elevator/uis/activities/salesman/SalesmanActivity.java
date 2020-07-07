@@ -123,7 +123,7 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
 
     @Override
     protected void loadData(final int page) {
-        NetService.getInstance().partnerCellList(null, null, page)
+        NetService.getInstance().partnerCellList(null, null, page,"")
                 .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                     @Override

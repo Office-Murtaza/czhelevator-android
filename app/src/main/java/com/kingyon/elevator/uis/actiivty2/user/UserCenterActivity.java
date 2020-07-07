@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.QuickClickUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -28,6 +29,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.UserProfileActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
+import com.kingyon.elevator.uis.dialogs.CoverDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -113,6 +115,8 @@ public class UserCenterActivity extends BaseActivity {
     TextView tvAttention1;
     @BindView(R.id.img_more1)
     ImageView imgMore1;
+    @BindView(R.id.img_bj)
+    ImageView imgBj;
 
     @Override
     public int getContentViewId() {
@@ -176,6 +180,12 @@ public class UserCenterActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        httpTop(otherUserAccount);
+    }
+
     private void httpTop(String otherUserAccount) {
         NetService.getInstance().setUserCenterInfo(otherUserAccount)
                 .compose(this.bindLifeCycle())
@@ -193,6 +203,7 @@ public class UserCenterActivity extends BaseActivity {
                         userTwoEntity1 = userTwoEntity;
                         GlideUtils.loadCircleImage(UserCenterActivity.this, userTwoEntity.photo, imgPlaceholder);
                         GlideUtils.loadCircleImage(UserCenterActivity.this, userTwoEntity.photo, imgPortrait1);
+
                         tvName.setText(userTwoEntity.nickname + "");
                         tvNickname.setText(userTwoEntity.nickname + "");
 
@@ -200,13 +211,13 @@ public class UserCenterActivity extends BaseActivity {
                         tvAttentionNumber.setText(String.format(ATTENTION_TO_FANS, userTwoEntity.followers, userTwoEntity.beFollowers));
                         tvContent.setText("" + userTwoEntity.personalizedSignature);
                         tvDtnum.setText("全部动态 " + userTwoEntity.contentNum + " 条");
-                        if (userTwoEntity.sex.equals("S")) {
+                        if (userTwoEntity.sex.equals("M")) {
                             Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_man);
-                            drawable.setBounds(0, 0, 32, 32);
+                            drawable.setBounds(10, 10, 10, 10);
                             tvName.setCompoundDrawables(null, null, drawable, null);
                         } else {
                             Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_woman);
-                            drawable.setBounds(0, 0, 32, 32);
+                            drawable.setBounds(10, 10, 10, 10);
                             tvName.setCompoundDrawables(null, null, drawable, null);
                         }
                         if (userTwoEntity.isAttent == 0) {
@@ -223,6 +234,8 @@ public class UserCenterActivity extends BaseActivity {
                             tvAttention1.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
                             tvAttention1.setTextColor(Color.parseColor("#FF1330"));
                         }
+                         GlideUtils.loadImage(UserCenterActivity.this, userTwoEntity.coverImgUrl, imgBj, R.mipmap.bg_information, R.mipmap.bg_information);
+
                     }
                 });
 
@@ -297,7 +310,7 @@ public class UserCenterActivity extends BaseActivity {
 
 
     @OnClick({R.id.img_top_back, R.id.tv_attention, R.id.img_more, R.id.rl_error, R.id.rl_notlogin,
-            R.id.tv_attention1, R.id.img_top_back1,R.id.img_edit,R.id.img_more1})
+            R.id.tv_attention1, R.id.img_top_back1, R.id.img_edit, R.id.img_more1, R.id.img_bj})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
@@ -324,6 +337,14 @@ public class UserCenterActivity extends BaseActivity {
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();
+                break;
+            case R.id.img_bj:
+                if (otherUserAccount.equals(DataSharedPreferences.getCreatateAccount())) {
+                    if (QuickClickUtils.isFastClick()) {
+                        CoverDialog coverDialog = new CoverDialog(this);
+                        coverDialog.show();
+                    }
+                }
                 break;
         }
     }
