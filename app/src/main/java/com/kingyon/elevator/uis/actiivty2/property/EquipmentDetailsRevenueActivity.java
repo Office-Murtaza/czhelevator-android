@@ -106,22 +106,27 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
         activity = this;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");//设置日期格式
         month = df.format(new Date());
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy年MM月");//设置日期格式
+        String xianshi = df1.format(new Date());
+        tvChooseTime.setText(xianshi+"");
         deviceId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         role = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
-
+        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().deviceDetails(deviceId)
                 .compose(this.<PointItemEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<PointItemEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
+                        hideProgress();
                     }
 
                     @Override
                     public void onNext(PointItemEntity pointItemEntity) {
+                        hideProgress();
                         tvDeviceId.setText(CommonUtil.getDeviceId(pointItemEntity.getObjectId()));
                         tvDeviceNo.setText(pointItemEntity.getDeviceNo());
-                        tvDeviceTime.setText(TimeUtil.getYmdWithDot(pointItemEntity.getNetTime()));
+                        tvDeviceTime.setText(TimeUtil.getAllTimeNoSecond(pointItemEntity.getNetTime()));
                         tvCellAddress.setText(pointItemEntity.getCellAddress());
                         tvLiftNo.setText(pointItemEntity.getLiftNo());
                         StringBuilder stringBuilder = new StringBuilder();
@@ -145,22 +150,25 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
                         tvAdStatus.setText(TextUtils.equals(Constants.Device_AD_STATUS.PROCESSING, pointItemEntity.getAdStatus()) ? "投放中" : "未投放");
                     }
                 });
+        list.clear();
         if (role.equals(Constants.RoleType.PARTNER)){
-            httpData1(page, month, deviceId);
+            httpData1(1, month, deviceId);
         }else {
-            httpData(page, month, deviceId);
+            httpData(1, month, deviceId);
         }
 
 
     }
 
     private void httpData1(int page, String month, long deviceId) {
+        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().getIncomeList(page, month, deviceId)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<EquipmentDetailsRevenueEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         if (ex.getCode() == -102) {
                             if (page > 1) {
@@ -184,19 +192,22 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
 
                     @Override
                     public void onNext(ConentEntity<EquipmentDetailsRevenueEntiy> list) {
+                        hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         rvList.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);
                         rlNull.setVisibility(View.GONE);
                         addData(list);
-                        if (list.getContent().size()>0||page>1) {
-                            rvList.setVisibility(View.VISIBLE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.GONE);
-                        }else {
+                        if (list.getContent().size()<=0&&page==1) {
                             rvList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
+                        }else if (list.getContent().size()<=0&&page>1){
+                            showToast("已经没有了");
+                        }else {
+                            rvList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -204,11 +215,13 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
     }
 
     private void httpData(int page, String month, long deviceId) {
+        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().getEquipmentDetailsRevenue(page, month, deviceId)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<EquipmentDetailsRevenueEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        hideProgress();
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         if (ex.getCode() == -102) {
@@ -233,6 +246,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
 
                     @Override
                     public void onNext(ConentEntity<EquipmentDetailsRevenueEntiy> list) {
+                        hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         rvList.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);
@@ -279,6 +293,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
+                list.clear();
                 if (role.equals(Constants.RoleType.PARTNER)){
                     httpData1(page, month, deviceId);
                 }else {
@@ -313,7 +328,6 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
             case R.id.rl_error:
                 page =1;
                 httpData(page, month, deviceId);
-
                 break;
             case R.id.tv_right:
                 Bundle bundle = new Bundle();
@@ -355,7 +369,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 /*btn_Time.setText(getTime(date));*/
                 LogUtils.e(getTime(date), date);
-                tvChooseTime.setText(getTime(date));
+                tvChooseTime.setText(getTime1(date));
 //                month = com.leo.afbaselibrary.utils.TimeUtil.ymdToLong(getTime(date));
                 month = getTime(date);
                 page = 1;
@@ -394,5 +408,9 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         return format.format(date);
     }
-
+    private String getTime1(Date date) {//可根据需要自行截取数据显示
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
+        return format.format(date);
+    }
 }

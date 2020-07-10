@@ -93,6 +93,7 @@ import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.entities.entities.UserTwoEntity;
+import com.kingyon.elevator.entities.entities.WikipediaEntiy;
 import com.kingyon.elevator.entities.entities.WithdrawEntily;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.entities.PageListEntity;
@@ -119,8 +120,8 @@ public interface NetApi {
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
@@ -284,7 +285,9 @@ public interface NetApi {
     /*2.0获取用户*/
     @POST("user/getAttention")
     @FormUrlEncoded
-    Observable<ConentEntity<AttenionUserEntiy>> getAttention(@Field("page") int page, @Field("handlerType") String handlerType);
+    Observable<ConentEntity<AttenionUserEntiy>> getAttention(@Field("page") int page,
+                                                             @Field("handlerType") String handlerType,
+                                                             @Field("keyWords") String extend);
 
     /*2.0话题内容*/
     @POST("topic/queryTopicAttention")
@@ -476,6 +479,15 @@ public interface NetApi {
     @POST("massage/removeRobot")
     @FormUrlEncoded
     Observable<String> removeRobot (@Field("robot_id") String robot_id);
+
+    /*2.0客服管理内容*/
+    @POST("customSv/getWikipedia")
+    Observable<WikipediaEntiy> getWikipedia();
+
+    /*2.0搜索关注用户*/
+    @POST("user/getMatching")
+    @FormUrlEncoded
+    Observable<ConentEntity<AttenionUserEntiy>> getMatching(@Field("page") int page ,@Field("keyWords") String keyWords);
 
     //    1.0
     //静态/通用获取七牛云参数
@@ -930,7 +942,7 @@ public interface NetApi {
 
     /*2.0合伙人状态*/
     @POST("partner/applyStatus")
-    Observable<PartnershipStatusEntily> cooperationIentityInfotwo();
+    Observable<CooperationIdentityEntity> cooperationIentityInfotwo();
 
     /*2.0查看是否设置支付密码*/
     @POST("userSecurity/pay/verifyPayPasswordInit")

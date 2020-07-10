@@ -74,10 +74,11 @@ public class CameraViewActivit extends AppCompatActivity {
                 jCameraView.setLeftClickListener(new ClickListener() {
                     @Override
                     public void onClick() {
-                        Intent intent7 = new Intent();
-                        intent7.putExtra("path", "");
-                        setResult(103, intent7);
-                        CameraViewActivit.this.finish();
+//                        Intent intent7 = new Intent();
+//                        intent7.putExtra("path", "");
+//                        setResult(103, intent7);
+//                        CameraViewActivit.this.finish();
+                        finish();
                     }
                 });
             }

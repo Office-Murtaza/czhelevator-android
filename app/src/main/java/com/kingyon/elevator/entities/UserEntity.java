@@ -3,6 +3,7 @@ package com.kingyon.elevator.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.UserCenterAttrEntiy;
 
 /**
@@ -37,6 +38,7 @@ public class UserEntity implements Parcelable {
     private String role;
     private String authStatus;
     private String fullName;
+    private String objctId;
     private boolean isBindPhone;
     private boolean bindAli;
     private boolean bindQq;
@@ -46,6 +48,14 @@ public class UserEntity implements Parcelable {
     private int city;
     private long birthday;
     private UserCenterAttrEntiy userCenterAttr;
+
+    public String getObjctId() {
+        return objctId;
+    }
+
+    public void setObjctId(String objctId) {
+        this.objctId = objctId;
+    }
 
     public int getCity() {
         return city;

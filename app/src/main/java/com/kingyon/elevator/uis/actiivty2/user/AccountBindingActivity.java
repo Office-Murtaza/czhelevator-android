@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -37,6 +38,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 import static com.czh.myversiontwo.utils.CodeType.WX;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACCOUNT_BINDING;
+import static com.czh.myversiontwo.utils.Constance.BINDING_ACTIVITY;
 import static com.kingyon.elevator.constants.Constants.LoginType.ALI;
 import static com.kingyon.elevator.constants.Constants.LoginType.QQ;
 
@@ -169,6 +171,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                 break;
             case R.id.ll_wx:
                 /*微信*/
+
                 if (usernewEntity.isBindWx()){
                     BindingDialog dialog2 = new BindingDialog(this);
                     dialog2.show();
@@ -176,24 +179,20 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                         @Override
                         public void onClick() {
                             dialog2.dismiss();
-                            if (authorizeUtils == null) {
-                                authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
-                                authorizeUtils.setAuthorizeListener(AccountBindingActivity.this);
-                            }
-                            setThirdLoginEnabled(false);
-                            showProgressDialog(getString(R.string.wait));
-                            authorizeUtils.authWechat();
+//                            if (authorizeUtils == null) {
+//                                authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
+//                                authorizeUtils.setAuthorizeListener(AccountBindingActivity.this);
+//                            }
+//                            setThirdLoginEnabled(false);
+//                            showProgressDialog(getString(R.string.wait));
+//                            authorizeUtils.authWechat();
+                            ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","微信");
+
                         }
                     });
                 }else {
-                    /*绑定*/
-                    if (authorizeUtils == null) {
-                        authorizeUtils = new AuthorizeUtils(this, null);
-                        authorizeUtils.setAuthorizeListener(this);
-                    }
-                    setThirdLoginEnabled(false);
-                    showProgressDialog(getString(R.string.wait));
-                    authorizeUtils.authWechat();
+                    ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","微信");
+
                 }
 
                 break;
@@ -207,34 +206,28 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                         public void onClick() {
                             dialog3.dismiss();
                             /*绑定*/
-                            ALiLoginUtils aLiLogin = new ALiLoginUtils(AccountBindingActivity.this) {
-                                @Override
-                                protected void getOpentid(String unique1) {
-                                    LogUtils.e(unique1);
-                                }
-                            };
-                            aLiLogin.authV2();
+//                            ALiLoginUtils aLiLogin = new ALiLoginUtils(AccountBindingActivity.this) {
+//                                @Override
+//                                protected void getOpentid(String unique1) {
+//                                    LogUtils.e(unique1);
+//                                }
+//                            };
+//                            aLiLogin.authV2()
+                            ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","支付宝");
                         }
                     });
                 }else {
                     /*绑定*/
-                    ALiLoginUtils aLiLogin = new ALiLoginUtils(this) {
-                        @Override
-                        protected void getOpentid(String unique1) {
-                          LogUtils.e(unique1);
-                            ConentUtils.httpBin3Rd(unique1, Constants.LoginType.ALI, new ConentUtils.OnSuccess() {
-                                @Override
-                                public void onSuccess(boolean isSuccess) {
-                                    if (isSuccess) {
-                                        httpData();
-                                    }else {
-                                        showToast("绑定失败");
-                                    }
-                                }
-                            });
-                        }
-                    };
-                    aLiLogin.authV2();
+                    ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","支付宝");
+
+//                    ALiLoginUtils aLiLogin = new ALiLoginUtils(this) {
+//                        @Override
+//                        protected void getOpentid(String unique1) {
+//                          LogUtils.e(unique1);
+//
+//                        }
+//                    };
+//                    aLiLogin.authV2(
                 }
                 break;
             case R.id.ll_qq:
@@ -247,24 +240,28 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                         public void onClick() {
                             dialog4.dismiss();
                             /*绑定*/
-                            if (authorizeUtils == null) {
-                                authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
-                                authorizeUtils.setAuthorizeListener(AccountBindingActivity.this);
-                            }
-                            setThirdLoginEnabled(false);
-                            showProgressDialog(getString(R.string.wait));
-                            authorizeUtils.authQQ();
+//                            if (authorizeUtils == null) {
+//                                authorizeUtils = new AuthorizeUtils(AccountBindingActivity.this, null);
+//                                authorizeUtils.setAuthorizeListener(AccountBindingActivity.this);
+//                            }
+//                            setThirdLoginEnabled(false);
+//                            showProgressDialog(getString(R.string.wait));
+//                            authorizeUtils.authQQ();
+                            ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","QQ");
+
                         }
                     });
                 }else {
                     /*绑定*/
-                    if (authorizeUtils == null) {
-                        authorizeUtils = new AuthorizeUtils(this, null);
-                        authorizeUtils.setAuthorizeListener(this);
-                    }
-                    setThirdLoginEnabled(false);
-                    showProgressDialog(getString(R.string.wait));
-                    authorizeUtils.authQQ();
+//                    if (authorizeUtils == null) {
+//                        authorizeUtils = new AuthorizeUtils(this, null);
+//                        authorizeUtils.setAuthorizeListener(this);
+//                    }
+//                    setThirdLoginEnabled(false);
+//                    showProgressDialog(getString(R.string.wait));
+//                    authorizeUtils.authQQ();
+                    ActivityUtils.setActivity(BINDING_ACTIVITY,"mobile",usernewEntity.getPhone(),"type","QQ");
+
                 }
                 break;
         }

@@ -76,12 +76,15 @@
             />
 
         <TextView
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffe3e3e3"
             android:textSize="12sp"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:gravity="center"
             android:layout_below="@+id/tv_attention_number"
             android:layout_centerHorizontal="true"
             />

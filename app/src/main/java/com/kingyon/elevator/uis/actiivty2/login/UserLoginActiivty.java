@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.actiivty2.login;
 
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -49,7 +51,13 @@ public class UserLoginActiivty extends BaseActivity {
     TextView tvPorgotPassword;
     @BindView(R.id.tv_login_next)
     TextView tvLoginNext;
-
+    @BindView(R.id.tv_ts)
+    TextView tvTs;
+    @BindView(R.id.tv_code)
+    TextView tvCode;
+    @BindView(R.id.img_password)
+    ImageView imgPassword;
+    private Boolean catShowPwd1 = false;
     @Override
     public int getContentViewId() {
         return R.layout.activity_userlogin;
@@ -69,30 +77,43 @@ public class UserLoginActiivty extends BaseActivity {
         OrdinaryActivity.userLoginActiivty = this;
     }
 
-    @OnClick({R.id.img_top_back, R.id.tv_login_next,R.id.tv_porgot_password})
+    @OnClick({R.id.img_top_back, R.id.tv_login_next, R.id.tv_porgot_password, R.id.tv_code, R.id.img_password})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
+            case R.id.tv_code:
                 finish();
                 break;
             case R.id.tv_login_next:
-                httpUserLogin( edPhon.getText().toString(),
+                httpUserLogin(edPhon.getText().toString(),
                         edPassword.getText().toString());
 
                 break;
             case R.id.tv_porgot_password:
                 ARouter.getInstance().build(ACTIVITY_MAIN2_FORGET_PASSWORD).navigation();
                 break;
+            case R.id.img_password:
+                if (catShowPwd1) {
+                    catShowPwd1 = false;
+                    imgPassword.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
+                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    catShowPwd1 = true;
+                    imgPassword.setImageResource(R.mipmap.ic_login_pasword_off);
+                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                break;
+
         }
     }
 
     private void httpUserLogin(String phon, String password) {
-        if (phon.length()<11){
-            ToastUtils.showToast(this,"手机号错误",1000);
-        }else if (password.length()<6){
-            ToastUtils.showToast(this,"密码需要大于6位",1000);
-        }else {
-            OrdinaryActivity.httpLogin(UserLoginActiivty.this, phon, password, NOR, "","","",null,null);
+        if (phon.length() < 11) {
+            ToastUtils.showToast(this, "手机号错误", 1000);
+        } else if (password.length() < 6) {
+            ToastUtils.showToast(this, "密码需要大于6位", 1000);
+        } else {
+            OrdinaryActivity.httpLogin(UserLoginActiivty.this, phon, password, NOR, "", "", "", null, null, tvTs);
         }
 
     }

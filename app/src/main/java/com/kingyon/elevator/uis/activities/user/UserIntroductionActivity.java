@@ -8,7 +8,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -40,6 +43,8 @@ public class UserIntroductionActivity extends BaseActivity {
     EditText etNick;
     @BindView(R.id.tv_next)
     TextView tvNext;
+    @Autowired
+    String conent;
 
     @Override
     public int getContentViewId() {
@@ -48,21 +53,29 @@ public class UserIntroductionActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        ARouter.getInstance().inject(this);
+        try {
+            if (conent!=null) {
+                etNick.setText(conent);
+                tvZinumber.setText(conent.length() + "/30");
+                etNick.setSelection(conent.length());
+            }
+        }catch (Exception e){
+            LogUtils.e(e.toString());
+        }
+
+
         tvTopTitle.setText("编辑资料");
         etNick.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-                tvZinumber.setText(s.length()+"/140");
+                tvZinumber.setText(s.length()+"/30");
             }
         });
 
@@ -83,15 +96,19 @@ public class UserIntroductionActivity extends BaseActivity {
                 break;
             case R.id.tv_next:
                 /*确认*/
-                ConentUtils.httpEidtProfile(UserIntroductionActivity.this, "",
-                        "", "", "", "", etNick.getText().toString(), "", new ConentUtils.AddCollect() {
-                            @Override
-                            public void Collect(boolean is) {
-                                if (is) {
-                                    finish();
+                if (etNick.getText().toString().isEmpty()){
+                    showToast("简介不能为空");
+                }else {
+                    ConentUtils.httpEidtProfile(UserIntroductionActivity.this, "",
+                            "", "", "", "", etNick.getText().toString(), "", new ConentUtils.AddCollect() {
+                                @Override
+                                public void Collect(boolean is) {
+                                    if (is) {
+                                        finish();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
                 break;
         }
     }

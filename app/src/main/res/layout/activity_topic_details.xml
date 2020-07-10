@@ -134,7 +134,7 @@
                     android:id="@+id/img_bake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_back"
+                    android:src="@mipmap/ic_arrow_back"
                     android:padding="@dimen/dp_10"
                     ></ImageView>
 

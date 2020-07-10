@@ -141,7 +141,13 @@ public class PutcastAdvertisFragment extends BaseFragment {
 //            }
 //        });
     }
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            initRefresh();
+        }
+    }
     private void initRefresh() {
         httpAdcertis(provinceCode, cityCode, countyCode);
         httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
@@ -335,9 +341,12 @@ public class PutcastAdvertisFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_error:
-
-                httpAdcertis(provinceCode, cityCode, countyCode);
-                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
+                if (smartRefreshLayout!=null){
+                    smartRefreshLayout.autoRefresh(100);
+                }else {
+                    httpAdcertis(provinceCode, cityCode, countyCode);
+                    httpRecommendHouse(1, latitude, longitude, cityId, "", "", "", "");
+                }
 
                 break;
             case R.id.rl_ll_style:
@@ -370,6 +379,7 @@ public class PutcastAdvertisFragment extends BaseFragment {
                                 cityId = cityCode1;
                                 httpAdcertis(provinceCode, cityCode, countyCode);
                                 page = 1;
+                                list.clear();
                                 httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
                             }
                         });

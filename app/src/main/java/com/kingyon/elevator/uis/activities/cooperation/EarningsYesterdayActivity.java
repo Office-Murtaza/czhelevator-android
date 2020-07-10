@@ -144,6 +144,9 @@ public class EarningsYesterdayActivity extends BaseActivity {
                         rlError.setVisibility(View.GONE);
                         rlNull.setVisibility(View.GONE);
                         rlNotlogin.setVisibility(View.GONE);
+                        if (incomeDetailsEntities.pageContent.lstResponse.size()<=0&&page>1){
+                            showToast("已经没有了");
+                        }
                     }
                 });
     }

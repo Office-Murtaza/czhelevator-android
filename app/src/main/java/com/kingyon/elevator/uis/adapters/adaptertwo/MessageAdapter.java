@@ -58,6 +58,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.tvTime.setText(massageLitsEntiy.pushTime);
         if (massageLitsEntiy.num<=0){
             holder.tvNumber.setVisibility(View.GONE);
+        }else if (massageLitsEntiy.num>=100){
+            holder.tvNumber.setText("···");
         }else {
             holder.tvNumber.setText(massageLitsEntiy.num + "");
         }

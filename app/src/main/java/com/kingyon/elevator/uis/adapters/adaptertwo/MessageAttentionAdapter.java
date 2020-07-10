@@ -38,11 +38,12 @@ import static com.zhaoss.weixinrecorded.util.UIUtils.getResources;
 public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttentionAdapter.ViewHolder> {
     BaseActivity context;
     List<AttenionUserEntiy> list;
+    String type;
 
 
-
-    public MessageAttentionAdapter(BaseActivity context) {
+    public MessageAttentionAdapter(BaseActivity context,String type) {
         this.context = context;
+        this.type = type;
 
     }
 
@@ -60,41 +61,20 @@ public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttenti
         holder.tvName.setText("" + userEntiy.nickname);
         GlideUtils.loadCircleImage(context, userEntiy.photo, holder.imgPortrait);
         holder.tvConent.setText("" + userEntiy.personalizedSignature);
-        if (userEntiy.isAttention == 1) {
+        if (type.equals("attention")){
             holder.tvAttention.setTextColor(Color.parseColor("#FF3049"));
             holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj);
             holder.tvAttention.setText("已关注");
-        } else {
-            holder.tvAttention.setTextColor(Color.parseColor("#ffffff"));
-            holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj1);
-            holder.tvAttention.setText("关注");
-        }
-        holder.llTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtils.e(userEntiy.followerAccount, userEntiy.beFollowerAccount,DataSharedPreferences.getCreatateAccount());
-                ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",userEntiy.beFollowerAccount);
-            }
-        });
-
-        holder.tvAttention.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.tvAttention.getText().toString().equals("关注")) {
-                    ConentUtils.httpAddAttention(context, "add", userEntiy.beFollowerAccount, new ConentUtils.IsAddattention() {
-                        @Override
-                        public void onisSucced() {
-                            holder.tvAttention.setText("已关注");
-                            holder.tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
-                            holder.tvAttention.setTextColor(Color.parseColor("#FF1330"));
-                        }
-
-                        @Override
-                        public void onErron(String magssger, int code) {
-                            ToastUtils.showToast(context, magssger, 1000);
-                        }
-                    });
-                } else {
+            holder.llTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtils.e(userEntiy.followerAccount, userEntiy.beFollowerAccount,DataSharedPreferences.getCreatateAccount());
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",userEntiy.beFollowerAccount);
+                }
+            });
+            holder.tvAttention.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     NotAttentionDialog notAttentionDialog = new NotAttentionDialog(context, new NotAttentionDialog.OnClick() {
                         @Override
                         public void onclick() {
@@ -102,9 +82,10 @@ public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttenti
                             ConentUtils.httpAddAttention(context, "cancel", userEntiy.beFollowerAccount, new ConentUtils.IsAddattention() {
                                 @Override
                                 public void onisSucced() {
-                                    holder.tvAttention.setTextColor(Color.parseColor("#ffffff"));
-                                    holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj1);
-                                    holder.tvAttention.setText("关注");
+                                    context.showToast("取消关注成功");
+                                    list.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, list.size() - position);
                                 }
 
                                 @Override
@@ -116,8 +97,72 @@ public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttenti
                     });
                     notAttentionDialog.show();
                 }
+            });
+
+        }else {
+            if (userEntiy.isAttention == 1) {
+                holder.tvAttention.setTextColor(Color.parseColor("#FF3049"));
+                holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj);
+                holder.tvAttention.setText("已关注");
+            } else {
+                holder.tvAttention.setTextColor(Color.parseColor("#ffffff"));
+                holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj1);
+                holder.tvAttention.setText("关注");
             }
-        });
+            holder.llTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtils.e(userEntiy.followerAccount, userEntiy.beFollowerAccount,DataSharedPreferences.getCreatateAccount());
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",userEntiy.followerAccount);
+                }
+            });
+            holder.tvAttention.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtils.e(userEntiy.followerAccount,userEntiy.beFollowerAccount,DataSharedPreferences.getCreatateAccount());
+                    if (holder.tvAttention.getText().toString().equals("关注")) {
+                        ConentUtils.httpAddAttention(context, "add", userEntiy.followerAccount, new ConentUtils.IsAddattention() {
+                            @Override
+                            public void onisSucced() {
+                                holder.tvAttention.setText("已关注");
+                                holder.tvAttention.setBackgroundResource(R.drawable.bj_cancel_attention);
+                                holder.tvAttention.setTextColor(Color.parseColor("#FF1330"));
+                            }
+
+                            @Override
+                            public void onErron(String magssger, int code) {
+                                LogUtils.e(magssger,code);
+                                ToastUtils.showToast(context, magssger, 1000);
+                            }
+                        });
+                    } else {
+                        NotAttentionDialog notAttentionDialog = new NotAttentionDialog(context, new NotAttentionDialog.OnClick() {
+                            @Override
+                            public void onclick() {
+                                LogUtils.e("212121332");
+                                ConentUtils.httpAddAttention(context, "cancel", userEntiy.followerAccount, new ConentUtils.IsAddattention() {
+                                    @Override
+                                    public void onisSucced() {
+                                        holder.tvAttention.setTextColor(Color.parseColor("#ffffff"));
+                                        holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj1);
+                                        holder.tvAttention.setText("关注");
+                                    }
+
+                                    @Override
+                                    public void onErron(String magssger, int code) {
+                                        LogUtils.e(magssger,code);
+                                        ToastUtils.showToast(context, magssger, 1000);
+                                    }
+                                });
+                            }
+                        });
+                        notAttentionDialog.show();
+                    }
+                }
+            });
+        }
+
+
     }
 
     @Override

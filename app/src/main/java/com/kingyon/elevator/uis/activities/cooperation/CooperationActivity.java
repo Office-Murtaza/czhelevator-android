@@ -12,6 +12,7 @@ import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
+import com.kingyon.elevator.entities.entities.PublicEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragment;
@@ -104,64 +105,8 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                     }
                 });
 
-
-
-//        NetService.getInstance().vaildInitPayPwd()
-//                .subscribe(new CustomApiCallback<CooperationInfoNewEntity>() {
-//                    @Override
-//                    protected void onResultError(ApiException ex) {
-//                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-//                    }
-//
-//                    @Override
-//                    public void onNext(CooperationInfoNewEntity isInit) {
-//                        isBePartner = isInit.isSetPayPassword();
-//                        info= new CooperationInfoNewEntity();
-//                        isInit.setSetPayPassword(isInit.isSetPayPassword());
-//                        LogUtils.e(isInit.toString());
-//                    }
-//                });
-//        NetService.getInstance().cooperationInfotwo()
-//                .compose(this.bindLifeCycle())
-//                .subscribe(new CustomApiCallback<PartnershipStatusEntily>() {
-//                    @Override
-//                    protected void onResultError(ApiException ex) {
-//                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
-//                        if (ex.getCode()==-102){
-//                            loadingComplete(STATE_CONTENT);
-//                            showFragment(false, null, null);
-//                        }else {
-//                            showToast(ex.getDisplayMessage());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNext(PartnershipStatusEntily partnershipStatusEntily) {
-//                         identity = new CooperationIdentityEntity();
-//                        identity.setStatus(partnershipStatusEntily.auditStatus);
-//                        status = partnershipStatusEntily.auditStatus;
-//                        LogUtils.e(partnershipStatusEntily.toString());
-//                    }
-//                });
-//        authed = isBePartner || TextUtils.equals(Constants.COOPERATION_STATUS.SUCCESS, status);
-//        LogUtils.e(status,isBePartner);
-//
-//        if (authed) {
-//            if (!isBePartner) {
-//                //未设置支付密码
-//                showToast("您还未设置支付密码，请先设置支付密码");
-//                loadingComplete(STATE_CONTENT);
-//                MyActivityUtils.goFragmentContainerActivity(CooperationActivity.this, FragmentConstants.SetPasswordFragment, "partner");
-//                finish();
-//            } else {
-//                loadingComplete(STATE_CONTENT);
-//                showFragment(authed, identity, info);
-//            }
-//        } else {
-//            loadingComplete(STATE_CONTENT);
-//            showFragment(false, identity, info);
-//        }
     }
+
 
     private void showFragment(boolean authed, CooperationIdentityEntity identity, CooperationInfoNewEntity info) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

@@ -119,6 +119,7 @@ import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
 import com.kingyon.elevator.entities.entities.UserTwoEntity;
+import com.kingyon.elevator.entities.entities.WikipediaEntiy;
 import com.kingyon.elevator.entities.entities.WithdrawEntily;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.DBUtils;
@@ -307,8 +308,13 @@ public class NetService {
     }
 
     /*2.0获取用户*/
-    public Observable<ConentEntity<AttenionUserEntiy>> setAttention(int page,String handlerType){
-        return addSchedulers(getApi().getAttention(page,handlerType));
+    public Observable<ConentEntity<AttenionUserEntiy>> setAttention(int page,String handlerType,String extend){
+        return addSchedulers(getApi().getAttention(page,handlerType,extend));
+    }
+
+    /*2.0获取搜索用户*/
+    public Observable<ConentEntity<AttenionUserEntiy>> getMatching(int page,String keyWords){
+        return addSchedulers(getApi().getMatching(page, keyWords));
     }
 
     /*2.0获取投放首页*/
@@ -410,6 +416,11 @@ public class NetService {
     /*2.0删除消息机器人*/
     public Observable<String> removeRobot(String robot_id){
         return addSchedulers(getApi().removeRobot(robot_id));
+    }
+
+    /*2.0客服管理内容*/
+    public Observable<WikipediaEntiy> getWikipedia(){
+        return addSchedulers(getApi().getWikipedia());
     }
 
     //验证码
@@ -1314,7 +1325,7 @@ public class NetService {
     }
 
     /*2.0合伙人申请状态*/
-    public Observable<PartnershipStatusEntily> cooperationInfotwo(){
+    public Observable<CooperationIdentityEntity> cooperationInfotwo(){
         return addSchedulers(getApi().cooperationIentityInfotwo());
     }
 

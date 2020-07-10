@@ -814,6 +814,13 @@
         <activity android:name=".uis.actiivty2.user.CoverActivity"
             android:screenOrientation="portrait"
             />
+        <!--2.0富文本显示-->
+        <activity android:name=".uis.actiivty2.activityutils.WebActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--2.0验证码绑定-->
+        <activity android:name=".uis.actiivty2.user.BindingActivity"
+            android:screenOrientation="portrait"/>
 
 
         <!-- ****************友盟配置****************************** -->

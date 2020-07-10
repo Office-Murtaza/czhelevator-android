@@ -29,7 +29,7 @@ public class PictureSelectorUtil {
             public void agreeAllPermission() {
                 MultiImageSelector.create()
                         .filterType(MultiFilterType.IMAGE)
-                        .showCamera(true)
+                        .showCamera(false)
                         .crop(true)
                         .cropProperty(1)
                         .count(maxCount)

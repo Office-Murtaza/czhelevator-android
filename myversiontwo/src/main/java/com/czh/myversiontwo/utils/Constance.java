@@ -111,6 +111,10 @@ public class Constance {
     public static final String ACTIVITY_HAVE_WITHDRAWAL="/app/activity/havewithdrawal";
     /**选择用户封面*/
     public static final String ACTIVITY_COVER = "/app/activity/coveractivity";
+    /**显示web界面*/
+    public static final String WEB_ACTIVITY = "/app/activity/web";
+    /**验证码绑定第三方*/
+    public static final String BINDING_ACTIVITY = "/app/activity/bindingactivity";
 
 
 

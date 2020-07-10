@@ -1,5 +1,7 @@
 package com.czh.myversiontwo.utils;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 /**
  * Created By SongPeng  on 2019/12/2
  * Email : 1531603384@qq.com
@@ -14,6 +16,8 @@ public class QuickClickUtils {
         long curClickTime = System.currentTimeMillis();
         if ((curClickTime - lastClickTime) >= MIN_CLICK_DELAY_TIME) {
             flag = true;
+        }else {
+            ToastUtils.showShort("主人，速度太快了，我反应不过来");
         }
         lastClickTime = curClickTime;
         return flag;

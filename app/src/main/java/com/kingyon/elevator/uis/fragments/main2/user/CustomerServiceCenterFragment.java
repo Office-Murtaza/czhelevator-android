@@ -10,11 +10,15 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.WikipediaEntiy;
 import com.kingyon.elevator.uis.adapters.adaptertwo.CustomerServiceCenterAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,12 +32,10 @@ import butterknife.Unbinder;
  * @Instructions: 客服中心
  */
 
-public class CustomerServiceCenterFragment extends FoundFragemtUtils {
+public class CustomerServiceCenterFragment extends BaseFragment {
     String type;
     @BindView(R.id.rcv_order_list)
     RecyclerView rcvOrderList;
-    @BindView(R.id.smart_refresh_layout)
-    SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
     @BindView(R.id.rl_null)
@@ -42,23 +44,11 @@ public class CustomerServiceCenterFragment extends FoundFragemtUtils {
     RelativeLayout rlNotlogin;
     Unbinder unbinder;
     CustomerServiceCenterAdapter adapter;
+    List<WikipediaEntiy.WikipediaBean.ItemBean> item;
 
-    public CustomerServiceCenterFragment setIndex(String type) {
-        this.type = type;
+    public CustomerServiceCenterFragment setIndex(List<WikipediaEntiy.WikipediaBean.ItemBean> item) {
+        this.item = item;
         return (this);
-    }
-
-    @Override
-    protected void lazyLoad() {
-        if (rcvOrderList!=null) {
-            adapter = new CustomerServiceCenterAdapter((BaseActivity) getActivity(), type);
-            rcvOrderList.setAdapter(adapter);
-            rcvOrderList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
-        }else {
-            LogUtils.e("***************");
-
-        }
-
     }
 
     @Override
@@ -68,6 +58,9 @@ public class CustomerServiceCenterFragment extends FoundFragemtUtils {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        adapter = new CustomerServiceCenterAdapter((BaseActivity) getActivity(), item);
+        rcvOrderList.setAdapter(adapter);
+        rcvOrderList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
 
     }
 
@@ -89,6 +82,7 @@ public class CustomerServiceCenterFragment extends FoundFragemtUtils {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
     @OnClick({R.id.rl_error, R.id.rl_notlogin})
     public void onViewClicked(View view) {

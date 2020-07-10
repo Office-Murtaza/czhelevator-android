@@ -76,6 +76,8 @@ public class PhoneCode extends RelativeLayout {
         v4 = view.findViewById(R.id.v4);
         v5 = view.findViewById(R.id.v5);
         v6 = view.findViewById(R.id.v6);
+        et_code.setLongClickable(false);
+        et_code.setTextIsSelectable(false);
     }
 
     private void initEvent(){

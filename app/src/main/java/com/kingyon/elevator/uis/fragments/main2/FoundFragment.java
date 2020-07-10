@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment;
@@ -113,12 +114,15 @@ public class FoundFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_advertising:
-                ARouter.getInstance().build(ACTIVITY_MAIN2_ADVERTISING).navigation();
+                /*广告专区*/
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_ADVERTISING);
                 break;
             case R.id.img_search:
-                ARouter.getInstance().build(ACTIVITY_MAIN2_SEARCH).navigation();
+                /*搜索*/
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_SEARCH);
                 break;
             case R.id.img_edit:
+                /*添加内容*/
                 new ConfirmPopWindow(getActivity()).showAtBottom(imgEdit);
                 break;
             default:

@@ -10,8 +10,7 @@
     <com.czh.myversiontwo.view.RoundImageView
         android:id="@+id/img_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200"
-        android:src="@mipmap/ic_launcher"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         tools:ignore="MissingConstraints"></com.czh.myversiontwo.view.RoundImageView>
 

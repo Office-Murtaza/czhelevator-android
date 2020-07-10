@@ -35,12 +35,17 @@ import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 public class TokenUtils {
     static boolean istoken = false;
     public static  boolean isToken(Context context){
-        httpGetToken(new GetToke() {
+        new Thread(new Runnable() {
             @Override
-            public boolean setToken(boolean is) {
-                return is;
+            public void run() {
+                httpGetToken(new GetToke() {
+                    @Override
+                    public boolean setToken(boolean is) {
+                        return is;
+                    }
+                });
             }
-        });
+        }).start();
         if (DataSharedPreferences.getToken().isEmpty()){
             ToastUtils.showToast(context,"未登录或登录过期请重新登录",1000);
             istoken = false;
@@ -62,7 +67,9 @@ public class TokenUtils {
                     }
                     @Override
                     public void onNext(UserEntity userEntity) {
+                        DataSharedPreferences.saveUserBean(userEntity);
                         getToke.setToken(true);
+
                     }
                 });
     }

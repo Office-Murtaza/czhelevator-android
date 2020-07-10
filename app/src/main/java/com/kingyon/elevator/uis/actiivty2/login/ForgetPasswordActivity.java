@@ -1,6 +1,10 @@
 package com.kingyon.elevator.uis.actiivty2.login;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -52,7 +56,9 @@ public class ForgetPasswordActivity extends BaseActivity {
     EditText etPassword;
     @BindView(R.id.tv_login_next)
     TextView tvLoginNext;
-
+    @BindView(R.id.img_password)
+    ImageView imgPassword;
+    private boolean catShowPwd1 = false;
     @Override
     public int getContentViewId() {
         return R.layout.activity_forgetpassord;
@@ -61,6 +67,26 @@ public class ForgetPasswordActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    imgRemove.setVisibility(View.VISIBLE);
+                } else {
+                    imgRemove.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 
@@ -71,7 +97,7 @@ public class ForgetPasswordActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.img_top_back, R.id.tv_code_dao, R.id.img_remove, R.id.tv_get_code, R.id.tv_login_next})
+    @OnClick({R.id.img_top_back, R.id.tv_code_dao, R.id.img_remove, R.id.tv_get_code, R.id.tv_login_next,R.id.img_password})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
@@ -81,10 +107,21 @@ public class ForgetPasswordActivity extends BaseActivity {
                 etPhone.setText("");
                 break;
             case R.id.tv_get_code:
-                OrdinaryActivity.CodeTextviewActivity(this,RESETPASSWORD,etPhone.getText().toString(),tvGetCode);
+                OrdinaryActivity.CodeTextviewActivity(this, RESETPASSWORD, etPhone.getText().toString(), tvGetCode);
                 break;
             case R.id.tv_login_next:
-                OrdinaryActivity.resetPassword(this,etPhone,edCode,etPassword,tvLoginNext);
+                OrdinaryActivity.resetPassword(this, etPhone, edCode, etPassword, tvLoginNext);
+                break;
+            case R.id.img_password:
+                if (catShowPwd1) {
+                    catShowPwd1 = false;
+                    imgPassword.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    catShowPwd1 = true;
+                    imgPassword.setImageResource(R.mipmap.ic_login_pasword_off);
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
                 break;
         }
     }

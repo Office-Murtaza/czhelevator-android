@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.HomeTopicEntity;
@@ -64,7 +65,7 @@ public class TopicFragment extends FoundFragemtUtils {
 
                     @Override
                     public void onNext(ConentEntity<HomeTopicEntity> conentEntity) {
-
+                        LogUtils.e(conentEntity.getContent().toString());
                         tabLayout.setViewHeight(dp2px(30));
                         tabLayout.setBottomLineWidth(dp2px(10));
                         tabLayout.setBottomLineHeight(dp2px(3));
@@ -82,10 +83,10 @@ public class TopicFragment extends FoundFragemtUtils {
                         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
                         adapter.cleanFrag();
                         for (int i = 0; i < conentEntity.getContent().size(); i++) {
-                            if(!new TopicTypeFragment().isAdded()) {
+//                            if(!new TopicTypeFragment().isAdded()) {
                                 adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
                                         conentEntity.getContent().get(i).labelName);
-                            }
+//                            }
                         }
                         vp.setAdapter(adapter);
                         vp.setOffscreenPageLimit(adapter.getCount());

@@ -209,15 +209,19 @@ public class UserCenterActivity extends BaseActivity {
 
                         tvIdnumber.setText("(id:" + userTwoEntity.id + ")");
                         tvAttentionNumber.setText(String.format(ATTENTION_TO_FANS, userTwoEntity.followers, userTwoEntity.beFollowers));
-                        tvContent.setText("" + userTwoEntity.personalizedSignature);
+                       if (userTwoEntity.personalizedSignature!=null) {
+                           tvContent.setText("简介：" + userTwoEntity.personalizedSignature);
+                       }else {
+                           tvContent.setText("简介：" );
+                       }
                         tvDtnum.setText("全部动态 " + userTwoEntity.contentNum + " 条");
                         if (userTwoEntity.sex.equals("M")) {
                             Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_man);
-                            drawable.setBounds(10, 10, 10, 10);
+                            drawable.setBounds(30, 30, 30, 30);
                             tvName.setCompoundDrawables(null, null, drawable, null);
                         } else {
                             Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_woman);
-                            drawable.setBounds(10, 10, 10, 10);
+                            drawable.setBounds(30, 30, 30, 30);
                             tvName.setCompoundDrawables(null, null, drawable, null);
                         }
                         if (userTwoEntity.isAttent == 0) {
@@ -270,10 +274,16 @@ public class UserCenterActivity extends BaseActivity {
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
                         hideProgress();
-                        rvAttentionList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()<=0&&page==1){
+                            rvAttentionList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }else {
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
     }

@@ -47,7 +47,7 @@ public class CooperationWithdrawRecordsActivity extends BaseStateRefreshingLoadi
             @Override
             protected void convert(CommonHolder holder, WithdrawItemEntity item, int position) {
                 holder.setText(R.id.tv_txtype,FormatUtils.getInstance().withdrawalType(item.getWithDrawWay())+"提现");
-                holder.setText(R.id.tv_zh, AccountNumUtils.hideBankCardNum(item.getAliAcount()));
+                holder.setText(R.id.tv_zh, AccountNumUtils.hidePhoneNum(item.getAliAcount()));
                 holder.setTextNotHide(R.id.tv_time, TimeUtil.getAllTimeNoSecond(item.getTime()));
                 holder.setText(R.id.tv_state, Html.fromHtml(FormatUtils.getInstance().getWithdrawState(item.getStatus(),item.getFaildReason())));
                 holder.setText(R.id.tv_tax,"（扣税"+CommonUtil.getTwoFloat(item.getAmount()*0.06)+"）");

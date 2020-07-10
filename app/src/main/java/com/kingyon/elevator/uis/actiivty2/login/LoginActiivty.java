@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -124,6 +125,8 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                 });
             }
         });
+//        EditTextUtils.setEditTextInhibitInputSpace(etPhone);
+//        EditTextUtils.setEditTextInhibitInputSpeChat(etPhone);
 
     }
 
@@ -186,7 +189,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                         loginType = ALI;
                         OrdinaryActivity.httpLogin(LoginActiivty.this,
                                 "", "", ALI, unique1, "", ""
-                                , llSf, tvLoginUser);
+                                , llSf, tvLoginUser,null);
                     }
                 };
                 aLiLogin.authV2();
@@ -243,7 +246,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                                     LogUtils.e(Constants.LoginType.WX, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     OrdinaryActivity.httpLogin(LoginActiivty.this,
                                             "", "", WX, user.getUsername(), user.getHeadimgurl(), user.getNickname()
-                                            , llSf, tvLoginUser);
+                                            , llSf, tvLoginUser,null);
                                     unique = user.getUsername();
                                     avatar = user.getHeadimgurl();
                                     nickName = user.getNickname();
@@ -254,7 +257,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                                     LogUtils.e(QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     OrdinaryActivity.httpLogin(LoginActiivty.this,
                                             "", "", QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname()
-                                            , llSf, tvLoginUser);
+                                            , llSf, tvLoginUser,null);
                                     unique = user.getUsername();
                                     avatar = user.getHeadimgurl();
                                     nickName = user.getNickname();

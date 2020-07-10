@@ -102,7 +102,7 @@ public class MessageAttentionActivity extends BaseActivity {
     }
 
     private void httpAttention(String type, int page) {
-        NetService.getInstance().setAttention(page, type)
+        NetService.getInstance().setAttention(page, type,"")
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
                     @Override
@@ -160,7 +160,7 @@ public class MessageAttentionActivity extends BaseActivity {
             list.add(attenionUserEntiy);
         }
         if (attentionAdapter == null || page == 1) {
-            attentionAdapter = new MessageAttentionAdapter(this);
+            attentionAdapter = new MessageAttentionAdapter(this,type);
             attentionAdapter.addData(list);
             rvComment.setAdapter(attentionAdapter);
             rvComment.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));

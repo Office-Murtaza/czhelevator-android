@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="24dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="#CFCFCF"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:textColor="@color/black_normal"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="呼叫：400-651-9299"
+        android:padding="@dimen/dp_15"
+        android:gravity="center"
+        android:textColor="#ff316ffa"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="（接听时间：9：00-18：00）"
+        android:textColor="#ff999999"
+        android:textSize="14sp"
+        android:gravity="center"
+        />
+
+
+    <TextView
+        android:id="@+id/share_btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_ad_qx"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/dp20"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="取消"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

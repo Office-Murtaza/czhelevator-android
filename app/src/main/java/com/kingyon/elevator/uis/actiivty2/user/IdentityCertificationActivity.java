@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -38,6 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_CERTIFICATION;
+import static com.kingyon.elevator.uis.actiivty2.user.CertificationActivity.certificationActivity;
 
 /**
  * @Created By Admin  on 2020/6/11
@@ -70,7 +72,7 @@ public class IdentityCertificationActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        EditTextUtils.setEditTextInhibitInputSpace(etName);
 
     }
 
@@ -117,6 +119,7 @@ public class IdentityCertificationActivity extends BaseActivity {
                             hideProgress();
                             ToastUtils.showToast(IdentityCertificationActivity.this,"提交成功",1000);
                             finish();
+                            certificationActivity.finish();
                         }
                     });
         }
@@ -129,26 +132,30 @@ public class IdentityCertificationActivity extends BaseActivity {
         if (requestCode != RESULT_CANCELED){
             switch (requestCode){
                 case 101:
-                    String path =data.getStringExtra("path");
-                    showProgressDialog(getString(R.string.wait));
-                    NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
-                        @Override
-                        public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
-                            hideProgress();
-                            if (images != null && images.size() > 0) {
-                                idCardPic = images.get(0);
-                                GlideUtils.loadImage(IdentityCertificationActivity.this,idCardPic,imgIdcard);
-                            } else {
+                    try {
+                        String path =data.getStringExtra("path");
+                        showProgressDialog(getString(R.string.wait));
+                        NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
+                            @Override
+                            public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
                                 hideProgress();
-                                showToast("上传失败");
+                                if (images != null && images.size() > 0) {
+                                    idCardPic = images.get(0);
+                                    GlideUtils.loadImage(IdentityCertificationActivity.this,idCardPic,imgIdcard);
+                                } else {
+                                    hideProgress();
+                                    showToast("上传失败");
+                                }
                             }
-                        }
-                        @Override
-                        public void uploadFailed(ApiException ex) {
-                            hideProgress();
-                            showToast("上传图片失败");
-                        }
-                    }, false);
+                            @Override
+                            public void uploadFailed(ApiException ex) {
+                                hideProgress();
+                                showToast("上传图片失败");
+                            }
+                        }, false);
+                    }catch (Exception e){
+                        LogUtils.e(e.toString());
+                    }
                     break;
             }
         }

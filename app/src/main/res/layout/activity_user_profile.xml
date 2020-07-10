@@ -229,7 +229,7 @@
                             android:id="@+id/ll_introduction"
                             style="@style/layout_padding"
                             android:layout_width="match_parent"
-                            android:layout_height="58dp"
+                            android:layout_height="wrap_content"
                             android:background="@drawable/bg_item"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -250,8 +250,7 @@
                                 android:textColor="#666666"
                                 android:layout_marginLeft="@dimen/dp20"
                                 android:textSize="14sp"
-                                android:text="退役熬夜运动员，国家一级抬杠艺术家，
-                                夜宵外卖一品鉴赏师，深夜搞颜色积极分子" />
+                                android:text="" />
                         </LinearLayout>
 
 

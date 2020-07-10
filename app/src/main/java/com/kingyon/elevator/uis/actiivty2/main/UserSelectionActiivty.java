@@ -64,7 +64,7 @@ public class UserSelectionActiivty extends BaseActivity {
 
     }
     private void provideData(int page,String handlerType) {
-        NetService.getInstance().setAttention(page,handlerType)
+        NetService.getInstance().setAttention(page,handlerType,"")
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
                     @Override

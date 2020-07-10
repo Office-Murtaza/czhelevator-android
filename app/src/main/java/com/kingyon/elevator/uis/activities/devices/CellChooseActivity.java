@@ -3,16 +3,17 @@ package com.kingyon.elevator.uis.activities.devices;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -32,6 +33,7 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,11 +51,12 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
     @BindView(R.id.edit_search)
     EditText editSearch;
 
+
     private Double longitude;
     private Double latitude;
-    //    private boolean beFromManager;
     private boolean beInstaller;
     String keywords = "";
+
     @Override
     protected String getTitleText() {
         longitude = getIntent().getDoubleExtra(CommonUtil.KEY_VALUE_1, 0);
@@ -76,18 +79,39 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 
     @Override
     public void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
         String myUserRole = AppContent.getInstance().getMyUserRole();
 //        beInstaller = TextUtils.isEmpty(myUserRole) || TextUtils.equals(Constants.RoleType.INSTALLER, myUserRole);
         beInstaller = TextUtils.isEmpty(myUserRole) || RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, myUserRole);
-        super.init(savedInstanceState);
+
 
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        tvCreate.setVisibility(beInstaller ? View.GONE : View.VISIBLE);
+//        tvCreate.setVisibility(beInstaller ? View.GONE : View.VISIBLE);
+        tvCreate.setVisibility(View.GONE);
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                LogUtils.e(s, start, count, after);
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                LogUtils.e(s, start, count, before);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                LogUtils.e(s.toString());
+                mItems.clear();
+                httpData(1, s.toString());
+
+            }
+        });
     }
 
 
@@ -177,11 +201,11 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 
     @Override
     protected void loadData(final int page) {
-        httpData(page,keywords);
+        httpData(page, keywords);
 
     }
 
-    public void httpData(int page,String keywords){
+    public void httpData(int page, String keywords) {
         NetService.getInstance().partnerCellList(longitude, latitude, page, keywords)
                 .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {

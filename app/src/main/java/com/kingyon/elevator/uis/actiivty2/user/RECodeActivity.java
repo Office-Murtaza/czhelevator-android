@@ -52,19 +52,23 @@ public class RECodeActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         tvTopTitle.setText("我的二维码");
+        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().userProfile()
                 .compose(this.<UserEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<UserEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
+                        hideProgress();
+                        finish();
                     }
                     @Override
                     public void onNext(UserEntity userEntity) {
-                        GlideUtils.loadImage(RECodeActivity.this,userEntity.getAvatar(),imgPhoto);
-                        tvId.setText(DataSharedPreferences.getCreatateAccount());
+                        hideProgress();
+                        GlideUtils.loadCircleImage(RECodeActivity.this,userEntity.getAvatar(),imgPhoto);
+                        tvId.setText(userEntity.getObjctId());
                         tvName.setText(userEntity.getNikeName());
-                        imgReCode.setImageBitmap(ZXingUtils.createQRImage(DataSharedPreferences.getCreatateAccount(),320,320));
+                        imgReCode.setImageBitmap(ZXingUtils.createQRImage(userEntity.getObjctId(),320,320));
                     }
                 });
 

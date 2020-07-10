@@ -210,7 +210,11 @@ public class AttentionFragment extends FoundFragemtUtils {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_error:
-                httpQueryAttention(1, "", "");
+                if (smartRefreshLayout!=null) {
+                    smartRefreshLayout.autoRefresh(100);
+                }else {
+                    httpQueryAttention(1, "", "");
+                }
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();

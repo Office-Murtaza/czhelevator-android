@@ -44,7 +44,7 @@ public class EqdetailsAdapter extends RecyclerView.Adapter<EqdetailsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EquipmentDetailsRevenueEntiy entiy = list.get(position);
         holder.tvMoney.setText(entiy.moneyActual+"");
-        holder.tvTime.setText(TimeUtil.getAllTime(entiy.createTime));
+        holder.tvTime.setText(TimeUtil.getAllTimeNoSecond(entiy.createTime));
     }
 
     @Override

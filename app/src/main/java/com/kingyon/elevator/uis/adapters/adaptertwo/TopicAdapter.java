@@ -51,7 +51,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             holder.tv_conent.setText(conentEntity.get(position).content);
             holder.tv_title.setText(conentEntity.get(position).title);
             holder.tv_nickname.setText(conentEntity.get(position).nickname);
-            GlideUtils.loadRoundCornersImage(context,conentEntity.get(position).image,holder.img_topic_image,20);
+            if (conentEntity.get(position).image==null){
+                holder.ll_imagw.setVisibility(View.GONE);
+            }else {
+                holder.ll_imagw.setVisibility(View.VISIBLE);
+                GlideUtils.loadRoundCornersImage(context,conentEntity.get(position).image,holder.img_topic_image,20);
+            }
             GlideUtils.loadCircleImage(context,conentEntity.get(position).photo,holder.img_portrait);
             HomeTopicConentEntity homeTopicConentEntity = conentEntity.get(position);
             holder.ll_topic.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +81,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title,tv_conent,tv_nickname;
         ImageView img_topic_image,img_portrait;
-        LinearLayout ll_topic;
+        LinearLayout ll_topic,ll_imagw;
         public ViewHolder(View itemView) {
             super(itemView);
             img_topic_image = itemView.findViewById(R.id.img_topic_image);
@@ -85,6 +90,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             tv_conent = itemView.findViewById(R.id.tv_conent);
             tv_nickname = itemView.findViewById(R.id.tv_nickname);
             img_portrait = itemView.findViewById(R.id.img_portrait);
+            ll_imagw = itemView.findViewById(R.id.ll_imagw);
         }
     }
 }

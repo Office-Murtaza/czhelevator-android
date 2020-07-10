@@ -27,6 +27,7 @@ import com.kingyon.elevator.view.ModifyTabLayout;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.BindView;
@@ -112,6 +113,7 @@ public class TopicDetailsActivity extends BaseActivity {
                         homeTopicConentEntity  = conentEntityConentEntity.getContent().get(0);
                         tvTopicContetn.setText(homeTopicConentEntity.content);
                         tvTopicTitle.setText(homeTopicConentEntity.title);
+                        GlideUtils.loadImage(TopicDetailsActivity.this,homeTopicConentEntity.image,imgTopimg);
                         initData();
                     }
                 });

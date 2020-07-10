@@ -131,7 +131,7 @@ public class CodeActivity extends BaseActivity {
             case R.id.tv_code_next:
                 String phoneCode = pc1.getPhoneCode();
                 if (isbinding.equals("1")) {
-                    OrdinaryActivity.httpLogin(this, phone, phoneCode, CODE, unique, avatar, nickName, null, null);
+                    OrdinaryActivity.httpLogin(this, phone, phoneCode, CODE, unique, avatar, nickName, null, null,null);
                 }else {
                     OrdinaryActivity.httpCheckVerifyCode(this,phone,phoneCode, unique, avatar, nickName,loginType);
                 }

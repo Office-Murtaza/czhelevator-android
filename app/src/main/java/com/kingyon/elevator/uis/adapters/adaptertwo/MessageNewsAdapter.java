@@ -27,9 +27,9 @@ public class MessageNewsAdapter extends RecyclerView.Adapter<MessageNewsAdapter.
     List<MassageListMentiy> listMentiys;
 
 
-    public MessageNewsAdapter(Context context, List<MassageListMentiy> listMentiys) {
+    public MessageNewsAdapter(Context context) {
         this.context = context;
-        this.listMentiys = listMentiys;
+
 
     }
 
@@ -52,6 +52,10 @@ public class MessageNewsAdapter extends RecyclerView.Adapter<MessageNewsAdapter.
     @Override
     public int getItemCount() {
         return listMentiys.size();
+    }
+
+    public void addData(List<MassageListMentiy> listMentiys) {
+        this.listMentiys = listMentiys;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

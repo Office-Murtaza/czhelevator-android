@@ -14,6 +14,7 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.FeedBackActivity;
+import com.kingyon.elevator.uis.activities.user.InviteActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
@@ -121,8 +122,8 @@ public class AboutActivity extends BaseActivity {
 
                 break;
             case R.id.ll_recommended:
-                /*分享推荐*/
-
+                /*邀请有礼*/
+                startActivity(InviteActivity.class);
                 break;
             case R.id.ll_version:
                 /*版本跟新*/

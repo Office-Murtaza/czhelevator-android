@@ -7,11 +7,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.entities.WikipediaEntiy;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.FeedBackActivity;
+import com.kingyon.elevator.uis.dialogs.CallDialog;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.user.CustomerServiceCenterFragment;
-import com.kingyon.elevator.uis.fragments.order.OrderFragment;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
@@ -45,6 +51,8 @@ public class CustomerServiceCenterActivity extends BaseActivity {
     TextView tvFeedback;
     @BindView(R.id.vp)
     ViewPager vp;
+    @BindView(R.id.tv_nickname)
+    TextView tvNickname;
 
     @Override
     public int getContentViewId() {
@@ -53,16 +61,33 @@ public class CustomerServiceCenterActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        tvTopTitle.setText("客服中心");
+        tvNickname.setText("Hi，"+DataSharedPreferences.getNickName());
+        showProgressDialog(getString(R.string.wait));
+        NetService.getInstance().getWikipedia()
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<WikipediaEntiy>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        hideProgress();
+                        LogUtils.e(ex.getCode(), ex.getDisplayMessage());
+                        showToast(ex.getDisplayMessage());
+                        finish();
+                    }
 
-        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CustomerServiceCenterFragment().setIndex("1注册问题"), "注册问题");
-        adapter.addFrag(new CustomerServiceCenterFragment().setIndex("2投放问题"), "投放问题");
-        adapter.addFrag(new CustomerServiceCenterFragment().setIndex("3合伙人问题"), "合伙人问题");
-        adapter.addFrag(new CustomerServiceCenterFragment().setIndex("4使用教程"), "使用教程");
-        vp.setAdapter(adapter);
-        vp.setOffscreenPageLimit(adapter.getCount());
-        viewpagertab.setViewPager(vp);
-
+                    @Override
+                    public void onNext(WikipediaEntiy wikipediaEntiy) {
+                        hideProgress();
+                        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
+                        for (int i = 0; i < wikipediaEntiy.getWikipedia().size(); i++) {
+                            LogUtils.e(wikipediaEntiy.getWikipedia().get(i).getLabel());
+                            adapter.addFrag(new CustomerServiceCenterFragment().setIndex(wikipediaEntiy.getWikipedia().get(i).getItem()), wikipediaEntiy.getWikipedia().get(i).getLabel());
+                        }
+                        vp.setAdapter(adapter);
+                        vp.setOffscreenPageLimit(adapter.getCount());
+                        viewpagertab.setViewPager(vp);
+                    }
+                });
     }
 
     @Override
@@ -79,11 +104,8 @@ public class CustomerServiceCenterActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_contact:
-                try {
-                    AFUtil.toCall(this, getString(R.string.service_phone));
-                } catch (Exception e) {
-                    ToastUtils.showToast(this, "当前手机不允许拨打电话，请换手机操作", 1000);
-                }
+                CallDialog callDialog = new CallDialog(this);
+                callDialog.show();
                 break;
             case R.id.tv_feedback:
                 startActivity(FeedBackActivity.class);

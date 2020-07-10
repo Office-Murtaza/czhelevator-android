@@ -41,10 +41,14 @@ public class DecimalDigitsInputFilter implements InputFilter {
         int keep = mMaxLength - (dest.length() - (dend - dstart));
         if (keep < (end - start)) {
             if (TextUtils.isEmpty(message))
-                ToastUtils.showToast(context,String.format("%s最多%s位", note, mMaxLength),1000);
+                ToastUtils.showToast(context,note/*String.format("%s最多%s位", note, mMaxLength)*/,1000);
             else {
                 ToastUtils.showToast(context,message,1000);
             }
+            /*100
+            * 1-10
+            * 2-20
+            * */
         }
         if (keep <= 0) {
             return "";

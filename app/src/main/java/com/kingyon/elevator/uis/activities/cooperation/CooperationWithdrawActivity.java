@@ -140,7 +140,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         tvTip.setText(getString(R.string.cooperation_withdraw_tip));
         updateMoneyInfo();
         ed_input_cash_money.setFilters( new InputFilter[]{new InputFilter.LengthFilter(10)});
-        ed_input_cash_money.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"尊敬的用户")});
+        ed_input_cash_money.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"提现金额超过限制值，请重新输入")});
         ed_input_cash_money.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

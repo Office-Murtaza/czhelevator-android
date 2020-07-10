@@ -235,11 +235,12 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
                     @Override
                     public void Collect(boolean is) {
                         if (is) {
+                            context.showToast("取消收藏成功");
                             conentEntity.remove(position);
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, conentEntity.size() - position);
                         }else {
-                            context.showToast("失败");
+                            context.showToast("取消收藏失败");
                         }
                     }
                 });

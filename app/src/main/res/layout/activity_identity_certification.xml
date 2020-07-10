@@ -34,10 +34,11 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="请输入真实姓名"
-                android:background="@color/color_00000000"
                 android:layout_marginLeft="@dimen/dp10"
+                android:background="@color/color_00000000"
+                android:hint="请输入真实姓名"
                 android:textSize="@dimen/sp_14"
+                android:maxLines="10"
                 />
 
         </LinearLayout>
@@ -71,7 +72,10 @@
                 android:background="@color/color_00000000"
                 android:layout_marginLeft="@dimen/dp10"
                 android:textSize="@dimen/sp_14"
-
+                android:maxLines="18"
+                android:inputType="number"
+                android:digits="0123456789xyzXYZ"
+                android:maxLength="18"
                 />
 
         </LinearLayout>

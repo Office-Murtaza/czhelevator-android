@@ -4,8 +4,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -14,7 +18,6 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.devices.CellEditActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.listeners.OnClickWithObjects;
-import com.leo.afbaselibrary.nets.entities.PageListEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
@@ -22,6 +25,8 @@ import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
 import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
 import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -31,6 +36,9 @@ import butterknife.OnClick;
  */
 
 public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellItemEntity> {
+
+    @BindView(R.id.edit_search)
+    EditText editSearch;
 
     @Override
     protected String getTitleText() {
@@ -61,6 +69,32 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
         };
     }
 
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        super.initViews(savedInstanceState);
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                LogUtils.e(s, start, count, after);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                LogUtils.e(s, start, count, before);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                LogUtils.e(s.toString());
+                mItems.clear();
+                httpData(1, s.toString());
+
+            }
+        });
+
+    }
+
     private void onEditClick(CellItemEntity entity) {
         if (entity != null) {
             Bundle bundle = new Bundle();
@@ -77,7 +111,7 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
             Bundle bundle = new Bundle();
             bundle.putLong(CommonUtil.KEY_VALUE_1, item.getObjctId());
             bundle.putString(CommonUtil.KEY_VALUE_2, item.getCellName());
-            bundle.putString(CommonUtil.KEY_VALUE_3,item.getRegionName());
+            bundle.putString(CommonUtil.KEY_VALUE_3, item.getRegionName());
             startActivity(SalesCellBuildActivity.class, bundle);
         }
     }
@@ -123,7 +157,10 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
 
     @Override
     protected void loadData(final int page) {
-        NetService.getInstance().partnerCellList(null, null, page,"")
+        httpData(page, "");
+    }
+    private void httpData(int page, String keywords) {
+        NetService.getInstance().partnerCellList(null, null, page, keywords)
                 .compose(this.<ConentEntity<CellItemEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<CellItemEntity>>() {
                     @Override
@@ -159,5 +196,12 @@ public class SalesmanActivity extends BaseStateRefreshingLoadingActivity<CellIte
         Bundle bundle = new Bundle();
         bundle.putBoolean(CommonUtil.KEY_VALUE_1, false);
         startActivityForResult(CellEditActivity.class, CommonUtil.REQ_CODE_1, bundle);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

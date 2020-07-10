@@ -179,6 +179,11 @@ public class TopicTypeFragment extends FoundFragemtUtils {
 
     @OnClick(R.id.rl_error)
     public void onViewClicked() {
-        httpTopicType(1, String.valueOf(label), "",0);
+        if (smartRefreshLayoutTopic!=null) {
+            smartRefreshLayoutTopic.autoRefresh(100);
+        }else {
+            list.clear();
+            httpTopicType(page, String.valueOf(label),"",0);
+        }
     }
 }

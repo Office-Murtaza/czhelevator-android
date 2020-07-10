@@ -20,7 +20,10 @@ import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
+import com.kingyon.elevator.uis.actiivty2.activityutils.CameraViewActivit;
+import com.kingyon.elevator.uis.actiivty2.user.CoverActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
+import com.kingyon.elevator.uis.dialogs.PictureSelectorDialog;
 import com.kingyon.elevator.uis.dialogs.SexDialogs;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.PictureSelectorUtil;
@@ -106,7 +109,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
     @BindView(R.id.stateLayout)
     StateLayout stateLayout;
     String birthday;
-
+    UserEntity user;
     @Override
     protected String getTitleText() {
         return "个人资料";
@@ -136,6 +139,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                         DataSharedPreferences.saveUserBean(userEntity);
                         loadingComplete(STATE_CONTENT);
                         showUserInfo(userEntity);
+                        user = userEntity;
                     }
                 });
     }
@@ -146,7 +150,11 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
         tvPwd.setText("******");
         tvMobile.setText(CommonUtil.getHideMobile(userEntity.getPhone()));
         tvIntroduction.setText(userEntity.getPersonalizedSignature());
-        tvBirthday.setText(TimeUtil.getYMdTime(userEntity.getBirthday()));
+        if (userEntity.getBirthday()<=0){
+            tvBirthday.setText("未选择");
+        }else {
+            tvBirthday.setText(TimeUtil.getYMdTime(userEntity.getBirthday()));
+        }
         CityUtils.getCityStr(this, userEntity.getCity(), new CityUtils.CityStr() {
             @Override
             public void cityCode(String cityCode) {
@@ -170,7 +178,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
+        if (requestCode != RESULT_CANCELED||resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case headCode:
                     ArrayList<String> mSelectPath2 = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
@@ -228,6 +236,42 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                         });
                         tvRegion.setText(choosed.getCity() + "");
                     }
+                    break;
+                case 101:
+                    try {
+                        String path =data.getStringExtra("path");
+                        LogUtils.e(path);
+                        showProgressDialog(getString(R.string.wait));
+                        NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
+                            @Override
+                            public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {
+                                hideProgress();
+                                if (images != null && images.size() > 0) {
+                                    ConentUtils.httpEidtProfile(UserProfileActivity.this, images.get(0),
+                                            "", "", "", "", "","", new ConentUtils.AddCollect() {
+                                                @Override
+                                                public void Collect(boolean is) {
+                                                    if (is) {
+                                                        finish();
+                                                    }
+                                                }
+                                            });
+
+                                } else {
+                                    hideProgress();
+                                    showToast("上传失败");
+                                }
+                            }
+                            @Override
+                            public void uploadFailed(ApiException ex) {
+                                hideProgress();
+                                showToast("上传失败");
+                            }
+                        }, false);
+                    }catch (Exception e){
+                        LogUtils.e(e.toString());
+                    }
+                    break;
             }
         }
     }
@@ -245,11 +289,24 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
         switch (view.getId()) {
             case R.id.ll_head:
                 /*头像*/
-                PictureSelectorUtil.showPictureSelector(this, headCode);
+                PictureSelectorDialog pictureSelectorDialog = new PictureSelectorDialog(this);
+                pictureSelectorDialog.show();
+                pictureSelectorDialog.setOnClicked(new PictureSelectorDialog.OnClicked() {
+                    @Override
+                    public void onPhotoalbum() {
+                        PictureSelectorUtil.showPictureSelector(UserProfileActivity.this, headCode);
+                    }
+
+                    @Override
+                    public void onPicture() {
+                        startActivityForResult(CameraViewActivit.class, 101);
+                    }
+                });
+
                 break;
             case R.id.ll_nick:
                 /*昵称*/
-                ActivityUtils.setActivity(ACTIVITY_USER_NICK);
+                ActivityUtils.setActivity(ACTIVITY_USER_NICK,"nickName",user.getNikeName());
                 break;
             case R.id.ll_sex:
                 /*性别*/
@@ -294,7 +351,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                 break;
             case R.id.ll_introduction:
                 /*简介*/
-                ActivityUtils.setActivity(ACTIVITY_USER_INTRODUCTION);
+                ActivityUtils.setActivity(ACTIVITY_USER_INTRODUCTION,"conent",user.getPersonalizedSignature());
                 break;
         }
     }
@@ -330,7 +387,7 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 /*btn_Time.setText(getTime(date));*/
                 LogUtils.e(getTime(date),date);
-                tvBirthday.setText(getTime(date));
+//                tvBirthday.setText(getTime(date));
                 birthday = String.valueOf(TimeUtil.ymdToLong(getTime(date)));
                 ConentUtils.httpEidtProfile(UserProfileActivity.this, "",
                         "", "", "", getTime(date), "", "", new ConentUtils.AddCollect() {

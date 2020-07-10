@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_PAYTREASURECERT;
+import static com.kingyon.elevator.uis.actiivty2.user.CertificationActivity.certificationActivity;
 
 /**
  * @Created By Admin  on 2020/6/12
@@ -59,6 +61,7 @@ public class PayTreasureCertActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        EditTextUtils.setEditTextInhibitInputSpace(etName);
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (uri != null) {
@@ -68,8 +71,8 @@ public class PayTreasureCertActivity extends BaseActivity {
             String port = uri.getPort() + "";
             String path = uri.getPath();
             String query = uri.getQuery();
-            LogUtils.e("获得的数据name=" + name + "/r" + "scheme" + scheme + "/r" + "host" +
-                    "host" + host + "/r" + "port" + port + "/r" + "path" + path + "/r" + "query" + query);
+            LogUtils.e("获得的数据name=" + name + "==" + "scheme" + scheme + "==" + "host" +
+                    "host" + host + "==" + "port" + port + "==" + "path" + path + "===" + "query" + query);
 
             LogUtils.e(DataSharedPreferences.getCertifyId()+"====");
             showProgressDialog("请稍后...");
@@ -79,6 +82,7 @@ public class PayTreasureCertActivity extends BaseActivity {
                         @Override
                         protected void onResultError(ApiException ex) {
                             LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                            showToast(ex.getDisplayMessage());
                             hideProgress();
                         }
 
@@ -86,6 +90,7 @@ public class PayTreasureCertActivity extends BaseActivity {
                         public void onNext(String s) {
                             LogUtils.e(s);
                             finish();
+                            certificationActivity.finish();
                             hideProgress();
                         }
                     });

@@ -94,7 +94,7 @@ public class OrdinaryActivity {
                     }
                     @Override
                     public void onNext(String s) {
-                        ToastUtils.showToast(activity,s,1000);
+                        ToastUtils.showToast(activity,"发送成功",1000);
                         activity.hideProgress();
                         CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(textView, 60000, 1000);
                         mCountDownTimerUtils.start();
@@ -140,7 +140,9 @@ public class OrdinaryActivity {
     /**
      * 登录
      * */
-    public static void httpLogin(BaseActivity baseActivity, String phone, String password, String way, String unique, String avatar, String nickName, LinearLayout llSf,TextView tvLoginUser) {
+    public static void httpLogin(BaseActivity baseActivity, String phone, String password, String way,
+                                 String unique, String avatar, String nickName, LinearLayout llSf,
+                                 TextView tvLoginUser,TextView tvCode) {
         baseActivity.showProgressDialog(baseActivity.getString(R.string.wait));
         NetService.getInstance().setLogin(phone,password,way,unique,avatar,nickName)
                 .compose(baseActivity.bindLifeCycle())
@@ -171,7 +173,11 @@ public class OrdinaryActivity {
                                 }
                             }
                         }else if (ex.getCode()==100107){
+                            baseActivity.showToast("注册成功，请设置登录密码");
                             ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
+                        }else if (ex.getCode()==100102&&way.equals("NOR")){
+                            tvCode.setVisibility(View.VISIBLE);
+                            tvCode.setText("账号或密码错误，请重新输入");
                         }
                     }
                     @Override
@@ -181,6 +187,7 @@ public class OrdinaryActivity {
                         if (codeEntity != null) {
                             if (codeEntity.isNeedSetPwd()) {
                                 UserEntity userEntity = codeEntity.getUser();
+                                baseActivity.showToast("请设置登录密码");
                                 ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", userEntity.getPhone());
                             } else if (codeEntity.isNeedFill()) {
                                 if (way.equals(WX)) {
@@ -202,6 +209,7 @@ public class OrdinaryActivity {
                                         tvLoginUser.setVisibility(View.GONE);
                                     }
                                 } else {
+                                    baseActivity.showToast("注册成功，请设置登录密码");
                                     ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
                                 }
                             } else {
@@ -237,6 +245,7 @@ public class OrdinaryActivity {
                                     tvLoginUser.setVisibility(View.GONE);
                                 }
                             } else {
+                                baseActivity.showToast("注册成功，请设置登录密码");
                                 ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
                             }
                         }
@@ -267,6 +276,7 @@ public class OrdinaryActivity {
                         DataSharedPreferences.saveLoginName(phone);
                         DataSharedPreferences.saveUserBean(userEntity);
                         DataSharedPreferences.saveToken(codeEntity.getToken());
+                        DataSharedPreferences.saveCreatateAccount(userEntity.getAccount());
                         Net.getInstance().setToken(DataSharedPreferences.getToken());
                         JumpUtils.getInstance().jumpToRoleMain(baseActivity, AppContent.getInstance().getMyUserRole());
                         loginActiivty.finish();

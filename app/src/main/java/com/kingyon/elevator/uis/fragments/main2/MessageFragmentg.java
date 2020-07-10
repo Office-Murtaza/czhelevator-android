@@ -21,6 +21,7 @@ import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
@@ -45,6 +46,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_COMMENT;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_LIKE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_MSAGGER;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -95,7 +97,8 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
-        httpHomeData(1);
+//        list.clear();
+//        httpHomeData(1);
 
     }
 
@@ -119,6 +122,22 @@ public class MessageFragmentg extends BaseFragment {
             }
         });
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            list.clear();
+            httpHomeData(1);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        list.clear();
+//        httpHomeData(1);
     }
 
     private void httpHomeData(int page) {
@@ -150,18 +169,75 @@ public class MessageFragmentg extends BaseFragment {
                             rlNull.setVisibility(View.GONE);
                             rlNotlogin.setVisibility(View.GONE);
                         }
+                        initAngle(null);
                     }
                     @Override
                     public void onNext(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
                         hideProgress();
                         closeRefresh();
-                        rcvListMassage.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        rlNotlogin.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
+                        initAngle(conentEntity);
+                        if (conentEntity.pushMessage.size()<=0&&page==1){
+                            rcvListMassage.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                            rlNotlogin.setVisibility(View.GONE);
+                        }else if (conentEntity.pushMessage.size()<=0&&page>1){
+                           showToast("已经没有了");
+                        }else {
+                            rcvListMassage.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
                     }
                 });
+    }
+
+    private void initAngle(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
+        if (conentEntity!=null) {
+            if (conentEntity.followerNum <= 0) {
+                tvAttentionNumber.setVisibility(View.GONE);
+            } else if (conentEntity.followerNum >= 100) {
+                tvAttentionNumber.setVisibility(View.VISIBLE);
+                tvAttentionNumber.setText("99+");
+            } else {
+                tvAttentionNumber.setVisibility(View.VISIBLE);
+                tvAttentionNumber.setText(conentEntity.followerNum + "");
+            }
+            if (conentEntity.commentNum <= 0) {
+                tvCommentNumber.setVisibility(View.GONE);
+            } else if (conentEntity.commentNum >= 100) {
+                tvCommentNumber.setVisibility(View.VISIBLE);
+                tvCommentNumber.setText("99+");
+            } else {
+                tvCommentNumber.setVisibility(View.VISIBLE);
+                tvCommentNumber.setText(conentEntity.commentNum + "");
+            }
+            if (conentEntity.likesNum <= 0) {
+                tvMassageNumber.setVisibility(View.GONE);
+            } else if (conentEntity.likesNum >= 100) {
+                tvLikeNumber.setVisibility(View.VISIBLE);
+                tvLikeNumber.setText("99+");
+            } else {
+                tvLikeNumber.setVisibility(View.VISIBLE);
+                tvLikeNumber.setText(conentEntity.likesNum + "");
+            }
+            if (conentEntity.unreadMessages <= 0) {
+                tvMassageNumber.setVisibility(View.GONE);
+            } else if (conentEntity.unreadMessages >= 100) {
+                tvMassageNumber.setVisibility(View.VISIBLE);
+                tvMassageNumber.setText("99+");
+            } else {
+                tvMassageNumber.setVisibility(View.VISIBLE);
+                tvMassageNumber.setText(conentEntity.unreadMessages + "");
+            }
+        }else {
+            tvAttentionNumber.setVisibility(View.GONE);
+            tvMassageNumber.setVisibility(View.GONE);
+            tvLikeNumber.setVisibility(View.GONE);
+            tvCommentNumber.setVisibility(View.GONE);
+        }
     }
 
     private void dataAdd(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
@@ -207,19 +283,40 @@ public class MessageFragmentg extends BaseFragment {
 
                 break;
             case R.id.ll_msagger:
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_MSAGGER);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_MASSAGE_MSAGGER);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.ll_attention:
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_MASSAGE_ATTENTION);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_like:
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_LIKE);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_MASSAGE_LIKE);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_comment:
-                ActivityUtils.setActivity(ACTIVITY_MASSAGE_COMMENT);
+                if (isToken(getActivity())) {
+                    ActivityUtils.setActivity(ACTIVITY_MASSAGE_COMMENT);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.rl_error:
-
+                if (smartRefreshLayout!=null){
+                    smartRefreshLayout.autoRefresh(100);
+                }else {
+                    httpHomeData(1);
+                }
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();

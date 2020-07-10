@@ -45,6 +45,15 @@ public class DataSharedPreferences {
     /*保存用户id*/
     public static final String CREATATE_ACCOUNT ="CREATATE_ACCOUNT";
 
+    /*保存用户昵称*/
+    public static  final  String USER_NICKNAME ="USER_NICKNAME";
+
+    public static void saveNickName(String nickname){
+        getPreferences().edit().putString(USER_NICKNAME, nickname).apply();
+    }
+    public static String getNickName() {
+        return getPreferences().getString(USER_NICKNAME, "");
+    }
     /*保存用户名字*/
     public static void saveUesrName(String username){
         getPreferences().edit().putString(USER_NAME, username).apply();

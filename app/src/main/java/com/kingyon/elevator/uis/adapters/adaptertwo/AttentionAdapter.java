@@ -287,6 +287,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
                 ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
                         "contentId",queryRecommendEntity.id);
+
                 break;
             default:
         }

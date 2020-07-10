@@ -89,7 +89,6 @@ public class RecommendFragment extends FoundFragemtUtils {
                 httpTop();
                 recommendEntityList.clear();
                 httpRecommend(1, "");
-                smartRefreshLayout.finishRefresh();
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -98,7 +97,6 @@ public class RecommendFragment extends FoundFragemtUtils {
                 page++;
                 httpTop();
                 httpRecommend(page, "");
-                smartRefreshLayout.finishLoadMore();
             }
         });
     }
@@ -221,9 +219,13 @@ public class RecommendFragment extends FoundFragemtUtils {
 
     @OnClick(R.id.rl_error)
     public void onViewClicked() {
-        httpTop();
         recommendEntityList.clear();
-        httpRecommend(1, "");
+        if (smartRefreshLayout != null) {
+            smartRefreshLayout.autoRefresh(100);
+        } else {
+            httpTop();
+            httpRecommend(page, "");
+        }
 
     }
 

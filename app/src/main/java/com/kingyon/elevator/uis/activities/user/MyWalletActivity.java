@@ -61,6 +61,18 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        httpData();
+        preTvTitle.setText("我的钱包");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        httpData();
+    }
+
+    private void httpData() {
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {

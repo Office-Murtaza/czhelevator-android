@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
     @BindView(R.id.rl_notlogin)
     RelativeLayout rl_notlogin;
     MessageAttentionAdapter attentionAdapter;
+    String extend;
     public AttentionFansFragment setIndex(String type) {
         this.type = type;
         return (this);
@@ -79,12 +82,12 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             showProgressDialog(getString(R.string.wait));
             list.clear();
             page=1;
-            httpAttention(type, page);
+            httpAttention(type, page,extend);
         }
     }
 
-    private void httpAttention(String type, int page) {
-        NetService.getInstance().setAttention(page, type)
+    private void httpAttention(String type, int page,String extend ) {
+        NetService.getInstance().setAttention(page, type,extend)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
                     @Override
@@ -142,7 +145,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             list.add(attenionUserEntiy);
         }
         if (attentionAdapter == null || page == 1) {
-            attentionAdapter = new MessageAttentionAdapter((BaseActivity) getActivity());
+            attentionAdapter = new MessageAttentionAdapter((BaseActivity) getActivity(),type);
             attentionAdapter.addData(list);
             rvComment.setAdapter(attentionAdapter);
             rvComment.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
@@ -167,6 +170,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
                 return false;
             }
         });
+
     }
 
     @Override
@@ -184,6 +188,24 @@ public class AttentionFansFragment extends FoundFragemtUtils {
         } else {
             llSearch.setVisibility(View.VISIBLE);
         }
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                list.clear();
+                extend = s.toString();
+                httpAttention(type,1,extend);
+            }
+        });
         return rootView;
     }
 
@@ -195,7 +217,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 list.clear();
-                httpAttention(type, page);
+                httpAttention(type, page,extend);
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -203,7 +225,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 LogUtils.e("onLoadMore");
                 page++;
-                httpAttention(type, page);
+                httpAttention(type, page,extend);
             }
         });
     }
@@ -219,7 +241,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
         switch (view.getId()) {
             case R.id.rl_error:
                 showProgressDialog(getString(R.string.wait));
-                httpAttention(type,1);
+                httpAttention(type,1,extend);
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();

@@ -118,6 +118,8 @@ public class ArticleReleaseActivity extends BaseActivity {
     TextView tvZz;
     @BindView(R.id.ll_sz)
     LinearLayout llSz;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
     private boolean isblue = true;
     private boolean istilt = true;
     private boolean isbold = true;
@@ -168,13 +170,16 @@ public class ArticleReleaseActivity extends BaseActivity {
                 isRichEditor = hasFocus;
                 if (!hasFocus) {
                     initCancel();
+                    llBottom.setVisibility(View.GONE);
+                }else {
+                    llBottom.setVisibility(View.VISIBLE);
                 }
             }
         });
         editTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     initCancel();
                 }
             }
@@ -186,7 +191,7 @@ public class ArticleReleaseActivity extends BaseActivity {
             R.id.img_point, R.id.ll_font, R.id.img_link, R.id.img_at, R.id.img_title,
             R.id.ll_add, R.id.img_down, R.id.img_topi, R.id.img_text, R.id.img_photo,
             R.id.img_video, R.id.img_revoke1, R.id.img_revoke, R.id.img_back,
-            R.id.img_set,R.id.tv_yc, R.id.tv_zz, R.id.ll_sz})
+            R.id.img_set, R.id.tv_yc, R.id.tv_zz, R.id.ll_sz})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_bake:
@@ -394,7 +399,7 @@ public class ArticleReleaseActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_yc:
-                isOriginal  =true;
+                isOriginal = true;
                 tvYc.setTextColor(Color.parseColor("#ffff3049"));
                 tvZz.setTextColor(Color.parseColor("#ff333333"));
                 break;
@@ -415,7 +420,7 @@ public class ArticleReleaseActivity extends BaseActivity {
             ToastUtils.showShort("标题不能为空");
         } else {
             OrdinaryActivity.httpContentPublish(this, editTitle.getText().toString(), richEditor.getHtml(), "", ""
-                    , TYPE_ARTICLE, "1", "", "", 0, imageCover, 0, 3,isOriginal);
+                    , TYPE_ARTICLE, "1", "", "", 0, imageCover, 0, 3, isOriginal);
 
         }
     }

@@ -38,7 +38,9 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACCOUNT_BINDING;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_ABOUT;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created by GongLi on 2019/1/10.
@@ -124,7 +126,12 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.tv_account_binding:
                 /*账户绑定*/
-                ActivityUtils.setActivity(ACTIVITY_ACCOUNT_BINDING);
+                if (isToken(this)) {
+                    ActivityUtils.setActivity(ACTIVITY_ACCOUNT_BINDING);
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+
                 break;
             case R.id.tv_font:
                 /*字体大小*/

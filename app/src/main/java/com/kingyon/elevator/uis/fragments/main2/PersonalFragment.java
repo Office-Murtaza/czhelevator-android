@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.main2;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -22,7 +24,6 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
-import com.kingyon.elevator.uis.activities.homepage.WikiListActivity;
 import com.kingyon.elevator.uis.activities.installer.InstallerActivity;
 import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.activities.salesman.SalesmanActivity;
@@ -37,12 +38,7 @@ import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RoleUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
-import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.GlideUtils;
-import com.leo.afbaselibrary.utils.ToastUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +48,6 @@ import butterknife.Unbinder;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ATTENTION_FANS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CUSTOMER_SERVICE_CENTER;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MYDYNAMIC;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MY_COLLECT;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ORDER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_RE_CODE;
@@ -65,7 +60,7 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
  * Author:Mrczh
  * Instructions:个人
  */
-public class PersonalFragment extends BaseFragment {
+public class PersonalFragment extends BaseFragment implements SwipeRefreshHelper.OnSwipeRefreshListener {
     @BindView(R.id.ll_persona)
     RelativeLayout llPersona;
     Unbinder unbinder;
@@ -137,14 +132,15 @@ public class PersonalFragment extends BaseFragment {
     LinearLayout llCustomer;
     @BindView(R.id.ll_system)
     LinearLayout llSystem;
-    @BindView(R.id.smart_refresh_layout)
-    SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.tv_hx1)
     TextView tvHx1;
     @BindView(R.id.tv_hx2)
     TextView tvHx2;
     String otherUserAccount;
     String authStatus;
+    @BindView(R.id.pre_refresh)
+    SwipeRefreshLayout preRefresh;
+    protected SwipeRefreshHelper mSwipeRefreshHelper;
     @Override
     public int getContentViewId() {
         return R.layout.fragment_persona;
@@ -153,8 +149,17 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         httpPersonal();
+        mSwipeRefreshHelper = new SwipeRefreshHelper(preRefresh);
+        mSwipeRefreshHelper.setOnSwipeRefreshListener(this);
+/*OnSwipeRefreshListener*/
+    }
 
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            httpPersonal();
+        }
     }
 
     @Override
@@ -173,10 +178,12 @@ public class PersonalFragment extends BaseFragment {
                         protected void onResultError(ApiException ex) {
                             showToast(ex.getDisplayMessage());
                             updateHeadUi(null);
+                            mSwipeRefreshHelper.refreshComplete();
                         }
 
                         @Override
                         public void onNext(UserEntity userEntity) {
+                            mSwipeRefreshHelper.refreshComplete();
                             if (userEntity != null) {
                                 updateHeadUi(userEntity);
                                 DataSharedPreferences.saveUserBean(userEntity);
@@ -202,16 +209,17 @@ public class PersonalFragment extends BaseFragment {
             tvCardNumber.setText(user.getUserCenterAttr().couponNum + "");
             tvTCurrency.setText("T币：￥" + user.getUserCenterAttr().tlwMoney + "");
             tvIntegral.setText("积分：" + user.getUserCenterAttr().integral + "");
+            DataSharedPreferences.saveNickName(user.getNikeName());
             LogUtils.e(user.getRole());
-             authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
+            authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
             switch (authStatus) {
                 case Constants.IDENTITY_STATUS.AUTHING:
                     /*认证中*/
-                    imgCertification.setImageResource(R.mipmap.ic_personal_certification_off);
+                    imgCertification.setImageResource(R.mipmap.ic_personal_certification_continue);
                     break;
                 case Constants.IDENTITY_STATUS.FAILD:
                     /*认证失败*/
-                    imgCertification.setImageResource(R.mipmap.ic_personal_certification_off);
+                    imgCertification.setImageResource(R.mipmap.ic_personal_certification_fall);
                     break;
                 case Constants.IDENTITY_STATUS.AUTHED:
                     /*已认证*/
@@ -229,14 +237,14 @@ public class PersonalFragment extends BaseFragment {
             llInstallation.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole()) ? View.VISIBLE : View.GONE);
             /*业务*/
             llBusiness.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.SALESMAN, user.getRole()) ? View.VISIBLE : View.GONE);
-           /*物业*/
+            /*物业*/
             llProperty.setVisibility(RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PROPERTY, user.getRole()) ? View.VISIBLE : View.GONE);
-            if (!RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PROPERTY, user.getRole())&&
-                !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.SALESMAN, user.getRole())&&
-                !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole())){
-                    tvHx1.setVisibility(View.GONE);
-                    tvHx2.setVisibility(View.GONE);
-            }else {
+            if (!RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PROPERTY, user.getRole()) &&
+                    !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.SALESMAN, user.getRole()) &&
+                    !RoleUtils.getInstance().roleBeTarget(Constants.RoleType.INSTALLER, user.getRole())) {
+                tvHx1.setVisibility(View.GONE);
+                tvHx2.setVisibility(View.GONE);
+            } else {
                 tvHx1.setVisibility(View.VISIBLE);
                 tvHx2.setVisibility(View.VISIBLE);
             }
@@ -279,13 +287,6 @@ public class PersonalFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         otherUserAccount = DataSharedPreferences.getCreatateAccount();
-
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                httpPersonal();
-            }
-        });
     }
 
 
@@ -315,7 +316,7 @@ public class PersonalFragment extends BaseFragment {
             case R.id.img_certification:
                 /*认证*/
                 if (isToken(getActivity())) {
-                    if (!authStatus.isEmpty()) {
+                    if (authStatus!=null) {
                         switch (authStatus) {
                             case Constants.IDENTITY_STATUS.AUTHING:
                                 /*认证中*/
@@ -343,7 +344,7 @@ public class PersonalFragment extends BaseFragment {
                                 ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
                                 break;
                         }
-                    }else {
+                    } else {
                         showToast("数据错误 请重试");
                         httpPersonal();
                     }
@@ -355,7 +356,7 @@ public class PersonalFragment extends BaseFragment {
                 /*个人资料*/
                 if (isToken(getActivity())) {
                     LogUtils.e(otherUserAccount);
-                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",otherUserAccount);
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1", "otherUserAccount", otherUserAccount);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -381,7 +382,7 @@ public class PersonalFragment extends BaseFragment {
 //                }
                 if (isToken(getActivity())) {
                     LogUtils.e(otherUserAccount);
-                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1","otherUserAccount",otherUserAccount);
+                    ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1", "otherUserAccount", otherUserAccount);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -480,7 +481,6 @@ public class PersonalFragment extends BaseFragment {
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
-
                 break;
             case R.id.ll_installation:
                 /*安装管理*/
@@ -510,7 +510,11 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_invite:
                 /*邀请有礼*/
-                startActivity(InviteActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(InviteActivity.class);
+                }else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_customer:
                 /*客服电话*/
@@ -518,7 +522,11 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.ll_system:
                 /*系统设置*/
-                startActivity(SettingActivity.class);
+                if (isToken(getActivity())) {
+                    startActivity(SettingActivity.class);
+                }else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_persona:
                 break;
@@ -531,5 +539,10 @@ public class PersonalFragment extends BaseFragment {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onfresh() {
+        httpPersonal();
     }
 }

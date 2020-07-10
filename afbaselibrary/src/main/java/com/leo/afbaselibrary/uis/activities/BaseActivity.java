@@ -205,7 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
             progressDialog = new ProgressDialog(BaseActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(false);
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
         }
         progressDialog.setMessage(message != null ? message : "");
         if (!progressDialog.isShowing()) {

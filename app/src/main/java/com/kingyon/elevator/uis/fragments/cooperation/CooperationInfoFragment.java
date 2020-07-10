@@ -110,6 +110,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
 
     @Override
     public void init(Bundle savedInstanceState) {
+        tvTopTitle.setText("合伙人");
         if (getArguments() != null) {
             cooperationInfoNewEntity = getArguments().getParcelable(CommonUtil.KEY_VALUE_1);
         } else {

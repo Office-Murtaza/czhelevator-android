@@ -101,7 +101,6 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
     TextView tvCancel;
     @BindView(R.id.tv_payment)
     TextView tvPayment;
-    private String type = "BALANCE";
 
     private AliPayUtils aliPayUtils;
     private WxPayUtils wxPayUtils;
@@ -222,22 +221,16 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 /*余额选项*/
                 initview();
                 imgBalance.setSelected(true);
-                type = "BALANCE";
-
                 break;
             case R.id.ll_wechat:
                 /*微信选项*/
                 initview();
                 imgWechat.setSelected(true);
-                type = "WECHAT";
-
                 break;
             case R.id.tv_alipay:
                 /*支付宝选项*/
                 initview();
                 imgAlipay.setSelected(true);
-                type = "ALI";
-
                 break;
             case R.id.tv_cancel:
                 /*取消*/
@@ -245,9 +238,10 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 break;
             case R.id.tv_payment:
                 /*点击支付*/
+                LogUtils.e(imgBalance.isSelected(),imgWechat.isSelected(),imgAlipay.isSelected());
                 if (isOverdue()) {
                     /*是否是余额支付*/
-                    if (type.equals("BALANCE")) {
+                    if (imgBalance.isSelected()) {
                         /*是否设置支付密码*/
                         if (isSetPayPassword) {
                             /*余额是否充足*/
@@ -267,7 +261,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                                             }
                                         } else {
                                             /*密码支付*/
-                                            httpPatment(type, password);
+                                            httpPatment("BALANCE", password);
                                         }
                                     });
                                 }
@@ -281,7 +275,12 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                         }
                     }else {
                         /*微信支付宝支付*/
-                        httpPatment(type, "");
+                        if (imgAlipay.isSelected()){
+                            httpPatment("ALI", "");
+                        }else {
+                            httpPatment("WECHAT", "");
+                        }
+
                     }
 
                 }else {
@@ -336,7 +335,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                         ToastUtils.showToast(context,"你还没有设置指纹支付，请设置再试",1000);
                     }
                 }else {
-                    httpPatment(type, password);
+                    httpPatment("BALANCE", password);
                 }
             });
 
@@ -365,30 +364,32 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
     /*请求支付*/
     private void httpPatment(String type,String payPwd) {
         LogUtils.e(orderEntiy.getOrderId(),type,payPwd);
-        tvAlipay.setEnabled(false);
-        llWechat.setEnabled(false);
+
         context.showProgressDialog("请稍候...", false);
         setPayEnableDelay();
         NetService.getInstance().orderPay(orderEntiy.getOrderId(),type,payPwd)
                 .subscribe(new CustomApiCallback<WxPayEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
                         context.hideProgressDailog();
                         DialogUtils.getInstance().hideInputPayPwdToCashDailog();
                         ToastUtils.showToast(context,ex.getDisplayMessage(),1000);
-                        if (ex.getCode()==-100){
-                            DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(),KEYBOARD_PAY, password -> {
-                                LogUtils.e(password);
-                                if (password.equals("susser")){
-                                    if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)){
-                                        fingerprintInit();
-                                    }else {
-                                        ToastUtils.showToast(context,"你还没有设置指纹支付，请设置再试",1000);
+                        if (type.equals("BALANCE")) {
+                            if (ex.getCode() == -100) {
+                                DialogUtils.getInstance().showInputPayPwdToCashDailog(getContext(), KEYBOARD_PAY, password -> {
+                                    LogUtils.e(password);
+                                    if (password.equals("susser")) {
+                                        if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
+                                            fingerprintInit();
+                                        } else {
+                                            ToastUtils.showToast(context, "你还没有设置指纹支付，请设置再试", 1000);
+                                        }
+                                    } else {
+                                        httpPatment("BALANCE", password);
                                     }
-                                }else {
-                                    httpPatment(type, password);
-                                }
-                            });
+                                });
+                            }
                         }
                         if (ex instanceof PayApiException) {
                             WxPayEntity payResultEntity = ((PayApiException) ex).getPayEntity();

@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.MyWalletInfo;
 import com.kingyon.elevator.entities.WalletRecordEntity;
@@ -18,6 +20,7 @@ import com.kingyon.elevator.uis.adapters.adaptertwo.MyWalletTwoAdapter;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -28,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -46,6 +50,13 @@ public class MyWalletDetailsFragment extends BaseFragment {
     int page = 1;
     List<WalletRecordEntity> recommendEntityList = new ArrayList<>();
     MyWalletTwoAdapter myWalletTwoAdapter;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+    @BindView(R.id.rl_null)
+    RelativeLayout rlNull;
+    @BindView(R.id.rl_notlogin)
+    RelativeLayout rlNotlogin;
+
     public MyWalletDetailsFragment setIndex(String type, String type1) {
         this.type = type;
         this.type1 = type1;
@@ -59,17 +70,17 @@ public class MyWalletDetailsFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        if (smartRefreshLayout!=null) {
+        if (smartRefreshLayout != null) {
             smartRefreshLayout.autoRefresh(100);
-        }else {
+        } else {
             httpList(1, type);
         }
 
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page ++;
-                httpList(page,type);
+                page++;
+                httpList(page, type);
             }
         });
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -77,7 +88,7 @@ public class MyWalletDetailsFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 recommendEntityList.clear();
-                httpList(page,type);
+                httpList(page, type);
             }
         });
 
@@ -93,13 +104,46 @@ public class MyWalletDetailsFragment extends BaseFragment {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        if (ex.getCode() == -102) {
+                            if (page > 1) {
+                                ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
+                            } else {
+                                preRecyclerView.setVisibility(View.GONE);
+                                rlError.setVisibility(View.GONE);
+                                rlNull.setVisibility(View.VISIBLE);
+                                rlNotlogin.setVisibility(View.GONE);
+                            }
+
+                        } else if (ex.getCode()==100200){
+                            preRecyclerView.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.VISIBLE);
+                        }else {
+                            preRecyclerView.setVisibility(View.GONE);
+                            rlError.setVisibility(View.VISIBLE);
+                            rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
                     public void onNext(MyWalletInfo myWalletInfo) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         hideProgress();
-                        dataAdd(myWalletInfo);
+                        if (myWalletInfo.getRecordPage().getContent().size()<=0&&page==1){
+                            preRecyclerView.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                            rlNotlogin.setVisibility(View.GONE);
+                        }else {
+                            dataAdd(myWalletInfo);
+                            preRecyclerView.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.GONE);
+                        }
+
                     }
                 });
 
@@ -143,4 +187,15 @@ public class MyWalletDetailsFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @OnClick({R.id.rl_error, R.id.rl_notlogin})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_error:
+
+                break;
+            case R.id.rl_notlogin:
+                ActivityUtils.setLoginActivity();
+                break;
+        }
+    }
 }

@@ -32,7 +32,6 @@
                     android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:paddingBottom="70dp"
                     android:paddingLeft="@dimen/spacing_four"
                     android:paddingRight="@dimen/spacing_four" />
             </android.support.v4.widget.SwipeRefreshLayout>

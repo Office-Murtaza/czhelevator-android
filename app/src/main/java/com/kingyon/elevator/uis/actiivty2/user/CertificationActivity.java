@@ -47,6 +47,8 @@ public class CertificationActivity extends BaseActivity {
     @BindView(R.id.ll_sfz)
     LinearLayout llSfz;
     private boolean jumping;
+    public static CertificationActivity certificationActivity;
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_certification;
@@ -54,73 +56,16 @@ public class CertificationActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        certificationActivity = this;
         tvTopTitle.setText("资质认证");
         NetService.getInstance().getIdentityInformation()
                 .compose(this.<IdentityInfoEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<IdentityInfoEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        showToast(ex.getDisplayMessage());
-//                        switch (ex.getCode()) {
-//                            case 9002:
-//                                if (!jumping) {
-//                                    jumping = true;
-//                                    new Thread() {
-//                                        @Override
-//                                        public void run() {
-//                                            super.run();
-//                                            try {
-//                                                Thread.sleep(1000);//休眠3秒
-//                                                Bundle bundle = new Bundle();
-//                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHING);
-//                                                startActivity(IdentitySuccessActivity.class,bundle);
-//                                                finish();
-//                                            } catch (InterruptedException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }
-//                                    }.start();
-//
-//                                }
-//                                break;
-//                            case 9003:
-//                                if (!jumping) {
-//                                    jumping = true;
-//                                    new Thread() {
-//                                        @Override
-//                                        public void run() {
-//                                            super.run();
-//                                            try {
-//                                                Thread.sleep(1000);//休眠3秒
-//                                                Bundle bundle = new Bundle();
-//                                                bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
-//                                                startActivity(IdentitySuccessActivity.class,bundle);
-//                                                finish();
-//                                            } catch (InterruptedException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }
-//                                    }.start();
-//                                }
-//                                break;
-//                            case 9004:
-//                                if (!jumping) {
-//                                    jumping = true;
-//                                    new Thread() {
-//                                        @Override
-//                                        public void run() {
-//                                            super.run();
-//                                            try {
-//                                                Thread.sleep(1000);//休眠3秒
-//
-//                                            } catch (InterruptedException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }
-//                                    }.start();
-//                                }
-//                                break;
-//                        }
+                        if (ex.getCode()!=-102){
+                            showToast(ex.getDisplayMessage());
+                        }
                     }
                     @Override
                     public void onNext(IdentityInfoEntity identityInfoEntity) {
