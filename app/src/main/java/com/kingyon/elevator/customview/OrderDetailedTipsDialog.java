@@ -60,8 +60,9 @@ public class OrderDetailedTipsDialog extends Dialog {
         ButterKnife.bind(this);
         all_money.setText("¥" + allPrice);
         all_coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
+        coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
         zhekou_money.setText("-¥" + zhekouPrice);
-        coupons_money.setText("-¥" + couponsPrice);
+//        coupons_money.setText("-¥" + couponsPrice);
         all_real_price_money.setText("¥" + realMoney);
         housingAdPriceAdapter = new HousingAdPriceAdapter(getContext(), goPlaceAnOrderEntity.getTotalDayCount()
                 , goPlaceAnOrderEntity.getPlanType(), goPlaceAnOrderEntity.getCellItemEntityArrayList());

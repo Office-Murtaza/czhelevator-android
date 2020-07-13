@@ -140,7 +140,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         tvContent.setText(recommendEntity.content);
                         tvLikeNumer.setText(recommendEntity.likes + "");
                         tvCommentsNumber.setText(recommendEntity.comments + "");
-                        GlideUtils.loadRoundImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        GlideUtils.loadCircleImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait);
                         if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
                             tvAttention.setVisibility(View.GONE);
                         }else {
@@ -256,17 +256,18 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                 break;
             case R.id.img_collect:
                 /*收藏*/
+                showProgressDialog(getString(R.string.wait));
                 if (recommendEntity.isCollect==0) {
                     ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
                         @Override
                         public void Collect(boolean is) {
+                            hideProgress();
                             if (is) {
                                 imgCollect.setImageResource(R.mipmap.btn_big_collect_off);
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
-                                LogUtils.e("收藏成功");
                                 recommendEntity.isCollect = 1;
+                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
                             } else {
-                                LogUtils.e("收藏失败");
+                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏失败", 1000);
                             }
                         }
                     });
@@ -274,11 +275,14 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                     ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
                         @Override
                         public void Collect(boolean is) {
+                            hideProgress();
                             if (is) {
                                 recommendEntity.isCollect = 0;
                                 imgCollect.setImageResource(R.mipmap.btn_big_collect);
+                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏成功", 1000);
                             } else {
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "失败", 1000);
+                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏失败", 1000);
+
                             }
                         }
                     });

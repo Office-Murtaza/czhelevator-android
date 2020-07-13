@@ -292,11 +292,11 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                                     LogUtils.e(Constants.LoginType.WX, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.WX,new ConentUtils.OnSuccess() {
                                         @Override
-                                        public void onSuccess(boolean isSuccess) {
+                                        public void onSuccess(boolean isSuccess,String massage) {
                                             if (isSuccess) {
                                                 httpData();
                                             }else {
-                                                showToast("绑定失败");
+                                                showToast(massage);
                                             }
                                         }
                                     });
@@ -306,11 +306,11 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
                                     LogUtils.e(QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.QQ,new ConentUtils.OnSuccess() {
                                         @Override
-                                        public void onSuccess(boolean isSuccess) {
+                                        public void onSuccess(boolean isSuccess,String massage) {
                                             if (isSuccess) {
                                                 httpData();
                                             }else {
-                                                showToast("绑定失败");
+                                                showToast(massage);
                                             }
                                         }
                                     });

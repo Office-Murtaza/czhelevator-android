@@ -141,7 +141,7 @@ public class ArticleDetailsActivity extends BaseActivity {
 
                         recommendEntity = queryRecommendEntity;
                         tvName.setText(recommendEntity.nickname + "");
-                        GlideUtils.loadRoundImage(ArticleDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        GlideUtils.loadCircleImage(ArticleDetailsActivity.this, recommendEntity.photo, imgPortrait);
 
                         ConentUtils.httpAddBrowse(ArticleDetailsActivity.this, recommendEntity.id);
 
@@ -322,7 +322,7 @@ public class ArticleDetailsActivity extends BaseActivity {
                                 LogUtils.e("收藏成功");
                                 recommendEntity.isCollect = 1;
                             } else {
-                                LogUtils.e("收藏失败");
+                                ToastUtils.showToast(ArticleDetailsActivity.this, "收藏失败", 1000);
                             }
                         }
                     });
@@ -333,9 +333,9 @@ public class ArticleDetailsActivity extends BaseActivity {
                             if (is) {
                                 recommendEntity.isCollect = 0;
                                 imCollection.setImageResource(R.mipmap.btn_big_collect);
+                                ToastUtils.showToast(ArticleDetailsActivity.this, "取消收藏成功", 1000);
                             } else {
-                                ToastUtils.showToast(ArticleDetailsActivity.this, "失败", 1000);
-                            }
+                                ToastUtils.showToast(ArticleDetailsActivity.this, "取消收藏失败", 1000);                           }
                         }
                     });
                 }

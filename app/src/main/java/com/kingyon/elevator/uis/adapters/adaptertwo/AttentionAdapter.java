@@ -59,6 +59,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
     List<QueryRecommendEntity> conentEntity;
     Parser mTagParser = new Parser();
     private ShareDialog shareDialog;
+    private int  likes = 0;
     public AttentionAdapter(BaseActivity context){
 
       this.context = context;
@@ -86,21 +87,22 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
          * */
         QueryRecommendEntity queryRecommendEntity = conentEntity.get(position);
 
+
         holder.tv_name.setText(queryRecommendEntity.nickname);
-        holder.tv_like_number.setText(queryRecommendEntity.likes+"");
+        holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likes ,"点赞"));
         holder.tv_like_number_bottm.setText("等"+queryRecommendEntity.likes+"人觉得很赞");
         holder.tv_time.setText(TimeUtil.getRecentlyTime(queryRecommendEntity.createTime));
-
 
 
         holder.tv_title.setClickable(false);
         holder.ll_conent_img.setClickable(false);
 
-        GlideUtils.loadRoundImage(context, queryRecommendEntity.photo, holder.img_tx,20);
+        GlideUtils.loadCircleImage(context, queryRecommendEntity.photo, holder.img_tx);
 
         if (queryRecommendEntity.content==null){
             holder.tv_title.setVisibility(View.GONE);
         }
+        holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
         if (queryRecommendEntity.likes<100){
             holder.ll_like.setVisibility(View.GONE);
         }else {
@@ -139,6 +141,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             case "wsq":
 //               社区
                 if (queryRecommendEntity.image!=null) {
+                    LogUtils.e(queryRecommendEntity.toString());
                     List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
                     RecyclerView recyclerView = new RecyclerView(context);
                     ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
@@ -176,9 +179,6 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         }
 
         onClick(holder,queryRecommendEntity,position);
-
-
-
     }
 
     private void onClick(ViewHolder holder, QueryRecommendEntity queryRecommendEntity, int position) {
@@ -204,6 +204,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             }
         });
 
+
         /*进入详情*/
         holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,23 +212,43 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                 itmeonClick(queryRecommendEntity);
             }
         });
-
+        holder.tv_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itmeonClick(queryRecommendEntity);
+            }
+        });
+        holder.ll_conent_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itmeonClick(queryRecommendEntity);
+            }
+        });
 
 
         /*点赞*/
         holder.img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                likes = queryRecommendEntity.likes;
                 if (queryRecommendEntity.liked){
                     queryRecommendEntity.liked =false;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                     ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
                             HOME_CONTENT,CANCEL_LIKE,position,queryRecommendEntity,"1");
+                    likes--;
+                    queryRecommendEntity.likes= likes;
+                    LogUtils.e(likes+"");
+                    holder.tv_like_number.setText(likes+"");
                 }else {
                     queryRecommendEntity.liked =true;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like);
                     ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
                             HOME_CONTENT,LIKE,position,queryRecommendEntity,"1");
+                    likes++;
+                    queryRecommendEntity.likes = likes;
+                    LogUtils.e(likes+"");
+                    holder.tv_like_number.setText(likes+"");
                 }
             }
         });

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
-import com.czh.myversiontwo.utils.DialogUtils;
+import com.kingyon.elevator.uis.dialogs.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;

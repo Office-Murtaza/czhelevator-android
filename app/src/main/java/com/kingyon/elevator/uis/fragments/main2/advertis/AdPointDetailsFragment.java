@@ -81,43 +81,48 @@ public class AdPointDetailsFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        try {
+            tvOccupancy.setText(cellDetailsEntity.occupancyRate+"");
+            tvPrice.setText(cellDetailsEntity.averageSellingPrice+"");
+            tvTraffic.setText(cellDetailsEntity.numberTraffic+"");
+            tvCoverage.setText(cellDetailsEntity.peopleCoverd+"");
+            tvWsp.setText(cellDetailsEntity.throwWay+""/*+FormatUtils.getInstance().getCellDistance()*/);
+            tvAttribute.setText(FormatUtils.getInstance().getCellType(cellDetailsEntity.type));
+            switch (type) {
+                case "1":
+                    tvTitle.setText(cellDetailsEntity.businessIntro);
+                    imgImage.setImageResource(R.mipmap.im_style_business_m);
+                    break;
+                case "2":
+                    tvTitle.setText(cellDetailsEntity.diyIntro);
+                    imgImage.setImageResource(R.mipmap.im_style_diy_m);
+                    break;
+                case "3":
+                    tvTitle.setText(cellDetailsEntity.informationIntro);
+                    imgImage.setImageResource(R.mipmap.im_style_service_m);
+                    break;
+                default:
+            }
 
-        tvOccupancy.setText(cellDetailsEntity.occupancyRate+"");
-        tvPrice.setText(cellDetailsEntity.averageSellingPrice+"");
-        tvTime.setText("每天"+(Integer.parseInt(cellDetailsEntity.deviceSwitchOff.substring(0,2))-Integer.parseInt(cellDetailsEntity.deviceSwitchOn.substring(0,2)))+"小时");
-        tvTraffic.setText(cellDetailsEntity.numberTraffic+"");
-        tvCoverage.setText(cellDetailsEntity.peopleCoverd+"");
-        tvWsp.setText(cellDetailsEntity.throwWay+""/*+FormatUtils.getInstance().getCellDistance()*/);
-        tvAttribute.setText(FormatUtils.getInstance().getCellType(cellDetailsEntity.type));
-        switch (type) {
-            case "1":
-                tvTitle.setText(cellDetailsEntity.businessIntro);
-                imgImage.setImageResource(R.mipmap.im_style_business_m);
-                break;
-            case "2":
-                tvTitle.setText(cellDetailsEntity.diyIntro);
-                imgImage.setImageResource(R.mipmap.im_style_diy_m);
-                break;
-            case "3":
-                tvTitle.setText(cellDetailsEntity.informationIntro);
-                imgImage.setImageResource(R.mipmap.im_style_service_m);
-                break;
-            default:
+            if (cellDetailsEntity.isCollect){
+                imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
+                Resources resources = getContext().getResources();
+                Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
+                llAdCollect.setBackgroundDrawable(btnDrawable);
+                tvAdCollect.setText("已收藏此点位");
+            }else {
+                imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
+                Resources resources = getContext().getResources();
+                Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
+                llAdCollect.setBackgroundDrawable(btnDrawable);
+                tvAdCollect.setText("收藏此点位");
+            }
+            tvTime.setText("每天"+(Integer.parseInt(cellDetailsEntity.deviceSwitchOff.substring(0,2))-Integer.parseInt(cellDetailsEntity.deviceSwitchOn.substring(0,2)))+"小时");
+
+        }catch (Exception e){
+            LogUtils.e(e.toString());
         }
 
-        if (cellDetailsEntity.isCollect){
-            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
-            Resources resources = getContext().getResources();
-            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
-            llAdCollect.setBackgroundDrawable(btnDrawable);
-            tvAdCollect.setText("已收藏此点位");
-        }else {
-            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
-            Resources resources = getContext().getResources();
-            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
-            llAdCollect.setBackgroundDrawable(btnDrawable);
-            tvAdCollect.setText("收藏此点位");
-        }
 
     }
 
@@ -177,7 +182,6 @@ public class AdPointDetailsFragment extends BaseFragment {
                         ToastUtils.showToast(getActivity(), "收藏成功", 1000);
                         tvAdCollect.setText("已收藏此点位");
                     } else {
-                        LogUtils.e("收藏失败");
                         ToastUtils.showToast(getActivity(), "收藏失败", 1000);
                     }
                 }
@@ -193,8 +197,9 @@ public class AdPointDetailsFragment extends BaseFragment {
                         Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
                         llAdCollect.setBackgroundDrawable(btnDrawable);
                         tvAdCollect.setText("收藏此点位");
+                        ToastUtils.showToast(getActivity(), "取消收藏成功", 1000);
                     }else {
-                        ToastUtils.showToast(getActivity(), "失败", 1000);
+                        ToastUtils.showToast(getActivity(), "取消收藏失败", 1000);
                     }
                 }
             });

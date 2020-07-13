@@ -112,10 +112,11 @@ public class ContentDetailsActivity extends BaseActivity {
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     private ShareDialog shareDialog;
-    @Autowired
-    int contentId;
     QueryRecommendEntity recommendEntity;
     int page = 1;
+
+    @Autowired
+    int contentId;
 
     @Override
     public int getContentViewId() {
@@ -124,8 +125,8 @@ public class ContentDetailsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        isRefresh = false;
         ARouter.getInstance().inject(this);
+        isRefresh = false;
         LogUtils.e(contentId);
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
@@ -181,7 +182,7 @@ public class ContentDetailsActivity extends BaseActivity {
                         tvContent.setText(recommendEntity.content);
                         tvLikeComments.setText(String.format("%s 点赞    %s 评论    ", recommendEntity.likes, recommendEntity.comments));
                         tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
-                        GlideUtils.loadRoundImage(ContentDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        GlideUtils.loadCircleImage(ContentDetailsActivity.this, recommendEntity.photo, imgPortrait);
 
                         if (recommendEntity.image != null) {
                             List<Object> list = StringUtils.StringToList(recommendEntity.image);
@@ -331,7 +332,7 @@ public class ContentDetailsActivity extends BaseActivity {
                                 LogUtils.e("收藏成功");
                                 recommendEntity.isCollect = 1;
                             } else {
-                                LogUtils.e("收藏失败");
+                                ToastUtils.showToast(ContentDetailsActivity.this, "收藏失败", 1000);
                             }
                         }
                     });
@@ -342,8 +343,9 @@ public class ContentDetailsActivity extends BaseActivity {
                             if (is) {
                                 recommendEntity.isCollect = 0;
                                 imCollection.setImageResource(R.mipmap.btn_big_collect);
+                                ToastUtils.showToast(ContentDetailsActivity.this, "取消收藏成功", 1000);
                             } else {
-                                ToastUtils.showToast(ContentDetailsActivity.this, "失败", 1000);
+                                ToastUtils.showToast(ContentDetailsActivity.this, "取消收藏失败", 1000);
                             }
                         }
                     });

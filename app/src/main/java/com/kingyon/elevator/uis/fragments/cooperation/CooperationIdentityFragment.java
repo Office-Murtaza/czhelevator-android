@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
-import com.czh.myversiontwo.utils.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.Constants;
@@ -32,7 +31,6 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
-import com.kingyon.elevator.uis.activities.user.IdentityInfoActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.KeyBoardUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;

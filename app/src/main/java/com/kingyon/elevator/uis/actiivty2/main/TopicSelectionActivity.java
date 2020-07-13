@@ -93,6 +93,8 @@ public class TopicSelectionActivity extends BaseActivity {
                         tabLayout.setBottomLineHeightBgResId(R.color.color_00000000);
                         tabLayout.setItemInnerPaddingLeft(dp2px(10));
                         tabLayout.setItemInnerPaddingRight(dp2px(10));
+                        tabLayout.setInnerLeftMargin(dp2px(5));
+                        tabLayout.setInnerRightMargin(dp2px(5));
                         tabLayout.setmTextColorSelect(ContextCompat.getColor(TopicSelectionActivity.this, R.color.type1));
                         tabLayout.setmTextColorUnSelect(ContextCompat.getColor(TopicSelectionActivity.this, R.color.type2));
                         tabLayout.setmTextBgUnSelectResId(R.drawable.bg_ad_type1);

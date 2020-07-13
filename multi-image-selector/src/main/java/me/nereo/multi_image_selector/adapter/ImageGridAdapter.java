@@ -226,11 +226,11 @@ public class ImageGridAdapter extends BaseAdapter {
                 indicator.setVisibility(View.VISIBLE);
                 if (mSelectedImages.contains(data)) {
                     // 设置选中状态
-                    indicator.setImageResource(R.drawable.mis_btn_selected);
+                    indicator.setImageResource(R.drawable.ic_choose_class);
                     mask.setVisibility(View.VISIBLE);
                 } else {
                     // 未选择
-                    indicator.setImageResource(R.drawable.mis_btn_unselected);
+                    indicator.setImageResource(R.drawable.bg_choose_class_off);
                     mask.setVisibility(View.GONE);
                 }
             } else {

@@ -51,7 +51,7 @@ public class ImagAdapter extends RecyclerView.Adapter<ImagAdapter.ViewHolder> {
             public void onClick(View v) {
                 LogUtils.e(queryRecommendEntity.id);
                 ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
-                        "contentId ",queryRecommendEntity.id);
+                        "contentId",queryRecommendEntity.id);
             }
         });
     }

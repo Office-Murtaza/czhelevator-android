@@ -60,7 +60,12 @@ public class MessageAttentionAdapter extends RecyclerView.Adapter<MessageAttenti
         AttenionUserEntiy userEntiy = list.get(position);
         holder.tvName.setText("" + userEntiy.nickname);
         GlideUtils.loadCircleImage(context, userEntiy.photo, holder.imgPortrait);
-        holder.tvConent.setText("" + userEntiy.personalizedSignature);
+        if (userEntiy.personalizedSignature!=null) {
+            holder.tvConent.setText("" + userEntiy.personalizedSignature);
+            holder.tvConent.setVisibility(View.VISIBLE);
+        }else {
+            holder.tvConent.setVisibility(View.GONE);
+        }
         if (type.equals("attention")){
             holder.tvAttention.setTextColor(Color.parseColor("#FF3049"));
             holder.tvAttention.setBackgroundResource(R.drawable.message_attention_bj);

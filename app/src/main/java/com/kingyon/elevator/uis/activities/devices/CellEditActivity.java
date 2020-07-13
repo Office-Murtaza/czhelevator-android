@@ -531,7 +531,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
                     PoiItem poi = data.getParcelableExtra(CommonUtil.KEY_VALUE_1);
                     if (poi != null) {
                         location = String.format("%s,%s", poi.getLatLonPoint().getLongitude(), poi.getLatLonPoint().getLatitude());
-//                        tvArea.setTag(Long.parseLong(poi.getAdCode()));
+                        tvArea.setTag(Long.parseLong(poi.getAdCode()));
                         tvArea.setText(String.format("%s%s%s", poi.getProvinceName(), poi.getCityName(), poi.getAdName()));
                         etAddress.setText(poi.getSnippet());
                         etAddress.setSelection(etAddress.getText().length());

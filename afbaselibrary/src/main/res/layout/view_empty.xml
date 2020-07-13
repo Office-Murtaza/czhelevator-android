@@ -16,7 +16,7 @@
         android:layout_marginLeft="@dimen/spacing_twenty_four"
         android:layout_marginRight="@dimen/spacing_twenty_four"
         android:layout_marginTop="@dimen/spacing_twenty_four"
-        tools:src="@drawable/img_empty_view" />
+        tools:src="@drawable/im_blank_empty" />
 
     <TextView
         android:id="@+id/emptyTextView"

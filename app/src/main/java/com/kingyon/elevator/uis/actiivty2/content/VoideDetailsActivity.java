@@ -159,7 +159,7 @@ public class VoideDetailsActivity extends BaseActivity {
                         tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
                         tvNumber.setText(recommendEntity.browseTimes + "次播放");
                         tvVideoTime.setText(TimeUtils.secondToTime(recommendEntity.playTime / 1000) + "");
-                        GlideUtils.loadRoundImage(VoideDetailsActivity.this, recommendEntity.photo, imgPortrait, 20);
+                        GlideUtils.loadCircleImage(VoideDetailsActivity.this, recommendEntity.photo, imgPortrait);
                         if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
                             tvAttention.setVisibility(View.GONE);
                         }else {
@@ -358,7 +358,7 @@ public class VoideDetailsActivity extends BaseActivity {
                                 LogUtils.e("收藏成功");
                                 recommendEntity.isCollect = 1;
                             } else {
-                                LogUtils.e("收藏失败");
+                                ToastUtils.showToast(VoideDetailsActivity.this, "收藏失败", 1000);
                             }
                         }
                     });
@@ -369,8 +369,10 @@ public class VoideDetailsActivity extends BaseActivity {
                             if (is) {
                                 recommendEntity.isCollect = 0;
                                 imCollection.setImageResource(R.mipmap.btn_big_collect);
+                                ToastUtils.showToast(VoideDetailsActivity.this, "取消收藏成功", 1000);
                             } else {
-                                ToastUtils.showToast(VoideDetailsActivity.this, "失败", 1000);
+                                ToastUtils.showToast(VoideDetailsActivity.this, "取消收藏失败", 1000);
+
                             }
                         }
                     });

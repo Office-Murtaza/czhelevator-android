@@ -117,6 +117,8 @@ public class UserCenterActivity extends BaseActivity {
     ImageView imgMore1;
     @BindView(R.id.img_bj)
     ImageView imgBj;
+    @BindView(R.id.img_set)
+    ImageView imgSet;
 
     @Override
     public int getContentViewId() {
@@ -209,20 +211,16 @@ public class UserCenterActivity extends BaseActivity {
 
                         tvIdnumber.setText("(id:" + userTwoEntity.id + ")");
                         tvAttentionNumber.setText(String.format(ATTENTION_TO_FANS, userTwoEntity.followers, userTwoEntity.beFollowers));
-                       if (userTwoEntity.personalizedSignature!=null) {
-                           tvContent.setText("简介：" + userTwoEntity.personalizedSignature);
-                       }else {
-                           tvContent.setText("简介：" );
-                       }
+                        if (userTwoEntity.personalizedSignature != null) {
+                            tvContent.setText("简介：" + userTwoEntity.personalizedSignature);
+                        } else {
+                            tvContent.setText("简介：");
+                        }
                         tvDtnum.setText("全部动态 " + userTwoEntity.contentNum + " 条");
                         if (userTwoEntity.sex.equals("M")) {
-                            Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_man);
-                            drawable.setBounds(30, 30, 30, 30);
-                            tvName.setCompoundDrawables(null, null, drawable, null);
+                            imgSet.setImageResource(R.mipmap.ic_sexy_man);
                         } else {
-                            Drawable drawable = getResources().getDrawable(R.mipmap.ic_sexy_woman);
-                            drawable.setBounds(30, 30, 30, 30);
-                            tvName.setCompoundDrawables(null, null, drawable, null);
+                            imgSet.setImageResource(R.mipmap.ic_sexy_woman);
                         }
                         if (userTwoEntity.isAttent == 0) {
                             tvAttention.setText("关注");
@@ -238,7 +236,7 @@ public class UserCenterActivity extends BaseActivity {
                             tvAttention1.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
                             tvAttention1.setTextColor(Color.parseColor("#FF1330"));
                         }
-                         GlideUtils.loadImage(UserCenterActivity.this, userTwoEntity.coverImgUrl, imgBj, R.mipmap.bg_information, R.mipmap.bg_information);
+                        GlideUtils.loadImage(UserCenterActivity.this, userTwoEntity.coverImgUrl, imgBj, R.mipmap.bg_information, R.mipmap.bg_information);
 
                     }
                 });
@@ -274,15 +272,17 @@ public class UserCenterActivity extends BaseActivity {
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
                         hideProgress();
-                        if (conentEntity.getContent().size()<=0&&page==1){
-                            rvAttentionList.setVisibility(View.VISIBLE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.GONE);
-                            dataAdd(conentEntity);
-                        }else {
+                        if (conentEntity.getContent().size() <= 0 && page == 1) {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
+                        } else if (conentEntity.getContent().size() <= 0 && page>1) {
+                            showToast("已经没有了");
+                        }else {
+                            dataAdd(conentEntity);
+                            rvAttentionList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
                         }
                     }
                 });

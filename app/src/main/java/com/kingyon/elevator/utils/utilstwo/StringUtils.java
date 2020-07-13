@@ -86,9 +86,9 @@ public class StringUtils {
      *
      * @param mapText
      *            :需要转换的字符串
-     * @param KeySeparator
+//     * @param KeySeparator
      *            :字符串中的分隔符每一个key与value中的分割
-     * @param ElementSeparator
+//     * @param ElementSeparator
      *            :字符串中每个元素的分割
      * @return Map<?,?>
      */
@@ -203,5 +203,12 @@ public class StringUtils {
         return list;
     }
 
+    public static String getNumStr(int num,String str){
+        if (num>0){
+           return num+"";
+        }else {
+            return str;
+        }
+    }
 
 }

@@ -20,6 +20,7 @@ import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
@@ -68,14 +69,14 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
         if (holder!=null){
             holder.tv_comment.setText(commentListEntity.comment);
             if (type.equals("1")){
-                holder.tv_comment_hf.setText(commentListEntity.child.size()+"条回复");
+                holder.tv_comment_hf.setText(StringUtils.getNumStr(commentListEntity.child.size(),"回复"));
             }else {
                 holder.tv_comment_hf.setText("回复");
             }
-            holder.tv_like_number.setText(commentListEntity.likesNum+"");
+            holder.tv_like_number.setText(StringUtils.getNumStr(commentListEntity.likesNum,"点赞"));
             holder.tv_name.setText(commentListEntity.nickname);
             holder.tv_time.setText(TimeUtil.getRecentlyTime(commentListEntity.createTime));
-            GlideUtils.loadRoundImage(context, commentListEntity.photo, holder.img_portrait,20);
+            GlideUtils.loadCircleImage(context, commentListEntity.photo, holder.img_portrait);
 //            if (conentEntity.get(position).liked){
 //                holder.img_like.setImageResource(R.mipmap.ic_small_like);
 //            }else {
@@ -177,8 +178,10 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                 @Override
                 public void onClick(View v) {
                     if (true) {
+
                         holder.img_like.setImageResource(R.mipmap.ic_small_like);
                     }else {
+
                         holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                     }
 

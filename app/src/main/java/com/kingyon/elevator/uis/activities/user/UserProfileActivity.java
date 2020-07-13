@@ -181,16 +181,55 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
         if (requestCode != RESULT_CANCELED||resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case headCode:
-                    ArrayList<String> mSelectPath2 = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
-                    if (mSelectPath2 != null && mSelectPath2.size() > 0) {
-                        showProgressDialog(getString(R.string.wait));
-                        NetService.getInstance().uploadFile(this, new File(mSelectPath2.get(0)), new NetUpload.OnUploadCompletedListener() {
-                            @Override
-                            public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
-                                LogUtils.e(images, hash, response);
-                                if (images != null && images.size() > 0) {
-                                    ConentUtils.httpEidtProfile(UserProfileActivity.this, images.get(0),
-                                            "", "", "", "", "", "", new ConentUtils.AddCollect() {
+                    try {
+                        ArrayList<String> mSelectPath2 = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
+                        if (mSelectPath2 != null && mSelectPath2.size() > 0) {
+                            showProgressDialog(getString(R.string.wait));
+                            NetService.getInstance().uploadFile(this, new File(mSelectPath2.get(0)), new NetUpload.OnUploadCompletedListener() {
+                                @Override
+                                public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
+                                    LogUtils.e(images, hash, response);
+                                    if (images != null && images.size() > 0) {
+                                        ConentUtils.httpEidtProfile(UserProfileActivity.this, images.get(0),
+                                                "", "", "", "", "", "", new ConentUtils.AddCollect() {
+                                                    @Override
+                                                    public void Collect(boolean is) {
+                                                        if (is) {
+                                                            onRefresh();
+                                                        }
+                                                    }
+                                                });
+                                    } else {
+                                        showToast("上传头像出错");
+                                        hideProgress();
+                                    }
+                                }
+
+                                @Override
+                                public void uploadFailed(ApiException ex) {
+                                    showToast(ex.getDisplayMessage());
+                                    hideProgress();
+                                }
+                            });
+                        }
+                    }catch (Exception e){
+                        LogUtils.e(e.toString());
+                    }
+                    break;
+                case 8001:
+                    try {
+                        LocationEntity choosed = data.getParcelableExtra(CommonUtil.KEY_VALUE_1);
+                        LogUtils.e(choosed.getLatitude(), choosed.getLongitude(),
+                                choosed.getCity(), choosed.describeContents(),
+                                choosed.getCityCode(), choosed.getName());
+
+                        if (choosed != null) {
+                            CityUtils.getCityCode(UserProfileActivity.this, choosed.getCity(), new CityUtils.CityCode() {
+                                @Override
+                                public void cityCode(int cityCode1) {
+                                    LogUtils.e(cityCode1);
+                                    ConentUtils.httpEidtProfile(UserProfileActivity.this, "",
+                                            "","" , String.valueOf(cityCode1), "", "", "", new ConentUtils.AddCollect() {
                                                 @Override
                                                 public void Collect(boolean is) {
                                                     if (is) {
@@ -198,43 +237,13 @@ public class UserProfileActivity extends BaseStateRefreshingActivity {
                                                     }
                                                 }
                                             });
-                                } else {
-                                    showToast("上传头像出错");
-                                    hideProgress();
                                 }
-                            }
+                            });
+                            tvRegion.setText(choosed.getCity() + "");
+                        }
 
-                            @Override
-                            public void uploadFailed(ApiException ex) {
-                                showToast(ex.getDisplayMessage());
-                                hideProgress();
-                            }
-                        });
-                    }
-                    break;
-                case 8001:
-                    LocationEntity choosed = data.getParcelableExtra(CommonUtil.KEY_VALUE_1);
-                    LogUtils.e(choosed.getLatitude(), choosed.getLongitude(),
-                            choosed.getCity(), choosed.describeContents(),
-                            choosed.getCityCode(), choosed.getName());
-
-                    if (choosed != null) {
-                        CityUtils.getCityCode(UserProfileActivity.this, choosed.getCity(), new CityUtils.CityCode() {
-                            @Override
-                            public void cityCode(int cityCode1) {
-                                LogUtils.e(cityCode1);
-                                ConentUtils.httpEidtProfile(UserProfileActivity.this, "",
-                                        "","" , String.valueOf(cityCode1), "", "", "", new ConentUtils.AddCollect() {
-                                            @Override
-                                            public void Collect(boolean is) {
-                                                if (is) {
-                                                    onRefresh();
-                                                }
-                                            }
-                                        });
-                            }
-                        });
-                        tvRegion.setText(choosed.getCity() + "");
+                    }catch (Exception e){
+                        LogUtils.e(e.toString());
                     }
                     break;
                 case 101:

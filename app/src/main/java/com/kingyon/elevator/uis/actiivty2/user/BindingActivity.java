@@ -133,11 +133,11 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
                                    protected void getOpentid(String unique1) {
                                        ConentUtils.httpBin3Rd(unique1, Constants.LoginType.ALI, new ConentUtils.OnSuccess() {
                                            @Override
-                                           public void onSuccess(boolean isSuccess) {
+                                           public void onSuccess(boolean isSuccess,String massage) {
                                                if (isSuccess) {
                                                    finish();
                                                }else {
-                                                   showToast("绑定失败");
+                                                   showToast(massage);
                                                }
                                            }
                                        });
@@ -188,11 +188,11 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
                                     LogUtils.e(Constants.LoginType.WX, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.WX,new ConentUtils.OnSuccess() {
                                         @Override
-                                        public void onSuccess(boolean isSuccess) {
+                                        public void onSuccess(boolean isSuccess,String massage) {
                                             if (isSuccess) {
                                                 finish();
                                             }else {
-                                                showToast("绑定失败");
+                                                showToast(massage);
                                             }
                                         }
                                     });
@@ -202,11 +202,11 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
                                     LogUtils.e(QQ, user.getUsername(), user.getHeadimgurl(), user.getNickname());
                                     ConentUtils.httpBin3Rd(user.getUsername(),Constants.LoginType.QQ,new ConentUtils.OnSuccess() {
                                         @Override
-                                        public void onSuccess(boolean isSuccess) {
+                                        public void onSuccess(boolean isSuccess,String massage) {
                                             if (isSuccess) {
                                                 finish();
                                             }else {
-                                                showToast("绑定失败");
+                                                showToast(massage);
                                             }
                                         }
                                     });
