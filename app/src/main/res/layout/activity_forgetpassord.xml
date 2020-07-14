@@ -91,7 +91,7 @@
                 android:hint="请输入手机号"
                 android:layout_marginLeft="@dimen/dp10"
                 android:phoneNumber="true"
-                android:maxLines="11"
+                android:maxLength="11"
                 ></EditText>
 
 
@@ -143,7 +143,7 @@
                 android:background="#00000000"
                 android:hint="请输入验证码"
                 android:inputType="number"
-                android:maxLines="6"
+                android:maxLength="6"
                 ></EditText>
 
 
@@ -199,7 +199,7 @@
                 android:layout_height="44dp"
                 android:background="#00000000"
                 android:hint="请输入6-20位密码"
-                android:maxLines="20"
+                android:maxLength="20"
                 android:password="true"
                 android:inputType="textPassword"
                 ></EditText>

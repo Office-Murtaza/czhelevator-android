@@ -2,16 +2,34 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
+    android:id="@+id/ll_root"
+    android:background="@color/white"
     >
 
-    <include layout="@layout/layout2_top"/>
+    <include layout="@layout/layout_header_with_right" />
 
+    <include layout="@layout/ui_layout_divider" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_robot"
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pre_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pre_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingLeft="@dimen/spacing_four"
+                android:paddingRight="@dimen/spacing_four" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </com.leo.afbaselibrary.widgets.StateLayout>
 
 </LinearLayout>

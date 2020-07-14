@@ -87,6 +87,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 }
             }
         });
+        etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
     }
 
@@ -116,11 +117,11 @@ public class ForgetPasswordActivity extends BaseActivity {
                 if (catShowPwd1) {
                     catShowPwd1 = false;
                     imgPassword.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
-                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     catShowPwd1 = true;
                     imgPassword.setImageResource(R.mipmap.ic_login_pasword_off);
-                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 break;
         }

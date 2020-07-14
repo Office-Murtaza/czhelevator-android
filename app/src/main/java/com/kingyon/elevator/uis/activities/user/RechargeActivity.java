@@ -105,6 +105,14 @@ public class RechargeActivity extends BaseSwipeBackActivity implements IWeakHand
         wxPayUtils = new WxPayUtils(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvEnsure.setEnabled(true);
+        tvAliPay.setEnabled(true);
+        tvWxPay.setEnabled(true);
+    }
+
     @OnClick({R.id.img_clear, R.id.tv_ali_pay, R.id.tv_wx_pay, R.id.tv_ensure})
     public void onViewClicked(View view) {
         switch (view.getId()) {

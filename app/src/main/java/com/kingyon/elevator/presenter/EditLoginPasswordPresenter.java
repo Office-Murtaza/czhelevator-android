@@ -3,6 +3,7 @@ package com.kingyon.elevator.presenter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -170,6 +171,7 @@ public class EditLoginPasswordPresenter extends BasePresenter<EditLoginPasswordV
                     public void onNext(String s) {
                         if (isViewAttached()) {
                             getView().showShortToast("密码修改成功");
+                            DataSharedPreferences.clearLoginInfo();
                             getView().hideProgressDailog();
                             getView().passwordEditSuccess();
                         }
@@ -197,9 +199,9 @@ public class EditLoginPasswordPresenter extends BasePresenter<EditLoginPasswordV
             }
             return;
         }
-        if (newPassword.length() < 8) {
+        if (newPassword.length() < 6) {
             if (isViewAttached()) {
-                getView().showShortToast("密码长度低于8位数，请继续输入");
+                getView().showShortToast("密码长度低于6位数，请继续输入");
             }
             return;
         }
@@ -226,6 +228,7 @@ public class EditLoginPasswordPresenter extends BasePresenter<EditLoginPasswordV
                     public void onNext(String s) {
                         if (isViewAttached()) {
                             getView().showShortToast("密码修改成功");
+                            DataSharedPreferences.clearLoginInfo();
                             getView().hideProgressDailog();
                             getView().passwordEditSuccess();
                         }

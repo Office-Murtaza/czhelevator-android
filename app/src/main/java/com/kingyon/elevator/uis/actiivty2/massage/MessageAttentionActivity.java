@@ -1,13 +1,9 @@
 package com.kingyon.elevator.uis.actiivty2.massage;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -18,24 +14,24 @@ import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAttentionAdapter;
-import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.uis.dialogs.NotAttentionDialog;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.nets.exceptions.ResultException;
+import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
+import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
+import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
+import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ToastUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
 
 /**
  * @Created By Admin  on 2020/4/22
@@ -44,34 +40,121 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_ATTENTION;
  * @Instructions:消息关注
  */
 @Route(path = ACTIVITY_MASSAGE_ATTENTION)
-public class MessageAttentionActivity extends BaseActivity {
-    @BindView(R.id.img_top_back)
-    ImageView imgTopBack;
-    @BindView(R.id.tv_top_title)
-    TextView tvTopTitle;
-    @BindView(R.id.tv_right)
-    TextView tvRight;
-    @BindView(R.id.rv_comment)
-    RecyclerView rvComment;
-    MessageAttentionAdapter attentionAdapter;
-    @BindView(R.id.rl_error)
-    RelativeLayout rlError;
-    @BindView(R.id.rl_null)
-    RelativeLayout rlNull;
-    @BindView(R.id.rl_notlogin)
-    RelativeLayout rlNotlogin;
-    @BindView(R.id.smart_refresh_layout)
-    SmartRefreshLayout smartRefreshLayout;
-    List<AttenionUserEntiy> list = new ArrayList<>();
-    private int page = 1;
-    private String type = "fans";
+public class MessageAttentionActivity extends BaseStateRefreshingLoadingActivity<AttenionUserEntiy> {
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.pre_v_right)
+    TextView preVRight;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-        tvTopTitle.setText("关注");
+    protected MultiItemTypeAdapter<AttenionUserEntiy> getAdapter() {
+        return new BaseAdapter<AttenionUserEntiy>(this, R.layout.itme_message_atention, mItems) {
+            @Override
+            protected void convert(CommonHolder holder, AttenionUserEntiy item, int position) {
+                GlideUtils.loadCircleImage(MessageAttentionActivity.this, item.photo, holder.getView(R.id.img_portrait));
+                holder.setText(R.id.tv_name, item.nickName);
+                if (item.personalizedSignature!=null) {
+                    holder.setText(R.id.tv_conent, item.personalizedSignature);
+                }else {
+                    holder.setVisible(R.id.tv_conent,false);
+                }
+                if (item.focusOther == 1) {
+                    holder.setTextColor(R.id.tv_attention, Color.parseColor("#FF3049"));
+                    holder.setBackgroundRes(R.id.tv_attention, R.drawable.message_attention_bj);
+                    holder.setText(R.id.tv_attention, "已关注");
+                    holder.setTag(R.id.tv_attention, "已关注");
+                } else {
+                    holder.setTextColor(R.id.tv_attention, Color.parseColor("#ffffff"));
+                    holder.setBackgroundRes(R.id.tv_attention, R.drawable.message_attention_bj1);
+                    holder.setText(R.id.tv_attention, "关注");
+                    holder.setTag(R.id.tv_attention, "关注");
+                }
+                holder.setOnClickListener(R.id.tv_attention, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.getView(R.id.tv_attention).getTag().equals("关注")) {
+                            ConentUtils.httpAddAttention(MessageAttentionActivity.this, "add", item.followerAccount, new ConentUtils.IsAddattention() {
+                                @Override
+                                public void onisSucced() {
+                                    holder.setTextColor(R.id.tv_attention, Color.parseColor("#FF3049"));
+                                    holder.setBackgroundRes(R.id.tv_attention, R.drawable.message_attention_bj);
+                                    holder.setText(R.id.tv_attention, "已关注");
+                                    holder.setTag(R.id.tv_attention, "已关注");
+                                    item.isAttention = 1;
+                                }
 
+                                @Override
+                                public void onErron(String magssger, int code) {
+                                    ToastUtils.showToast(MessageAttentionActivity.this, magssger, 1000);
+                                }
+                            });
+                        } else {
+                            NotAttentionDialog notAttentionDialog = new NotAttentionDialog(MessageAttentionActivity.this, new NotAttentionDialog.OnClick() {
+                                @Override
+                                public void onclick() {
+                                    LogUtils.e("212121332");
+                                    ConentUtils.httpAddAttention(MessageAttentionActivity.this, "cancel", item.followerAccount, new ConentUtils.IsAddattention() {
+                                        @Override
+                                        public void onisSucced() {
+                                            holder.setTextColor(R.id.tv_attention, Color.parseColor("#ffffff"));
+                                            holder.setBackgroundRes(R.id.tv_attention, R.drawable.message_attention_bj1);
+                                            holder.setText(R.id.tv_attention, "关注");
+                                            holder.setTag(R.id.tv_attention, "关注");
+                                            item.isAttention = 0;
+                                        }
+
+                                        @Override
+                                        public void onErron(String magssger, int code) {
+                                            ToastUtils.showToast(MessageAttentionActivity.this, magssger, 1000);
+                                        }
+                                    });
+                                }
+                            });
+                            notAttentionDialog.show();
+                        }
+                    }
+                });
+            }
+        };
+    }
+
+    @Override
+    public void onItemClick(View view, RecyclerView.ViewHolder holder, AttenionUserEntiy item, int position) {
+        super.onItemClick(view, holder, item, position);
+        ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1", "otherUserAccount", item.followerAccount);
+
+    }
+
+    @Override
+    protected void loadData(int page) {
+        NetService.getInstance().getFollowerList(page, 20)
+                .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        showToast(ex.getDisplayMessage());
+                        loadingComplete(false, 100000);
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<AttenionUserEntiy> massageListMentiys) {
+                        if (massageListMentiys == null || massageListMentiys.getContent() == null) {
+                            throw new ResultException(9001, "返回参数异常");
+                        }
+                        if (FIRST_PAGE == page) {
+                            mItems.clear();
+                        }
+                        mItems.addAll(massageListMentiys.getContent());
+                        if (page > 1 && massageListMentiys.getContent().size() <= 0) {
+                            showToast("已经没有了");
+                        }
+                        loadingComplete(true, massageListMentiys.getTotalPages());
+                    }
+                });
+    }
+
+    @Override
+    protected String getTitleText() {
+        return null;
     }
 
     @Override
@@ -80,108 +163,23 @@ public class MessageAttentionActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        smartRefreshLayout.autoRefresh(100);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+        preVRight.setVisibility(View.GONE);
+        preTvTitle.setText("新增粉丝");
 
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        ConentUtils.httpGetMarkRead("", "FOLLOWER", "ALL ", new IsSuccess() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page = 1;
-                list.clear();
-                httpAttention(type, page);
-            }
-        });
-        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e("onLoadMore");
-                page++;
-                httpAttention(type, page);
+            public void isSuccess(boolean success) {
+                LogUtils.e(success);
             }
         });
     }
 
-    private void httpAttention(String type, int page) {
-        NetService.getInstance().setAttention(page, type,"")
-                .compose(this.bindLifeCycle())
-                .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        hideProgress();
-                        if (ex.getCode() == -102) {
-                            if (page > 1) {
-                                ToastUtils.showToast(MessageAttentionActivity.this, ex.getDisplayMessage(), 1000);
-                            } else {
-                                rvComment.setVisibility(View.GONE);
-                                rlError.setVisibility(View.GONE);
-                                rlNull.setVisibility(View.VISIBLE);
-                                rlNotlogin.setVisibility(View.GONE);
-                            }
-
-                        } else if (ex.getCode() == 100200) {
-                            rvComment.setVisibility(View.GONE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.GONE);
-                            rlNotlogin.setVisibility(View.VISIBLE);
-                        } else {
-                            rvComment.setVisibility(View.GONE);
-                            rlError.setVisibility(View.VISIBLE);
-                            rlNull.setVisibility(View.GONE);
-                            rlNotlogin.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onNext(ConentEntity<AttenionUserEntiy> attenionUserEntiyConentEntity) {
-                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        addData(attenionUserEntiyConentEntity);
-                        hideProgress();
-                        if (attenionUserEntiyConentEntity.getContent().size()>0||page>1) {
-                            rvComment.setVisibility(View.VISIBLE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.GONE);
-                            rlNotlogin.setVisibility(View.GONE);
-                        }else {
-                            rvComment.setVisibility(View.GONE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.VISIBLE);
-                            rlNotlogin.setVisibility(View.GONE);
-                        }
-                    }
-                });
-
-    }
-
-    private void addData(ConentEntity<AttenionUserEntiy> attenionUserEntiyConentEntity) {
-        for (int i = 0; i < attenionUserEntiyConentEntity.getContent().size(); i++) {
-            AttenionUserEntiy attenionUserEntiy = new AttenionUserEntiy();
-            attenionUserEntiy = attenionUserEntiyConentEntity.getContent().get(i);
-            list.add(attenionUserEntiy);
-        }
-        if (attentionAdapter == null || page == 1) {
-            attentionAdapter = new MessageAttentionAdapter(this,type);
-            attentionAdapter.addData(list);
-            rvComment.setAdapter(attentionAdapter);
-            rvComment.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));
-
-        } else {
-            attentionAdapter.addData(list);
-            attentionAdapter.notifyDataSetChanged();
-        }
-    }
-    @OnClick({R.id.img_top_back, R.id.rl_error, R.id.rl_notlogin})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.img_top_back:
-                finish();
-                break;
-            case R.id.rl_error:
-                httpAttention(type,1);
-                break;
-            case R.id.rl_notlogin:
-                ActivityUtils.setLoginActivity();
-                break;
-        }
+    @OnClick(R.id.pre_v_back)
+    public void onViewClicked() {
+        finish();
     }
 }

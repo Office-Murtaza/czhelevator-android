@@ -46,8 +46,8 @@ public class ResetLoginPasswordFragment extends MvpBaseFragment<EditLoginPasswor
     @BindView(R.id.tv_next_confirm)
     TextView tv_next_confirm;
 
-    private Boolean catShowPwd1 = false;
-    private Boolean catShowPwd2 = false;
+    private Boolean catShowPwd1 = true;
+    private Boolean catShowPwd2 = true;
     UserEntity userEntity;
     @Override
     public EditLoginPasswordPresenter initPresenter() {
@@ -87,27 +87,29 @@ public class ResetLoginPasswordFragment extends MvpBaseFragment<EditLoginPasswor
                 break;
             case R.id.tv_get_code:
                 presenter.getVerCode(userEntity.getPhone());
+
                 break;
             case R.id.cat_password2:
                 if (catShowPwd2) {
                     catShowPwd2 = false;
                     cat_password2.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
-                    et_password2.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    et_password2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     catShowPwd2 = true;
                     cat_password2.setImageResource(R.mipmap.ic_login_pasword_off);
-                    et_password2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    et_password2.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 break;
             case R.id.cat_password1:
                 if (catShowPwd1) {
                     catShowPwd1 = false;
                     cat_password1.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
-                    et_password1.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    et_password1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     catShowPwd1 = true;
                     cat_password1.setImageResource(R.mipmap.ic_login_pasword_off);
-                    et_password1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    et_password1.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                 }
                 break;
             default:

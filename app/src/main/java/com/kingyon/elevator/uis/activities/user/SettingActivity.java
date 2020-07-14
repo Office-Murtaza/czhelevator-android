@@ -45,6 +45,7 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 /**
  * Created by GongLi on 2019/1/10.
  * Email：lc824767150@163.com
+ * 系统设置
  */
 
 public class SettingActivity extends BaseSwipeBackActivity {

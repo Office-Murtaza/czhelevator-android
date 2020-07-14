@@ -48,7 +48,8 @@ public class CustomerServiceCenterAdapter extends RecyclerView.Adapter<CustomerS
             @Override
             public void onClick(View v) {
                 LogUtils.e(item.get(position).getContent());
-                ActivityUtils.setActivity(WEB_ACTIVITY,"title",item.get(position).getName(),"content",item.get(position).getContent());
+                ActivityUtils.setActivity(WEB_ACTIVITY,"title",item.get(position).getName(),"content"
+                        ,item.get(position).getContent(),"type","content");
             }
         });
 

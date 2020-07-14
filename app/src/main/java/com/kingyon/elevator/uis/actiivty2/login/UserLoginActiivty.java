@@ -57,7 +57,7 @@ public class UserLoginActiivty extends BaseActivity {
     TextView tvCode;
     @BindView(R.id.img_password)
     ImageView imgPassword;
-    private Boolean catShowPwd1 = false;
+    private Boolean catShowPwd1 = true;
     @Override
     public int getContentViewId() {
         return R.layout.activity_userlogin;
@@ -96,11 +96,11 @@ public class UserLoginActiivty extends BaseActivity {
                 if (catShowPwd1) {
                     catShowPwd1 = false;
                     imgPassword.setImageResource(R.mipmap.mimachongzhi_kejiananniuer);
-                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     catShowPwd1 = true;
                     imgPassword.setImageResource(R.mipmap.ic_login_pasword_off);
-                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 break;
 

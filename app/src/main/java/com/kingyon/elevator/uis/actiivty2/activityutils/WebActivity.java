@@ -38,6 +38,8 @@ public class WebActivity extends BaseActivity {
     String title;
     @Autowired
     String content;
+    @Autowired
+    String type;
 
     @Override
     public int getContentViewId() {
@@ -48,8 +50,11 @@ public class WebActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
         tvTopTitle.setText(title);
-        webview.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "utf-8", null);
-
+        if (type.equals("url")){
+         webview.loadUrl(content);
+        }else {
+            webview.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "utf-8", null);
+        }
     }
 
     @Override

@@ -29,6 +29,8 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dp10"
+            android:paddingTop="@dimen/dp10"
             android:orientation="horizontal">
 
             <View
@@ -175,7 +177,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_100"
+                android:layout_height="match_parent"
                 android:gravity="right"
                 android:orientation="vertical"
                >
@@ -204,12 +206,14 @@
                     android:id="@+id/ecv_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/spacing_default"
-                    android:layout_marginBottom="@dimen/spacing_default" />
+                    android:paddingRight="@dimen/spacing_default"
+                    android:paddingBottom="@dimen/spacing_default"
+
+                   />
 
                 <ImageView
                     android:id="@+id/img_choose_delete"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_default"
                     android:visibility="gone"

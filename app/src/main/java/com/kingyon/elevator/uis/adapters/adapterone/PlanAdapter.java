@@ -213,7 +213,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
          * @return
          */
         public SpannableString getCellOriginPrice(double price) {
-            String priceStr = String.format("%s/天", CommonUtil.getMayTwoFloat(price));
+            String priceStr = String.format("%s/天/台/天", CommonUtil.getMayTwoFloat(price));
             SpannableString result = new SpannableString(priceStr);
             if (strikethroughSpan==null) {
                 strikethroughSpan = new StrikethroughSpan();

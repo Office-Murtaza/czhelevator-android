@@ -20,7 +20,10 @@ public class MassageListMentiy {
       "postId": 69,
       "image": null,
       "url": null,
-      "delete": null*/
+      "delete": null
+
+
+      */
 
     public int id;
     public String createAccount;

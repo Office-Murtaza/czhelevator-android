@@ -63,6 +63,15 @@ public class ActivityUtils {
                     .navigation();
         }
     }
+    public static void setActivity(String Url,String key1,int value1 ,String key2,String value2){
+        if (QuickClickUtils.isFastClick()) {
+            ARouter.getInstance()
+                    .build(Url)
+                    .withInt(key1,value1)
+                    .withString(key2,value2)
+                    .navigation();
+        }
+    }
 
     public static void setActivity(String Url,String key1,String value1,String key2,String value2,String key3,String value3 ){
         if (QuickClickUtils.isFastClick()) {

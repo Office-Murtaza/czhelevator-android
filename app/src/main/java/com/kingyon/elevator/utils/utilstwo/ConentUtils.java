@@ -424,4 +424,38 @@ public class ConentUtils {
 
         }
     }
+
+    public static void httpMarkAll(IsSuccess isSuccess){
+        NetService.getInstance().markAll()
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        isSuccess.isSuccess(false);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        isSuccess.isSuccess(true);
+                    }
+                });
+    }
+
+
+    public static void httpGetMarkRead(String id,String type,String isAll,IsSuccess isSuccess){
+        NetService.getInstance().getMarkRead(id, type, isAll)
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        isSuccess.isSuccess(false);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        isSuccess.isSuccess(true);
+                    }
+                });
+    }
+
 }

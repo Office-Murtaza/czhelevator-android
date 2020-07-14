@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
@@ -66,7 +67,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.llContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.setActivity(ACTIVITY_MESSAGE_PUSH,"robotId",massageLitsEntiy.robotId);
+                LogUtils.e("robotId",massageLitsEntiy.robotId,"name",massageLitsEntiy.robotName);
+
+                ActivityUtils.setActivity(ACTIVITY_MESSAGE_PUSH,"robotId",massageLitsEntiy.robotId,"name",massageLitsEntiy.robotName);
             }
         });
         holder.tvDelete.setOnClickListener(new View.OnClickListener() {

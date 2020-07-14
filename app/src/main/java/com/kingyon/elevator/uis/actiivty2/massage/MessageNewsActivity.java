@@ -1,16 +1,21 @@
 package com.kingyon.elevator.uis.actiivty2.massage;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
@@ -56,7 +61,7 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
     @Override
     protected void loadData(int page) {
         NetService.getInstance().getMessageList(page, 20)
-                .subscribe(new CustomApiCallback<List<MassageListMentiy>>() {
+                .subscribe(new CustomApiCallback<ConentEntity<MassageListMentiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
@@ -64,18 +69,18 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
                     }
 
                     @Override
-                    public void onNext(List<MassageListMentiy> massageListMentiys) {
-                        if (massageListMentiys == null ) {
+                    public void onNext(ConentEntity<MassageListMentiy> massageListMentiys) {
+                        if (massageListMentiys == null||massageListMentiys.getContent()==null ) {
                             throw new ResultException(9001, "返回参数异常");
                         }
                         if (FIRST_PAGE == page) {
                             mItems.clear();
                         }
-                        mItems.addAll(massageListMentiys);
-                        if (page>1&&massageListMentiys.size()<=0){
+                        mItems.addAll(massageListMentiys.getContent());
+                        if (page>1&&massageListMentiys.getContent().size()<=0){
                             showToast("已经没有了");
                         }
-                        loadingComplete(true, 100000);
+                        loadingComplete(true, massageListMentiys.getTotalPages());
                     }
                 });
     }
@@ -83,6 +88,17 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
     @Override
     protected String getTitleText() {
         return "消息";
+    }
+
+    @Override
+    public void onItemClick(View view, RecyclerView.ViewHolder holder, MassageListMentiy item, int position) {
+        super.onItemClick(view, holder, item, position);
+        ConentUtils.httpGetMarkRead(item.messageId, "MESSAGE", "SINGLE", new IsSuccess() {
+            @Override
+            public void isSuccess(boolean success) {
+                LogUtils.e(success);
+            }
+        });
     }
 
     @Override

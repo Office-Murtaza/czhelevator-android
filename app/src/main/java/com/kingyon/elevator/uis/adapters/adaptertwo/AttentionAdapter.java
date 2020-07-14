@@ -90,6 +90,9 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
         holder.tv_name.setText(queryRecommendEntity.nickname);
         holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likes ,"点赞"));
+        holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.commentNum ,"评论"));
+        holder.tv_search.setText(StringUtils.getNumStr(queryRecommendEntity.shares ,"分享"));
+
         holder.tv_like_number_bottm.setText("等"+queryRecommendEntity.likes+"人觉得很赞");
         holder.tv_time.setText(TimeUtil.getRecentlyTime(queryRecommendEntity.createTime));
 
@@ -330,7 +333,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         RelativeLayout rv_conent_img;
         MentionTextView tv_title;
         ImageView img_tx,img_topimg,img_like,img_talent,img_shared,img_report;
-        TextView tv_like_number_bottm,tv_time,tv_like_number,tv_video_time,tv_video_number,tv_name,tv_authstatus;
+        TextView tv_like_number_bottm,tv_time,tv_like_number,tv_video_time,tv_video_number,tv_name,tv_authstatus,tv_search,tv_comments_number;
         public ViewHolder(View itemView) {
             super(itemView);
             ll_conent_img = itemView.findViewById(R.id.ll_conent_img);
@@ -352,6 +355,8 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             img_report = itemView.findViewById(R.id.img_report);
             img_shared = itemView.findViewById(R.id.img_shared);
             tv_authstatus = itemView.findViewById(R.id.tv_authstatus);
+            tv_search = itemView.findViewById(R.id.tv_search);
+            tv_comments_number = itemView.findViewById(R.id.tv_comments_number);
             tv_title.setMovementMethod(new LinkMovementMethod());
             tv_title.setParserConverter(mTagParser);
         }

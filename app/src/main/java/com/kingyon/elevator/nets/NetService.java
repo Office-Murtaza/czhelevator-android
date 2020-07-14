@@ -86,16 +86,19 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.AtListEntiy;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.AuthStatusEntily;
 import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
 import com.kingyon.elevator.entities.entities.Chartentily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
+import com.kingyon.elevator.entities.entities.CommentLikesListEntiy;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.ContentLikesListEntiy;
 import com.kingyon.elevator.entities.entities.EarningsTopEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
@@ -106,6 +109,7 @@ import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
+import com.kingyon.elevator.entities.entities.MassagePushEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -317,6 +321,40 @@ public class NetService {
         return addSchedulers(getApi().getMatching(page, keyWords));
     }
 
+    /*2.0获取推送消息*/
+    public Observable<ConentEntity<MassagePushEntiy>> getPushMagList(int robot_id,int page,int rows){
+        return addSchedulers(getApi().getPushMagList(robot_id,page,rows));
+    }
+
+    /*2.0消息-查询点赞内容*/
+    public Observable<ConentEntity<ContentLikesListEntiy>> getContentLikesList(int page,int rows){
+        return addSchedulers(getApi().getContentLikesList(page, rows));
+    }
+
+    /*2.0消息-查询点赞内容*/
+    public Observable<ConentEntity<CommentLikesListEntiy>> getCommentMeList(int page, int rows){
+        return addSchedulers(getApi().getCommentMeList(page, rows));
+    }
+  /*2.0消息-查询@我*/
+    public Observable<ConentEntity<AtListEntiy>> getAtList(int page, int rows){
+        return addSchedulers(getApi().getAtList(page, rows));
+    }
+
+    /*2.0消息-查询点赞内容*/
+    public Observable<ConentEntity<CommentLikesListEntiy>> getCommentLikesList(int page, int rows){
+        return addSchedulers(getApi().getCommentLikesList(page, rows));
+    }
+
+    /*2.0标记指定已读*/
+    public Observable<String> getMarkRead(String id,String type,String isAll){
+        return addSchedulers(getApi().getMarkRead(id, type, isAll));
+    }
+
+    /*2.0标记全部已读*/
+    public Observable<String> markAll(){
+        return addSchedulers(getApi().markAll());
+    }
+
     /*2.0获取投放首页*/
     public Observable<ConentOdjerEntity> setCityFacilty(String provinceCode, String cityCode, String countyCode){
         if (cityCode!=null) {
@@ -409,9 +447,15 @@ public class NetService {
         return addSchedulers(getApi().getMsgOverview(page, rows));
     }
     /*2.0消息列表*/
-    public Observable<List<MassageListMentiy>> getMessageList(int page,int rows){
+    public Observable<ConentEntity<MassageListMentiy>> getMessageList(int page,int rows){
         return addSchedulers(getApi().getMessageList(page, rows));
     }
+
+    /*2.0消息 -获取关注*/
+    public Observable<ConentEntity<AttenionUserEntiy>> getFollowerList(int page,int rows){
+        return addSchedulers(getApi().getFollowerList(page, rows));
+    }
+
 
     /*2.0删除消息机器人*/
     public Observable<String> removeRobot(String robot_id){

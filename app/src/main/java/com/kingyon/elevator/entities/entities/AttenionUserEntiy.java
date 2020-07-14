@@ -26,10 +26,12 @@ public class AttenionUserEntiy implements Serializable, InsertData {
     public String followerAccount;
     public String beFollowerAccount;
     public String nickname;
+    public String nickName;
     public String photo;
     public String personalizedSignature;
-    public long createTime;
+    public String createTime;
     public int isAttention;
+    public int focusOther;
 
 
     @Override

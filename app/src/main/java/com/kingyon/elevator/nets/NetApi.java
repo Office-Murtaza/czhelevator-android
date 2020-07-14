@@ -60,16 +60,19 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.AtListEntiy;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.AuthStatusEntily;
 import com.kingyon.elevator.entities.entities.BalancePaymentsEntily;
 import com.kingyon.elevator.entities.entities.CertifiCationEntiy;
 import com.kingyon.elevator.entities.entities.Chartentily;
 import com.kingyon.elevator.entities.entities.CodeEntity;
+import com.kingyon.elevator.entities.entities.CommentLikesListEntiy;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.ConentTxEntity;
+import com.kingyon.elevator.entities.entities.ContentLikesListEntiy;
 import com.kingyon.elevator.entities.entities.EarningsTopEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
@@ -80,6 +83,7 @@ import com.kingyon.elevator.entities.entities.HomeTopicEntity;
 import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
+import com.kingyon.elevator.entities.entities.MassagePushEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -120,9 +124,9 @@ public interface NetApi {
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
+    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
     String baseUrl = AppUtils.isAppDebug() ? domainDebugName : domainReleaseName;
@@ -473,7 +477,39 @@ public interface NetApi {
 
     /*2.0消息列表*/
     @GET("massage/getMessageList")
-    Observable<List<MassageListMentiy>> getMessageList(@Query("page") int page, @Query("rows") int rows);
+    Observable<ConentEntity<MassageListMentiy>> getMessageList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息-查看关注*/
+    @GET("massage/getFollowerList")
+    Observable<ConentEntity<AttenionUserEntiy>>getFollowerList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0查询推送消息列表*/
+    @GET("massage/getPushMagList")
+    Observable<ConentEntity<MassagePushEntiy>> getPushMagList(@Query("robot_id") int robot_id,@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息-查询点赞内容*/
+    @GET("massage/getContentLikesList")
+    Observable<ConentEntity<ContentLikesListEntiy>> getContentLikesList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息-查询评论我内容*/
+    @GET("massage/getCommentMeList")
+    Observable<ConentEntity<CommentLikesListEntiy>> getCommentMeList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息-查询@我的数据*/
+    @GET("massage/getAtList")
+    Observable<ConentEntity<AtListEntiy>> getAtList(@Query("page") int page, @Query("rows") int rows);
+
+   /*2.0消息-查询点赞内容*/
+    @GET("massage/getCommentLikesList")
+    Observable<ConentEntity<CommentLikesListEntiy>> getCommentLikesList(@Query("page") int page, @Query("rows") int rows);
+
+    /*2.0消息 - 标记已读*/
+    @GET("massage/markRead")
+    Observable<String> getMarkRead(@Query("id") String id,@Query("type") String type,@Query("isAll") String isAll);
+
+    /*2.0消息 - 标记全部已读*/
+    @GET("massage/markAll")
+    Observable<String> markAll();
 
     /*2.0删除机器人消息*/
     @POST("massage/removeRobot")
@@ -488,6 +524,7 @@ public interface NetApi {
     @POST("user/getMatching")
     @FormUrlEncoded
     Observable<ConentEntity<AttenionUserEntiy>> getMatching(@Field("page") int page ,@Field("keyWords") String keyWords);
+
 
     //    1.0
     //静态/通用获取七牛云参数
