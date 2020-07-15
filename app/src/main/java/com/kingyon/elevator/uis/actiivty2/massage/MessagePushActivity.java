@@ -2,7 +2,9 @@ package com.kingyon.elevator.uis.actiivty2.massage;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -61,6 +63,14 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                 holder.setText(R.id.tv_name, item.robotName);
                 holder.setText(R.id.tv_time, item.pushTime);
                 holder.setText(R.id.tv_title, item.pushTitle);
+                TextView textView = new TextView(MessagePushActivity.this);
+                textView = holder.getView(R.id.tv_content);
+
+                if (item.isRead==1){
+                    holder.setVisible(R.id.img_is,false);
+                }else {
+                    holder.setVisible(R.id.img_is,true);
+                }
                 switch (item.msgType) {
                     case "MSG":
                         /*系统消息*/
@@ -78,6 +88,9 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                         holder.setVisible(R.id.tv_mag_image, false);
                         holder.setVisible(R.id.tv_qw, true);
                         holder.setVisible(R.id.tv_xd, true);
+                        textView.setMaxLines(3);
+                        textView.setEllipsize(TextUtils.TruncateAt.END);
+
                         break;
                     case "VIDEO":
                         /*视频*/
@@ -87,6 +100,8 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                         holder.setVisible(R.id.tv_mag_image, false);
                         holder.setVisible(R.id.tv_qw, true);
                         holder.setVisible(R.id.tv_xd, true);
+                        textView.setMaxLines(3);
+                        textView.setEllipsize(TextUtils.TruncateAt.END);
                         break;
                     case "ACTIVITY":
                         /*活动*/
@@ -96,6 +111,8 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                         holder.setVisible(R.id.tv_mag_image, false);
                         holder.setVisible(R.id.tv_qw, true);
                         holder.setVisible(R.id.tv_xd, true);
+                        textView.setMaxLines(3);
+                        textView.setEllipsize(TextUtils.TruncateAt.END);
                         break;
                     case "H5":
                         holder.setVisible(R.id.tv_mag_image, true);
@@ -111,10 +128,12 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, MassagePushEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
+        ImageView imageView = view.findViewById(R.id.img_is);
         ConentUtils.httpGetMarkRead(String.valueOf(item.pushId), "PUSH_MSG", "SINGLE", new IsSuccess() {
             @Override
             public void isSuccess(boolean success) {
                 LogUtils.e(success);
+                imageView.setVisibility(View.GONE);
             }
         });
         switch (item.msgType) {

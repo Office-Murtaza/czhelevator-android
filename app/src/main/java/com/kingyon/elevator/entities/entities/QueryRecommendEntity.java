@@ -10,7 +10,7 @@ import java.util.List;
  * @Instructions:
  */
 
-public class QueryRecommendEntity<T> implements Serializable{
+public class QueryRecommendEntity implements Serializable{
             /**
              * id : 100064
              * title : 
@@ -93,10 +93,12 @@ public class QueryRecommendEntity<T> implements Serializable{
             public boolean liked;
             public boolean delete;
             public boolean report;
-            public List<T> likesItem;
+            public List<AttenionUserEntiy> likesItem;
             public int isAttent;
             public int isCollect;
             public boolean original;
+
+
 
     @Override
     public String toString() {

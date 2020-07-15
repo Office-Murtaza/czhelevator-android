@@ -504,11 +504,12 @@ public interface NetApi {
     Observable<ConentEntity<CommentLikesListEntiy>> getCommentLikesList(@Query("page") int page, @Query("rows") int rows);
 
     /*2.0消息 - 标记已读*/
-    @GET("massage/markRead")
-    Observable<String> getMarkRead(@Query("id") String id,@Query("type") String type,@Query("isAll") String isAll);
+    @POST("massage/markRead")
+    @FormUrlEncoded
+    Observable<String> getMarkRead(@Field("id") String id,@Field("type") String type,@Field("isAll") String isAll);
 
     /*2.0消息 - 标记全部已读*/
-    @GET("massage/markAll")
+    @POST("massage/markAll")
     Observable<String> markAll();
 
     /*2.0删除机器人消息*/

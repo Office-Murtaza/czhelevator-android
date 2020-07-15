@@ -72,12 +72,7 @@ public class MessageLikeCommentFragment extends BaseStateRefreshLoadingFragment<
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, CommentLikesListEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
-        ConentUtils.httpGetMarkRead(String.valueOf(item.id), "LIKES", "SINGLE", new IsSuccess() {
-            @Override
-            public void isSuccess(boolean success) {
-                LogUtils.e(success);
-            }
-        });
+
         switch (item.contentType){
             case "wsq":
                 /*社区*/
@@ -125,5 +120,11 @@ public class MessageLikeCommentFragment extends BaseStateRefreshLoadingFragment<
                         loadingComplete(true, contentLikesListEntiyConentEntity.getTotalPages());
                     }
                 });
+        ConentUtils.httpGetMarkRead("", "LIKES", "ALL", new IsSuccess() {
+            @Override
+            public void isSuccess(boolean success) {
+                LogUtils.e(success);
+            }
+        });
     }
 }

@@ -28,14 +28,18 @@ public class AdvertisingSectionAdapter extends RecyclerView.Adapter<AdvertisingS
         return new ViewHolder(view);
     }
 
+
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
     }
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+
+//    @Override
+//    public int getItemViewType(int position) {
+//        return position;
+//    }
     @Override
     public int getItemCount() {
         return 15;

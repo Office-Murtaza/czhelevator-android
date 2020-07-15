@@ -245,7 +245,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                         /*是否设置支付密码*/
                         if (isSetPayPassword) {
                             /*余额是否充足*/
-                            if (myWallet > priceActual) {
+                            if (myWallet >= priceActual) {
                                 /*是否设置指纹*/
                                 if (DataSharedPreferences.getBoolean(DataSharedPreferences.IS_OPEN_FINGER, false)) {
                                     fingerprintInit();
@@ -332,6 +332,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                         fingerprintInit();
                         hideInput(context);
                     }else {
+                        fingerprintInit();
                         ToastUtils.showToast(context,"你还没有设置指纹支付，请设置再试",1000);
                     }
                 }else {

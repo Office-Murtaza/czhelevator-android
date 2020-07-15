@@ -9,6 +9,7 @@ import android.text.method.BaseMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -16,6 +17,8 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
+import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
+import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
@@ -425,6 +428,7 @@ public class ConentUtils {
         }
     }
 
+    /*指定标记全部已读*/
     public static void httpMarkAll(IsSuccess isSuccess){
         NetService.getInstance().markAll()
                 .subscribe(new CustomApiCallback<String>() {
@@ -441,7 +445,7 @@ public class ConentUtils {
                 });
     }
 
-
+    /*指定标记已读*/
     public static void httpGetMarkRead(String id,String type,String isAll,IsSuccess isSuccess){
         NetService.getInstance().getMarkRead(id, type, isAll)
                 .subscribe(new CustomApiCallback<String>() {
@@ -454,6 +458,21 @@ public class ConentUtils {
                     @Override
                     public void onNext(String s) {
                         isSuccess.isSuccess(true);
+                    }
+                });
+    }
+    public  static int totalNum = 0;
+
+    public static void httpHomeData(int page) {
+        NetService.getInstance().getMsgOverview(page,20)
+                .subscribe(new CustomApiCallback<MassageHomeEntiy<MassageLitsEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+
+                    }
+                    @Override
+                    public void onNext(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
+                        totalNum = conentEntity.totalNum;
                     }
                 });
     }

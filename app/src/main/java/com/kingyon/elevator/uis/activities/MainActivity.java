@@ -60,6 +60,8 @@ import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.animationutils.AnimatorPath;
 import com.kingyon.elevator.utils.animationutils.PathEvaluator;
 import com.kingyon.elevator.utils.animationutils.PathPoint;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -85,6 +87,9 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
+import static com.kingyon.elevator.utils.utilstwo.ConentUtils.totalNum;
+
+
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
     @BindView(R.id.tabBar)
     TabStripView tabBar;
@@ -96,7 +101,14 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     private long logTime;
     private AnimatorPath path;//声明动画集合
     private Boolean isFirstInit = true;
-
+    Handler handler=new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            tabBar.setTabUnread(3, totalNum);
+            handler.postDelayed(this, 500);
+        }
+    };
     @Override
     public int getContentViewId() {
         return R.layout.activity_main;
@@ -115,7 +127,10 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
         tabBar.postDelayed(() -> loadUserPrivacy(), 400);
-        tabBar.setTabUnread(3, 20);
+        ConentUtils.httpHomeData(1);
+        handler.postDelayed(runnable, 500);
+
+
         httpPersonal();
     }
 

@@ -250,6 +250,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
                         loadingComplete(STATE_ERROR);
+                        finish();
                     }
 
                     @Override

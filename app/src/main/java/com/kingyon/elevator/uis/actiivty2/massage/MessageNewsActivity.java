@@ -9,11 +9,20 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
+import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawRecordsActivity;
+import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
+import com.kingyon.elevator.uis.activities.user.IdentitySuccessActivity;
+import com.kingyon.elevator.uis.activities.user.MyCouponsActivty;
+import com.kingyon.elevator.uis.activities.user.MyInvoiceActivity;
+import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -29,7 +38,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_MSAGGER;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/4/23
@@ -53,7 +67,12 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
             protected void convert(CommonHolder holder, MassageListMentiy item, int position) {
                 holder.setText(R.id.tv_conent,item.content);
                 holder.setText(R.id.tv_title,item.title);
-                holder.setText(R.id.tv_time,"14-45");
+                holder.setText(R.id.tv_time,item.createTime);
+                if (item.isRead==1){
+                    holder.setVisible(R.id.img_is,false);
+                }else {
+                    holder.setVisible(R.id.img_is,true);
+                }
             }
         };
     }
@@ -93,10 +112,164 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, MassageListMentiy item, int position) {
         super.onItemClick(view, holder, item, position);
-        ConentUtils.httpGetMarkRead(item.messageId, "MESSAGE", "SINGLE", new IsSuccess() {
+        /**
+         * ORDER        订单
+         * ACQUIRE     获得优惠劵
+         * ADVERTIS    广告审核
+         * FEEDBACK   反馈收到平台回复
+         * PROMOTE    推广获得奖励
+         * PERSON        个人认证
+         * PARTNER      合伙人认证
+         * INVOICE     发票
+         * PARTNER_WITHDRAW    合伙人提现审核
+         * USER_COMMENT   用户评论
+         * USER_LIKE    用户点赞
+         * CONTENT_OFFLINE  内容下线
+         * CONTENT     内容审核
+         * INTEGRAL     积分兑换
+         * */
+        ImageView imageView = view.findViewById(R.id.img_is);
+            switch (item.typeChild){
+                case "ADVERTIS":
+                case "ORDER":
+                    /*订单*/
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CommonUtil.KEY_VALUE_1, item.postId);
+                    startActivity(OrderDetailsActivity.class, bundle);
+                    break;
+                case "ACQUIRE":
+                    /*获得优惠卷*/
+                    if (isToken(this)) {
+                        startActivity(MyCouponsActivty.class);
+                    } else {
+                        ActivityUtils.setLoginActivity();
+                    }
+                    break;
+                case "FEEDBACK":
+                    /*反馈平台反馈*/
+
+                    break;
+                case "PROMOTE":
+                    /*推广获得奖励*/
+
+                    break;
+                case "PERSON":
+                    /*个人认证*/
+                        if (item.success){
+                            Bundle bundle2 = new Bundle();
+                            bundle2.putString("type", Constants.IDENTITY_STATUS.AUTHED);
+                            startActivity(IdentitySuccessActivity.class, bundle2);
+                        }else {
+                            Bundle bundle3 = new Bundle();
+                            bundle3.putString("type", Constants.IDENTITY_STATUS.FAILD);
+                            startActivity(IdentitySuccessActivity.class, bundle3);
+                        }
+
+                    break;
+                case "PARTNER":
+                    /*合伙人认证*/
+                    if (isToken(this)) {
+                        startActivity(CooperationActivity.class);
+                    } else {
+                        ActivityUtils.setLoginActivity();
+                    }
+                    break;
+                case "INVOICE":
+                    /*发票*/
+                    if (isToken(this)) {
+                        startActivity(MyInvoiceActivity.class);
+                    } else {
+                        ActivityUtils.setLoginActivity();
+                    }
+
+                    break;
+                case "PARTNER_WITHDRAW":
+                    /*合伙人提现审核*/
+                    if (isToken(this)) {
+                        startActivity(CooperationWithdrawRecordsActivity.class);
+                    } else {
+                        ActivityUtils.setLoginActivity();
+                    }
+                    break;
+                case "USER_COMMENT":
+                    /*用户评论*/
+                case "USER_LIKE":
+                    /*用户点赞*/
+                    switch (item.contentType){
+                        case "wsq":
+                            /*社区*/
+                            LogUtils.e(item.postId);
+                            ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
+                                    "contentId",Integer.parseInt(item.postId));
+                            break;
+                        case "article":
+                            /*文章*/
+                            LogUtils.e(item.postId);
+                            ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
+                                    "contentId", Integer.parseInt(item.postId));
+                            break;
+                        case "video":
+                            /*视频*/
+                            LogUtils.e(item.postId);
+                            if (item.videoHorizontalVertical==0){
+                                ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
+                                        "contentId", Integer.parseInt(item.postId));
+                            } else {
+                                ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
+                                        "contentId", Integer.parseInt(item.postId));
+                            }
+                            break;
+
+                    }
+                    break;
+                case "CONTENT_OFFLINE":
+                    /*内容下线*/
+                    break;
+                case "CONTENT":
+                    /*内容审核*/
+                    if (item.success){
+                        switch (item.contentType){
+                            case "wsq":
+                                /*社区*/
+                                LogUtils.e(item.postId);
+                                ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
+                                        "contentId",Integer.parseInt(item.postId));
+                                break;
+                            case "article":
+                                /*文章*/
+                                LogUtils.e(item.postId);
+                                ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
+                                        "contentId", Integer.parseInt(item.postId));
+                                break;
+                            case "video":
+                                /*视频*/
+                                LogUtils.e(item.postId);
+                                if (item.videoHorizontalVertical==0){
+                                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
+                                            "contentId", Integer.parseInt(item.postId));
+                                } else {
+                                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
+                                            "contentId", Integer.parseInt(item.postId));
+                                }
+                                break;
+
+                        }
+                    }
+                    break;
+                case "INTEGRAL":
+                    /*积分兑换*/
+
+                    break;
+                    default:
+
+            }
+
+
+        ConentUtils.httpGetMarkRead(String.valueOf(item.id), "MESSAGE", "SINGLE", new IsSuccess() {
             @Override
             public void isSuccess(boolean success) {
                 LogUtils.e(success);
+                imageView.setVisibility(View.GONE);
             }
         });
     }

@@ -21,6 +21,7 @@ public class MassageHomeEntiy<T> {
     public int likesNum;
     public int unreadMessages;
     public int followerNum;
+    public int totalNum;
     public List<T> pushMessage;
 
     @Override

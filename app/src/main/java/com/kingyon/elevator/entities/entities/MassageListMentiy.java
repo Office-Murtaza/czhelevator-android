@@ -7,23 +7,26 @@ package com.kingyon.elevator.entities.entities;
  * @Instructions:
  */
 public class MassageListMentiy {
-    /*  "id": 2,
-      "createAccount": "8829701662735382983",
-      "isDelete": null,
-      "state": null,
-      "type": null,
-      "title": "广告审核失败",
-      "content": "很抱歉,您的广告hello审核不通过,请您再次编辑并提交广告。",
-      "messageId": null,
-      "isRead": false,
-      "typeChild": null,
-      "postId": 69,
-      "image": null,
-      "url": null,
-      "delete": null
-
-
-      */
+/**
+ *          "id": 18,
+ *         "createAccount": "5196646915807042859",
+ *         "isDelete": null,
+ *         "state": null,
+ *         "type": null,
+ *         "title": "广告审核成功",
+ *         "content": "恭喜您,您的广告不准备这不是已通过审核!",
+ *         "messageId": null,
+ *         "isRead": 1,
+ *         "typeChild": "ADVERTIS",
+ *         "postId": "177",
+ *         "createTime": "06-12",
+ *         "image": null,
+ *         "url": null,
+ *         "contentType": null,
+ *         "videoHorizontalVertical": null,
+ *         "success": false
+ *
+ * */
 
     public int id;
     public String createAccount;
@@ -33,12 +36,16 @@ public class MassageListMentiy {
     public String title;
     public String content;
     public String messageId;
-    public String isRead;
+    public int isRead;
     public String typeChild;
     public String postId;
     public String image;
+    public String createTime;
     public String url;
     public String delete;
+    public String contentType;
+    public int videoHorizontalVertical;
+    public boolean success;
 
     @Override
     public String toString() {

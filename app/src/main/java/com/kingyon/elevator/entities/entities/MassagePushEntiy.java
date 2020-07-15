@@ -32,7 +32,7 @@ public class MassagePushEntiy {
     public String pushContent;
     public String msgType;
     public String msgTypeName;
-    public String isRead;
+    public int isRead;
     public String msgParams;
     public String pushTime;
     public String msgImage;

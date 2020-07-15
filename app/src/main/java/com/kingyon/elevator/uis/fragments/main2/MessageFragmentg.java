@@ -25,6 +25,8 @@ import com.kingyon.elevator.uis.activities.property.PropertyActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
@@ -88,6 +90,7 @@ public class MessageFragmentg extends BaseFragment {
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     private int page = 1;
+
     private List<MassageLitsEntiy> list = new ArrayList<>();
     @Override
     public int getContentViewId() {
@@ -136,6 +139,7 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ConentUtils.httpHomeData(1);
 //        list.clear();
 //        httpHomeData(1);
     }
@@ -184,6 +188,9 @@ public class MessageFragmentg extends BaseFragment {
                         }else if (conentEntity.pushMessage.size()<=0&&page>1){
                            showToast("已经没有了");
                         }else {
+                            if (page==1){
+                              list.clear();
+                            }
                             rcvListMassage.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
@@ -196,6 +203,7 @@ public class MessageFragmentg extends BaseFragment {
 
     private void initAngle(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
         if (conentEntity!=null) {
+
             if (conentEntity.followerNum <= 0) {
                 tvAttentionNumber.setVisibility(View.GONE);
             } else if (conentEntity.followerNum >= 100) {
@@ -215,7 +223,7 @@ public class MessageFragmentg extends BaseFragment {
                 tvCommentNumber.setText(conentEntity.commentNum + "");
             }
             if (conentEntity.likesNum <= 0) {
-                tvMassageNumber.setVisibility(View.GONE);
+                tvLikeNumber.setVisibility(View.GONE);
             } else if (conentEntity.likesNum >= 100) {
                 tvLikeNumber.setVisibility(View.VISIBLE);
                 tvLikeNumber.setText("99+");
@@ -280,7 +288,15 @@ public class MessageFragmentg extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_read:
                 /*全部已读*/
-
+                ConentUtils.httpMarkAll(new IsSuccess() {
+                    @Override
+                    public void isSuccess(boolean success) {
+                     LogUtils.e(success);
+                     list.clear();
+                     httpHomeData(1);
+                     ConentUtils.httpHomeData(1);
+                    }
+                });
                 break;
             case R.id.ll_msagger:
                 if (isToken(getActivity())) {
@@ -315,6 +331,7 @@ public class MessageFragmentg extends BaseFragment {
                 if (smartRefreshLayout!=null){
                     smartRefreshLayout.autoRefresh(100);
                 }else {
+                    list.clear();
                     httpHomeData(1);
                 }
                 break;

@@ -58,6 +58,7 @@ public class FingerprintImplForAndrM implements IFingerprint {
 
         //调起指纹验证
         fingerprintManagerCompat.authenticate(cryptoObject, 0, cancellationSignal, authenticationCallback, null);
+       LogUtils.e(type);
         DialogUtils.getInstance().showFingerCheckDailog(context,type, new FingerCheckListener() {
             @Override
             public void onUsepwd() {
@@ -83,9 +84,13 @@ public class FingerprintImplForAndrM implements IFingerprint {
     }
 
     public static FingerprintImplForAndrM newInstance(String type) {
+        LogUtils.e(type);
+        fingerprintImplForAndrM = null;
         if (fingerprintImplForAndrM == null) {
+            LogUtils.e("----------");
             synchronized (FingerprintImplForAndrM.class) {
                 if (fingerprintImplForAndrM == null) {
+                    LogUtils.e("2222222222222");
                     fingerprintImplForAndrM = new FingerprintImplForAndrM(type);
                 }
             }

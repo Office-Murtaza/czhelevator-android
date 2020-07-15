@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.fragments.message;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -91,12 +93,7 @@ public class MessageLikeContentFragment extends BaseStateRefreshLoadingFragment<
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, ContentLikesListEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
-        ConentUtils.httpGetMarkRead(String.valueOf(item.id), "LIKES", "SINGLE", new IsSuccess() {
-            @Override
-            public void isSuccess(boolean success) {
-                LogUtils.e(success);
-            }
-        });
+
         switch (item.type) {
             case "wsq":
                 /*社区*/
@@ -118,8 +115,10 @@ public class MessageLikeContentFragment extends BaseStateRefreshLoadingFragment<
         }
     }
 
+
     @Override
     protected void loadData(int page) {
+
         NetService.getInstance().getContentLikesList(page, 20)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<ContentLikesListEntiy>>() {
@@ -144,5 +143,11 @@ public class MessageLikeContentFragment extends BaseStateRefreshLoadingFragment<
                         loadingComplete(true, contentLikesListEntiyConentEntity.getTotalPages());
                     }
                 });
+        ConentUtils.httpGetMarkRead("", "LIKES", "ALL", new IsSuccess() {
+            @Override
+            public void isSuccess(boolean success) {
+                LogUtils.e(success);
+            }
+        });
     }
 }

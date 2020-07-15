@@ -386,7 +386,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
             //支付宝
             requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
         }else {
-            requestWithdraw(money, Constants.WithdrawType.WX, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
+            requestWithdraw(money, Constants.WithdrawType.WCHAT, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
 
         }
     }

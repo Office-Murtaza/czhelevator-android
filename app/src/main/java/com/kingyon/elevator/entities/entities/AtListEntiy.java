@@ -48,7 +48,7 @@ public class AtListEntiy {
     public String content;
     public String image;
     public String videoCover;
-    public String isRead;
+    public int isRead;
     public String contentType;
     public int videoHorizontalVertical;
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.finger.bean.VerificationDialogStyleBean;
 import com.kingyon.elevator.finger.uitls.AndrVersionUtil;
 
@@ -14,6 +15,7 @@ import com.kingyon.elevator.finger.uitls.AndrVersionUtil;
 public class FingerprintVerifyManager {
 
     public FingerprintVerifyManager(Builder builder,String type) {
+        LogUtils.e(type);
         IFingerprint fingerprint;
         if (AndrVersionUtil.isAboveAndrP()) {
             fingerprint = FingerprintImplForAndrM.newInstance(type);

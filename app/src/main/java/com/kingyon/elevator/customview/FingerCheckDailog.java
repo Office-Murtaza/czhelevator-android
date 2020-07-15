@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.interfaces.FingerCheckListener;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -48,8 +49,11 @@ public class FingerCheckDailog extends MyBaseBottomDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.finger_check_dialog_layout);
         ButterKnife.bind(this);
+        LogUtils.e(type);
         if (type.equals(KEYBOARD_SETTING)){
             tvPassword.setVisibility(View.GONE);
+        }else {
+            tvPassword.setVisibility(View.VISIBLE);
         }
         cancel_finger_check.setOnClickListener(new View.OnClickListener() {
             @Override

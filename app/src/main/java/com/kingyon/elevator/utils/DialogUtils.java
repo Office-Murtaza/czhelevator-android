@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.ColorRes;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.customview.CashTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
@@ -250,6 +251,7 @@ public class DialogUtils {
             fingerCheckDailog.dismiss();
             fingerCheckDailog = null;
         }
+        LogUtils.e(type);
         fingerCheckDailog = new FingerCheckDailog(context,type, fingerCheckListener);
         fingerCheckDailog.setCancelable(false);
         fingerCheckDailog.show();

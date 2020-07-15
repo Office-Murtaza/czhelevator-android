@@ -50,7 +50,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         View view = LayoutInflater.from(context).inflate(R.layout.itme_order_lits,parent,false);
         return new ViewHolder(view);
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position) {
         OrderDetailsEntity order = list.get(position);
@@ -67,6 +70,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         switch (order.getOrderStatus()){
             case OEDER_WAITRELEASE:
                 holder.tv_status.setText("待发布");
+                holder.tv_again.setVisibility(View.GONE);
                 switch (order.getAuditState()){
                     case OEDER_WAIT:
                         /*审核中*/
@@ -85,6 +89,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 holder.tv_again.setVisibility(View.VISIBLE);
                 break;
             case OEDER_RELEASEING:
+                holder.tv_again.setVisibility(View.GONE);
                 holder.tv_status.setText("发布中");
                 break;
                 default:

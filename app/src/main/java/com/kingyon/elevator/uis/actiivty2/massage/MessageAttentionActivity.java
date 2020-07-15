@@ -170,7 +170,7 @@ public class MessageAttentionActivity extends BaseStateRefreshingLoadingActivity
         preVRight.setVisibility(View.GONE);
         preTvTitle.setText("新增粉丝");
 
-        ConentUtils.httpGetMarkRead("", "FOLLOWER", "ALL ", new IsSuccess() {
+        ConentUtils.httpGetMarkRead("", "FOLLOWER", "ALL", new IsSuccess() {
             @Override
             public void isSuccess(boolean success) {
                 LogUtils.e(success);

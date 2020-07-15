@@ -53,9 +53,14 @@ public class MessageAtListFragment extends BaseStateRefreshLoadingFragment<AtLis
                 mentionTextView1.setParserConverter(mTagParser);
                 holder.setText(R.id.tv_content,item.content+"");
                 holder.setText(R.id.tv_title,item.title+"");
-                holder.setText(R.id.tv_nickname,item.atNickName+"");
+                holder.setText(R.id.tv_nickname,item.createNickname+"");
                 holder.setText(R.id.tv_time,item.createTime+"");
                 GlideUtils.loadCircleImage(getActivity(),item.photo,holder.getView(R.id.img_portrait));
+                if (item.isRead==1){
+                    holder.setVisible(R.id.img_is,false);
+                }else {
+                    holder.setVisible(R.id.img_is,true);
+                }
                 switch (item.atType){
                     case "CONTENT":
                         /*内容*/

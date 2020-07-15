@@ -154,7 +154,6 @@
             android:paddingBottom="@dimen/dp5"
             android:paddingTop="@dimen/dp5"
             android:textSize="14sp"
-            android:visibility="gone"
             android:background="@drawable/ad_order_list"
             />
 

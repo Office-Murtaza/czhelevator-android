@@ -76,6 +76,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         /**
@@ -87,10 +88,9 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
          * */
         QueryRecommendEntity queryRecommendEntity = conentEntity.get(position);
 
-
         holder.tv_name.setText(queryRecommendEntity.nickname);
         holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likes ,"点赞"));
-        holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.commentNum ,"评论"));
+        holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.comments ,"评论"));
         holder.tv_search.setText(StringUtils.getNumStr(queryRecommendEntity.shares ,"分享"));
 
         holder.tv_like_number_bottm.setText("等"+queryRecommendEntity.likes+"人觉得很赞");
@@ -106,10 +106,12 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             holder.tv_title.setVisibility(View.GONE);
         }
         holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
-        if (queryRecommendEntity.likes<100){
+        if (queryRecommendEntity.likes<=0||!queryRecommendEntity.liked){
             holder.ll_like.setVisibility(View.GONE);
         }else {
             holder.ll_like.setVisibility(View.VISIBLE);
+            holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likes));
+            GlideUtils.loadCircleImage(context, queryRecommendEntity.likesItem.get(0).photo, holder.img_topimg);
         }
         if (queryRecommendEntity.liked){
             holder.img_like.setImageResource(R.mipmap.ic_small_like);
