@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_red_tips_detial"
             android:layout_marginRight="@dimen/dp10"
+
             />
 
         <TextView

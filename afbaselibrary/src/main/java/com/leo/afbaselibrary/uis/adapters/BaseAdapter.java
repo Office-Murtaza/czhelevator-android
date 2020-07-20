@@ -44,4 +44,8 @@ public abstract class BaseAdapter <T> extends MultiItemTypeAdapter<T> {
 
     protected abstract void convert(CommonHolder holder, T item, int position);
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 }

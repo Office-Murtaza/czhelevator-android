@@ -113,7 +113,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
     String videoCoverUrl;
     @BindView(R.id.tv_zhi_number)
     TextView tvZhiNumber;
-    boolean isOriginal  = true;
+    boolean isOriginal  = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -227,6 +227,8 @@ public class VoideReleasetyActiivty extends BaseActivity {
                     showToast("标题不能为空");
                 }else if (editConent.getText().toString().isEmpty()){
                     showToast("内容不能为空");
+                }else if (videoCoverUrl==null){
+                    showToast("请重新选择封面");
                 }else {
                     httpUbdata();
                 }
@@ -281,12 +283,12 @@ public class VoideReleasetyActiivty extends BaseActivity {
             case R.id.image_original:
                 initOriginal();
                 isOriginal();
-                isOriginal = true;
+                isOriginal = false;
                 break;
             case R.id.imag_reprinted:
                 initOriginal();
                 isReprinted();
-                isOriginal = false;
+                isOriginal = true;
                 break;
             default:
         }
@@ -320,7 +322,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
 
     private void isReprinted() {
         imagReprinted.setImageResource(R.mipmap.btn_video_resource_on);
-        isOriginal = false;
+        isOriginal = true;
     }
 
     private void initOriginal() {
@@ -330,7 +332,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
 
     private void isOriginal() {
         imageOriginal.setImageResource(R.mipmap.btn_video_resource_on);
-        isOriginal = true;
+        isOriginal = false;
     }
 
     private void httpUbdata() {

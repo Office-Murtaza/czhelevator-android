@@ -13,6 +13,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.presenter.presenter2.AdvertisingSectionPresenter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AdvertisingSectionAdapter;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +28,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ADVERTISING;
  * @Instructions:广告专区
  */
 @Route(path = ACTIVITY_MAIN2_ADVERTISING)
-public class AdvertisingSectionActivity extends MvpBaseActivity<AdvertisingSectionPresenter> {
+public class AdvertisingSectionActivity extends BaseActivity {
     @BindView(R.id.edit_search)
     EditText editSearch;
     @BindView(R.id.tv_bake)
@@ -35,21 +36,25 @@ public class AdvertisingSectionActivity extends MvpBaseActivity<AdvertisingSecti
     @BindView(R.id.rv_list)
     RecyclerView rvList;
 
-    @Override
-    public AdvertisingSectionPresenter initPresenter() {
-        return new AdvertisingSectionPresenter(this);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advertising_section);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_advertising_section;
+    }
+
+    @Override
+    public void init(Bundle savedInstanceState) {
         initData();
     }
 
     private void initData() {
-        GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
+        GridLayoutManager layoutManage = new GridLayoutManager(this, 6);
         rvList.setLayoutManager(layoutManage);
         layoutManage.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -63,10 +68,10 @@ public class AdvertisingSectionActivity extends MvpBaseActivity<AdvertisingSecti
     }
     private int setSpanSize(int position) {
         int count;
-        if (position%2==0) {
-            count = 2;
+        if (position%3==0) {
+            count = 6;
         } else {
-            count = 1;
+            count = 3;
         }
 
         return count;

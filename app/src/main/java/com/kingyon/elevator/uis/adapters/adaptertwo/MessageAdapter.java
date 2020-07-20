@@ -59,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.tvTime.setText(massageLitsEntiy.pushTime);
         if (massageLitsEntiy.num<=0){
             holder.tvNumber.setVisibility(View.GONE);
-        }else if (massageLitsEntiy.num>=100){
+        }else if (massageLitsEntiy.num>=10){
             holder.tvNumber.setText("···");
         }else {
             holder.tvNumber.setText(massageLitsEntiy.num + "");
@@ -95,6 +95,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
     }
 
     public void addData(List<MassageLitsEntiy> list) {

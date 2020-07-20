@@ -219,7 +219,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="投放终端："
                                 android:textColor="#999999"
-                                android:textSize="@dimen/sp_12"
+                                android:textSize="@dimen/dp_12"
                                 />
 
                             <TextView

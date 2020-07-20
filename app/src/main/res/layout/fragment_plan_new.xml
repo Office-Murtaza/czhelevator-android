@@ -305,7 +305,8 @@
         app:selectedTabTextColor="@color/colorAccent" />
 
     <com.kingyon.elevator.view.AlwaysMarqueeTextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_notice"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:singleLine="true"

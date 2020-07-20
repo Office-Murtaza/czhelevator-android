@@ -12,6 +12,34 @@
         android:layout_marginBottom="@dimen/spacing_twelve"
         android:background="#F8F6F3" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp10"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已解决"
+            android:textColor="#ff316ffa"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020-02-12  12：30"
+            android:textColor="#ff999999"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
@@ -31,18 +59,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" />
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="@dimen/spacing_default"
-        android:paddingRight="@dimen/spacing_default"
-        android:textColor="#ff808080"
-        android:textSize="@dimen/txt_normal_content"
-        android:layout_marginBottom="@dimen/spacing_twelve"
-        android:textStyle="bold"
-        tools:text="03-23 18:00" />
+
 
     <!--<View-->
     <!--android:layout_width="match_parent"-->

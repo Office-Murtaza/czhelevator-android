@@ -115,6 +115,10 @@ public class Constance {
     public static final String WEB_ACTIVITY = "/app/activity/web";
     /**验证码绑定第三方*/
     public static final String BINDING_ACTIVITY = "/app/activity/bindingactivity";
+    /**认证状态*/
+    public static final String IDENTITY_SUCCESS_ACTIVITY = "/app/activity/identity_success_activity";
+    /**主页*/
+    public static final String MAIN_ACTIVITY = "/app/activity/main_activity";
 
 
 

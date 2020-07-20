@@ -12,14 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CellDetailsEntity;
-import com.kingyon.elevator.uis.actiivty2.content.ArticleDetailsActivity;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.TimeUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
@@ -169,40 +170,44 @@ public class AdPointDetailsFragment extends BaseFragment {
     @OnClick(R.id.ll_ad_collect)
     public void onViewClicked() {
         /*收藏*/
-        if (tvAdCollect.getText().toString().equals("收藏此点位")) {
-            ConentUtils.httpAddCollect(panID, Constants.COLLECT_STATE.POINT, new ConentUtils.AddCollect() {
-                @Override
-                public void Collect(boolean is) {
-                    if (is) {
-                        cellDetailsEntity.isCollect = true;
-                        imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
-                        Resources resources = getContext().getResources();
-                        Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
-                        llAdCollect.setBackgroundDrawable(btnDrawable);
-                        ToastUtils.showToast(getActivity(), "收藏成功", 1000);
-                        tvAdCollect.setText("已收藏此点位");
-                    } else {
-                        ToastUtils.showToast(getActivity(), "收藏失败", 1000);
+        if (TokenUtils.isToken(getActivity())) {
+            if (tvAdCollect.getText().toString().equals("收藏此点位")) {
+                ConentUtils.httpAddCollect(panID, Constants.COLLECT_STATE.POINT, new ConentUtils.AddCollect() {
+                    @Override
+                    public void Collect(boolean is) {
+                        if (is) {
+                            cellDetailsEntity.isCollect = true;
+                            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_off);
+                            Resources resources = getContext().getResources();
+                            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_gray);
+                            llAdCollect.setBackgroundDrawable(btnDrawable);
+                            ToastUtils.showToast(getActivity(), "收藏成功", 1000);
+                            tvAdCollect.setText("已收藏此点位");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "收藏失败", 1000);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                ConentUtils.httpCancelCollect(panID, new ConentUtils.AddCollect() {
+                    @Override
+                    public void Collect(boolean is) {
+                        if (is) {
+                            cellDetailsEntity.isCollect = false;
+                            imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
+                            Resources resources = getContext().getResources();
+                            Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
+                            llAdCollect.setBackgroundDrawable(btnDrawable);
+                            tvAdCollect.setText("收藏此点位");
+                            ToastUtils.showToast(getActivity(), "取消收藏成功", 1000);
+                        } else {
+                            ToastUtils.showToast(getActivity(), "取消收藏失败", 1000);
+                        }
+                    }
+                });
+            }
         }else {
-            ConentUtils.httpCancelCollect(panID, new ConentUtils.AddCollect() {
-                @Override
-                public void Collect(boolean is) {
-                    if (is){
-                        cellDetailsEntity.isCollect = false;
-                        imgAdCollect.setImageResource(R.mipmap.ic_site_collest_on);
-                        Resources resources = getContext().getResources();
-                        Drawable btnDrawable = resources.getDrawable(R.mipmap.bg_site_collest_red);
-                        llAdCollect.setBackgroundDrawable(btnDrawable);
-                        tvAdCollect.setText("收藏此点位");
-                        ToastUtils.showToast(getActivity(), "取消收藏成功", 1000);
-                    }else {
-                        ToastUtils.showToast(getActivity(), "取消收藏失败", 1000);
-                    }
-                }
-            });
+            ActivityUtils.setLoginActivity();
         }
     }
 }

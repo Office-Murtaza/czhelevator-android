@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
@@ -24,6 +25,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.partnership.WithdrawalWayAdapter;
+import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
@@ -151,7 +153,7 @@ public class ConentUtils {
                         ToastUtils.showToast(baseActivity,"删除成功",1000);
                         conentEntity1.remove(position);
                         attentionAdapter.notifyItemRemoved(position);
-                        attentionAdapter.notifyItemRangeChanged(position,conentEntity1.size()-position);
+//                        attentionAdapter.notifyItemRangeChanged(position,conentEntity1.size()-position);
                     }
                 });
 
@@ -468,7 +470,7 @@ public class ConentUtils {
                 .subscribe(new CustomApiCallback<MassageHomeEntiy<MassageLitsEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-
+                        totalNum = 0;
                     }
                     @Override
                     public void onNext(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
@@ -477,4 +479,18 @@ public class ConentUtils {
                 });
     }
 
+    public static void httpData(String type,SrcSuccess srcSuccess){
+        NetService.getInstance().richText(type)
+                .subscribe(new CustomApiCallback<DataEntity<String>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                    }
+
+                    @Override
+                    public void onNext(DataEntity<String> dataEntity) {
+                        LogUtils.e(dataEntity.getData());
+                        srcSuccess.srcSuccess(dataEntity.getData());
+                    }
+                });
+    }
 }

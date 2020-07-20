@@ -26,13 +26,17 @@ import com.kingyon.elevator.uis.activities.property.PropertySettlementActivity;
 import com.kingyon.elevator.uis.dialogs.TipDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
-import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
+import com.kingyon.elevator.view.AlwaysMarqueeTextView;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
  * Created by GongLi on 2019/1/14.
@@ -65,6 +69,14 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
     @BindView(R.id.tv_devices)
     LinearLayout tvDevices;
     Unbinder unbinder;
+    @BindView(R.id.ll_income_today)
+    LinearLayout llIncomeToday;
+    @BindView(R.id.ll_income_month)
+    LinearLayout llIncomeMonth;
+    @BindView(R.id.ll_income_year)
+    LinearLayout llIncomeYear;
+    @BindView(R.id.tv_notice)
+    AlwaysMarqueeTextView tvNotice;
     private boolean propertyCell;
     private PropertyInfoEntity entity;
     private TipDialog<String> tipDialog;
@@ -95,6 +107,13 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
 //        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         tvTopTitle.setText("物业管理");
         updateUI(entity);
+
+        ConentUtils.httpData(Constants.AgreementType.PROPERTY_PROMPT.getValue(), new SrcSuccess() {
+            @Override
+            public void srcSuccess(String data) {
+                tvNotice.setText(delHTMLTag(data) + "");
+            }
+        });
     }
 
     @Override
@@ -113,7 +132,7 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
 
     private void updateUI(PropertyInfoEntity entity) {
         tvTotalMoney.setText(getSumSpan(CommonUtil.getTwoFloat(entity.getAllIncome())));
-        tvWithdrawMoney.setText("待结算金额：¥"+CommonUtil.getTwoFloat(entity.getUsefulIncome()));
+        tvWithdrawMoney.setText("待结算金额：¥" + CommonUtil.getTwoFloat(entity.getUsefulIncome()));
         tvIncomeToday.setText(CommonUtil.getMayTwoFloat(entity.getTodayIncome()));
         tvIncomeMonth.setText(CommonUtil.getMayTwoFloat(entity.getMouthIncome()));
         tvIncomeYear.setText(CommonUtil.getMayTwoFloat(entity.getYearIncome()));
@@ -125,7 +144,7 @@ public class PropertyInfoFragment extends BaseFragment implements OnParamsChange
         return spannableString;
     }
 
-    @OnClick({R.id.img_top_back,  R.id.tv_records, R.id.ll_income_today, R.id.ll_income_month, R.id.ll_income_year, R.id.tv_income, R.id.tv_devices})
+    @OnClick({R.id.img_top_back, R.id.tv_records, R.id.ll_income_today, R.id.ll_income_month, R.id.ll_income_year, R.id.tv_income, R.id.tv_devices})
     public void onViewClicked(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {

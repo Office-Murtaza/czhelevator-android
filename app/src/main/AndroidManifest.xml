@@ -576,7 +576,7 @@
             android:theme="@style/NextTheme"
             android:windowSoftInputMode="stateVisible|adjustResize"
             />
-<!--        内容详情图文-->
+        <!--        内容详情图文-->
         <activity android:name=".uis.actiivty2.content.ContentDetailsActivity"
             android:screenOrientation="portrait"
             ></activity>
@@ -585,8 +585,9 @@
             android:screenOrientation="portrait"
             ></activity>
         <!--        内容详情文章-->
-        <activity android:name=".uis.actiivty2.content.ArticleDetailsActivity"
+        <activity android:name=".uis.actiivty2.content.ArticleDetailstActivity"
             android:screenOrientation="portrait"
+            android:hardwareAccelerated="false"
             ></activity>
 <!--        内容详情 视频竖版-->
         <activity android:name=".uis.actiivty2.content.VoideVerticalDetailsActivity"

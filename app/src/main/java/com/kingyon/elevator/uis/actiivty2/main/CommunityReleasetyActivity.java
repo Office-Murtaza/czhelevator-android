@@ -107,7 +107,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     String TAG_FORMAT = "&nbsp;<tag id='%1$s' name='%2$s'>%2$s</tag>&nbsp;";
     String newTopic;
     StringBuffer sb = new StringBuffer();
-    private boolean isOriginal = true;
+    private boolean isOriginal = false;
 
 
     @Override

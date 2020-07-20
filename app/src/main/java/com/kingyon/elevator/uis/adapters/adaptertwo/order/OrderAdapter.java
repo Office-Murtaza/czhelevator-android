@@ -54,6 +54,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public int getItemViewType(int position) {
         return position;
     }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position) {
         OrderDetailsEntity order = list.get(position);
@@ -65,8 +71,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         if (order.getLstHousingBean().size()>0) {
             GlideUtils.loadRoundCornersImage(context, order.getLstHousingBean().get(0).housePic, holder.img_img, 20);
         }
-//        holder.img_status.setVisibility(View.GONE);
-//        holder.tv_again.setVisibility(View.GONE);
+        holder.img_status.setVisibility(View.VISIBLE);
+
         switch (order.getOrderStatus()){
             case OEDER_WAITRELEASE:
                 holder.tv_status.setText("待发布");

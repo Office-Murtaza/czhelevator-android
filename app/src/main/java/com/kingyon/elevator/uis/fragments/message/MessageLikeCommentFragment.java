@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.message;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
@@ -55,11 +56,11 @@ public class MessageLikeCommentFragment extends BaseStateRefreshLoadingFragment<
                 mentionTextView.setMovementMethod(new LinkMovementMethod());
                 mentionTextView.setParserConverter(mTagParser);
                 GlideUtils.loadCircleImage(getActivity(),item.photo,holder.getView(R.id.img_portrait));
-                if (item.isRead==1){
+//                if (item.isRead==1){
                     holder.setVisible(R.id.img_is,false);
-                }else {
-                    holder.setVisible(R.id.img_is,true);
-                }
+//                }else {
+//                    holder.setVisible(R.id.img_is,true);
+//                }
                 holder.setText(R.id.tv_nickname,item.nickname);
                 holder.setText(R.id.tv_time,item.createTime);
                 holder.setText(R.id.tv_content,item.comment);

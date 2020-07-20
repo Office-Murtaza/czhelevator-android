@@ -279,7 +279,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                             llSq.setVisibility(View.GONE);
                         }
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
-                        tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getTitle() == null) ? "" : order.getAdvertising().getTitle());
+//                        tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getTitle() == null) ? "" : order.getAdvertising().getTitle());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
                         tvDuration.setText(String.format("%s-%s", TimeUtil.getAllTimeDuration(order.getAdStartTime()), TimeUtil.getAllTimeDuration(order.getAdEndTime())));
 
@@ -341,6 +341,10 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 updateOperateViewVisiable(R.id.ll_order_operate_release);
                 tvReleaseMonit.setVisibility(View.GONE);
                 break;
+            case Constants.OrderStatus.COMPLETE:
+                updateOperateViewVisiable(R.id.ll_order_operate_release);
+                tvReleaseDown.setVisibility(View.VISIBLE);
+                break;
             default:
                 updateOperateViewVisiable(0);
                 break;
@@ -375,9 +379,11 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 tvReleaseInfo.setText(String.format("当前设备投放百分比  %s%%", CommonUtil.getMayTwoFloat(order.getReleaseingPercent() * 100)));
                 break;
             case Constants.OrderStatus.COMPLETE:
+                tvReleaseDown.setText("查看监播表");
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_completed);
-                tvOrderCompletedTitle.setText(order.isAuditLate() ? "广告审核已过有效期" : "当前广告推广已完成");
+                tvOrderCompletedTitle.setText(order.isAuditLate() ? "广告审核已过有效期" : "当前广告投放完成");
+
                 break;
             case Constants.OrderStatus.FAILED:
                 closeOrderCountDown();
@@ -483,14 +489,15 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 jumpToAdvertising(orderDetails);
                 break;
             case R.id.tv_completed_monit:
-                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
-                    showToast("便民服务广告不能查看监播表");
-                    return;
-                }
-                Bundle bundle5 = new Bundle();
-                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
-                bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
-                startActivity(OrderMonitActivity.class, bundle5);
+                showToast("再来一单");
+//                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
+//                    showToast("便民服务广告不能查看监播表");
+//                    return;
+//                }
+//                Bundle bundle5 = new Bundle();
+//                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
+//                bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
+//                startActivity(OrderMonitActivity.class, bundle5);
                 break;
             case R.id.tv_copy_sn:
                 if (orderDetails != null && !TextUtils.isEmpty(orderDetails.getOrderSn())) {
@@ -511,9 +518,20 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 startActivity(OrderPayActivity.class, bundle1);
                 break;
             case R.id.tv_release_down:
-                Bundle bundle2 = new Bundle();
-                bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
-                startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
+                if (tvReleaseDown.getText().toString().equals("申请广告下播")) {
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
+                    startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
+                }else {
+                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
+                    showToast("便民服务广告不能查看监播表");
+                    return;
+                }
+                Bundle bundle5 = new Bundle();
+                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
+                bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
+                startActivity(OrderMonitActivity.class, bundle5);
+                }
                 break;
             case R.id.tv_release_monit:
                 if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {

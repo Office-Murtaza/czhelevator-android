@@ -9,12 +9,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.user.FeedBackActivity;
+import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.uis.activities.user.InviteActivity;
+import com.leo.afbaselibrary.nets.entities.DataEntity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
@@ -26,6 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_ABOUT;
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
  * @Created By Admin  on 2020/6/3
@@ -49,6 +53,8 @@ public class AboutActivity extends BaseActivity {
     LinearLayout llVersion;
     @BindView(R.id.ll_user_privacy)
     LinearLayout llUserPrivacy;
+    @BindView(R.id.tv_email)
+    TextView tvEmail;
 
     @Override
     public int getContentViewId() {
@@ -59,6 +65,19 @@ public class AboutActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         requestUpdate(false);
         tvVersion.setText(String.format("V%s", AFUtil.getVersion(this)));
+        NetService.getInstance().richText(Constants.AgreementType.EMAIL.getValue())
+                .compose(this.<DataEntity<String>>bindLifeCycle())
+                .subscribe(new CustomApiCallback<DataEntity<String>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                    }
+
+                    @Override
+                    public void onNext(DataEntity<String> dataEntity) {
+                        LogUtils.e(dataEntity.getData());
+                        tvEmail.setText(delHTMLTag(dataEntity.getData())+"");
+                    }
+                });
     }
 
     private void requestUpdate(final boolean update) {
@@ -107,7 +126,7 @@ public class AboutActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_top_back, R.id.ll_email, R.id.ll_agreement, R.id.ll_recommended,
-            R.id.tv_version, R.id.ll_version, R.id.ll_user_privacy,R.id.ll_praise})
+            R.id.tv_version, R.id.ll_version, R.id.ll_user_privacy, R.id.ll_praise})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_top_back:
@@ -119,7 +138,7 @@ public class AboutActivity extends BaseActivity {
                 break;
             case R.id.ll_agreement:
                 /*隐私协议*/
-
+                AgreementActivity.start(this, "隐私协议", Constants.AgreementType.PRIVACY_POLICY.getValue());
                 break;
             case R.id.ll_recommended:
                 /*邀请有礼*/
@@ -131,6 +150,7 @@ public class AboutActivity extends BaseActivity {
                 break;
             case R.id.ll_user_privacy:
                 /*用户协议*/
+                AgreementActivity.start(this, "屏多多用户协议", Constants.AgreementType.USER_RULE.getValue());
                 break;
             case R.id.ll_praise:
                 try {
@@ -139,13 +159,12 @@ public class AboutActivity extends BaseActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } catch (Exception e) {
-                    ToastUtils.showToast(this,"您的手机没有安装Android应用市场",1000);
+                    ToastUtils.showToast(this, "您的手机没有安装Android应用市场", 1000);
                     e.printStackTrace();
                 }
                 break;
         }
     }
-
 
 
 }

@@ -129,7 +129,7 @@ public class ArticleReleaseActivity extends BaseActivity {
     private boolean isRichEditor = false;
     private boolean isText = true;
     private boolean isRevoke1 = true;
-    private boolean isOriginal = true;
+    private boolean isOriginal = false;
     private String TOP_USER = "&nbsp;<user style='color: #4dacee;' id='%s' name='%s'>@%s</user>&nbsp;";
     private String TOP_TAG = "&nbsp;<tag style='color: #4dacee;' id='%s' name='%s'>#%s#</tag>&nbsp;";
     List<File> files = new ArrayList<>();
@@ -399,14 +399,16 @@ public class ArticleReleaseActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_yc:
-                isOriginal = true;
-                tvYc.setTextColor(Color.parseColor("#ffff3049"));
-                tvZz.setTextColor(Color.parseColor("#ff333333"));
+                isOriginal = false;
+                tvYc.setTextColor(Color.parseColor("#ff3049"));
+                tvZz.setTextColor(Color.parseColor("#333333"));
+                LogUtils.e("===========");
                 break;
             case R.id.tv_zz:
-                isOriginal = false;
-                tvZz.setTextColor(Color.parseColor("#ffff3049"));
-                tvYc.setTextColor(Color.parseColor("#ff333333"));
+                isOriginal = true;
+                tvZz.setTextColor(Color.parseColor("#ff3049"));
+                tvYc.setTextColor(Color.parseColor("#333333"));
+                LogUtils.e("222222222222222");
                 break;
             case R.id.ll_sz:
 

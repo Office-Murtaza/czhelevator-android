@@ -149,18 +149,6 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                                         null,"3",position,null,null);
                                 deleteShareDialog.show();
 
-//                                DeleteArticeleDialog deleteArticeleDialog = new DeleteArticeleDialog(ArticleDetailstActivity.this);
-//                                deleteArticeleDialog.show();
-//                                deleteArticeleDialog.IsSuccess(new IsSuccess() {
-//                                    @Override
-//                                    public void isSuccess(boolean success) {
-//                                        if (success){
-//                                            autoRefresh();
-//                                        }else {
-//                                            showToast("删除失败");
-//                                        }
-//                                    }
-//                                });
                             }else {
                                 /*举报*/
                                 ReportShareDialog reportShareDialog = new ReportShareDialog(ArticleDetailstActivity.this,item.id,HOME_COMMENT);

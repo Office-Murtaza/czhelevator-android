@@ -1461,9 +1461,9 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
 //        }
     return addSchedulers(observable);
 }
-    public Observable<String> partnerWithdraw(double amount, String withDrawWay, String aliAcount
+    public Observable<String> partnerWithdraw(double amount, String withDrawWay, String aliAcount,String wChatAcount
             , String bankName, String cardNo, String cardholder) {
-        return addSchedulers(getApi().partnerWithdraw(amount, withDrawWay, aliAcount, bankName, cardNo, cardholder));
+        return addSchedulers(getApi().partnerWithdraw(amount, withDrawWay, aliAcount,wChatAcount, bankName, cardNo, cardholder));
     }
 
     public Observable<WithdrawEntily<WithdrawEntily.PageContentBean<WithdrawItemEntity>>> partnerWithdrawList(int page) {

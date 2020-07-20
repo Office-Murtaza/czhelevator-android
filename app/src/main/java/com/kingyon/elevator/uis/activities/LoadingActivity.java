@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.data.DataSharedPreferences;
@@ -39,6 +40,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static com.czh.myversiontwo.utils.Constance.MAIN_ACTIVITY;
 
 /**
  * Created by GongLi on 2018/4/13.
@@ -98,7 +101,7 @@ public class LoadingActivity extends BaseActivity {
     }
 
     private void onAdvertisionSuccess(AdvertisionEntity advertisionEntity) {
-        if (advertisionEntity != null && advertisionEntity.isUseable()) {
+        if (advertisionEntity != null /*&& advertisionEntity.isUseable()*/) {
             File advertisionDownloadFile = PathUtils.getAdvertisionDownloadFile(advertisionEntity);
             if (advertisionDownloadFile != null && advertisionDownloadFile.exists()) {
                 GlideUtils.loadDrawable(LoadingActivity.this, advertisionDownloadFile, new GlideUtils.BitmapReadyCallBack() {
@@ -115,7 +118,7 @@ public class LoadingActivity extends BaseActivity {
                     }
                 });
             } else {
-                GlideUtils.loadDrawable(LoadingActivity.this, advertisionEntity.getPicture(), new GlideUtils.BitmapReadyCallBack() {
+                GlideUtils.loadDrawable(LoadingActivity.this, advertisionEntity.getUrlImage(), new GlideUtils.BitmapReadyCallBack() {
                     @Override
                     public void onExceptoin(Exception e) {
                         root_container.setVisibility(View.VISIBLE);
@@ -139,7 +142,7 @@ public class LoadingActivity extends BaseActivity {
         if (advertisionDownloadFile == null) {
             return;
         }
-        FileDownloader.getImpl().create(entity.getPicture())
+        FileDownloader.getImpl().create(entity.getUrlImage())
                 .setPath(advertisionDownloadFile.getAbsolutePath())
                 .setListener(new FileDownloadListener() {
                     @Override
@@ -237,7 +240,8 @@ public class LoadingActivity extends BaseActivity {
 //            if (TextUtils.isEmpty(
             LogUtils.e( AppContent.getInstance().getMyUserRole());
 
-            JumpUtils.getInstance().jumpToRoleMain(this, AppContent.getInstance().getMyUserRole());
+//            JumpUtils.getInstance().jumpToRoleMain(this, AppContent.getInstance().getMyUserRole());
+            ActivityUtils.setActivity(MAIN_ACTIVITY,"intdex1",0);
 //            }
 //            }
             finish();
@@ -258,11 +262,11 @@ public class LoadingActivity extends BaseActivity {
 
     private void startAdvertision() {
         AdvertisionEntity advertision = DataSharedPreferences.getAdvertision();
-        if (advertision != null && !TextUtils.isEmpty(advertision.getLink()) && !isFinishedByUser) {
+        if (advertision != null && !TextUtils.isEmpty(advertision.getUrlLink()) && !isFinishedByUser) {
             isFinishedByUser = true;
             Bundle bundle = new Bundle();
             bundle.putString(BaseHtmlActivity.TITLE, "    ");
-            bundle.putString(BaseHtmlActivity.URL, advertision.getLink());
+            bundle.putString(BaseHtmlActivity.URL, advertision.getUrlLink());
             startActivity(AdvertisionActivity.class, bundle);
             finish();
         }

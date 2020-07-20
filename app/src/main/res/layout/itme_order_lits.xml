@@ -18,11 +18,10 @@
         <TextView
             android:id="@+id/tv_order_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="21dp"
             android:text="下单时间：2020-04-12   10:56"
             android:textColor="#ff999999"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_weight="1"
@@ -60,7 +59,8 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/dp10"
@@ -99,10 +99,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
 
         <ImageView
@@ -110,6 +106,7 @@
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:src="@mipmap/im_order_audit_wait"
+            android:layout_marginRight="@dimen/dp10"
             android:visibility="gone"
             ></ImageView>
     </LinearLayout>
@@ -154,6 +151,7 @@
             android:paddingBottom="@dimen/dp5"
             android:paddingTop="@dimen/dp5"
             android:textSize="14sp"
+            android:visibility="gone"
             android:background="@drawable/ad_order_list"
             />
 

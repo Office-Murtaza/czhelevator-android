@@ -120,7 +120,8 @@ import rx.Observable;
  */
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
-    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
+//    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
+    String domainReleaseName = "http://192.168.1.222:8080/app/v2/";//外网正式服地址
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
@@ -615,7 +616,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<PointItemEntity>> installerDeviceList(@Field("page") int page);
 
-    @GET("common/advertising")
+    @POST("common/advertising")
     Observable<AdvertisionEntity> getAdertising();
 
 //    @GET("common/liftCamera")
@@ -1028,7 +1029,7 @@ public interface NetApi {
     @POST("partner/withdraw")
     @FormUrlEncoded
     Observable<String> partnerWithdraw(@Field("amount") double amount, @Field("withDrawWay") String withDrawWay
-            , @Field("aliAcount") String aliAcount, @Field("bankName") String bankName
+            , @Field("aliAcount") String aliAcount, @Field("wChatAcount") String wChatAcount, @Field("bankName") String bankName
             , @Field("cardNo") String cardNo, @Field("cardholder") String cardholder);
 
     @POST("partner/withdrawList")

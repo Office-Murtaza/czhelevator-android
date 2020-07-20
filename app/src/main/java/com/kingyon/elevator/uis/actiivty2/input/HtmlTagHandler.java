@@ -77,9 +77,11 @@ public class HtmlTagHandler implements Html.TagHandler {
             /*内容点击*/
             LogUtils.e(t.id,t.name,tag,text,xmlReader);
             if (tag.equals("tag")){
+
               ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",t.id);
             }else {
               /*用户中心*/
+
               ActivityUtils.setActivity(ACTIVITY_USER_CENTER,"type", "1","otherUserAccount",t.id);
             }
 //            Toast.makeText(widget.getContext(), t.toString(), Toast.LENGTH_SHORT).show();

@@ -235,25 +235,29 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         holder.img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likes = queryRecommendEntity.likes;
-                if (queryRecommendEntity.liked){
-                    queryRecommendEntity.liked =false;
-                    holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
-                    ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
-                            HOME_CONTENT,CANCEL_LIKE,position,queryRecommendEntity,"1");
-                    likes--;
-                    queryRecommendEntity.likes= likes;
-                    LogUtils.e(likes+"");
-                    holder.tv_like_number.setText(likes+"");
+                if (TokenUtils.isToken(context)) {
+                    likes = queryRecommendEntity.likes;
+                    if (queryRecommendEntity.liked) {
+                        queryRecommendEntity.liked = false;
+                        holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
+                        ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
+                                HOME_CONTENT, CANCEL_LIKE, position, queryRecommendEntity, "1");
+                        likes--;
+                        queryRecommendEntity.likes = likes;
+                        LogUtils.e(likes + "");
+                        holder.tv_like_number.setText(likes + "");
+                    } else {
+                        queryRecommendEntity.liked = true;
+                        holder.img_like.setImageResource(R.mipmap.ic_small_like);
+                        ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
+                                HOME_CONTENT, LIKE, position, queryRecommendEntity, "1");
+                        likes++;
+                        queryRecommendEntity.likes = likes;
+                        LogUtils.e(likes + "");
+                        holder.tv_like_number.setText(likes + "");
+                    }
                 }else {
-                    queryRecommendEntity.liked =true;
-                    holder.img_like.setImageResource(R.mipmap.ic_small_like);
-                    ConentUtils.httpHandlerLikeOrNot(context,queryRecommendEntity.id,
-                            HOME_CONTENT,LIKE,position,queryRecommendEntity,"1");
-                    likes++;
-                    queryRecommendEntity.likes = likes;
-                    LogUtils.e(likes+"");
-                    holder.tv_like_number.setText(likes+"");
+                    ActivityUtils.setLoginActivity();
                 }
             }
         });

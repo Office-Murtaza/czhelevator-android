@@ -16,11 +16,11 @@ import java.io.File;
 public class PathUtils {
 
     private static String getAdvertisionDownloadPath(AdvertisionEntity entity) {
-        return getResourceDownloadPath() + File.separator + "advertising" + File.separator + getAdvertisionFileName(entity.getPicture());
+        return getResourceDownloadPath() + File.separator + "advertising" + File.separator + getAdvertisionFileName(entity.getUrlImage());
     }
 
     public static File getAdvertisionDownloadFile(AdvertisionEntity entity) {
-        String advertisionFileName = getAdvertisionFileName(entity.getPicture());
+        String advertisionFileName = getAdvertisionFileName(entity.getUrlImage());
         return TextUtils.equals(advertisionFileName, "_advertision") ? null : new File(getAdvertisionDownloadPath(entity));
     }
 

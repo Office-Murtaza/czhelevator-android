@@ -44,6 +44,8 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
 import com.kingyon.elevator.view.ConfirmOrderView;
 import com.kingyon.paylibrary.alipay.AliPayUtils;
 import com.kingyon.paylibrary.wechatpay.WxPayUtils;
@@ -67,6 +69,7 @@ import rx.Subscription;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_PAY_SUCCESS;
 import static com.czh.myversiontwo.utils.StringContent.STRING_PRICE2;
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
  * 订单确认界面
@@ -118,6 +121,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     TextView textNumber;
     @BindView(R.id.el_adimg)
     RelativeLayout elAdimg;
+    @BindView(R.id.tv_tf_instructions)
+    TextView tvTfInstructions;
+    @BindView(R.id.tv_tk_instructions)
+    TextView tvTkInstructions;
     private String mediaPath = "";//多媒体数据的路径
     private String mediaType = "";//媒体的类型 VIDEO 还是IMAGE
     private String screenType = "";
@@ -142,15 +149,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         setContentView(R.layout.activity_confirm_order);
         ButterKnife.bind(this);
         setStateLayout();
-//        stateLayout.setErrorAction(v -> {
-//            if (goPlaceAnOrderEntity != null) {
-//                presenter.loadIdentityInfo(getAllMoney(),
-//                        goPlaceAnOrderEntity.getPlanType(), false, "");
-//            } else {
-//                showShortToast("数据异常，请重试");
-//                finish();
-//            }
-//        });
+        initInstructions();
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         monthSimpleDateFormat = new SimpleDateFormat("MM月dd日");
         goPlaceAnOrderEntity = RuntimeUtils.goPlaceAnOrderEntity;
@@ -190,7 +189,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                         if (textLength <= 60) {
                             textNumber.setText(textLength + "/60");
                         } else {
-                            ToastUtils.showToast(ConfirmOrderActivity.this,"最多输入60字",1000);
+                            ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入60字", 1000);
                         }
                     }
                 });
@@ -207,7 +206,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 }
                 et_input_ad_name.setHint("请输入广告名称");
                 et_input_ad_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
-                textNumber.setText(et_input_ad_name.getText().toString().length()+"/20");
+                textNumber.setText(et_input_ad_name.getText().toString().length() + "/20");
                 et_input_ad_name.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -225,7 +224,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                         if (textLength <= 20) {
                             textNumber.setText(textLength + "/20");
                         } else {
-                            ToastUtils.showToast(ConfirmOrderActivity.this,"最多输入20字",1000);
+                            ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入20字", 1000);
                         }
                     }
                 });
@@ -242,23 +241,25 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 }
                 et_input_ad_name.setHint("请输入广告名称");
                 et_input_ad_name.setMaxLines(20);
-                textNumber.setText(et_input_ad_name.getText().toString().length()+"/20");
+                textNumber.setText(et_input_ad_name.getText().toString().length() + "/20");
                 et_input_ad_name.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                     }
+
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                     }
+
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
                         if (textLength < 20) {
                             textNumber.setText(textLength + "/20");
                         } else {
-                            ToastUtils.showToast(ConfirmOrderActivity.this,"最多输入20字",1000);
+                            ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入20字", 1000);
                         }
                     }
                 });
@@ -286,6 +287,24 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             showShortToast("参数缺失，请重试");
             finish();
         }
+    }
+
+    private void initInstructions() {
+        /*投放说明*/
+        ConentUtils.httpData(Constants.AgreementType.AD_TERMS.getValue(), new SrcSuccess() {
+            @Override
+            public void srcSuccess(String data) {
+                tvTfInstructions.setText(delHTMLTag(data)+"");
+            }
+        });
+        /*退款说明*/
+        ConentUtils.httpData(Constants.AgreementType.REFUND_TERMS.getValue(), new SrcSuccess() {
+            @Override
+            public void srcSuccess(String data) {
+                tvTkInstructions.setText(delHTMLTag(data)+"");
+            }
+        });
+
     }
 
     private void initDiyAndBussines() {
@@ -378,8 +397,11 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     showOrderIdentityDialog();
 
                 } else {
+                    /*是否有在线广告*/
                     if (adEntity != null) {
+                        /*实际价格是否大于0*/
                         if (realPayPrice > 0) {
+                            /*是否有可用优惠卷*/
                             if (autoCalculationDiscountEntity.isHasMore()) {
                                 new AlertDialog.Builder(this)
                                         .setTitle("提示")
@@ -394,14 +416,15 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                         .setNegativeButton("取消", null)
                                         .show();
                             } else {
+                                /*没有可用优惠卷*/
                                 presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                         goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                                 LogUtils.e("没有可以用优惠卷", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                         goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                             }
                         } else {
+                          /*  //提示优惠券金额大于总价*/
                             if (couponsPrice > getAllMoney()) {
-                                //提示优惠券金额大于总价
                                 new AlertDialog.Builder(this)
                                         .setTitle("提示")
                                         .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
@@ -415,6 +438,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                         .setNegativeButton("取消", null)
                                         .show();
                             } else {
+
                                 presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                         goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                                 LogUtils.e("正常价格", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
@@ -569,7 +593,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     }
 
     @Override
-    public void adUploadSuccess(ADEntity adEntity) {
+    public void adUploadSuccess(ADEntity adEntity1) {
+//        adEntity = adEntity1;
+//        setMyAdData();
         presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                 goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
     }
@@ -589,7 +615,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         LogUtils.e(orderEntiy.toString());
         if (orderEntiy.getPayMoney() > 0) {
             /*金额大于0跳支付*/
-            PayDialog payDialog = new PayDialog(this, orderEntiy,orderEntiy.getPayMoney());
+            PayDialog payDialog = new PayDialog(this, orderEntiy, orderEntiy.getPayMoney());
             payDialog.setCancelable(false);
             payDialog.show();
 
@@ -604,8 +630,8 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 //            bundle.putParcelable(CommonUtil.KEY_VALUE_1, detailsEntity);
 //            bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.FREE);
 //            MyActivityUtils.goActivity(this, PaySuccessActivity.class, bundle);
-            ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
-                    "payType",Constants.PayType.BALANCE_PAY,"priceActual", String.valueOf(orderEntiy.getPayMoney()));
+            ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS, "orderId", orderEntiy.getOrderId(),
+                    "payType", Constants.PayType.BALANCE_PAY, "priceActual", String.valueOf(orderEntiy.getPayMoney()));
             EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
         }
 
@@ -659,9 +685,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             }
             BigDecimal bg3 = new BigDecimal(allMoney);
             double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            if (f3 * goPlaceAnOrderEntity.getTotalDayCount()<=0){
-                return"无促销活动";
-            }else {
+            if (f3 * goPlaceAnOrderEntity.getTotalDayCount() <= 0) {
+                return "无促销活动";
+            } else {
                 return "立减" + f3 * goPlaceAnOrderEntity.getTotalDayCount() + "元";
             }
         } else if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.BUSINESS)) {
@@ -671,9 +697,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             }
             BigDecimal bg3 = new BigDecimal(allMoney);
             double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            if (f3 * goPlaceAnOrderEntity.getTotalDayCount()<=0){
-                return"无促销活动";
-            }else {
+            if (f3 * goPlaceAnOrderEntity.getTotalDayCount() <= 0) {
+                return "无促销活动";
+            } else {
                 return "立减" + f3 * goPlaceAnOrderEntity.getTotalDayCount() + "元";
             }
         } else {
@@ -683,9 +709,9 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             }
             BigDecimal bg3 = new BigDecimal(allMoney);
             double f3 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            if (f3 * goPlaceAnOrderEntity.getTotalDayCount()<=0){
-                return"无促销活动";
-            }else {
+            if (f3 * goPlaceAnOrderEntity.getTotalDayCount() <= 0) {
+                return "无促销活动";
+            } else {
                 return "立减" + f3 * goPlaceAnOrderEntity.getTotalDayCount() + "元";
             }
 //            return "便民信息无促销活动";

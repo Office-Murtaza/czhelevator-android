@@ -206,6 +206,7 @@
     </RelativeLayout>
 
     <com.kingyon.elevator.view.AlwaysMarqueeTextView
+        android:id="@+id/tv_notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"

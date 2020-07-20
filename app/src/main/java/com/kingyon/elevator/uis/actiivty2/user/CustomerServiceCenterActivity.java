@@ -14,9 +14,11 @@ import com.kingyon.elevator.entities.entities.WikipediaEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.user.FeedBackActivity;
+import com.kingyon.elevator.uis.activities.user.FeedBackEditActivity;
 import com.kingyon.elevator.uis.dialogs.CallDialog;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.user.CustomerServiceCenterFragment;
+import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
@@ -108,7 +110,8 @@ public class CustomerServiceCenterActivity extends BaseActivity {
                 callDialog.show();
                 break;
             case R.id.tv_feedback:
-                startActivity(FeedBackActivity.class);
+//                startActivity(FeedBackActivity.class);
+                startActivityForResult(FeedBackEditActivity.class, CommonUtil.REQ_CODE_1);
                 break;
         }
     }

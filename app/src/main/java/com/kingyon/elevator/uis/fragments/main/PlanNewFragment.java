@@ -27,6 +27,9 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
+import com.kingyon.elevator.view.AlwaysMarqueeTextView;
 import com.leo.afbaselibrary.uis.adapters.UnLazyAdapter;
 import com.leo.afbaselibrary.uis.fragments.BaseRefreshFragment;
 import com.leo.afbaselibrary.uis.fragments.BaseRefreshLoadingFragment;
@@ -42,6 +45,8 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
  * Created by GongLi on 2019/2/19.
@@ -96,6 +101,8 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     ViewPager prePager;
     @BindView(R.id.ll_root)
     LinearLayout llRoot;
+    @BindView(R.id.tv_notice)
+    AlwaysMarqueeTextView tvNotice;
     private boolean editMode;
     PlanSelectDateNewDialog planSelectDateNewDialog;
 
@@ -123,6 +130,12 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         selectedIndex = 0;
         updateMode();
         initDateView();
+        ConentUtils.httpData(Constants.AgreementType.PLAN_PROMPT.getValue(), new SrcSuccess() {
+            @Override
+            public void srcSuccess(String data) {
+                tvNotice.setText(delHTMLTag(data) + "");
+            }
+        });
     }
 
     private void initDateView() {
@@ -155,7 +168,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     }
 
 
-    @OnClick({R.id.tab_business, R.id.tab_diy_ad, R.id.tab_bianmin, R.id.tv_mode, R.id.select_date_container,R.id.img_top_back})
+    @OnClick({R.id.tab_business, R.id.tab_diy_ad, R.id.tab_bianmin, R.id.tv_mode, R.id.select_date_container, R.id.img_top_back})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tab_business:

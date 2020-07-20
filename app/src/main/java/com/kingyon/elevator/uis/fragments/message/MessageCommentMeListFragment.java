@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.message;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
@@ -70,7 +71,11 @@ public class MessageCommentMeListFragment extends BaseStateRefreshLoadingFragmen
                         holder.setVisible(R.id.img_image1,true);
                         holder.setVisible(R.id.tv_title,false);
                         holder.setVisible(R.id.tv_content,true);
-                        GlideUtils.loadRoundCornersImage(getActivity(),item.image,holder.getView(R.id.img_image1),20);
+                        if (item.image!=null) {
+                            GlideUtils.loadRoundCornersImage(getActivity(), item.image, holder.getView(R.id.img_image1), 20);
+                        }else {
+                            holder.setVisible(R.id.img_image1,false);
+                        }
                         break;
                     case "article":
                         /*文章*/
@@ -94,10 +99,14 @@ public class MessageCommentMeListFragment extends BaseStateRefreshLoadingFragmen
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, CommentLikesListEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
+        ImageView imageView = view.findViewById(R.id.img_is);
         ConentUtils.httpGetMarkRead(String.valueOf(item.id), "COMMENT", "SINGLE", new IsSuccess() {
             @Override
             public void isSuccess(boolean success) {
                 LogUtils.e(success);
+                if (success){
+                    imageView.setVisibility(View.GONE);
+                }
             }
         });
         switch (item.contentType){

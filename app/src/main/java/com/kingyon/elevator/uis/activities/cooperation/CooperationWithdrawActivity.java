@@ -304,7 +304,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
         @Override
         public void onUsepwd() {
-
+            showPayPwdDialog();
         }
 
         @Override
@@ -380,21 +380,21 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
         }
         if (bindAccountEntity.cashType == 1) {
             //银行卡
-            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null,
+            requestWithdraw(money, Constants.WithdrawType.BANKCARD, null,"",
                     bindAccountEntity.openingBank, bindAccountEntity.cashAccount, bindAccountEntity.cashName);
         } else if (bindAccountEntity.cashType == 2){
             //支付宝
-            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
+            requestWithdraw(money, Constants.WithdrawType.ALI, bindAccountEntity.cashAccount, "",null, null, bindAccountEntity.cashName);
         }else {
-            requestWithdraw(money, Constants.WithdrawType.WCHAT, bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
+            requestWithdraw(money, Constants.WithdrawType.WCHAT, "",bindAccountEntity.cashAccount, null, null, bindAccountEntity.cashName);
 
         }
     }
 
-    private void requestWithdraw(final double money, String way, String aliAccount, String bankName, String bankNo, String bankHolder) {
+    private void requestWithdraw(final double money, String way, String aliAccount,String wChatAcount, String bankName, String bankNo, String bankHolder) {
         tvEnsure.setEnabled(false);
         showProgressDialog(getString(R.string.wait));
-        NetService.getInstance().partnerWithdraw(money, way, aliAccount, bankName, bankNo, bankHolder)
+        NetService.getInstance().partnerWithdraw(money, way, aliAccount,wChatAcount, bankName, bankNo, bankHolder)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override

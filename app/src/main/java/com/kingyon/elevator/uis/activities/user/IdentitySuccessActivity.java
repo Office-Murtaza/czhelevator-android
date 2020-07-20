@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -22,14 +25,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
+import static com.czh.myversiontwo.utils.Constance.IDENTITY_SUCCESS_ACTIVITY;
 
 /**
  * Created by GongLi on 2019/1/9.
  * Email：lc824767150@163.com
  */
-
+@Route(path = IDENTITY_SUCCESS_ACTIVITY)
 public class IdentitySuccessActivity extends BaseActivity {
-    String type;
     @BindView(R.id.img_top_back)
     ImageView imgTopBack;
     @BindView(R.id.tv_top_title)
@@ -52,7 +55,8 @@ public class IdentitySuccessActivity extends BaseActivity {
     LinearLayout llName;
     @BindView(R.id.tv_next)
     TextView tvNext;
-
+    @Autowired
+    String type;
 
     @Override
     public int getContentViewId() {
@@ -61,7 +65,10 @@ public class IdentitySuccessActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        type = getIntent().getStringExtra("type");
+        ARouter.getInstance().inject(this);
+        if (getIntent().getStringExtra("type")!=null) {
+            type = getIntent().getStringExtra("type");
+        }
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().getAuthStatus()
                 .compose(this.bindLifeCycle())

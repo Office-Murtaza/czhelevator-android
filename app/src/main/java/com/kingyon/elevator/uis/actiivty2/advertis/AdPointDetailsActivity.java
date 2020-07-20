@@ -22,6 +22,8 @@ import com.kingyon.elevator.entities.CellDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ContentImageAdapter;
+import com.kingyon.elevator.uis.dialogs.AdvertisPutDialog;
+import com.kingyon.elevator.uis.dialogs.DialogUtils;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.fragments.main2.advertis.AdPointDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
@@ -45,6 +47,7 @@ import static com.czh.myversiontwo.utils.CodeType.ADV_INFORMATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADPOINT_DETAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
@@ -178,7 +181,7 @@ public class AdPointDetailsActivity extends BaseActivity {
                         tvPropertyCosts.setText("物业费："+cellDetailsEntity.propertyFee+"元/平方/月");
                         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
                         adapter.addFrag(new AdPointDetailsFragment(cellEntity, "1",panID), "商业广告");
-                        adapter.addFrag(new AdPointDetailsFragment(cellEntity, "2",panID), "DAY广告");
+                        adapter.addFrag(new AdPointDetailsFragment(cellEntity, "2",panID), "DIY广告");
                         adapter.addFrag(new AdPointDetailsFragment(cellEntity, "3",panID), "便民广告");
                         vpPoindetails.setAdapter(adapter);
                         vpPoindetails.setOffscreenPageLimit(adapter.getCount());
@@ -217,7 +220,7 @@ public class AdPointDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         adtype = ADV_DAY;
-                        tvType.setText("DAY广告");
+                        tvType.setText("DIY广告");
                         tvCurrentPrice.setText(cellEntity.priceDiy + "元/台/天");
                         tvOriginalPrice.setText(cellEntity.originalPriceDiy + "元/台/天");
                         break;
@@ -267,7 +270,11 @@ public class AdPointDetailsActivity extends BaseActivity {
             case R.id.tv_program:
                 /*加入计划*/
                 if (isToken(this)) {
-                    addPlan(adtype, panID);
+                    if (isCertification()) {
+                        DialogUtils.shwoCertificationDialog(this);
+                    }else {
+                        addPlan(adtype, panID);
+                    }
                 } else {
                     ActivityUtils.setLoginActivity();
                 }

@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.activities.user;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
 
@@ -49,12 +52,18 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     RecyclerView rvImages;
     @BindView(R.id.tv_create)
     TextView tvCreate;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
+    @BindView(R.id.pre_tv_title)
+    TextView preTvTitle;
+    @BindView(R.id.pre_v_right)
+    TextView preVRight;
 
     private UploadImageAdapter uploadAdapter;
 
     @Override
     protected String getTitleText() {
-        return "新的反馈";
+        return "意见反馈";
     }
 
     @Override
@@ -64,6 +73,8 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        preVRight.setText("我的反馈");
+        preVRight.setTextColor(Color.parseColor("#FF1330"));
         rvImages.addItemDecoration(new GridSpacingItemDecoration(3, getResources().getDimensionPixelSize(R.dimen.spacing_small), false));
         uploadAdapter = new UploadImageAdapter(this);
         uploadAdapter.
@@ -86,25 +97,6 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
                 tvLength.setText(String.format("%s/400", s.length()));
             }
         });
-    }
-
-    @OnClick(R.id.tv_create)
-    public void onViewClicked() {
-        if (TextUtils.isEmpty(CommonUtil.getEditText(etTitle))) {
-            showToast("请输入评价内容");
-            return;
-        }
-        if (uploadAdapter.getItemRealCount() > 0) {
-            List<File> uploadFiles = uploadAdapter.getUploadDatas();
-            if (uploadFiles.size() > 0) {
-                showProgressDialog(getString(R.string.wait));
-                NetService.getInstance().uploadFiles(this, uploadFiles, this);
-            } else {
-                publishRequest(NetService.getInstance().getUploadResultString(uploadAdapter.getAllDatas()));
-            }
-        } else {
-            publishRequest(null);
-        }
     }
 
     private void publishRequest(String pictures) {
@@ -154,8 +146,8 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     }
 
     @Override
-    public void uploadSuccess(final List<String> images, List<String> hash,JSONObject response) {
-        LogUtils.e(images,hash,response);
+    public void uploadSuccess(final List<String> images, List<String> hash, JSONObject response) {
+        LogUtils.e(images, hash, response);
         List<String> result = new ArrayList<>();
         int index = 0;
         for (Object object : uploadAdapter.getDatas()) {
@@ -173,5 +165,42 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     public void uploadFailed(ApiException ex) {
         hideProgress();
         showToast(ex.getDisplayMessage());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+
+    @OnClick({R.id.pre_v_back, R.id.pre_v_right, R.id.tv_create})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.pre_v_back:
+                finish();
+                break;
+            case R.id.pre_v_right:
+                startActivity(FeedBackActivity.class);
+                break;
+            case R.id.tv_create:
+                if (TextUtils.isEmpty(CommonUtil.getEditText(etTitle))) {
+                    showToast("请输入评价内容");
+                    return;
+                }
+                if (uploadAdapter.getItemRealCount() > 0) {
+                    List<File> uploadFiles = uploadAdapter.getUploadDatas();
+                    if (uploadFiles.size() > 0) {
+                        showProgressDialog(getString(R.string.wait));
+                        NetService.getInstance().uploadFiles(this, uploadFiles, this);
+                    } else {
+                        publishRequest(NetService.getInstance().getUploadResultString(uploadAdapter.getAllDatas()));
+                    }
+                } else {
+                    publishRequest(null);
+                }
+                break;
+        }
     }
 }

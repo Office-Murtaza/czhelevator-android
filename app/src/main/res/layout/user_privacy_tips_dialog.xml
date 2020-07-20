@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center"
-            android:text="用户协议与隐私政策"
+            android:text="隐私协议"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

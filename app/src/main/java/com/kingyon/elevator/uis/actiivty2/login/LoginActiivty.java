@@ -201,7 +201,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                 setActivity(ACTIVITY_MAIN2_USER_LOGIN);
                 break;
             case R.id.tv_yszc:
-                AgreementActivity.start(this, "隐私协议", Constants.AgreementType.SERVICE_TERMS.getValue());
+                AgreementActivity.start(this, "隐私协议", Constants.AgreementType.PRIVACY_POLICY.getValue());
                 break;
             default:
         }

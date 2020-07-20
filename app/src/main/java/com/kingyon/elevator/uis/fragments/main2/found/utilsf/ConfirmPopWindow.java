@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -93,28 +94,34 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.ll_article:
-                ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_RELEASETY);
-                break;
-            case R.id.ll_community:
-                ActivityUtils.setActivity(ACTIVITY_MAIN2_COMMUNITY_RELEASETY);
-                break;
-            case R.id.ll_voide:
-//                ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY);
-                RxPermissions rxPermissions = new RxPermissions(context);
-                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .subscribe(aBoolean -> {
-                            if (aBoolean) {
-                                startAction();
-                            } else {
-                                Toast.makeText(context, "没有权限", Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                        }, Throwable::printStackTrace);
-                break;
-            default:
-                break;
+        if (TokenUtils.isToken(context)) {
+            switch (view.getId()) {
+                case R.id.ll_article:
+
+                        ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_RELEASETY);
+
+                    break;
+                case R.id.ll_community:
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_COMMUNITY_RELEASETY);
+                    break;
+                case R.id.ll_voide:
+    //                ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDE_RELEASETY);
+                    RxPermissions rxPermissions = new RxPermissions(context);
+                    rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(aBoolean -> {
+                                if (aBoolean) {
+                                    startAction();
+                                } else {
+                                    Toast.makeText(context, "没有权限", Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }, Throwable::printStackTrace);
+                    break;
+                default:
+                    break;
+            }
+        }else {
+            ActivityUtils.setLoginActivity();
         }
     }
 

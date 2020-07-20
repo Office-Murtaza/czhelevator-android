@@ -20,6 +20,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class TokenUtils {
 
                     }
                 });
+
     }
 
     public static boolean isCreateAccount(String CreatateAccount){

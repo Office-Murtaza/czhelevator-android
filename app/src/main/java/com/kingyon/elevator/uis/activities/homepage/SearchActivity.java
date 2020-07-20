@@ -156,8 +156,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private AnimatorPath path;//声明动画集合
     private String lastPlanType = "";
 
-    private double latitude = 26.578343;
-    private double longitude= 106.713478;
+    private double latitude = 26.617327;
+    private double longitude = 106.648644;
     private boolean isconent = true;
     ConentEntity<RecommendHouseEntiy> entiyConentEntity;
     Handler handler=new Handler();
@@ -171,6 +171,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
             handler.postDelayed(this, 500);
         }
     };
+    LocationEntity locationEntity;
 
     @Override
     public int getContentViewId() {
@@ -185,18 +186,24 @@ public class SearchActivity extends BaseSwipeBackActivity {
         }
         EventBus.getDefault().post(new KeywordEntity(keyWord));
         cityEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
+        locationEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_4);
         mapMode = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_3, false);
+        if (locationEntity!=null) {
+            latitude = locationEntity.getLatitude();
+            longitude = locationEntity.getLongitude();
+            LogUtils.e(latitude,longitude);
+        }
         return "搜索";
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         handler.postDelayed(runnable, 500);
-        LocationEntity entity = AppContent.getInstance().getLocation();
-        if (entity!=null) {
-            latitude = entity.getLatitude();
-            longitude = entity.getLongitude();
-        }
+//        LocationEntity entity = AppContent.getInstance().getLocation();
+//        if (entity!=null) {
+//            latitude = entity.getLatitude();
+//            longitude = entity.getLongitude();
+//        }
         /*定位请求*/
         httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
         EventBus.getDefault().register(this);
@@ -204,22 +211,6 @@ public class SearchActivity extends BaseSwipeBackActivity {
         initData();
         AdUtils.httpPlannuber();
 
-//        tvSearchTitle.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-////                imgClear.setVisibility(TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
-//            }
-//        });
 
         String name = FormatUtils.getInstance().getCityName(cityEntity.getName());
         if (name != null && name.length() > 5) {
@@ -311,6 +302,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (isconent) {
+            LogUtils.e(latitude,longitude);
             fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity,latitude,longitude));
         }else {
             fragmentTransaction.add(R.id.fl_content, new TextSearchTwoFragment().newInstance(entiyConentEntity));

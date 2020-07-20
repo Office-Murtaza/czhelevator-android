@@ -25,8 +25,9 @@ import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
  */
 
 public class PropertyActivity extends BaseStateRefreshingActivity {
-
+    /*申请*/
     private PropertyIdentityFragment identityFragment;
+    /*物业中心*/
     private PropertyInfoFragment infoFragment;
     private boolean notFirstIn;
 

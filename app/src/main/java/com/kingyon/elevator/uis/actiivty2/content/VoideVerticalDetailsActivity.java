@@ -15,15 +15,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.czh.myversiontwo.utils.QuickClickUtils;
-import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.actiivty2.activityutils.VideoCoverActivity;
 import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
@@ -54,8 +53,8 @@ import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.i
 /**
  * Created By Admin  on 2020/4/17
  * Email : 163235610@qq.com
- * @Author:Mrczh
- * Instructions:视频竖版
+ *
+ * @Author:Mrczh Instructions:视频竖版
  */
 @Route(path = ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS)
 public class VoideVerticalDetailsActivity extends BaseActivity {
@@ -106,6 +105,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     QueryRecommendEntity recommendEntity;
     private ShareDialog shareDialog;
     int page = 1;
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_voide_vertical;
@@ -141,9 +141,9 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         tvLikeNumer.setText(recommendEntity.likes + "");
                         tvCommentsNumber.setText(recommendEntity.comments + "");
                         GlideUtils.loadCircleImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait);
-                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())) {
                             tvAttention.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             tvAttention.setVisibility(View.VISIBLE);
                         }
                         if (recommendEntity.isAttent == 0) {
@@ -157,7 +157,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                             tvAttention.setTextColor(Color.parseColor("#FF1330"));
 
                         }
-                        if (recommendEntity.original) {
+                        if (!recommendEntity.original) {
                             tvOriginal.setText("原创");
                         } else {
                             tvOriginal.setText("转载");
@@ -203,129 +203,133 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
         transparentStatusBar();
     }
 
-    @OnClick({R.id.img_bake, R.id.img_jb, R.id.btn_send,
+    @OnClick({ R.id.img_jb, R.id.btn_send,
             R.id.iv_dianzan, R.id.iv_share_news, R.id.img_like,
             R.id.img_comments, R.id.img_collect, R.id.img_share,
-            R.id.input_comment,R.id.tv_attention})
+            R.id.input_comment, R.id.tv_attention})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.img_bake:
-                finish();
-                break;
-            case R.id.img_jb:
-                if (TokenUtils.isToken(this)){
-                    if (TokenUtils.isCreateAccount(recommendEntity.createAccount)){
-                        /*删除*/
-                        DeleteShareDialog deleteShareDialog = new DeleteShareDialog(this,recommendEntity.id,null,"2",0,null,null);
-                        deleteShareDialog.show();
-                    }else {
-                        /*举报*/
-                        ReportShareDialog reportShareDialog = new ReportShareDialog(this,recommendEntity.id,HOME_CONTENT);
-                        reportShareDialog.show();
-                    }
-                }
-                break;
-            case R.id.btn_send:
-
-                break;
-            case R.id.iv_dianzan:
-                break;
-            case R.id.iv_share_news:
-
-                break;
-            case R.id.img_like:
-                if (recommendEntity.liked){
-                    recommendEntity.liked = false;
-                    imgLike.setImageResource(R.mipmap.btn_big_like);
-                    ConentUtils.httpHandlerLikeOrNot(this,recommendEntity.id,
-                            HOME_CONTENT,CANCEL_LIKE,0,recommendEntity,"2");
-                }else {
-                    recommendEntity.liked = true;
-                    imgLike.setImageResource(R.mipmap.btn_big_like_off);
-                    ConentUtils.httpHandlerLikeOrNot(this,recommendEntity.id,
-                            HOME_CONTENT,LIKE,0,recommendEntity,"2");
-                }
-                break;
-            case R.id.img_comments:
-                /*评论*/
-                if (QuickClickUtils.isFastClick()) {
-                    CommentDialog commentDialog = new CommentDialog(this, recommendEntity.id);
-                    commentDialog.show();
-                }
-
-                break;
-            case R.id.img_collect:
-                /*收藏*/
-                showProgressDialog(getString(R.string.wait));
-                if (recommendEntity.isCollect==0) {
-                    ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
-                        @Override
-                        public void Collect(boolean is) {
-                            hideProgress();
-                            if (is) {
-                                imgCollect.setImageResource(R.mipmap.btn_big_collect_off);
-                                recommendEntity.isCollect = 1;
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
-                            } else {
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏失败", 1000);
-                            }
+        if (TokenUtils.isToken(this)) {
+            switch (view.getId()) {
+                case R.id.img_jb:
+                    if (TokenUtils.isToken(this)) {
+                        if (TokenUtils.isCreateAccount(recommendEntity.createAccount)) {
+                            /*删除*/
+                            DeleteShareDialog deleteShareDialog = new DeleteShareDialog(this, recommendEntity.id, null, "2", 0, null, null);
+                            deleteShareDialog.show();
+                        } else {
+                            /*举报*/
+                            ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT);
+                            reportShareDialog.show();
                         }
-                    });
-                }else {
-                    ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
-                        @Override
-                        public void Collect(boolean is) {
-                            hideProgress();
-                            if (is) {
-                                recommendEntity.isCollect = 0;
-                                imgCollect.setImageResource(R.mipmap.btn_big_collect);
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏成功", 1000);
-                            } else {
-                                ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏失败", 1000);
-
-                            }
-                        }
-                    });
-                }
-                break;
-            case R.id.img_share:
-                /*分享*/
-                SharedUtils.shared(this,shareDialog,recommendEntity.content,"www。baidu.com",recommendEntity.title);
-                break;
-            case R.id.input_comment:
-                /*评论*/
-
-                InputCommentActivity.openEditor(VoideVerticalDetailsActivity.this, new EditorCallback() {
-                    @Override
-                    public void onCancel() {
-                        LogUtils.d("关闭输入法-------------");
-                        KeyboardUtils.hideSoftInput(VoideVerticalDetailsActivity.this);
                     }
-                    @Override
-                    public void onSubmit(String content) {
-                        ConentUtils.httpComment(VoideVerticalDetailsActivity.this,
-                                recommendEntity.id, 0, content, new ConentUtils.IsSuccedListener() {
-                                    @Override
-                                    public void onisSucced(boolean isSucced) {
-                                        if (isSucced){
-                                            httpComment(1,recommendEntity.id);
+                    break;
+                case R.id.btn_send:
+
+                    break;
+                case R.id.iv_dianzan:
+                    break;
+                case R.id.iv_share_news:
+
+                    break;
+                case R.id.img_like:
+                    if (recommendEntity.liked) {
+                        recommendEntity.liked = false;
+                        imgLike.setImageResource(R.mipmap.btn_big_like);
+                        ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
+                                HOME_CONTENT, CANCEL_LIKE, 0, recommendEntity, "2");
+                    } else {
+                        recommendEntity.liked = true;
+                        imgLike.setImageResource(R.mipmap.btn_big_like_off);
+                        ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
+                                HOME_CONTENT, LIKE, 0, recommendEntity, "2");
+                    }
+                    break;
+                case R.id.img_comments:
+                    /*评论*/
+                    if (QuickClickUtils.isFastClick()) {
+                        CommentDialog commentDialog = new CommentDialog(this, recommendEntity.id);
+                        commentDialog.show();
+                    }
+
+                    break;
+                case R.id.img_collect:
+                    /*收藏*/
+                    showProgressDialog(getString(R.string.wait));
+                    if (recommendEntity.isCollect == 0) {
+                        ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
+                            @Override
+                            public void Collect(boolean is) {
+                                hideProgress();
+                                if (is) {
+                                    imgCollect.setImageResource(R.mipmap.btn_big_collect_off);
+                                    recommendEntity.isCollect = 1;
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
+                                } else {
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏失败", 1000);
+                                }
+                            }
+                        });
+                    } else {
+                        ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
+                            @Override
+                            public void Collect(boolean is) {
+                                hideProgress();
+                                if (is) {
+                                    recommendEntity.isCollect = 0;
+                                    imgCollect.setImageResource(R.mipmap.btn_big_collect);
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏成功", 1000);
+                                } else {
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏失败", 1000);
+
+                                }
+                            }
+                        });
+                    }
+                    break;
+                case R.id.img_share:
+                    /*分享*/
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www。baidu.com", recommendEntity.title);
+                    break;
+                case R.id.input_comment:
+                    /*评论*/
+
+                    InputCommentActivity.openEditor(VoideVerticalDetailsActivity.this, new EditorCallback() {
+                        @Override
+                        public void onCancel() {
+                            LogUtils.d("关闭输入法-------------");
+                            KeyboardUtils.hideSoftInput(VoideVerticalDetailsActivity.this);
+                        }
+
+                        @Override
+                        public void onSubmit(String content) {
+                            ConentUtils.httpComment(VoideVerticalDetailsActivity.this,
+                                    recommendEntity.id, 0, content, new ConentUtils.IsSuccedListener() {
+                                        @Override
+                                        public void onisSucced(boolean isSucced) {
+                                            if (isSucced) {
+                                                httpComment(1, recommendEntity.id);
+                                            }
                                         }
-                                    }
-                                });
-                    }
-                    @Override
-                    public void onAttached(ViewGroup rootView) {
-                    }
-                    @Override
-                    public void onIcon() {
+                                    });
+                        }
 
-                    }
-                });
-                break;
-            case R.id.tv_attention:
-                httpAddUser();
-                break;
+                        @Override
+                        public void onAttached(ViewGroup rootView) {
+                        }
+
+                        @Override
+                        public void onIcon() {
+
+                        }
+                    });
+                    break;
+                case R.id.tv_attention:
+                    httpAddUser();
+                    break;
                 default:
+            }
+        } else {
+            ActivityUtils.setLoginActivity();
         }
     }
 
@@ -336,37 +340,43 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     }
 
     private void httpAddUser() {
-        if (tvAttention.getText().toString().equals("关注")){
-            ConentUtils.httpAddAttention(this,"add",recommendEntity.createAccount, new ConentUtils.IsAddattention() {
+        if (tvAttention.getText().toString().equals("关注")) {
+            ConentUtils.httpAddAttention(this, "add", recommendEntity.createAccount, new ConentUtils.IsAddattention() {
                 @Override
                 public void onisSucced() {
-                    ToastUtils.showToast(VoideVerticalDetailsActivity.this,"关注成功",100);
+                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "关注成功", 100);
                     tvAttention.setText("已关注");
                     tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_cancel_attention));
                     tvAttention.setTextColor(Color.parseColor("#FF1330"));
 
 
                 }
+
                 @Override
                 public void onErron(String magssger, int code) {
-                    ToastUtils.showToast(VoideVerticalDetailsActivity.this,magssger+code,100);
+                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, magssger + code, 100);
                 }
             });
-        }else {
-            ConentUtils.httpAddAttention(this,"cancel",recommendEntity.createAccount, new ConentUtils.IsAddattention() {
+        } else {
+            ConentUtils.httpAddAttention(this, "cancel", recommendEntity.createAccount, new ConentUtils.IsAddattention() {
                 @Override
                 public void onisSucced() {
-                    ToastUtils.showToast(VoideVerticalDetailsActivity.this,"取消关注成功",100);
+                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消关注成功", 100);
                     tvAttention.setText("关注");
                     tvAttention.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj_add_attention));
                     tvAttention.setTextColor(Color.parseColor("#ffffff"));
                 }
+
                 @Override
                 public void onErron(String magssger, int code) {
-                    ToastUtils.showToast(VoideVerticalDetailsActivity.this,magssger+code,100);
+                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, magssger + code, 100);
                 }
             });
         }
 
+    }
+
+    @OnClick(R.id.img_bake)
+    public void onViewClicked() {
     }
 }

@@ -19,7 +19,7 @@
             android:id="@+id/tv_order_completed_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前广告推广已完成"
+            android:text="当前广告投放完成"
             android:textColor="#ffffffff"
             android:textSize="@dimen/txt_title"
             android:textStyle="bold" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_six"
-            android:text="感谢您的信任！"
+            android:text="感谢您的支持与信任！"
             android:textColor="#99FFFFFF"
             android:textStyle="bold" />
     </LinearLayout>
@@ -43,7 +43,7 @@
         android:paddingTop="8dp"
         android:paddingRight="@dimen/dp_14"
         android:paddingBottom="@dimen/dp_8"
-        android:text="查看监播表"
+        android:text="再来一单"
         android:textColor="#ffffffff"
         android:textSize="@dimen/txt_normal_content" />
 </LinearLayout>

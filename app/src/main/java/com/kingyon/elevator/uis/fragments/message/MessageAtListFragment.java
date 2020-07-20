@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.message;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.bobomee.android.mentions.text.MentionTextView;
@@ -105,10 +106,14 @@ public class MessageAtListFragment extends BaseStateRefreshLoadingFragment<AtLis
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, AtListEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
+        ImageView imageView = view.findViewById(R.id.img_is);
         ConentUtils.httpGetMarkRead(String.valueOf(item.id), "AT", "SINGLE ", new IsSuccess() {
             @Override
             public void isSuccess(boolean success) {
                 LogUtils.e(success);
+                if (success){
+                    imageView.setVisibility(View.GONE);
+                }
             }
         });
                 switch (item.contentType) {

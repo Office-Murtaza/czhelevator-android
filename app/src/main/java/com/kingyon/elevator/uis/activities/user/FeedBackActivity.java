@@ -46,7 +46,7 @@ import butterknife.OnClick;
 public class FeedBackActivity extends BaseStateRefreshingLoadingActivity<FeedBackEntity> {
     @Override
     protected String getTitleText() {
-        return "意见反馈";
+        return "我的反馈";
     }
 
     @Override
@@ -155,7 +155,7 @@ public class FeedBackActivity extends BaseStateRefreshingLoadingActivity<FeedBac
     protected void setDivider() {
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .colorResId(R.color.background)
-                .size(ScreenUtil.dp2px(10))
+                .size(ScreenUtil.dp2px(1))
                 .build());
     }
 

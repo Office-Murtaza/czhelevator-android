@@ -44,6 +44,9 @@ import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
+import com.kingyon.elevator.view.AlwaysMarqueeTextView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 
@@ -56,11 +59,11 @@ import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_EARNINGS_YESTERDAY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_HAVE_WITHDRAWAL;
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
- *
  * 合伙人首页
- * */
+ */
 
 public class CooperationInfoFragment extends BaseFragment implements OnParamsChangeInterface {
 
@@ -92,6 +95,8 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     TextView tvTime;
     @BindView(R.id.ll_income_today)
     LinearLayout llIncomeToday;
+    @BindView(R.id.tv_notice)
+    AlwaysMarqueeTextView tvNotice;
     private CooperationInfoNewEntity cooperationInfoNewEntity;
     private TipDialog<String> tipDialog;
 
@@ -121,6 +126,12 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
 //        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         httpData();
         loadCashTips();
+        ConentUtils.httpData(Constants.AgreementType.PARTNER_PROMPT.getValue(), new SrcSuccess() {
+            @Override
+            public void srcSuccess(String data) {
+                tvNotice.setText(delHTMLTag(data)+"");
+            }
+        });
     }
 
     private void httpData() {
@@ -149,7 +160,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 .subscribe(new CustomApiCallback<IdentityInfoEntity>() {
                     @Override
                     public void onNext(IdentityInfoEntity identityInfoEntity) {
-                        DataSharedPreferences.saveUesrName(identityInfoEntity.getCompanyName().isEmpty()?identityInfoEntity.getPersonName():identityInfoEntity.getCompanyName());
+                        DataSharedPreferences.saveUesrName(identityInfoEntity.getCompanyName().isEmpty() ? identityInfoEntity.getPersonName() : identityInfoEntity.getCompanyName());
                     }
 
                     @Override
@@ -167,11 +178,11 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     }
 
     private void updateUI(PartnerIndexInfoEntity entity) {
-        tvTime.setText("总收益：("+ DateUtils.getCurrentTime1()+")");
+        tvTime.setText("总收益：(" + DateUtils.getCurrentTime1() + ")");
         tvAllIncome.setText(getSumSpan(CommonUtil.getTwoFloat(entity.total)));
         tvCanCrash.setText(CommonUtil.getTwoFloat(entity.canWithdraw));
         yesterdayIncome.setText("昨日新增收益:" + CommonUtil.getTwoFloat(entity.yesterdayMoney));
-         cooperationInfoNewEntity = new CooperationInfoNewEntity();
+        cooperationInfoNewEntity = new CooperationInfoNewEntity();
         cooperationInfoNewEntity.setYesterdayIncome(entity.yesterdayMoney);
         cooperationInfoNewEntity.setRealizableIncome(entity.canWithdraw);
 
@@ -248,10 +259,10 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 } else {
 //                    if (entity.isCashing()) {
                     LogUtils.e(cooperationInfoNewEntity.toString());
-                        bundle.putParcelable(CommonUtil.KEY_VALUE_1, cooperationInfoNewEntity);
-                        //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
+                    bundle.putParcelable(CommonUtil.KEY_VALUE_1, cooperationInfoNewEntity);
+                    //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
 //                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
-                        MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
+                    MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
 //                    } else {
 //                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
 //                    }

@@ -20,9 +20,26 @@ public interface Constants {
     float adVideoProperty = 1f;//1080*1080
     float adImageProperty = 1.64384f;//657*1080
 
-    enum AgreementType {//	HELP：帮助，SERVICE_TERMS：服务条款，AD_TERMS：广告投放协议,USER_RULE：用户协议
+    enum AgreementType {//	HELP：帮助，SERVICE_TERMS：服务条款，
+        // 隐私政策-PRIVACY_POLICY
+        // 退款说明-REFUND_TERMS
+        // 投放说明-AD_TERMS
+        // 电子邮箱-EMAIL
+        // 用户协议-USER_RULE
+        // 合伙人页面提示-PARTNER_PROMPT
+        // 物业页面提示-PROPERTY_PROMPT
+        // 计划单提示-PLAN_PROMPT
 
-        HELP("HELP"), SERVICE_TERMS("SERVICE_TERMS"), AD_TERMS("AD_TERMS"), USER_RULE("USER_RULE");
+        HELP("HELP"),
+        SERVICE_TERMS("SERVICE_TERMS"),
+        AD_TERMS("AD_TERMS"),
+        PRIVACY_POLICY("PRIVACY_POLICY"),
+        REFUND_TERMS("REFUND_TERMS"),
+        EMAIL("EMAIL"),
+        PARTNER_PROMPT("PARTNER_PROMPT"),
+        PROPERTY_PROMPT("PROPERTY_PROMPT"),
+        PLAN_PROMPT("PLAN_PROMPT"),
+        USER_RULE("USER_RULE");
 
         private String value;
 

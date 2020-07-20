@@ -17,6 +17,8 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.MassagePushEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.activities.WebViewActivity;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -65,7 +67,6 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                 holder.setText(R.id.tv_title, item.pushTitle);
                 TextView textView = new TextView(MessagePushActivity.this);
                 textView = holder.getView(R.id.tv_content);
-
                 if (item.isRead==1){
                     holder.setVisible(R.id.img_is,false);
                 }else {
@@ -90,7 +91,6 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                         holder.setVisible(R.id.tv_xd, true);
                         textView.setMaxLines(3);
                         textView.setEllipsize(TextUtils.TruncateAt.END);
-
                         break;
                     case "VIDEO":
                         /*视频*/
@@ -117,7 +117,10 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
                     case "H5":
                         holder.setVisible(R.id.tv_mag_image, true);
                         holder.setVisible(R.id.tv_content, false);
-                        GlideUtils.loadRoundCornersImage(MessagePushActivity.this, item.msgImage, getView(R.id.tv_mag_image), 20);
+                        holder.setVisible(R.id.tv_activity, false);
+                        holder.setVisible(R.id.tv_qw, false);
+                        holder.setVisible(R.id.tv_xd, false);
+                        GlideUtils.loadRoundCornersImage(MessagePushActivity.this, item.msgImage, holder.getView(R.id.tv_mag_image), 20);
                         /*H5*/
                         break;
                 }
@@ -162,6 +165,7 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
             case "H5":
                 LogUtils.e(item.msgParams);
                 ActivityUtils.setActivity(WEB_ACTIVITY, "title", item.pushTitle, "content", item.msgParams, "type", "url");
+
                 break;
         }
     }
@@ -178,6 +182,7 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
 
                     @Override
                     public void onNext(ConentEntity<MassagePushEntiy> massageListMentiys) {
+                        preTvTitle.setText(massageListMentiys.getContent().get(0).robotName);
                         if (massageListMentiys == null || massageListMentiys.getContent() == null) {
                             throw new ResultException(9001, "返回参数异常");
                         }
@@ -210,7 +215,7 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
         preVRight.setVisibility(View.GONE);
-        preTvTitle.setText(name+"");
+//        preTvTitle.setText(name+"");
     }
 
     @OnClick(R.id.pre_v_back)

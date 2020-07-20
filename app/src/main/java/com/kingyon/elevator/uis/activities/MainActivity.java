@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,6 +17,9 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.GsonUtils;
@@ -87,20 +92,23 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
+import static com.czh.myversiontwo.utils.Constance.MAIN_ACTIVITY;
 import static com.kingyon.elevator.utils.utilstwo.ConentUtils.totalNum;
 
-
+@Route(path = MAIN_ACTIVITY)
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
     @BindView(R.id.tabBar)
     TabStripView tabBar;
     @BindView(R.id.iv_add_plan_animation_view)
     ImageView iv_add_plan_animation_view;
-
+    @Autowired
+    int intdex1;
     private String currentTag;
     private BaseFragment currentFragment;
     private long logTime;
     private AnimatorPath path;//声明动画集合
     private Boolean isFirstInit = true;
+    public static MainActivity mainActivity;
     Handler handler=new Handler();
     Runnable runnable=new Runnable() {
         @Override
@@ -116,6 +124,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
 
     @Override
     public void init(Bundle savedInstanceState) {
+        mainActivity = this;
+        ARouter.getInstance().inject(this);
         StatusBarUtil.setTransparent(this, false);
         EventBus.getDefault().register(this);
         currentTag = "首页";
@@ -129,9 +139,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         tabBar.postDelayed(() -> loadUserPrivacy(), 400);
         ConentUtils.httpHomeData(1);
         handler.postDelayed(runnable, 500);
-
-
         httpPersonal();
+        tabBar.setDefaultSelectedTab(intdex1);
     }
 
 
@@ -156,7 +165,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             tabBar.createFragmentByTag(new MessageFragmentg(), "消息");
             tabBar.createFragmentByTag(new SquareFragmnet(), "计划");
         });
+
     }
+
 
     private void httpPersonal() {
         NetService.getInstance().userProfile()
@@ -223,6 +234,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         if (PublicFuncation.isIntervalSixMin()) {
             loadWindowAd();
         }
+        initPushId();
         httpPersonal();
     }
 
@@ -340,6 +352,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     public void onBackPressed() {
         if (tabBar != null && tabBar.getCurrentSelectedTab() != 0) {
             tabBar.setCurrentSelectedTab(0);
+            LogUtils.e("=====================");
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -401,6 +414,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         iv_add_plan_animation_view.setTranslationX(newLoc.mX);
         iv_add_plan_animation_view.setTranslationY(newLoc.mY);
     }
+
+
+
 
     private void initPushId() {
         setAlias();
@@ -588,7 +604,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     private void loadUserPrivacy() {
         Boolean isShow = DataSharedPreferences.getBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
         if (!isShow) {
-            NetService.getInstance().richText(Constants.AgreementType.USER_RULE.getValue())
+            NetService.getInstance().richText(Constants.AgreementType.PRIVACY_POLICY.getValue())
                     .compose(this.<DataEntity<String>>bindLifeCycle())
                     .subscribe(new CustomApiCallback<DataEntity<String>>() {
                         @Override

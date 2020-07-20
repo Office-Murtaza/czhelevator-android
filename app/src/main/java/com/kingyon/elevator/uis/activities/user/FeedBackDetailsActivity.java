@@ -46,7 +46,7 @@ public class FeedBackDetailsActivity extends BaseStateRefreshingLoadingActivity<
     @Override
     protected String getTitleText() {
         feedBackId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
-        return "反馈详情";
+        return "我的反馈";
     }
 
     @Override

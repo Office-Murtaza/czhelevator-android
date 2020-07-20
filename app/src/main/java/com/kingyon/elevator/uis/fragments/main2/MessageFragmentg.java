@@ -100,8 +100,9 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
-//        list.clear();
-//        httpHomeData(1);
+        list.clear();
+        httpHomeData(1);
+        LogUtils.e("789789789789789789789789789789789789789");
 
     }
 
@@ -130,6 +131,7 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        LogUtils.e();
         if (isVisibleToUser){
             list.clear();
             httpHomeData(1);
@@ -145,6 +147,7 @@ public class MessageFragmentg extends BaseFragment {
     }
 
     private void httpHomeData(int page) {
+        ConentUtils.httpHomeData(1);
         NetService.getInstance().getMsgOverview(page,20)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<MassageHomeEntiy<MassageLitsEntiy>>() {
@@ -288,15 +291,26 @@ public class MessageFragmentg extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_read:
                 /*全部已读*/
-                ConentUtils.httpMarkAll(new IsSuccess() {
-                    @Override
-                    public void isSuccess(boolean success) {
-                     LogUtils.e(success);
-                     list.clear();
-                     httpHomeData(1);
-                     ConentUtils.httpHomeData(1);
-                    }
-                });
+                if (isToken(getActivity())) {
+                    showProgressDialog(getString(R.string.wait));
+                    ConentUtils.httpMarkAll(new IsSuccess() {
+                        @Override
+                        public void isSuccess(boolean success) {
+                            LogUtils.e(success);
+                            hideProgress();
+                            if (success) {
+                                showToast("已读成功");
+                                list.clear();
+                                httpHomeData(1);
+                                ConentUtils.httpHomeData(1);
+                            } else {
+                                showToast("已读失败");
+                            }
+                        }
+                    });
+                }else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.ll_msagger:
                 if (isToken(getActivity())) {

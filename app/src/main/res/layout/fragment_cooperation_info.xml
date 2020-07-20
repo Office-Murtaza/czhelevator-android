@@ -208,6 +208,7 @@
 
 
     <com.kingyon.elevator.view.AlwaysMarqueeTextView
+        android:id="@+id/tv_notice"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -215,7 +216,7 @@
         android:singleLine="true"
         android:marqueeRepeatLimit="marquee_forever"
         android:padding="@dimen/dp5"
-        android:background="#F4F4F9"
+        android:background="#ffffff"
         android:drawablePadding="@dimen/dp5"
         android:drawableLeft="@mipmap/ic_withdrawal_time"
         android:text="每月提现时间为16-20日，如需帮助请致电400-651-9299。"

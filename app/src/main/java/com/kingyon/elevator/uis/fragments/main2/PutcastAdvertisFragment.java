@@ -1,7 +1,11 @@
 package com.kingyon.elevator.uis.fragments.main2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
@@ -29,31 +34,40 @@ import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
+import com.kingyon.elevator.uis.activities.MainActivity;
 import com.kingyon.elevator.uis.activities.homepage.CityActivity;
 import com.kingyon.elevator.uis.activities.homepage.SearchActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendHouseAdapter;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.LocationUtils;
+import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.CityUtils;
+import com.kingyon.elevator.utils.utilstwo.LocationEnabledUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.utils.EasyPermissions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADVERTIS_STYLE;
+import static com.kingyon.elevator.utils.utilstwo.LocationEnabledUtils.isLocationEnabled;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
@@ -62,7 +76,7 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
  * @Author:Mrczh
  * @Instructions: 广告投放
  */
-public class PutcastAdvertisFragment extends BaseFragment {
+public class PutcastAdvertisFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
     @BindView(R.id.tv_place)
     TextView tvPlace;
     @BindView(R.id.ll_select_place)
@@ -115,7 +129,7 @@ public class PutcastAdvertisFragment extends BaseFragment {
     private  int cityId;
     private int page = 1;
     private String provinceCode, cityCode,  countyCode;
-
+    String[] positioning = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     @Override
     public int getContentViewId() {
         return R.layout.fragment_putcast_advrttis;
@@ -325,7 +339,19 @@ public class PutcastAdvertisFragment extends BaseFragment {
             case R.id.tv_choose_point:
                 Bundle bundle = getSearchBundle();
                 bundle.putBoolean(CommonUtil.KEY_VALUE_3, true);
+                bundle.putParcelable(CommonUtil.KEY_VALUE_4, locationEntity);
                 startActivity(SearchActivity.class, bundle);
+//                if (EasyPermissions.hasPermissions(getActivity(), positioning)) {
+//                    //有权限
+//                    if (isLocationEnabled(getActivity())){
+//
+//                    }else {
+//                        LocationEnabledUtils.toOpenGPS(getActivity());
+//                    }
+//                } else {
+//                    EasyPermissions.requestPermissions(this, "选取点位需要定位权限",
+//                            654, positioning);
+//                }
                 break;
             case R.id.ll_js:
                 break;
@@ -365,6 +391,7 @@ public class PutcastAdvertisFragment extends BaseFragment {
             switch (requestCode) {
                 case 8001:
                     LocationEntity choosed = data.getParcelableExtra(CommonUtil.KEY_VALUE_1);
+                    this.locationEntity  = choosed;
                     LogUtils.e(choosed.getLatitude(), choosed.getLongitude(),
                             choosed.getCity(), choosed.describeContents(),
                             choosed.getCityCode(), choosed.getName());
@@ -403,6 +430,51 @@ public class PutcastAdvertisFragment extends BaseFragment {
         LocationEntity city = locationEntity != null ? locationEntity : DataSharedPreferences.getLocationCache();
         bundle.putParcelable(CommonUtil.KEY_VALUE_2, new AMapCityEntity(city.getCity(), TextUtils.isEmpty(city.getCityCode()) ? "" : city.getCityCode()));
         return bundle;
+    }
+
+    /**
+     * 用户权限处理,
+     * 如果全部获取, 则直接过.
+     * 如果权限缺失, 则提示Dialog.
+     *
+     * @param requestCode  请求码
+     * @param permissions  权限
+     * @param grantResults 结果
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        LogUtils.d("权限允许onPermissionsGranted：", GsonUtils.toJson(perms));
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (EasyPermissions.checkDeniedPermissionsNeverAskAgain(this,
+                "当前应用缺少必要权限,请手动开启定位权限。\n请点击\"设置\"-\"权限\"-打开所需权限。",
+                R.string.setting, R.string.cancel, null, perms)) {
+        } else {
+            MyToastUtils.showShort("缺少必要权限，无法定位，请重新授权");
+            EasyPermissions.requestPermissions(this, "选取点位需要以下权限",
+                    1000 + new Random().nextInt(100), positioning);
+        }
+    }
+
+    @Override
+    public void onPermissionsAllGranted() {
+        if (isLocationEnabled(getActivity())){
+            Bundle bundle = getSearchBundle();
+            bundle.putBoolean(CommonUtil.KEY_VALUE_3, true);
+            bundle.putParcelable(CommonUtil.KEY_VALUE_4, locationEntity);
+            startActivity(SearchActivity.class, bundle);
+        }else {
+            LocationEnabledUtils.toOpenGPS(getActivity());
+        }
     }
 
 }
