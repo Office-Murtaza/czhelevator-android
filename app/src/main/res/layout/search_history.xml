@@ -31,19 +31,19 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="35dp"
                 android:layout_marginRight="35dp"
-                android:background="@drawable/bg_search_small"
+                android:background="@mipmap/bg_search_area"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/et_search"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dp_32"
                     android:layout_weight="1"
                     android:background="@null"
                     android:drawableLeft="@drawable/ic_homepage_search"
                     android:drawablePadding="@dimen/spacing_small"
                     android:gravity="center_vertical"
-                    android:hint="搜索小区名称、地址搜索小区名称、地址搜索小区名称、地址"
+                    android:hint="搜索地区、写字楼或楼盘"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"

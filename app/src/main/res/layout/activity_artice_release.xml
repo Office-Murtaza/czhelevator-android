@@ -289,7 +289,7 @@
             />
 
         <TextView
-            android:id="@+id/tv_zz"
+
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#80E1E1E1"
@@ -297,6 +297,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_zz"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="转载文章"

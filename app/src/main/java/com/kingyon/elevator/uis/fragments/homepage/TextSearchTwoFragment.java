@@ -72,33 +72,14 @@ public class TextSearchTwoFragment extends BaseFragment {
         initRefresh();
 
     }
-//    public MapSearchFragment newInstance( ConentEntity<RecommendHouseEntiy> entiyConentEntity2) {
-//        this.entiyConentEntity = entiyConentEntity2;
-//        MapSearchFragment fragment = new MapSearchFragment();
-//        return fragment;
-//    }
+
 
     public TextSearchTwoFragment newInstance(ConentEntity<RecommendHouseEntiy> entiyConentEntity2) {
         this.entiyConentEntity = entiyConentEntity2;
         return (this);
     }
     private void initRefresh() {
-//        httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
-//        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-//            @Override
-//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                list.clear();
-//                page=1;
-//                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
-//            }
-//        });
-//        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                page++;
-//                httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
-//            }
-//        });
+
         dataAdd(entiyConentEntity);
     }
 
@@ -122,73 +103,38 @@ public class TextSearchTwoFragment extends BaseFragment {
     }
 
 
-    private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
-                                    String areaId, String pointType, String keyWord, String distance) {
-        LogUtils.e(page,latitude,longitude,cityId,areaId,pointType,keyWord,distance);
-        NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
-                .compose(this.bindLifeCycle())
-                .subscribe(new CustomApiCallback<ConentEntity<RecommendHouseEntiy>>() {
+
+    private void dataAdd(ConentEntity<RecommendHouseEntiy> conentEntity) {
+        LogUtils.e(conentEntity+"============");
+        if (conentEntity!=null) {
+            for (int i = 0; i < conentEntity.getContent().size(); i++) {
+                RecommendHouseEntiy queryRecommendEntity = new RecommendHouseEntiy();
+                queryRecommendEntity = conentEntity.getContent().get(i);
+                list.add(queryRecommendEntity);
+            }
+            if (rvRecommended == null || page == 1) {
+                rvRecommended.setNestedScrollingEnabled(false);
+                rvRecommended.setFocusable(false);
+                recommendHouseAdapter = new RecommendHouseAdapter((BaseActivity) getActivity(),"1");
+                recommendHouseAdapter.addData(list);
+                rvRecommended.setAdapter(recommendHouseAdapter);
+                rvRecommended.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
+                recommendHouseAdapter.setOnItemClickListener(new RecommendHouseAdapter.OnItemClickListener() {
                     @Override
-                    protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getCode(), ex.getDisplayMessage());
-                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-                        if (ex.getCode()==-102){
-                            if (page>1) {
-                                ToastUtils.showShort("已经没有更多了");
-                                smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                            }else {
-                                rvRecommended.setVisibility(View.GONE);
-                                rlError.setVisibility(View.GONE);
-                                rlNull.setVisibility(View.VISIBLE);
-                            }
-                        }else {
-                            rvRecommended.setVisibility(View.GONE);
-                            rlError.setVisibility(View.VISIBLE);
-                            rlNull.setVisibility(View.GONE);
+                    public void onItemClick(View v, int position) {
+                        if (addCellToPlanPresenter != null) {
+
+                            addCellToPlanPresenter.showHomeOagePicker(1, null);
                         }
-                    }
-
-                    @Override
-                    public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
-                        hideProgress();
-                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        rvRecommended.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-
                     }
                 });
 
-
-    }
-
-    private void dataAdd(ConentEntity<RecommendHouseEntiy> conentEntity) {
-        for (int i = 0; i < conentEntity.getContent().size(); i++) {
-            RecommendHouseEntiy queryRecommendEntity = new RecommendHouseEntiy();
-            queryRecommendEntity = conentEntity.getContent().get(i);
-            list.add(queryRecommendEntity);
-        }
-        if (rvRecommended == null || page == 1) {
-            rvRecommended.setNestedScrollingEnabled(false);
-            rvRecommended.setFocusable(false);
-            recommendHouseAdapter = new RecommendHouseAdapter((BaseActivity) getActivity());
-            recommendHouseAdapter.addData(list);
-            rvRecommended.setAdapter(recommendHouseAdapter);
-            rvRecommended.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
-            recommendHouseAdapter.setOnItemClickListener(new RecommendHouseAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    if (addCellToPlanPresenter != null) {
-
-                        addCellToPlanPresenter.showHomeOagePicker(1, null);
-                    }
-                }
-            });
-
-        } else {
-            recommendHouseAdapter.addData(list);
-            recommendHouseAdapter.notifyDataSetChanged();
+            } else {
+                recommendHouseAdapter.addData(list);
+                recommendHouseAdapter.notifyDataSetChanged();
+            }
+        }else {
+            LogUtils.e("********************");
         }
     }
 }

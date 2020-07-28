@@ -41,6 +41,7 @@ import com.kingyon.elevator.entities.ToPlanTab;
 import com.kingyon.elevator.entities.UnreadNumberEntity;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.VersionEntity;
+import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.interfaces.PrivacyTipsListener;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
@@ -84,6 +85,7 @@ import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
@@ -235,7 +237,21 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             loadWindowAd();
         }
         initPushId();
+        initZhiwen();
         httpPersonal();
+    }
+    private void initZhiwen() {
+        /*初始化指纹*/
+        List<FingerprintEntiy> listzw = DataSupport.findAll(FingerprintEntiy.class);
+        LogUtils.e(listzw.toString());
+        for (int i = 0;i<listzw.size();i++){
+            if (listzw.get(i).getUserId().equals(DataSharedPreferences.getCreatateAccount())&&listzw.get(i).getIsFin().equals("2")){
+                LogUtils.e("*****************");
+                DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, true);
+            }
+        }
+
+
     }
 
     @Override
@@ -635,7 +651,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
      * 加载弹窗通知
      */
     private void loadWindowAd() {
-        NetService.getInstance().getTipsList("HOME", 2)
+        NetService.getInstance().getTipsList("0")
                 .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {

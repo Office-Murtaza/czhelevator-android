@@ -253,7 +253,7 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
      * 加载首页固定位置的通知
      */
     private void loadAbsolutelyAd() {
-        NetService.getInstance().getTipsList("HOME", 1)
+        NetService.getInstance().getTipsList("0")
                 .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {

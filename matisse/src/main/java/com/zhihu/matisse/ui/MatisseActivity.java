@@ -322,11 +322,13 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        /*预览*/
         if (v.getId() == R.id.button_preview) {
             Intent intent = new Intent(this, SelectedPreviewActivity.class);
             intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
             intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+            /*下一步*/
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
             ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
@@ -357,9 +359,11 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("TAG-MatisseActivity","******************"+position);
         mAlbumCollection.setStateCurrentSelection(position);
         mAlbumsAdapter.getCursor().moveToPosition(position);
         Album album = Album.valueOf(mAlbumsAdapter.getCursor());
+        Log.e("TAG-MatisseActivity","******************"+album.getCoverUri().toString());
         if (album.isAll() && SelectionSpec.getInstance().capture) {
             album.addCaptureCount();
         }
@@ -377,13 +381,13 @@ public class MatisseActivity extends AppCompatActivity implements
         // select default album.
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
-
             @Override
             public void run() {
                 cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
                 Album album = Album.valueOf(cursor);
+
                 if (album.isAll() && SelectionSpec.getInstance().capture) {
                     album.addCaptureCount();
                 }
@@ -398,6 +402,7 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void onAlbumSelected(Album album) {
+
         if (album.isAll() && album.isEmpty()) {
             mContainer.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);

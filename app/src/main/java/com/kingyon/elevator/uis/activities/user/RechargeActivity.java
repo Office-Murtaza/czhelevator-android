@@ -19,6 +19,7 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.widgets.DecimalDigitsInputFilter;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.kingyon.paylibrary.PayListener;
 import com.kingyon.paylibrary.alipay.AliPayUtils;
 import com.kingyon.paylibrary.entitys.PayWay;
@@ -122,6 +123,7 @@ public class RechargeActivity extends BaseSwipeBackActivity implements IWeakHand
                 break;
             case R.id.tv_ali_pay:
             case R.id.tv_wx_pay:
+                AdUtils.ordinaryType = "wallet";
                 checkPayType(view.getId());
                 break;
             case R.id.tv_ensure:

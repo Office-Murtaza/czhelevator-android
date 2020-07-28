@@ -56,7 +56,7 @@ public class RecommendListActivity extends BaseStateRefreshingLoadingActivity<AD
     public void onItemClick(View view, RecyclerView.ViewHolder holder, ADEntity item, int position) {
         super.onItemClick(view, holder, item, position);
         if (item != null) {
-            JumpUtils.getInstance().jumpToAdPreview(this, item);
+            JumpUtils.getInstance().jumpToAdPreview(this, item,"ad");
         }
     }
 

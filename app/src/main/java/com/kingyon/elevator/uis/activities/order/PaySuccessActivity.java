@@ -1,7 +1,9 @@
 package com.kingyon.elevator.uis.activities.order;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.TabEntity;
+import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
@@ -22,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_PAY_SUCCESS;
@@ -47,10 +51,12 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
     String payType;
     @Autowired
     String priceActual;
+    @BindView(R.id.pre_v_back)
+    ImageView preVBack;
 
     @Override
     protected String getTitleText() {
-
+        LogUtils.e(orderId);
         return "支付成功";
     }
 
@@ -62,7 +68,12 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
-
+        LogUtils.e(payType, orderId);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        tvDiscount.setText(orderId);
+        tvPayTime.setText(formatter.format(curDate));
+        tvPaySum.setText(priceActual + "");
 //        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntity.getPayTime()));
         switch (payType) {
             case Constants.PayType.ALI_PAY:
@@ -87,16 +98,11 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
                 tvPayType.setText("");
                 break;
         }
-        LogUtils.e(payType,orderId);
-        SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日 HH:mm:ss");
-        Date curDate =  new Date(System.currentTimeMillis());
-        tvDiscount.setText(orderId);
-        tvPayTime.setText(formatter.format(curDate));
-        tvPaySum.setText(priceActual+"");
+
 
     }
 
-    @OnClick({R.id.tv_order, R.id.tv_homepage})
+    @OnClick({R.id.tv_order, R.id.tv_homepage,R.id.pre_v_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_order:
@@ -106,15 +112,35 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
                 finish();
                 break;
             case R.id.tv_homepage:
+            case R.id.pre_v_back:
                 ActivityUtil.finishAllNotMain();
-                EventBus.getDefault().post(new TabEntity(0));
+                EventBus.getDefault().post(new TabEntity(2));
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            ActivityUtil.finishAllNotMain();
+            EventBus.getDefault().post(new TabEntity(2));
+//            startActivity(PlanNewFragment.class);
+//            finish();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         RuntimeUtils.goPlaceAnOrderEntity = null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

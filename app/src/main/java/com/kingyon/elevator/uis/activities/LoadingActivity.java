@@ -45,7 +45,9 @@ import static com.czh.myversiontwo.utils.Constance.MAIN_ACTIVITY;
 
 /**
  * Created by GongLi on 2018/4/13.
- * Email：lc824767150@163.com
+ * Email：1632365610@163.com
+ * czh 软件启动广告
+ *
  */
 
 public class LoadingActivity extends BaseActivity {

@@ -35,11 +35,13 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
  */
 public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAdapter.ViewHolder> {
     BaseActivity context;
+    String type;
     private List<RecommendHouseEntiy> list;
     private OnItemClickListener onItemClickListener = null;
 
-    public RecommendHouseAdapter(BaseActivity context){
+    public RecommendHouseAdapter(BaseActivity context,String type){
         this.context = context;
+        this.type = type;
     }
     @NonNull
     @Override
@@ -62,15 +64,15 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    if (onItemClickListener != null) {
-//                        onItemClickListener.onItemClick(v, position);
-//                        new AdvertisPutDialog(context,data.id,data.name);
-//                    }
+
                     if (isToken(context)){
                         if (isCertification()){
                             DialogUtils.shwoCertificationDialog(context);
                         }else {
-                            AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name);
+                            ImageView imageView = new ImageView(context);
+                            imageView = context.findViewById(R.id.img_plan);
+                            AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name,
+                                    holder.img_add,imageView,data.urlCover,type);
                             advertisPutDialog.show();
                         }
                     }else {

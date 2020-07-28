@@ -102,6 +102,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     List<String> userList = new ArrayList<>();
     List<String> tagList = new ArrayList<>();
 
+
     String topicId ;
     String atAccount;
     String TAG_FORMAT = "&nbsp;<tag id='%1$s' name='%2$s'>%2$s</tag>&nbsp;";

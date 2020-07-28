@@ -128,6 +128,7 @@ public class UserCenterActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
+        ConentUtils.aiteStr = otherUserAccount;
         LogUtils.e(otherUserAccount, DataSharedPreferences.getCreatateAccount());
         if (otherUserAccount.equals(DataSharedPreferences.getCreatateAccount())) {
             imgMore.setImageResource(R.mipmap.ic_personal_edit_white);
@@ -196,11 +197,13 @@ public class UserCenterActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         hideProgress();
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        appBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onNext(UserTwoEntity userTwoEntity) {
                         LogUtils.e(userTwoEntity.toString());
+                        appBar.setVisibility(View.VISIBLE);
                         hideProgress();
                         userTwoEntity1 = userTwoEntity;
                         GlideUtils.loadCircleImage(UserCenterActivity.this, userTwoEntity.photo, imgPlaceholder);
@@ -343,7 +346,12 @@ public class UserCenterActivity extends BaseActivity {
                 }
                 break;
             case R.id.rl_error:
-
+                if (smartRefreshLayout!=null) {
+                    smartRefreshLayout.autoRefresh(1000);
+                }else {
+                    httpData(1, otherUserAccount);
+                    httpTop(otherUserAccount);
+                }
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();

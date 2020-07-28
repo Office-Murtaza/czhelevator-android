@@ -201,7 +201,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
      * 加载提现的提示
      */
     private void loadCashTips() {
-        NetService.getInstance().getTipsList("PARTNER", 2)
+        NetService.getInstance().getTipsList("2")
                 .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {

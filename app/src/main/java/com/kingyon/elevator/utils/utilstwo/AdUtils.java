@@ -14,6 +14,9 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
  */
 public class AdUtils {
     public static int planNumber = 0;
+    public static String ordinaryType = "ordina";
+    public static String  type  = "BUSINESS";
+
     public static void httpPlannuber() {
         NetService.getInstance().setAdPlan()
                 .subscribe(new CustomApiCallback<PlanNumberEntiy>() {
@@ -30,7 +33,19 @@ public class AdUtils {
                     }
                 });
     }
+
     public interface GetNumber{
         void getnumber(int number);
     }
+
+    public static int pager(String type){
+        if (type.equals("BUSINESS")){
+            return 0;
+        }else if (type.equals("DIY")){
+            return 1;
+        }else {
+            return 2;
+        }
+    }
+
 }

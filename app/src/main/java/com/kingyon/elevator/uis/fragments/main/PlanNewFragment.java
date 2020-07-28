@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.PlanSelectDateNewDialog;
@@ -27,6 +28,7 @@ import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
 import com.kingyon.elevator.view.AlwaysMarqueeTextView;
@@ -136,7 +138,10 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                 tvNotice.setText(delHTMLTag(data) + "");
             }
         });
+
+
     }
+
 
     private void initDateView() {
         tv_start_date.setText(String.format("%d月%d日", DateUtils.getLastSelectDateDay().getMonth(), DateUtils.getLastSelectDateDay().getDay()));
@@ -164,7 +169,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         mPager.setOffscreenPageLimit(Integer.MAX_VALUE);
         initPager();
         selectedIndex = 0;
-        mPager.setCurrentItem(0, false);
+        mPager.setCurrentItem(AdUtils.pager(AdUtils.type), false);
     }
 
 

@@ -155,7 +155,7 @@ public class MessageNewsActivity extends BaseStateRefreshingLoadingActivity<Mass
                     break;
                 case "PERSON":
                     /*个人认证*/
-                        if (item.success){
+                        if (item.success||item.auth){
                             Bundle bundle2 = new Bundle();
                             bundle2.putString("type", Constants.IDENTITY_STATUS.AUTHED);
                             startActivity(IdentitySuccessActivity.class, bundle2);

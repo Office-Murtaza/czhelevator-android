@@ -165,17 +165,20 @@ public class ConentUtils {
 
     public static void httpComment(BaseActivity baseActivity,int contentId,int parentId,String comment,IsSuccedListener isSuccedListener){
         LogUtils.e(contentId,comment,parentId);
+        baseActivity.showProgressDialog(getString(R.string.wait));
         NetService.getInstance().setComment(contentId,parentId,comment)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        baseActivity.hideProgress();
                         isSuccedListener.onisSucced(false);
                     }
 
                     @Override
                     public void onNext(String s) {
+                        baseActivity.hideProgress();
                         isSuccedListener.onisSucced(true);
                     ToastUtils.showToast(baseActivity,"评论成功",1000);
                     }
@@ -493,4 +496,10 @@ public class ConentUtils {
                     }
                 });
     }
+
+    /**获取话题内容点击*/
+    public static String topicStr = "";
+    /**获取艾特点击*/
+    public static String aiteStr = "";
+
 }

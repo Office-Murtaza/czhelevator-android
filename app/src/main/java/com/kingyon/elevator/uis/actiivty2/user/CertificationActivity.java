@@ -80,13 +80,13 @@ public class CertificationActivity extends BaseActivity {
                             startActivity(IdentitySuccessActivity.class,bundle);
                             finish();
                         }
-//                        if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
-////                            throw new ResultException(9003, "新的认证资料已通过，即将跳转");
-//                            Bundle bundle = new Bundle();
-//                            bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
-//                            startActivity(IdentitySuccessActivity.class,bundle);
-//                            finish();
-//                        }
+                        if (TextUtils.equals(Constants.IDENTITY_STATUS.AUTHED, identityInfoEntity.getStatus())) {
+//                            throw new ResultException(9003, "新的认证资料已通过，即将跳转");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("type",Constants.IDENTITY_STATUS.AUTHED);
+                            startActivity(IdentitySuccessActivity.class,bundle);
+                            finish();
+                        }
 //                        if (TextUtils.equals(Constants.IDENTITY_STATUS.FAILD, identityInfoEntity.getStatus())) {
 ////                            throw new ResultException(9004, "新的认证失败，即将跳转");
 //                            Bundle bundle = new Bundle();

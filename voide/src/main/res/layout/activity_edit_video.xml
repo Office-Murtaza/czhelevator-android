@@ -30,13 +30,13 @@
             android:id="@+id/rl_touch_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             >
 
             <com.zhaoss.weixinrecorded.view.TuyaView
                 android:id="@+id/tv_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </RelativeLayout>
     </RelativeLayout>
 
@@ -44,7 +44,7 @@
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#dd2B2B2B">
+        >
         <RelativeLayout
             android:id="@+id/rl_close"
             android:layout_width="50dp"
@@ -61,7 +61,9 @@
             android:textColor="#fff"
             android:textSize="18sp"
             android:layout_centerInParent="true"
-            android:text="编辑视频"/>
+            android:text="编辑视频"
+            android:visibility="gone"
+            />
         <TextView
             android:id="@+id/tv_finish_video"
             android:layout_width="wrap_content"
@@ -73,7 +75,7 @@
             android:paddingBottom="5dp"
             android:textSize="14sp"
             android:textColor="#fff"
-            android:background="@drawable/yuanjiao"
+            android:background="@mipmap/btn_release_img"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
@@ -198,108 +200,10 @@
             android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#dd2B2B2B"
+            android:background="@mipmap/bg_edit_tool"
             android:gravity="center"
             android:layout_alignParentBottom="true">
-            <RelativeLayout
-                android:id="@+id/rl_pen"
-                android:layout_width="0dp"
-                android:layout_weight="1"
 
-                android:layout_centerInParent="true"
-                android:layout_height="60dp">
-
-                <ImageView
-                    android:id="@+id/iv_pen"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:src="@mipmap/ic_menu_edit" />
-
-                <TextView
-                    android:layout_below="@+id/iv_pen"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="12dp"
-                    android:textColor="@color/white"
-                    android:text="涂鸦"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_icon"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60dp">
-                <ImageView
-                    android:id="@+id/iv_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:src="@mipmap/ic_menu_sticket" />
-
-                <TextView
-                    android:layout_below="@+id/iv_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="12dp"
-                    android:textColor="@color/white"
-                    android:text="贴图"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_text"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60dp">
-                <ImageView
-                    android:id="@+id/iv_text"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:src="@mipmap/ic_menu_text" />
-
-                <TextView
-                    android:layout_below="@+id/iv_text"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="12dp"
-                    android:textColor="@color/white"
-                    android:text="文字"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_speed"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60dp">
-                <ImageView
-                    android:id="@+id/iv_speed"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:src="@mipmap/ic_menu_speed" />
-
-                <TextView
-                    android:layout_below="@+id/iv_speed"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="12dp"
-                    android:textColor="@color/white"
-                    android:text="调速"
-                    />
-            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_cut_size"
                 android:layout_width="0dp"
@@ -324,6 +228,57 @@
                     android:text="滤镜"
                     />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_icon"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp">
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:src="@mipmap/ic_menu_sticket" />
+
+                <TextView
+                    android:layout_below="@+id/iv_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="贴图"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp">
+                <ImageView
+                    android:id="@+id/iv_text"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:src="@mipmap/ic_menu_text" />
+
+                <TextView
+                    android:layout_below="@+id/iv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="文字"
+                    />
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_cut_time"
                 android:layout_width="0dp"
@@ -335,7 +290,7 @@
                     android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp10"
-                    android:src="@mipmap/ic_menu_cut" />
+                    android:src="@mipmap/ic_edit_interception" />
 
                 <TextView
                     android:layout_below="@+id/iv_jq"
@@ -348,6 +303,63 @@
                     android:text="剪切"
                     />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_pen"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_centerInParent="true"
+                android:layout_height="60dp"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_pen"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:src="@mipmap/ic_menu_edit" />
+
+                <TextView
+                    android:layout_below="@+id/iv_pen"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="涂鸦"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_speed"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:layout_height="60dp">
+                <ImageView
+                    android:id="@+id/iv_speed"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:src="@mipmap/ic_menu_speed" />
+
+                <TextView
+                    android:layout_below="@+id/iv_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="调速"
+                    />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
         <RelativeLayout

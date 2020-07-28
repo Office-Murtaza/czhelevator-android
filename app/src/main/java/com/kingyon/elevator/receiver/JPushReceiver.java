@@ -49,6 +49,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAIL
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MASSAGE_MSAGGER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MESSAGE_PUSH;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_TEXT_CONTENT;
 import static com.czh.myversiontwo.utils.Constance.IDENTITY_SUCCESS_ACTIVITY;
@@ -158,7 +159,9 @@ public class JPushReceiver extends BroadcastReceiver {
                                     break;
                             }
                         }else {
-                            ActivityUtils.setActivity(MAIN_ACTIVITY,"intdex1",3);
+//                            MainActivity.mainActivity.finish();
+//                            ActivityUtils.setActivity(MAIN_ACTIVITY,"intdex1",3);
+                            ActivityUtils.setActivity(ACTIVITY_MASSAGE_MSAGGER);
                         }
                         break;
                     case "CONTENT_AT":
@@ -197,11 +200,10 @@ public class JPushReceiver extends BroadcastReceiver {
                         /*合伙人提现审核*/
                         startActivity(CooperationActivity.class);
                         break;
-                    case "FEEDBACK":
+                    case "FEEDBACK_APP":
                         /*反馈收到平台回复*/
                         startActivity(FeedBackActivity.class);
                         break;
-
                     case "AD":
                         /*广告审核*/
                     case "ORDER":
@@ -218,6 +220,8 @@ public class JPushReceiver extends BroadcastReceiver {
                         /*企业*/
 
                         break;
+                    case "FEEDBACK_EQUIPMENT":
+                        /*设备保修回复*/
                     case "COMMENT_REPLY":
                         /*评论回复*/
                     case "CONTENT_OFFLINE":

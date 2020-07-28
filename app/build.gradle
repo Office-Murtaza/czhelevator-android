@@ -145,6 +145,7 @@ dependencies {
 
     implementation 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     //    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
+
     implementation 'cn.jiguang.sdk:jpush:3.1.6'
     implementation 'cn.jiguang.sdk:jcore:1.2.7'
     implementation 'com.alibaba:fastjson:1.2.47'
@@ -214,6 +215,11 @@ dependencies {
     implementation project(path: ':matisse')
     implementation project(path: ':htmleditorlibrary')
     implementation 'cjt.library.wheel:camera:1.1.9'
+
+    //推送核心库
+//    implementation 'com.github.xuexiangjys.XPush:xpush-core:1.0.1'
+//    //推送保活库
+//    implementation 'com.github.xuexiangjys.XPush:keeplive:1.0.1'
 }
 
 

@@ -4,14 +4,17 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.VideoInfo;
+import com.kingyon.elevator.utils.utilstwo.VideoUtils;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
 
 import java.util.List;
@@ -61,7 +64,8 @@ public class PictureChooseVideoAdapter extends RecyclerView.Adapter<PictureChoos
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder!=null){
-            holder.imageView.setImageBitmap(BitmapFactory.decodeFile(mVideoInfos.get(position).thumbnailData));
+            LogUtils.e(mVideoInfos.get(position).thumbnailData,mVideoInfos.get(position).data);
+            holder.imageView.setImageBitmap(VideoUtils.getVideoThumb(mVideoInfos.get(position).data));
             holder.tv_video_time.setText(TimeUtils.secondToTime((int) (getVideoDuration(mVideoInfos.get(position).data)/1000)));
             if (position == mposition) {
                 holder.tv_xznum.setVisibility(View.VISIBLE);

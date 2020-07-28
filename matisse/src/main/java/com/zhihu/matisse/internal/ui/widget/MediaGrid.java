@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -123,6 +124,7 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     private void setVideoDuration() {
         if (mMedia.isVideo()) {
             mVideoDuration.setVisibility(VISIBLE);
+            Log.e("TAG",mMedia.duration+"==============="+mMedia.uri);
             mVideoDuration.setText(DateUtils.formatElapsedTime(mMedia.duration / 1000));
         } else {
             mVideoDuration.setVisibility(GONE);

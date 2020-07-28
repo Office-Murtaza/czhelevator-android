@@ -13,10 +13,17 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.advertis.AdPointDetailsActivity;
 import com.kingyon.elevator.utils.utilstwo.AdUtils;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.view.AnimManager;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.zhaoss.weixinrecorded.util.EventBusConstants;
+import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static com.czh.myversiontwo.utils.CodeType.ADV_BUSINESS;
 import static com.czh.myversiontwo.utils.CodeType.ADV_DAY;
@@ -35,17 +42,23 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
     protected ProgressDialog promotWaitBar;
     private int planId;
     private String planName;
+    View startView,endView;
+    String imageUrl,typestast;
 
     /**
      *  planId 小区id
      *  planName 计划名字
      *
      * */
-    public AdvertisPutDialog(@NonNull BaseActivity context,int planId,String planName) {
+    public AdvertisPutDialog(@NonNull BaseActivity context,int planId,String planName,View startView, View endView,String imageUrl,String type) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.mContext = context;
         this.planId = planId;
         this.planName = planName;
+        this.startView = startView;
+        this.endView = endView;
+        this.imageUrl = imageUrl;
+        this.typestast = type;
         setContentView(getLayoutId());
         Window window = getWindow();
         if (window != null) {
@@ -130,6 +143,16 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
                         ToastUtils.showToast(mContext,"添加成功",1000);
                         dismiss();
                         AdUtils.httpPlannuber();
+                        AdUtils.type = type;
+                        if (typestast.equals("1")) {
+                            AnimManager animManager = new AnimManager.Builder()
+                                    .with(mContext)
+                                    .startView(startView)
+                                    .endView(endView)
+                                    .imageUrl(imageUrl)
+                                    .build();
+                            animManager.startAnim();
+                        }
                     }
                 });
 

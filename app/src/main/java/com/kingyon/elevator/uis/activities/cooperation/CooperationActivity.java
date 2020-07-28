@@ -67,6 +67,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                             showFragment(false, null, null);
                         }else {
                             showToast(ex.getDisplayMessage());
+                            finish();
                         }
                     }
 

@@ -30,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="@dimen/dp25"
+        android:layout_marginTop="@dimen/dp_2"
         android:text="编号：100000"
         android:textColor="#7F7F7F"
         android:textSize="@dimen/txt_normal_content" />

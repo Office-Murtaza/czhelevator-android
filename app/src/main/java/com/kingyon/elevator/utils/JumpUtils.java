@@ -64,7 +64,6 @@ public class JumpUtils {
 //            baseActivity.startActivity(MainActivity.class);
 //        }
         baseActivity.startActivity(MainActivity.class);
-//        baseActivity.startActivity(HomeActivity.class);
     }
 
     public void onBannerClick(BaseActivity activity, BannerEntity item) {
@@ -89,7 +88,7 @@ public class JumpUtils {
                 if (example == null) {
                     activity.startActivity(RecommendListActivity.class);
                 } else {
-                    jumpToAdPreview(activity, example);
+                    jumpToAdPreview(activity, example,"ad");
                 }
                 break;
             case Constants.BANNER_TYPE.BAIKE:
@@ -114,9 +113,10 @@ public class JumpUtils {
         }
     }
 
-    public void jumpToAdPreview(BaseActivity baseActivity, ADEntity entity) {
+    public void jumpToAdPreview(BaseActivity baseActivity, ADEntity entity,String type) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(CommonUtil.KEY_VALUE_1, entity);
+        bundle.putString(CommonUtil.KEY_VALUE_2, type);
         baseActivity.startActivity(AdPreviewActivity.class, bundle);
     }
 

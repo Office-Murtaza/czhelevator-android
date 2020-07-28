@@ -688,6 +688,8 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
         }
 
     }
+
+
     private void openEffectAnimation(final TextView tv, FilterModel model, boolean isExpand) {
         model.setChecked(isExpand);
         mEffectAnimator = ValueAnimator.ofInt(100, 60);

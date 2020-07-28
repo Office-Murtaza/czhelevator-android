@@ -228,7 +228,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="right|center_vertical"
-                        android:textColor="#EC7A12"
+                        android:textColor="#FF3049"
                         android:textSize="@dimen/txt_normal_content"
                         android:textStyle="bold"
                         tools:text="￥0.00" />

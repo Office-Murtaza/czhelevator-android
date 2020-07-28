@@ -73,7 +73,8 @@ public class MessageLikeCommentFragment extends BaseStateRefreshLoadingFragment<
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, CommentLikesListEntiy item, int position) {
         super.onItemClick(view, holder, item, position);
-
+        ImageView imageView = view.findViewById(R.id.img_is);
+        imageView.setVisibility(View.GONE);
         switch (item.contentType){
             case "wsq":
                 /*社区*/

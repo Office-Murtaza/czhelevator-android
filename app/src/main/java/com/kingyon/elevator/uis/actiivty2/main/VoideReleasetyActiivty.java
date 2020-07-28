@@ -54,6 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_CODE;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_COVER;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_RELEASETY;
@@ -268,6 +269,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
                 startActivityForResult(VideoCoverActivity.class, ACCESS_VOIDE_COVER, bundle);
                 break;
             case R.id.tv_choose:
+                /*重新选择*/
                 RxPermissions rxPermissions = new RxPermissions(this);
                 rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribe(aBoolean -> {
@@ -404,10 +406,10 @@ public class VoideReleasetyActiivty extends BaseActivity {
             switch (requestCode) {
                 case ACCESS_VOIDE_PATH:
                     LogUtils.e(Matisse.obtainPathResult(data), Matisse.obtainResult(data), Matisse.obtainOriginalState(data));
-                    Bundle bundle = new Bundle();
-                    bundle.putString("path", Matisse.obtainPathResult(data).get(0));
-                    bundle.putInt("fromType", ACCESS_VOIDE_RELEASETY);
-                    startActivityForResult(EditVideoActivity.class, ACCESS_VOIDE_RELEASETY, bundle);
+                    Intent intent = new Intent(this, EditVideoActivity.class);
+                    intent.putExtra("path",Matisse.obtainPathResult(data).get(0));
+                    intent.putExtra("fromType",ACCESS_VOIDE_CODE);
+                    startActivity(intent);
                     break;
                 case ACCESS_VOIDE_COVER:
                     httpuUploadImage(data.getStringExtra("videoCover"));

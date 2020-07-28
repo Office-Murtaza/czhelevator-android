@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="500dp"
     android:background="@drawable/bg_bj"
+
     >
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
@@ -17,8 +18,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_comment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 
 </LinearLayout>

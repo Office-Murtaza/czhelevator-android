@@ -111,6 +111,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     LinearLayout llFw;
     private String communityName;
     private int planId;
+    private String urlCover;
 
     private SearchCellsAdapter cellsAdapter;
 
@@ -159,12 +160,14 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         new Thread(new TimerTask() {
             @Override
             public void run() {
-                for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
-                    RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
-                    MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
-                    if (markerOptions != null) {
-                        Marker marker = aMap.addMarker(markerOptions);
-                        markersMap.put((long) recommendHouseEntiy.id, marker);
+                if (entiyConentEntity!=null) {
+                    for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
+                        RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
+                        MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
+                        if (markerOptions != null) {
+                            Marker marker = aMap.addMarker(markerOptions);
+                            markersMap.put((long) recommendHouseEntiy.id, marker);
+                        }
                     }
                 }
             }
@@ -271,6 +274,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                         , recommendHouseEntiy.numberElevator));
                 distanceM = distance((int) recommendHouseEntiy.distanceM);
                 planId = recommendHouseEntiy.id;
+                urlCover = recommendHouseEntiy.urlCover;
                 communityName = recommendHouseEntiy.name;
 
             }
@@ -616,7 +620,10 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                     if (isCertification()){
                         DialogUtils.shwoCertificationDialog(getActivity());
                     }else {
-                        AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(), planId, communityName);
+                        ImageView imageView = new ImageView(getActivity());
+                        imageView = getActivity().findViewById(R.id.img_plan);
+                        AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(),
+                                planId, communityName,imgAdd,imageView,urlCover,"1");
                         advertisPutDialog.show();
                     }
                 }else {

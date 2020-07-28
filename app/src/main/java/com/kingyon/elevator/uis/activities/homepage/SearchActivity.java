@@ -137,6 +137,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
     TextView tvReset;
     @BindView(R.id.tv_confirm)
     TextView tvConfirm;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
 
     private String keyWord;
     private AMapCityEntity cityEntity;
@@ -160,8 +162,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private double longitude = 106.648644;
     private boolean isconent = true;
     ConentEntity<RecommendHouseEntiy> entiyConentEntity;
-    Handler handler=new Handler();
-    Runnable runnable=new Runnable() {
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
         @Override
         public void run() {
             if (AdUtils.planNumber > 0) {
@@ -188,10 +190,10 @@ public class SearchActivity extends BaseSwipeBackActivity {
         cityEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_2);
         locationEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_4);
         mapMode = getIntent().getBooleanExtra(CommonUtil.KEY_VALUE_3, false);
-        if (locationEntity!=null) {
+        if (locationEntity != null) {
             latitude = locationEntity.getLatitude();
             longitude = locationEntity.getLongitude();
-            LogUtils.e(latitude,longitude);
+            LogUtils.e(latitude, longitude);
         }
         return "搜索";
     }
@@ -231,11 +233,18 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
+                        flContent.setVisibility(View.GONE);
+                        imgMenu.setVisibility(View.GONE);
+                        rlError.setVisibility(View.VISIBLE);
+
                     }
 
                     @Override
                     public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
-                        LogUtils.e(conentEntity.toString(),conentEntity.getContent().toString());
+                        LogUtils.e(conentEntity.toString(), conentEntity.getContent().toString());
+                        flContent.setVisibility(View.VISIBLE);
+                        rlError.setVisibility(View.GONE);
+                        imgMenu.setVisibility(View.VISIBLE);
                         entiyConentEntity = conentEntity;
                         hideProgress();
                         showFragment();
@@ -302,9 +311,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (isconent) {
-            LogUtils.e(latitude,longitude);
-            fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity,latitude,longitude));
-        }else {
+            LogUtils.e(latitude, longitude);
+            fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity, latitude, longitude));
+        } else {
             fragmentTransaction.add(R.id.fl_content, new TextSearchTwoFragment().newInstance(entiyConentEntity));
         }
         fragmentTransaction.commit();
@@ -361,7 +370,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     }
 
     @OnClick({R.id.ll_city_area, R.id.ll_cell_type, R.id.tv_location_title, R.id.tv_search_title, R.id.img_clear, R.id.tv_map_title
-            , R.id.iv_gouwuche, R.id.tv_list_title, R.id.rl_plan, R.id.img_menu,R.id.tv_reset, R.id.tv_confirm})
+            , R.id.iv_gouwuche, R.id.tv_list_title, R.id.rl_plan, R.id.img_menu, R.id.tv_reset, R.id.tv_confirm,R.id.rl_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_city_area:
@@ -388,18 +397,18 @@ public class SearchActivity extends BaseSwipeBackActivity {
             case R.id.tv_map_title:
                 isconent = true;
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity,entiyConentEntity,latitude,longitude));
+                fragmentTransaction.add(R.id.fl_content, new MapSearchFragment().newInstance(cityEntity, entiyConentEntity, latitude, longitude));
                 fragmentTransaction.commit();
                 tvMagBottom.setVisibility(View.VISIBLE);
                 tvListBottom.setVisibility(View.GONE);
-                tvListTitle.setTextColor(Color.parseColor("#666666"));
+                tvListTitle.setTextColor(Color.parseColor("#90666666"));
                 tvMapTitle.setTextColor(Color.parseColor("#000000"));
 
                 break;
             case R.id.tv_list_title:
                 isconent = false;
                 tvListTitle.setTextColor(Color.parseColor("#000000"));
-                tvMapTitle.setTextColor(Color.parseColor("#666666"));
+                tvMapTitle.setTextColor(Color.parseColor("#90666666"));
                 tvMagBottom.setVisibility(View.GONE);
                 tvListBottom.setVisibility(View.VISIBLE);
                 FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
@@ -412,7 +421,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
             case R.id.rl_plan:
                 if (isToken(this)) {
                     startActivity(PlanNewFragment.class);
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -434,9 +443,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     pointClassicEntiy.level = jsonObject.optString("level");
                     pointClassicEntiy.parent = jsonObject.optInt("parent");
                     JSONArray jsonArray1 = new JSONArray(JsonUtils.beanToJson(labels2.getSelectLabelDatas()));
-                    LogUtils.e(jsonArray1.length(),jsonArray1);
+                    LogUtils.e(jsonArray1.length(), jsonArray1);
                     List<PointClassicEntiy.ChildBean> list = new ArrayList<>();
-                    for (int i=0;i<jsonArray1.length();i++){
+                    for (int i = 0; i < jsonArray1.length(); i++) {
                         PointClassicEntiy.ChildBean childBean = new PointClassicEntiy.ChildBean();
                         JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
                         LogUtils.e(jsonObject1.optString("pointName"));
@@ -455,7 +464,10 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     e.printStackTrace();
                 }
                 break;
-                default:
+            case R.id.rl_error:
+                httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
+                break;
+            default:
         }
     }
 
@@ -545,12 +557,12 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     break;
                 case 8002:
                     keyWord = data.getStringExtra(CommonUtil.KEY_VALUE_1);
-                   String la = data.getStringExtra(CommonUtil.KEY_VALUE_2);
+                    String la = data.getStringExtra(CommonUtil.KEY_VALUE_2);
                     String lo = data.getStringExtra(CommonUtil.KEY_VALUE_3);
                     tvSearchTitle.setText(keyWord != null ? keyWord : "");
                     longitude = Double.parseDouble(lo);
                     latitude = Double.parseDouble(la);
-                    if (longitude!=0) {
+                    if (longitude != 0) {
                         httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
                     }
                     updateDatas();
@@ -702,4 +714,5 @@ public class SearchActivity extends BaseSwipeBackActivity {
         super.onStop();
         handler.removeCallbacks(runnable);
     }
+
 }

@@ -77,6 +77,7 @@ public class IdentitySuccessActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         hideProgress();
                         ToastUtils.showToast(IdentitySuccessActivity.this,ex.getDisplayMessage(),1000);
+
                     }
 
                     @Override

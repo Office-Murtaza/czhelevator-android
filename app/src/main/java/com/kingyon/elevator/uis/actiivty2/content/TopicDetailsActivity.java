@@ -22,6 +22,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.main2.found.topic.TopicDetailsFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.kingyon.library.social.ShareDialog;
@@ -80,6 +81,7 @@ public class TopicDetailsActivity extends BaseActivity {
         ARouter.getInstance().inject(this);
 //        StatusBarUtil.setTransparent(this);
 //        StatusBarUtil.setHeadViewPadding(this, llTop);
+        ConentUtils.topicStr = topicid;
         ButterKnife.bind(this);
     }
 

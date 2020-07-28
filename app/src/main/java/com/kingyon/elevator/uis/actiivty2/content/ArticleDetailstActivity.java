@@ -270,6 +270,7 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
         ARouter.getInstance().inject(this);
+        ConentUtils.topicStr = "";
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {

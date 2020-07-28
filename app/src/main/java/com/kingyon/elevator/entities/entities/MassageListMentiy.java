@@ -46,6 +46,7 @@ public class MassageListMentiy {
     public String contentType;
     public int videoHorizontalVertical;
     public boolean success;
+    public boolean auth;
 
     @Override
     public String toString() {

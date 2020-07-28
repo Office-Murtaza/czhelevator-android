@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.activities.cooperation;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -205,25 +207,31 @@ public class CooperationDeviceReportActivity extends BaseSwipeBackActivity imple
     private void publishRequest(String pictures) {
         showProgressDialog(getString(R.string.wait));
         tvCreate.setEnabled(false);
-        NetService.getInstance().repairDevice(deviceId, (Long) tvReason.getTag(), etRemark.getText().toString(), pictures)
-                .compose(this.<String>bindLifeCycle())
-                .subscribe(new CustomApiCallback<String>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        tvCreate.setEnabled(true);
-                        hideProgress();
-                        showToast(ex.getDisplayMessage());
-                    }
+        try {
+            PackageManager manager = getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            NetService.getInstance().repairDevice(deviceId, (Long) tvReason.getTag(), etRemark.getText().toString(), pictures,info.versionName)
+                    .compose(this.<String>bindLifeCycle())
+                    .subscribe(new CustomApiCallback<String>() {
+                        @Override
+                        protected void onResultError(ApiException ex) {
+                            tvCreate.setEnabled(true);
+                            hideProgress();
+                            showToast(ex.getDisplayMessage());
+                        }
 
-                    @Override
-                    public void onNext(String s) {
-                        tvCreate.setEnabled(true);
-                        showToast("提交成功");
-                        hideProgress();
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                });
+                        @Override
+                        public void onNext(String s) {
+                            tvCreate.setEnabled(true);
+                            showToast("提交成功");
+                            hideProgress();
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    });
+        }catch (PackageManager.NameNotFoundException e){
+            LogUtils.e(e.toString());
+        }
     }
 
     @Override

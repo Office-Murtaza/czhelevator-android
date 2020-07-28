@@ -242,7 +242,7 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
         if (rvRecommended == null || page == 1) {
             rvRecommended.setNestedScrollingEnabled(false);
             rvRecommended.setFocusable(false);
-            recommendHouseAdapter = new RecommendHouseAdapter((BaseActivity) getActivity());
+            recommendHouseAdapter = new RecommendHouseAdapter((BaseActivity) getActivity(),"2");
             recommendHouseAdapter.addData(list);
             rvRecommended.setAdapter(recommendHouseAdapter);
             rvRecommended.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
@@ -341,17 +341,6 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
                 bundle.putBoolean(CommonUtil.KEY_VALUE_3, true);
                 bundle.putParcelable(CommonUtil.KEY_VALUE_4, locationEntity);
                 startActivity(SearchActivity.class, bundle);
-//                if (EasyPermissions.hasPermissions(getActivity(), positioning)) {
-//                    //有权限
-//                    if (isLocationEnabled(getActivity())){
-//
-//                    }else {
-//                        LocationEnabledUtils.toOpenGPS(getActivity());
-//                    }
-//                } else {
-//                    EasyPermissions.requestPermissions(this, "选取点位需要定位权限",
-//                            654, positioning);
-//                }
                 break;
             case R.id.ll_js:
                 break;
@@ -360,10 +349,8 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
             case R.id.ll_view_schedule:
                 if (isToken(getActivity())) {
                     startActivity(PlanNewFragment.class);
-                    LogUtils.e("11111111111");
                 }else {
                     ActivityUtils.setLoginActivity();
-                    LogUtils.e("222222222222");
                 }
                 break;
             case R.id.rl_error:

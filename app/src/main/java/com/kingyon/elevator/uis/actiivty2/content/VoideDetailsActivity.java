@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.actiivty2.content;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,6 +37,7 @@ import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ContentCommentsAdapter;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
+import com.kingyon.elevator.util.UIUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
@@ -47,7 +51,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
 
@@ -58,6 +61,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static com.czh.myversiontwo.utils.CodeType.CANCEL_LIKE;
 import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
 import static com.czh.myversiontwo.utils.CodeType.LIKE;
@@ -123,6 +127,10 @@ public class VoideDetailsActivity extends BaseActivity {
     RelativeLayout rl;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.rl_bottom)
+    RelativeLayout rlBottom;
+    @BindView(R.id.ll_voide_top)
+    View ll_voide_top;
     private ShareDialog shareDialog;
 
     @Override
@@ -133,6 +141,7 @@ public class VoideDetailsActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         isRefresh = false;
+        ConentUtils.topicStr = "";
         ARouter.getInstance().inject(this);
         showProgressDialog(getString(R.string.wait));
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
@@ -215,6 +224,29 @@ public class VoideDetailsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LogUtils.e(newConfig.toString());
+        int orientation = newConfig.orientation;
+        if (orientation == ORIENTATION_LANDSCAPE) {
+
+            rlBottom.setVisibility(View.GONE);
+            smartRefreshLayout.setVisibility(View.GONE);
+            rl.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            ll_voide_top.setVisibility(View.GONE);
+        } else {
+            rlBottom.setVisibility(View.VISIBLE);
+            ll_voide_top.setVisibility(View.VISIBLE);
+            smartRefreshLayout.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) rl.getLayoutParams();
+            linearParams.height = UIUtil.dip2px(this,180);
+            rl.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
+        }
+        LogUtils.e("onConfigurationChanged: " + orientation);
+
+    }
+
     private void httpComment(int page, int id) {
         NetService.getInstance().setQueryListComment(page, id)
                 .compose(this.bindLifeCycle())
@@ -281,7 +313,7 @@ public class VoideDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({ R.id.tv_attention, R.id.img_jb, R.id.img_screen, R.id.tv_like_comments, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like})
+    @OnClick({R.id.tv_attention, R.id.img_jb, R.id.img_screen, R.id.tv_like_comments, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like})
     public void onViewClicked(View view) {
         if (TokenUtils.isToken(this)) {
             switch (view.getId()) {
@@ -302,8 +334,15 @@ public class VoideDetailsActivity extends BaseActivity {
                     }
                     break;
                 case R.id.img_screen:
-
-                    GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
+                    LogUtils.e("全屏============");
+//                    GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
+                    if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                        //切换竖屏
+                        VoideDetailsActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else {
+                        //切换横屏
+                        VoideDetailsActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
 
                     break;
                 case R.id.tv_like_comments:

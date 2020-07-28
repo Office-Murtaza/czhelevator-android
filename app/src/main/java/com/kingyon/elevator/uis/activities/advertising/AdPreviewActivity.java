@@ -48,12 +48,14 @@ public class AdPreviewActivity extends BaseSwipeBackActivity {
     @BindView(R.id.rl_top)
     RelativeLayout rlTop;
     private ADEntity entity;
+    private String type;
     private boolean firstPlay = true;
     private boolean hasVideo;
 
     @Override
     protected String getTitleText() {
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
+        type = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
         return "广告";
     }
 
@@ -66,35 +68,63 @@ public class AdPreviewActivity extends BaseSwipeBackActivity {
     protected void initViews(Bundle savedInstanceState) {
         StatusBarUtil.setHeadViewPadding(this, rlTop);
         StatusBarUtil.setTransparent(this, false);
-        tvTitle.setText(entity.getTitle());
-        switch (entity.getScreenType()) {
-            case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
-                flVideo.setVisibility(View.VISIBLE);
-                imgImage.setVisibility(View.GONE);
-                hasVideo = true;
-                initVideoPlay();
-                break;
-            case Constants.AD_SCREEN_TYPE.FULL_IMAGE:
-                flVideo.setVisibility(View.GONE);
-                imgImage.setVisibility(View.VISIBLE);
-                GlideUtils.loadImage(this, entity.getImageUrl(), imgImage);
-                break;
-            case Constants.AD_SCREEN_TYPE.VIDEO_IMAGE:
-                flVideo.setVisibility(View.VISIBLE);
-                imgImage.setVisibility(View.VISIBLE);
-                hasVideo = true;
-                initVideoPlay();
-                GlideUtils.loadImage(this, entity.getImageUrl(), imgImage);
-                break;
-            default:
-                flVideo.setVisibility(View.GONE);
-                imgImage.setVisibility(View.GONE);
-                break;
+        if (type.equals("order")){
+            tvTitle.setText(entity.getName());
+            switch (entity.getTypeAdvertise()) {
+                case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
+                    flVideo.setVisibility(View.VISIBLE);
+                    imgImage.setVisibility(View.GONE);
+                    hasVideo = true;
+                    initVideoPlay(entity.getUrlVideo());
+                    break;
+                case Constants.AD_SCREEN_TYPE.FULL_IMAGE:
+                    flVideo.setVisibility(View.GONE);
+                    imgImage.setVisibility(View.VISIBLE);
+                    GlideUtils.loadImage(this, entity.getUrlImate(), imgImage);
+                    break;
+                case Constants.AD_SCREEN_TYPE.VIDEO_IMAGE:
+                    flVideo.setVisibility(View.VISIBLE);
+                    imgImage.setVisibility(View.VISIBLE);
+                    hasVideo = true;
+                    initVideoPlay(entity.getUrlVideo());
+                    GlideUtils.loadImage(this, entity.getUrlImate(), imgImage);
+                    break;
+                default:
+                    flVideo.setVisibility(View.GONE);
+                    imgImage.setVisibility(View.GONE);
+                    break;
+            }
+        }else {
+            tvTitle.setText(entity.getTitle());
+            switch (entity.getScreenType()) {
+                case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
+                    flVideo.setVisibility(View.VISIBLE);
+                    imgImage.setVisibility(View.GONE);
+                    hasVideo = true;
+                    initVideoPlay(entity.getVideoUrl());
+                    break;
+                case Constants.AD_SCREEN_TYPE.FULL_IMAGE:
+                    flVideo.setVisibility(View.GONE);
+                    imgImage.setVisibility(View.VISIBLE);
+                    GlideUtils.loadImage(this, entity.getImageUrl(), imgImage);
+                    break;
+                case Constants.AD_SCREEN_TYPE.VIDEO_IMAGE:
+                    flVideo.setVisibility(View.VISIBLE);
+                    imgImage.setVisibility(View.VISIBLE);
+                    hasVideo = true;
+                    initVideoPlay(entity.getVideoUrl());
+                    GlideUtils.loadImage(this, entity.getImageUrl(), imgImage);
+                    break;
+                default:
+                    flVideo.setVisibility(View.GONE);
+                    imgImage.setVisibility(View.GONE);
+                    break;
+            }
         }
     }
 
-    private void initVideoPlay() {
-        video_view.setUp(entity.getVideoUrl(), true, "");
+    private void initVideoPlay(String VideoUrl) {
+        video_view.setUp(VideoUrl, true, "");
         video_view.getBackButton().setVisibility(View.GONE);
         video_view.getFullscreenButton().setVisibility(View.GONE);
         video_view.startPlayLogic();

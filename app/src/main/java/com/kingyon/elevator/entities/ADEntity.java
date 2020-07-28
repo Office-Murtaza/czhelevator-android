@@ -21,10 +21,33 @@ public class ADEntity implements Parcelable {
      * title :
      * adIndustry :
      * adIndustryId : 1
+     *
+     *
+     *  "objectId": 624,
+     *       "screenType": null,
+     *       "adStatus": null,
+     *       "videoUrl": null,
+     *       "imageUrl": null,
+     *       "bgMusic": null,
+     *       "faildReason": null,
+     *       "title": null,
+     *       "adIndustry": null,
+     *       "adIndustryId": 0,
+     *       "onlyInfo": false,
+     *       "planType": "BUSINESS",
+     *       "name": "v刚刚",
+     *       "typeAdvertise": "FULLVIDEO",
+     *       "urlVideo": "http://cdn.tlwgz.com/1594894168994FlrqzE2NTTrBQ8NZ-wuDrrfFUbKn",
+     *       "urlImate": "",
+     *       "urlBackMusic": "",
+     *       "hashImage": "",
+     *       "hashVidel": "1594894168994FlrqzE2NTTrBQ8NZ-wuDrrfFUbKn",
+     *       "hashMusic": ""
      */
 
     private boolean onlyInfo;
     private long objctId;
+    private long objectId;
     private String planType;
     private String screenType;
     private String adStatus;
@@ -34,6 +57,10 @@ public class ADEntity implements Parcelable {
     private String faildReason;
     private String title;
     private String adIndustry;
+    private String name;
+    private String urlVideo;
+    private String typeAdvertise;
+    private String urlImate;
     private long adIndustryId;
 
     @Override
@@ -52,6 +79,46 @@ public class ADEntity implements Parcelable {
                 ", adIndustry='" + adIndustry + '\'' +
                 ", adIndustryId=" + adIndustryId +
                 '}';
+    }
+
+    public long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(long objectId) {
+        this.objectId = objectId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
+    }
+
+    public String getTypeAdvertise() {
+        return typeAdvertise;
+    }
+
+    public void setTypeAdvertise(String typeAdvertise) {
+        this.typeAdvertise = typeAdvertise;
+    }
+
+    public String getUrlImate() {
+        return urlImate;
+    }
+
+    public void setUrlImate(String urlImate) {
+        this.urlImate = urlImate;
     }
 
     public boolean isOnlyInfo() {
@@ -171,6 +238,10 @@ public class ADEntity implements Parcelable {
         dest.writeString(this.faildReason);
         dest.writeString(this.title);
         dest.writeString(this.adIndustry);
+        dest.writeString(this.name);
+        dest.writeString(this.urlVideo);
+        dest.writeString(this.typeAdvertise);
+        dest.writeString(this.urlImate);
         dest.writeLong(this.adIndustryId);
     }
 
@@ -186,6 +257,10 @@ public class ADEntity implements Parcelable {
         this.faildReason = in.readString();
         this.title = in.readString();
         this.adIndustry = in.readString();
+        this.name = in.readString();
+        this.urlVideo = in.readString();
+        this.typeAdvertise = in.readString();
+        this.urlImate = in.readString();
         this.adIndustryId = in.readLong();
     }
 

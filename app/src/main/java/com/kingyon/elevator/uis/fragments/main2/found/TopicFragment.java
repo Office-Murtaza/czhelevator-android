@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
@@ -17,10 +18,10 @@ import com.kingyon.elevator.uis.adapters.adaptertwo.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -36,6 +37,8 @@ public class TopicFragment extends FoundFragemtUtils {
     @BindView(R.id.vp_topic)
     ViewPager vp;
     Unbinder unbinder;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
 
     @Override
     protected void lazyLoad() {
@@ -59,13 +62,18 @@ public class TopicFragment extends FoundFragemtUtils {
                 .subscribe(new CustomApiCallback<ConentEntity<HomeTopicEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        ToastUtils.showToast(getActivity(), ex.getDisplayMessage(), 1000);
+//                        ToastUtils.showToast(getActivity(), ex.getDisplayMessage(), 1000);
                         hideProgress();
+                        rlError.setVisibility(View.VISIBLE);
+                        vp.setVisibility(View.GONE);
+
                     }
 
                     @Override
                     public void onNext(ConentEntity<HomeTopicEntity> conentEntity) {
                         LogUtils.e(conentEntity.getContent().toString());
+                        rlError.setVisibility(View.GONE);
+                        vp.setVisibility(View.VISIBLE);
                         tabLayout.setViewHeight(dp2px(30));
                         tabLayout.setBottomLineWidth(dp2px(10));
                         tabLayout.setBottomLineHeight(dp2px(3));
@@ -84,8 +92,8 @@ public class TopicFragment extends FoundFragemtUtils {
                         adapter.cleanFrag();
                         for (int i = 0; i < conentEntity.getContent().size(); i++) {
 //                            if(!new TopicTypeFragment().isAdded()) {
-                                adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
-                                        conentEntity.getContent().get(i).labelName);
+                            adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
+                                    conentEntity.getContent().get(i).labelName);
 //                            }
                         }
                         vp.setAdapter(adapter);
@@ -114,5 +122,16 @@ public class TopicFragment extends FoundFragemtUtils {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    @OnClick(R.id.rl_error)
+    public void onViewClicked() {
+        initData();
     }
 }

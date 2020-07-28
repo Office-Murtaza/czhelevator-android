@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.uis.actiivty2.input.utils.HtmlParserUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 
 import org.xml.sax.XMLReader;
 
@@ -77,12 +78,14 @@ public class HtmlTagHandler implements Html.TagHandler {
             /*内容点击*/
             LogUtils.e(t.id,t.name,tag,text,xmlReader);
             if (tag.equals("tag")){
-
-              ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",t.id);
+              if (!ConentUtils.topicStr.equals(t.id)) {
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS, "topicid", t.id);
+              }
             }else {
               /*用户中心*/
-
-              ActivityUtils.setActivity(ACTIVITY_USER_CENTER,"type", "1","otherUserAccount",t.id);
+              if (!ConentUtils.aiteStr.equals(t.id)) {
+                ActivityUtils.setActivity(ACTIVITY_USER_CENTER, "type", "1", "otherUserAccount", t.id);
+              }
             }
 //            Toast.makeText(widget.getContext(), t.toString(), Toast.LENGTH_SHORT).show();
           }

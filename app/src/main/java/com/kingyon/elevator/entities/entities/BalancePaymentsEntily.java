@@ -90,7 +90,7 @@ public class BalancePaymentsEntily {
              */
 
             private String date;
-            private double subtotal;
+            private String subtotal;
             private List<LstResponseBean> lstResponse;
 
             public String getDate() {
@@ -101,11 +101,11 @@ public class BalancePaymentsEntily {
                 this.date = date;
             }
 
-            public double getSubtotal() {
+            public String getSubtotal() {
                 return subtotal;
             }
 
-            public void setSubtotal(double subtotal) {
+            public void setSubtotal(String subtotal) {
                 this.subtotal = subtotal;
             }
 
@@ -141,43 +141,43 @@ public class BalancePaymentsEntily {
                  * type : INCOME
                  */
 
-                private double total;
-                private int yesterdayMoney;
-                private int withdrawal;
-                private int canWithdraw;
+                private String total;
+                private String yesterdayMoney;
+                private String withdrawal;
+                private String canWithdraw;
                 private String source;
                 private long createTime;
                 private String type;
 
-                public double getTotal() {
+                public String getTotal() {
                     return total;
                 }
 
-                public void setTotal(double total) {
+                public void setTotal(String total) {
                     this.total = total;
                 }
 
-                public int getYesterdayMoney() {
+                public String getYesterdayMoney() {
                     return yesterdayMoney;
                 }
 
-                public void setYesterdayMoney(int yesterdayMoney) {
+                public void setYesterdayMoney(String yesterdayMoney) {
                     this.yesterdayMoney = yesterdayMoney;
                 }
 
-                public int getWithdrawal() {
+                public String getWithdrawal() {
                     return withdrawal;
                 }
 
-                public void setWithdrawal(int withdrawal) {
+                public void setWithdrawal(String withdrawal) {
                     this.withdrawal = withdrawal;
                 }
 
-                public int getCanWithdraw() {
+                public String getCanWithdraw() {
                     return canWithdraw;
                 }
 
-                public void setCanWithdraw(int canWithdraw) {
+                public void setCanWithdraw(String canWithdraw) {
                     this.canWithdraw = canWithdraw;
                 }
 

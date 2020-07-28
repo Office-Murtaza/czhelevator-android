@@ -369,13 +369,13 @@ public class StateLayout extends FrameLayout {
         emptyView.setVisibility(GONE);
         progressView.setVisibility(GONE);
         boolean hasNet = hasNet(getContext());
-        errorImageView.setImageResource(hasNet ? R.drawable.im_blank_network : R.drawable.img_net_view);
+        errorImageView.setImageResource(hasNet ? R.drawable.im_blank_network : R.drawable.im_blank_network);
         errorView.setVisibility(VISIBLE);
-        if (msg != null) {
-            errorTextView.setText(msg);
-        } else {
+//        if (msg != null) {
+//            errorTextView.setText(msg);
+//        } else {
             emptyTextView.setText(hasNet ? R.string.error : R.string.no_net);
-        }
+//        }
         switchWithAnimation(errorView);
     }
 

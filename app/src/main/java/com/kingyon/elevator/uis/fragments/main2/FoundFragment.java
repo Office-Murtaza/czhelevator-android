@@ -2,7 +2,10 @@ package com.kingyon.elevator.uis.fragments.main2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.kingyon.elevator.uis.fragments.main2.found.TopicFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.ConfirmPopWindow;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
@@ -73,7 +77,11 @@ public class FoundFragment extends BaseFragment {
         initView();
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        ConentUtils.topicStr = "";
+    }
 
     private void initView() {
 
@@ -139,6 +147,17 @@ public class FoundFragment extends BaseFragment {
                     intent.putExtra("path",Matisse.obtainPathResult(data).get(0));
                     intent.putExtra("fromType",ACCESS_VOIDE_CODE);
                     startActivity(intent);
+//                    Uri selectedVideo = data.getData();
+//                    String[] filePathColumn = {MediaStore.Video.Media.DATA};
+//                    Cursor cursor = getActivity().getContentResolver().query(selectedVideo,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+//                    intent.putExtra("path",cursor.getString(columnIndex));
+//                    intent.putExtra("fromType",ACCESS_VOIDE_CODE);
+//                    startActivity(intent);
+//                    cursor.close();
                     break;
             }
         }

@@ -14,6 +14,7 @@ import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.CodeEntity;
+import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
@@ -222,6 +223,12 @@ public class OrdinaryActivity {
                                 DataSharedPreferences.saveToken(codeEntity.getToken());
                                 Net.getInstance().setToken(DataSharedPreferences.getToken());
                                 JumpUtils.getInstance().jumpToRoleMain(baseActivity, AppContent.getInstance().getMyUserRole());
+
+                                FingerprintEntiy entiy  = new FingerprintEntiy();
+                                entiy.setIsFin("1");
+                                entiy.setUserId(DataSharedPreferences.getCreatateAccount());
+                                entiy.save();
+
                                 loginActiivty.finish();
                                 baseActivity.finish();
                             }

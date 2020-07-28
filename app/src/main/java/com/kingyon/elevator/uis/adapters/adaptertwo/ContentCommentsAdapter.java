@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -82,74 +83,10 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
 //            }else {
 //                holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
 //            }
-            holder.tv_comment_hf.setOnClickListener(new View.OnClickListener() {
+            holder.ll_comments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (type.equals("1")) {
-                        if (commentListEntity.child.size() > 0) {
-                            /*跳转*/
-                            ARouter.getInstance().build(ACTIVITY_COMMENT_TWO)
-                                    .withInt("contentId", commentListEntity.contentId)
-                                    .withInt("onId", commentListEntity.id)
-                                    .navigation();
-                        } else {
-                            InputCommentActivity.openEditor(context, new EditorCallback() {
-                                @Override
-                                public void onCancel() {
-                                    LogUtils.d("关闭输入法-------------");
-                                    KeyboardUtils.hideSoftInput(context);
-                                }
-
-                                @Override
-                                public void onSubmit(String content) {
-                                    ConentUtils.httpComment(context, commentListEntity.contentId,
-                                            commentListEntity.id, content, new ConentUtils.IsSuccedListener() {
-                                                @Override
-                                                public void onisSucced(boolean isSucced) {
-                                                    getRefresh.onRefresh(isSucced);
-                                                }
-                                            });
-                                }
-
-                                @Override
-                                public void onAttached(ViewGroup rootView) {
-
-                                }
-
-                                @Override
-                                public void onIcon() {
-
-                                }
-                            });
-                        }
-                    }else {
-                        InputCommentActivity.openEditor(context, new EditorCallback() {
-                            @Override
-                            public void onCancel() {
-                                LogUtils.d("关闭输入法-------------");
-                                KeyboardUtils.hideSoftInput(context);
-                            }
-                            @Override
-                            public void onSubmit(String content) {
-                                ConentUtils.httpComment(context, commentListEntity.contentId,
-                                        commentListEntity.id, content, new ConentUtils.IsSuccedListener() {
-                                            @Override
-                                            public void onisSucced(boolean isSucced) {
-                                                    getRefresh.onRefresh(isSucced);
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onAttached(ViewGroup rootView) {
-                            }
-
-                            @Override
-                            public void onIcon() {
-
-                            }
-                        });
-                    }
+                    commentOnClick(commentListEntity);
                 }
             });
 
@@ -191,6 +128,75 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
         }
     }
 
+    private void commentOnClick(CommentListEntity commentListEntity) {
+        if (type.equals("1")) {
+            if (commentListEntity.child.size() > 0) {
+                /*跳转*/
+                ARouter.getInstance().build(ACTIVITY_COMMENT_TWO)
+                        .withInt("contentId", commentListEntity.contentId)
+                        .withInt("onId", commentListEntity.id)
+                        .navigation();
+            } else {
+                InputCommentActivity.openEditor(context, new EditorCallback() {
+                    @Override
+                    public void onCancel() {
+                        LogUtils.d("关闭输入法-------------");
+                        KeyboardUtils.hideSoftInput(context);
+                    }
+
+                    @Override
+                    public void onSubmit(String content) {
+                        ConentUtils.httpComment(context, commentListEntity.contentId,
+                                commentListEntity.id, content, new ConentUtils.IsSuccedListener() {
+                                    @Override
+                                    public void onisSucced(boolean isSucced) {
+                                        getRefresh.onRefresh(isSucced);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onAttached(ViewGroup rootView) {
+
+                    }
+
+                    @Override
+                    public void onIcon() {
+
+                    }
+                });
+            }
+        }else {
+            InputCommentActivity.openEditor(context, new EditorCallback() {
+                @Override
+                public void onCancel() {
+                    LogUtils.d("关闭输入法-------------");
+                    KeyboardUtils.hideSoftInput(context);
+                }
+                @Override
+                public void onSubmit(String content) {
+                    ConentUtils.httpComment(context, commentListEntity.contentId,
+                            commentListEntity.id, content, new ConentUtils.IsSuccedListener() {
+                                @Override
+                                public void onisSucced(boolean isSucced) {
+                                    getRefresh.onRefresh(isSucced);
+                                }
+                            });
+                }
+
+                @Override
+                public void onAttached(ViewGroup rootView) {
+                }
+
+                @Override
+                public void onIcon() {
+
+                }
+            });
+        }
+
+    }
+
     @Override
     public int getItemCount() {
         return conentEntity.size();
@@ -202,17 +208,20 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_comment_hf,tv_time,tv_comment,tv_like_number,tv_name;
-        ImageView img_like,img_portrait,img_delete;
+        ImageView img_like,img_portrait,img_delete,img_comments;
+        LinearLayout ll_comments;
         public ViewHolder(View itemView) {
             super(itemView);
             tv_comment = itemView.findViewById(R.id.tv_comment);
             tv_comment_hf = itemView.findViewById(R.id.tv_comment_hf);
+            ll_comments = itemView.findViewById(R.id.ll_comments);
             tv_time = itemView.findViewById(R.id.tv_time);
             tv_like_number = itemView.findViewById(R.id.tv_like_number);
             tv_name = itemView.findViewById(R.id.tv_name);
             img_like = itemView.findViewById(R.id.img_like);
             img_portrait = itemView.findViewById(R.id.img_portrait);
             img_delete = itemView.findViewById(R.id.img_delete);
+            img_comments = itemView.findViewById(R.id.img_comments);
         }
     }
 

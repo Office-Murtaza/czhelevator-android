@@ -128,18 +128,43 @@
                 />
         </LinearLayout>
 
-        <com.bobomee.android.mentions.text.MentionTextView
-            android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="描述内容--刘兵亮发起了“汉字百人舞”征集设计师集体#字体设计大赛#"
-            android:textColor="#ffffffff"
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_marginBottom="@dimen/dp10"
-            android:textSize="14sp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:orientation="horizontal"
+            >
+
+
+            <com.bobomee.android.mentions.text.MentionTextView
+                android:id="@+id/tv_content"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="描述内容--刘兵亮发起了刘兵亮发起了“汉字百人舞”征集设计师集体#字体设计大赛#"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginBottom="@dimen/dp10"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
+
+            <TextView
+                android:id="@+id/tv_qw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全文"
+                android:textColor="#4DACEE"
+                android:layout_gravity="bottom"
+                android:textSize="14sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:padding="@dimen/dp5"
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/sp_10"
+                ></TextView>
+        </RelativeLayout>
+
 
 
         <LinearLayout

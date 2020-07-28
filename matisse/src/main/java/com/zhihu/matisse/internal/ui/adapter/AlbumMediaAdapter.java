@@ -22,6 +22,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,19 +110,45 @@ public class AlbumMediaAdapter extends
                 }
             }
             captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+            Log.e("TAG","===========================");
         } else if (holder instanceof MediaViewHolder) {
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
+
             final Item item = Item.valueOf(cursor);
-            mediaViewHolder.mMediaGrid.preBindMedia(new MediaGrid.PreBindInfo(
-                    getImageResize(mediaViewHolder.mMediaGrid.getContext()),
-                    mPlaceholder,
-                    mSelectionSpec.countable,
-                    holder
-            ));
-            mediaViewHolder.mMediaGrid.bindMedia(item);
-            mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
-            setCheckStatus(item, mediaViewHolder.mMediaGrid);
+            Log.e("TAG",item.mimeType+"==\n=="+item.uri
+                    +"==\n=="+item.duration+"==\n=="+item.id+"==\n=="+item.size
+                    +"==\n=="+item.isVideo()+"==\n=="+item.describeContents()+"==\n=="+item.getContentUri()
+                    +"==\n=="+item.hashCode()+"==\n=="+item.isCapture()+"==\n=="+item.isGif()+"==\n=="+item.isImage()+"\n"+ item.uri.getPath());
+
+//            if (item.isVideo()) {
+//                if (item.duration>1000) {
+//                    mediaViewHolder.mMediaGrid.preBindMedia(new MediaGrid.PreBindInfo(
+//                            getImageResize(mediaViewHolder.mMediaGrid.getContext()),
+//                            mPlaceholder,
+//                            mSelectionSpec.countable,
+//                            holder
+//                    ));
+//                    mediaViewHolder.mMediaGrid.bindMedia(item);
+//                    mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
+//                    setCheckStatus(item, mediaViewHolder.mMediaGrid);
+//                    mediaViewHolder.mMediaGrid.setVisibility(View.VISIBLE);
+//                    Log.e("TAG","++++++++++++++++++++++++");
+//                }else {
+//                    mediaViewHolder.mMediaGrid.setVisibility(View.GONE);
+//                }
+//            }else {
+                mediaViewHolder.mMediaGrid.setVisibility(View.VISIBLE);
+                mediaViewHolder.mMediaGrid.preBindMedia(new MediaGrid.PreBindInfo(
+                        getImageResize(mediaViewHolder.mMediaGrid.getContext()),
+                        mPlaceholder,
+                        mSelectionSpec.countable,
+                        holder
+                ));
+                mediaViewHolder.mMediaGrid.bindMedia(item);
+                mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
+                setCheckStatus(item, mediaViewHolder.mMediaGrid);
+//            }
         }
     }
 

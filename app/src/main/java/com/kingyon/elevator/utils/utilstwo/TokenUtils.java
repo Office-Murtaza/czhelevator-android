@@ -61,10 +61,10 @@ public class TokenUtils {
                 .subscribe(new CustomApiCallback<UserEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-//                        if (ex.getCode()==100200) {
+                        if (ex.getCode()!=1003) {
                             getToke.setToken(false);
                             DataSharedPreferences.clearLoginInfo();
-//                        }
+                        }
                     }
                     @Override
                     public void onNext(UserEntity userEntity) {

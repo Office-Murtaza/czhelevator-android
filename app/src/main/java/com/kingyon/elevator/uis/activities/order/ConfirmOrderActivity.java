@@ -21,6 +21,7 @@ import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.customview.MyActionBar;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.AutoCalculationDiscountEntity;
@@ -142,6 +143,8 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     private AliPayUtils aliPayUtils;
     private WxPayUtils wxPayUtils;
     private Subscription delaySubscribe;
+
+    private long  adEntityID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -352,6 +355,8 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             et_input_ad_name.setEnabled(false);
             et_input_ad_name.setFocusable(false);
             et_input_ad_name.setText(adEntity.getTitle());
+            DataSharedPreferences.saveAdName(adEntity.getTitle());
+            adEntityID = adEntity.getObjctId();
             switch (adEntity.getScreenType()) {
                 case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
                     GlideUtils.loadVideoFrame(ConfirmOrderActivity.this, adEntity.getVideoUrl(), ad_img_preview);
@@ -394,12 +399,13 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                         || authStatus.equals(Constants.IDENTITY_STATUS.FAILD)
                         || authStatus.equals(Constants.IDENTITY_STATUS.AUTHING)) {
 
-                    showOrderIdentityDialog();
-
+//                    showOrderIdentityDialog();
+                    com.kingyon.elevator.uis.dialogs.DialogUtils.shwoCertificationDialog(this);
                 } else {
                     /*是否有在线广告*/
-                    if (adEntity != null) {
+                    if (DataSharedPreferences.getAdName().equals(et_input_ad_name.getText().toString())&&adEntityID > 0) {
                         /*实际价格是否大于0*/
+                        DataSharedPreferences.saveAdName(et_input_ad_name.getText().toString());
                         if (realPayPrice > 0) {
                             /*是否有可用优惠卷*/
                             if (autoCalculationDiscountEntity.isHasMore()) {
@@ -408,7 +414,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                         .setMessage("您当前还有可使用的优惠券，是否继续支付？")
                                         .setPositiveButton("继续支付", (dialog, which) -> {
                                                     presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
                                                     LogUtils.e("您当前还有可使用的优惠券", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                                             goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                                                 }
@@ -418,7 +424,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                             } else {
                                 /*没有可用优惠卷*/
                                 presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
                                 LogUtils.e("没有可以用优惠卷", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                         goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                             }
@@ -430,7 +436,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                                         .setMessage("您当前使用的优惠券金额大于总金额，是否继续支付？")
                                         .setPositiveButton("继续支付", (dialog, which) -> {
                                                     presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                                            goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
                                                     LogUtils.e("优惠券金额大于总价", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                                             goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                                                 }
@@ -440,12 +446,13 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                             } else {
 
                                 presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                                        goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
                                 LogUtils.e("正常价格", goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                                         goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
                             }
                         }
                     } else {
+                        DataSharedPreferences.saveAdName(et_input_ad_name.getText().toString());
                         //没有选择已经上传过的广告
                         if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.INFORMATION)) {
                             if (et_input_ad_name.getText().toString().trim().isEmpty()) {
@@ -557,6 +564,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
     @Override
     public void showCouponsInfo(AutoCalculationDiscountEntity autoCalculationDiscountEntity) {
+        LogUtils.e(autoCalculationDiscountEntity.getActualAmount()+"============");
         this.autoCalculationDiscountEntity = autoCalculationDiscountEntity;
         cuxiao_manjian.setText(getLiJianPrice());
         String couponsText = "";
@@ -573,6 +581,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         tv_discount_money.setText("已优惠" + (autoCalculationDiscountEntity.getConcessionalRate() +
                 autoCalculationDiscountEntity.getDiscountRate()) + "元");
 //        tv_order_money.setText("¥" + autoCalculationDiscountEntity.getActualAmount() + "元");
+
         tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, autoCalculationDiscountEntity.getActualAmount())));
         LogUtils.e(String.format(STRING_PRICE2, autoCalculationDiscountEntity.getActualAmount()));
         coupons = new ArrayList<>();
@@ -593,11 +602,10 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     }
 
     @Override
-    public void adUploadSuccess(ADEntity adEntity1) {
-//        adEntity = adEntity1;
-//        setMyAdData();
+    public void adUploadSuccess(ADEntity adEntity) {
+        adEntityID =   adEntity.getObjctId();
         presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
-                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntity);
+                goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
     }
 
     @Override
@@ -619,20 +627,14 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             payDialog.setCancelable(false);
             payDialog.show();
 
+
         } else {
             /*跳成功*/
             LogUtils.e("下单成功");
-//            OrderDetailsEntity detailsEntity = new OrderDetailsEntity();
-//            detailsEntity.setObjctId(orderEntiy.getOrderId());
-//            detailsEntity.setCouponPrice(getAllMoney());
-//            detailsEntity.setRealPrice(orderEntiy.getPayMoney());
-//            detailsEntity.setPayTime(System.currentTimeMillis());
-//            bundle.putParcelable(CommonUtil.KEY_VALUE_1, detailsEntity);
-//            bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.FREE);
-//            MyActivityUtils.goActivity(this, PaySuccessActivity.class, bundle);
             ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS, "orderId", orderEntiy.getOrderId(),
                     "payType", Constants.PayType.BALANCE_PAY, "priceActual", String.valueOf(orderEntiy.getPayMoney()));
             EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
+            finish();
         }
 
 

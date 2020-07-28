@@ -35,6 +35,8 @@ public class DataSharedPreferences {
 
     public static final String USER_NAME = "USER_NAME";/*用户名字*/
 
+    public static final String AD_NAME = "AD_NAME";/*保存广告名称*/
+
 
 
     //是否已经显示过用户隐私政策对话框
@@ -48,6 +50,16 @@ public class DataSharedPreferences {
     /*保存用户昵称*/
     public static  final  String USER_NICKNAME ="USER_NICKNAME";
 
+
+    /*保存广告名称*/
+    public static void saveAdName(String adname){
+        getPreferences().edit().putString(AD_NAME, adname).apply();
+    }
+    public static String getAdName() {
+        return getPreferences().getString(AD_NAME, "");
+    }
+
+    /*保存昵称*/
     public static void saveNickName(String nickname){
         getPreferences().edit().putString(USER_NICKNAME, nickname).apply();
     }

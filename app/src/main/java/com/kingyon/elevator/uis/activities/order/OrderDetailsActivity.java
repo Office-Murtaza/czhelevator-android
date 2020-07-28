@@ -38,6 +38,7 @@ import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderCommunityAdapter;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -278,8 +279,13 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                             rcvList.setVisibility(View.GONE);
                             llSq.setVisibility(View.GONE);
                         }
+                        if (order.getAdvertising() == null || order.getAdvertising().getName() == null){
+                            llName.setVisibility(View.GONE);
+                        }else {
+                            llName.setVisibility(View.VISIBLE);
+                        }
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
-//                        tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getTitle() == null) ? "" : order.getAdvertising().getTitle());
+                        tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getName() == null) ? "" : order.getAdvertising().getName());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
                         tvDuration.setText(String.format("%s-%s", TimeUtil.getAllTimeDuration(order.getAdStartTime()), TimeUtil.getAllTimeDuration(order.getAdEndTime())));
 
@@ -296,7 +302,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         tvPayTime.setText(TimeUtil.getAllTimeNoSecond(order.getPayTime()));
                         llPayTime.setVisibility((order.getPayTime() != 0 && !payInvalid) ? View.VISIBLE : View.GONE);
                         tvPayWay.setText(FormatUtils.getInstance().getPayWay(order.getPayWay()));
-                        llPayWay.setVisibility((payInvalid || TextUtils.isEmpty(order.getPayWay())) ? View.GONE : View.VISIBLE);
+                        llPayWay.setVisibility((payInvalid || TextUtils.isEmpty(order.getPayWay())) ? View.VISIBLE : View.VISIBLE);
                         tvWaitpayMoney.setText("￥"+CommonUtil.getTwoFloat(order.getRealPrice()));
                         llSq.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -407,7 +413,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     private void updateHeadWaitRelease(OrderDetailsEntity order) {
         ADEntity advertising = order.getAdvertising();
-        String adStatus = advertising != null && advertising.getAdStatus() != null ? advertising.getAdStatus() : "";
+        String adStatus = advertising != null && advertising.getTypeAdvertise() != null ? advertising.getTypeAdvertise() : "";
         switch (adStatus) {
             case Constants.AD_STATUS.REVIEW_FAILED:
                 updateHeadViewVisiable(R.id.ll_order_head_authfailed);
@@ -476,7 +482,9 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
         llOperate.setVisibility(viewId == 0 ? View.GONE : View.VISIBLE);
     }
 
-    @OnClick({R.id.ll_devices, R.id.tv_authfailed_modify, R.id.tv_completed_monit, R.id.tv_copy_sn, R.id.tv_waitpay_cancel, R.id.tv_waitpay_pay, R.id.tv_release_down, R.id.tv_release_monit})
+    @OnClick({R.id.ll_devices, R.id.tv_authfailed_modify, R.id.tv_completed_monit,
+            R.id.tv_copy_sn, R.id.tv_waitpay_cancel, R.id.tv_waitpay_pay,
+            R.id.tv_release_down, R.id.tv_release_monit,R.id.tv_ad_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_devices:
@@ -542,6 +550,9 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 bundle4.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                 bundle4.putBoolean(CommonUtil.KEY_VALUE_2, false);
                 startActivity(OrderMonitActivity.class, bundle4);
+                break;
+            case R.id.tv_ad_name:
+                JumpUtils.getInstance().jumpToAdPreview(this, orderDetails.getAdvertising(),"order");
                 break;
         }
     }

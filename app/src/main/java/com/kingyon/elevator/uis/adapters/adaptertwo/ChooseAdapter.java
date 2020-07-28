@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
@@ -18,11 +19,13 @@ import com.leo.afbaselibrary.utils.GlideUtils;
 import com.litao.android.lib.entity.PhotoEntry;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import me.kareluo.imaging.IMGEditActivity;
 
+import static com.czh.myversiontwo.utils.Constance.IMAGER_EDITOR_ACTIVITY;
 import static com.kingyon.elevator.uis.adapters.adaptertwo.PictureChooseImgAdapter.listimage;
 
 /**
@@ -37,7 +40,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
     private LayoutInflater mInflater;
 
     private OnItmeClickListener mlistener;
-
+    ArrayList<String> listPath = new ArrayList<>();
     public  interface OnItmeClickListener{
         void onItemClicked(int position);
 
@@ -49,6 +52,11 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
         mlistener = (OnItmeClickListener) mContext;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         list.add(createAddEntry());
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).getPath()!=null) {
+                listPath.add(list.get(i).getPath());
+            }
+        }
     }
 
 
@@ -90,6 +98,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     list.remove(i);
+                    listPath.remove(i);
                     notifyItemRemoved(i);
                     notifyItemRangeChanged(i,list.size()-i);
 //                    删除
@@ -99,14 +108,18 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
 //                    编辑
-                    LogUtils.e(i);
-                File imageFile = new File(entry.getPath());
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(IMGEditActivity.EXTRA_IMAGE_URI, Uri.fromFile(imageFile));
-                bundle.putInt("number",i);
-                bundle.putString(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, new File(mContext.getExternalCacheDir(), String.format("%s.jpg", UUID.randomUUID().toString())).getAbsolutePath());
-                mContext.startActivityForResult(IMGEditActivity.class, CommonUtil.REQ_CODE_4, bundle);
+                    LogUtils.e(i,listPath.toString());
+//                File imageFile = new File(entry.getPath());
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable(IMGEditActivity.EXTRA_IMAGE_URI, Uri.fromFile(imageFile));
+//                bundle.putInt("number",i);
+//                bundle.putString(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, new File(mContext.getExternalCacheDir(), String.format("%s.jpg", UUID.randomUUID().toString())).getAbsolutePath());
+//                mContext.startActivityForResult(IMGEditActivity.class, CommonUtil.REQ_CODE_4, bundle);
 
+                    ARouter.getInstance().build(IMAGER_EDITOR_ACTIVITY)
+                            .withStringArrayList("listPath",listPath)
+                            .withInt("position",i)
+                            .navigation();
                 }
             });
         }

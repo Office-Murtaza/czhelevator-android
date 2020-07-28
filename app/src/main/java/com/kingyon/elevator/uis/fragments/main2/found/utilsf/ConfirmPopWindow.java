@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.main2.found.utilsf;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
@@ -24,6 +25,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ACTIVITYUTILS_VIDEO_CHOOSE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
 
@@ -127,7 +129,7 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
 
     private void startAction() {
         Matisse.from(context)
-                .choose(MimeType.ofVideo1(), false)
+                .choose(MimeType.ofVideo1())
                 .countable(false)
                 .capture(false)
                 .captureStrategy(
@@ -148,6 +150,9 @@ public class ConfirmPopWindow extends PopupWindow implements View.OnClickListene
                     Log.e("isChecked", "onCheck: isChecked=" + isChecked);
                 })
                 .forResult(ACCESS_VOIDE_PATH);
+//        ActivityUtils.setActivity(ACTIVITY_ACTIVITYUTILS_VIDEO_CHOOSE);
+//        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+//        context.startActivityForResult(i, ACCESS_VOIDE_PATH);
 
     }
 

@@ -125,6 +125,7 @@ public class ContentDetailsActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
+        ConentUtils.topicStr = "";
         isRefresh = false;
         LogUtils.e(contentId);
         showProgressDialog(getString(R.string.wait));

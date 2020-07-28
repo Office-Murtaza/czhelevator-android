@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.activities.user;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -101,8 +103,11 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
 
     private void publishRequest(String pictures) {
         showProgressDialog(getString(R.string.wait));
+        try {
+        PackageManager manager = getPackageManager();
+        PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
         tvCreate.setEnabled(false);
-        NetService.getInstance().createFeedBack(etTitle.getText().toString(), pictures)
+        NetService.getInstance().createFeedBack(etTitle.getText().toString(), pictures,info.versionName)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
@@ -121,6 +126,9 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
                         finish();
                     }
                 });
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

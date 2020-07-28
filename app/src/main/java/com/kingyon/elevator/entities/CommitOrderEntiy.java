@@ -7,7 +7,16 @@ package com.kingyon.elevator.entities;
 
 public class CommitOrderEntiy {
     private String orderSn;
+    private String payPopUpMessage;
     private float priceActual;
+
+    public String getPayPopUpMessage() {
+        return payPopUpMessage;
+    }
+
+    public void setPayPopUpMessage(String payPopUpMessage) {
+        this.payPopUpMessage = payPopUpMessage;
+    }
 
     @Override
     public String toString() {

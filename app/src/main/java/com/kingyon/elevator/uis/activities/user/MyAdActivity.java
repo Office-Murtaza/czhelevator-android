@@ -147,7 +147,7 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
                 photoPickerActivity.finish();
                 finish();
             } else {
-                JumpUtils.getInstance().jumpToAdPreview(this, item);
+                JumpUtils.getInstance().jumpToAdPreview(this, item,"ad");
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.kingyon.elevator.nets;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 
@@ -572,8 +573,8 @@ public class NetService {
         return addSchedulers(getApi().setincomeList(page,month,deviceId));
     }
 
-    public Observable<String> repairDevice(long deviceId, Long reasonId, String remarks, String images) {
-        return addSchedulers(getApi().repairDevice(deviceId, reasonId, remarks, images));
+    public Observable<String> repairDevice(long deviceId, Long reasonId, String remarks, String images,String app_version) {
+        return addSchedulers(getApi().repairDevice(deviceId, reasonId, remarks, images,android.os.Build.BRAND,app_version));
     }
 
     public Observable<List<NormalElemEntity>> repairReasons() {
@@ -1273,8 +1274,8 @@ public class NetService {
         return addSchedulers(getApi().myFeedBackList(page));
     }
 
-    public Observable<String> createFeedBack(String titile, String images) {
-        return addSchedulers(getApi().createFeedBack(titile, images));
+    public Observable<String> createFeedBack(String titile, String images,String app_version) {
+        return addSchedulers(getApi().createFeedBack(titile, images, android.os.Build.BRAND,app_version));
     }
 
     public Observable<String> commentFeedBack(long objectId, String content) {
@@ -1773,8 +1774,8 @@ public Observable<String> cooperationApply(final String partnerName, final Strin
      *
      * @return
      */
-    public Observable<List<AdNoticeWindowEntity>> getTipsList(String position, int showType) {
-        return addSchedulers(getApi().getTipsList(position, showType));
+    public Observable<List<AdNoticeWindowEntity>> getTipsList(String position) {
+        return addSchedulers(getApi().getTipsList(position));
     }
 
     /**

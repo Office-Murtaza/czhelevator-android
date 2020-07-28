@@ -315,7 +315,7 @@ public class OrderEditActivity extends BaseStateLoadingActivity {
             case R.id.ll_ad_preview:
                 ADEntity adEntity = (ADEntity) tvAdvertising.getTag();
                 if (adEntity != null) {
-                    JumpUtils.getInstance().jumpToAdPreview(this, adEntity);
+                    JumpUtils.getInstance().jumpToAdPreview(this, adEntity,"ad");
                 }
                 break;
         }

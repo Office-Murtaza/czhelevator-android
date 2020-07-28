@@ -119,6 +119,7 @@ public class CommentReplyActivity extends BaseActivity {
                     public void onNext(ConentEntity<CommentListEntity> conentEntity) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         dataAdd(conentEntity);
+                        tvCommentsNumber.setText(conentEntity.getContent().size()+"条回复");
                     }
                 });
 

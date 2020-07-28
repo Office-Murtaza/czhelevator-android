@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
@@ -34,6 +35,7 @@ import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.kingyon.elevator.utils.utilstwo.PayTimerUtils;
 import com.kingyon.paylibrary.PayListener;
 import com.kingyon.paylibrary.alipay.AliPayUtils;
@@ -110,6 +112,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
     private Float myWallet;
     private Float priceActual;
     private boolean isSetPayPassword;
+    private int i = 1;
 
     public PayDialog(@NonNull MvpBaseActivity context, CommitOrderEntiy orderEntiy,float priceActual) {
         super(context, R.style.ShareDialog);
@@ -198,7 +201,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         imgBalance.setSelected(true);
-        tvTitle.setText(orderEntiy.getPayMoney()+"");
+        tvTitle.setText(orderEntiy.getPayPopUpMessage()+"");
         PayTimerUtils payTimerUtils = new PayTimerUtils(tvPayTime, 60000, 1000);
         payTimerUtils.start();
     }
@@ -238,6 +241,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 break;
             case R.id.tv_payment:
                 /*点击支付*/
+                AdUtils.ordinaryType = "ordina";
                 LogUtils.e(imgBalance.isSelected(),imgWechat.isSelected(),imgAlipay.isSelected());
                 if (isOverdue()) {
                     /*是否是余额支付*/
@@ -434,6 +438,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                                 aliPayUtils.pay(wxPayEntity.getSign());
                                 break;
                             case Constants.PayType.WX_PAY:
+                                AdUtils.ordinaryType = "ordina";
                                 wxPayUtils.payOrder(AppContent.getInstance().getGson().toJson(wxPayEntity));
                                 break;
                             case Constants.PayType.BALANCE_PAY:
@@ -441,10 +446,6 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                                 if (wxPayEntity.getReturn_code().equals("SUCCESS")){
                                     EventBus.getDefault().post(new FreshOrderEntity());
                                     dismiss();
-//                                        Bundle bundle = new Bundle();
-//                                        bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
-//                                        bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.BALANCE_PAY);
-//                                        startActivity(PaySuccessActivity.class, bundle)
                                     ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
                                             "payType",Constants.PayType.BALANCE_PAY,"priceActual", String.valueOf(priceActual));
                                         context.finish();
@@ -454,12 +455,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                                 }
                                 break;
                             default:
-//                                showToast(getString(R.string.pay_Success));
                                 LogUtils.e("------------------");
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
-//                                bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.BALANCE_PAY);
-//                                startActivity(new Intent(context,PaySuccessActivity.class), bundle);
                                 ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
                                         "payType",Constants.PayType.BALANCE_PAY,"priceActual", String.valueOf(priceActual));
                                 context.finish();
@@ -481,15 +477,8 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                     ToastUtils.showToast(context,getString(R.string.pay_Success),1000);
                     dismiss();
                     EventBus.getDefault().post(new FreshOrderEntity());
-//                    if (detailsEntity != null) {
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
-//                        bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.ALI_PAY);
-//                        startActivity(PaySuccessActivity.class, bundle);
                     ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
                             "payType",Constants.PayType.ALI_PAY,"priceActual", String.valueOf(priceActual));
-
-//                    }
                     EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
                     setPayEnable();
                     context.finish();
@@ -533,16 +522,22 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                 @Override
                 public void onPaySuccess(PayWay payWay) {
                     dismiss();
-                    EventBus.getDefault().post(new FreshOrderEntity());
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString(CommonUtil.KEY_VALUE_1, orderEntiy.getOrderId());
-//                        bundle.putString(CommonUtil.KEY_VALUE_2, Constants.PayType.WX_PAY);
-//                        startActivity(PaySuccessActivity.class, bundle);
-                    ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
-                            "payType",Constants.PayType.WX_PAY,"priceActual", String.valueOf(priceActual));
-                    EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
-                    setPayEnable();
-                    context.finish();
+                    if (AdUtils.ordinaryType.equals("ordina")) {
+                        EventBus.getDefault().post(new FreshOrderEntity());
+                        LogUtils.e(orderEntiy.getOrderId() + "==" + i++);
+//                    ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
+//                            "payType",Constants.PayType.WX_PAY,);
+                        ARouter.getInstance().build(ACTIVITY_PAY_SUCCESS)
+                                .withString("orderId", orderEntiy.getOrderId())
+                                .withString("payType", Constants.PayType.WX_PAY)
+                                .withString("priceActual", String.valueOf(priceActual))
+                                .navigation();
+                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
+                        setPayEnable();
+                        context.finish();
+                    }else {
+                        context.finish();
+                    }
                 }
 
                 @Override

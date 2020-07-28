@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
@@ -35,6 +36,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +103,8 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
-        list.clear();
-        httpHomeData(1);
+//        list.clear();
+//        httpHomeData(1);
         LogUtils.e("789789789789789789789789789789789789789");
 
     }
@@ -135,6 +138,7 @@ public class MessageFragmentg extends BaseFragment {
         if (isVisibleToUser){
             list.clear();
             httpHomeData(1);
+
         }
     }
 
@@ -291,6 +295,7 @@ public class MessageFragmentg extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_read:
                 /*全部已读*/
+
                 if (isToken(getActivity())) {
                     showProgressDialog(getString(R.string.wait));
                     ConentUtils.httpMarkAll(new IsSuccess() {

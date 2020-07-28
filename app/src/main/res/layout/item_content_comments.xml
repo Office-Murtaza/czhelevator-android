@@ -88,23 +88,34 @@
             android:layout_marginLeft="@dimen/dp10"
             />
 
-        <ImageView
-            android:id="@+id/img_comments"
+        <LinearLayout
+            android:id="@+id/ll_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp10"
-            android:src="@mipmap/ic_small_connent"
-            />
+            android:orientation="horizontal"
+            android:padding="@dimen/dp5"
+            >
 
-        <TextView
-            android:id="@+id/tv_comment_hf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12回复"
-            android:layout_marginLeft="@dimen/dp5"
-            android:textColor="#ff999999"
-            android:textSize="11sp"
-            />
+            <ImageView
+                android:id="@+id/img_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10"
+                android:src="@mipmap/ic_small_connent"
+                />
+
+            <TextView
+                android:id="@+id/tv_comment_hf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12回复"
+                android:layout_marginLeft="@dimen/dp5"
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                />
+
+        </LinearLayout>
+
 
         <TextView
             android:layout_weight="1"

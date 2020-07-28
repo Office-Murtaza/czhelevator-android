@@ -119,6 +119,8 @@ public class Constance {
     public static final String IDENTITY_SUCCESS_ACTIVITY = "/app/activity/identity_success_activity";
     /**主页*/
     public static final String MAIN_ACTIVITY = "/app/activity/main_activity";
+    /**图片编辑*/
+    public static final String IMAGER_EDITOR_ACTIVITY = "/app/activity/imagereditoractivity";
 
 
 

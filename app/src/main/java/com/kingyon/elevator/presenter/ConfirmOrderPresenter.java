@@ -52,6 +52,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
      * @param adType 广告类型
      */
     public void loadCouponsInfo(double amount, String adType, Boolean isManual, String consIds) {
+        LogUtils.e(amount,adType,isManual,consIds);
         getView().showProgressDialog("请稍等..",false);
         NetService.getInstance().getCouponsInfo(amount, adType, isManual, consIds)
                 .subscribe(new CustomApiCallback<AutoCalculationDiscountEntity>() {
@@ -70,6 +71,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                             getView().showCouponsInfo(autoCalculationDiscountEntity);
                             getView().showContentView();
                             getView().hideProgressDailog();
+                            LogUtils.e(autoCalculationDiscountEntity.getActualAmount()+"========");
                         }
                     }
                 });
@@ -82,6 +84,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         if (isViewAttached()) {
             getView().showProgressView();
         }
+        getView().showProgressDialog("请稍等..",false);
         NetService.getInstance().orderIdentityInfo()
                 .subscribe(new CustomApiCallback<OrderIdentityEntity>() {
                     @Override
@@ -89,11 +92,13 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
 //                            getView().showErrorView();
+                            getView().hideProgressDailog();
                         }
                     }
 
                     @Override
                     public void onNext(OrderIdentityEntity orderIdentityEntity) {
+                        getView().hideProgressDailog();
                         if (isViewAttached()) {
                             getView().setIdentityInfo(orderIdentityEntity);
                         }
@@ -127,7 +132,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     } else {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            getView().showShortToast("上传图片失败，请重试");
+                            getView().showShortToast("上传失败，请重试");
                         }
                     }
                 });
@@ -138,7 +143,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                 handler.post(() -> {
                     if (isViewAttached()) {
                         getView().hideProgressDailog();
-                        getView().showShortToast("图片上传失败");
+                        getView().showShortToast("上传失败");
                     }
                 });
             }
@@ -189,7 +194,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     }
 
 
-    public void commitOrder(GoPlaceAnOrderEntity goPlaceAnOrderEntity, List<CouponItemEntity> couponItemEntityList, String planType, long startTime, long endTime, ADEntity adEntity) {
+    public void commitOrder(GoPlaceAnOrderEntity goPlaceAnOrderEntity, List<CouponItemEntity> couponItemEntityList,
+                            String planType, long startTime, long endTime, long adEntity) {
         if (isViewAttached()) {
             getView().showProgressDialog("订单提交中，请稍候...", false);
         }
@@ -226,7 +232,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             }
             couponIds = stringBuilder.length() > 1 ? stringBuilder.substring(0, stringBuilder.length() - 1) : "";
         }
-        NetService.getInstance().commitOrder(planType, startTime, endTime, adEntity.getObjctId()
+        NetService.getInstance().commitOrder(planType, startTime, endTime, adEntity
                 , AppContent.getInstance().getGson().toJson(deviceParams), couponIds, 100053)
                 .subscribe(new CustomApiCallback<CommitOrderEntiy>() {
                     @Override

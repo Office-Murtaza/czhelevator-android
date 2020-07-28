@@ -3,4 +3,6 @@
     <item name="statusbarutil_fake_status_bar_view" type="id" />
     <item name="statusbarutil_translucent_view" type="id" />
     <item name="controller_stop_show_play" type="id" />
+
+    <item name="anim_icon" type="id"/>
 </resources>

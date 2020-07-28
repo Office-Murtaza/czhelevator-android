@@ -33,6 +33,7 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 import java.io.File;
@@ -67,6 +68,7 @@ public class App extends LitePalApplication {
         });
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -82,9 +84,19 @@ public class App extends LitePalApplication {
         sApplication = getApplicationContext();
         FileUtils.createFile("PDD");
         okgoinit();
+        LitePal.initialize(this);
+
     }
 
 
+
+    public static double getDeviceWidth() {
+        return getDeviceWidth();
+    }
+
+    public static double getDeviceHeight() {
+        return getDeviceHeight();
+    }
 
     private void okgoinit() {
         //okGo网络框架初始化和全局配置

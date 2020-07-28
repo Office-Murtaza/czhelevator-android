@@ -33,11 +33,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_title_back"
-                       android:padding="@dimen/dp10"
+                        android:padding="@dimen/dp10"
                         android:src="@drawable/icon_back" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_40"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
@@ -75,13 +75,13 @@
                         <TextView
                             android:id="@+id/tv_search_title"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/dp_35"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/dp_8"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
                             android:paddingRight="5dp"
-                            android:text="  搜索小区名称、地址"
+                            android:text=" 搜索地区、写字楼或楼盘"
                             android:textColor="#ffababab"
                             android:drawableLeft="@mipmap/ic_search"
                             android:background="@mipmap/bg_search_area"
@@ -97,36 +97,39 @@
                             android:src="@drawable/ic_homepage_clear"
                             android:visibility="gone" />
 
-                        <RelativeLayout
-                            android:id="@+id/rl_plan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp6">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/ic_site_plan"
-                                android:padding="@dimen/dp10"
-                                />
-
-                            <TextView
-                                android:id="@+id/tv_bumber"
-                                android:layout_width="@dimen/dp20"
-                                android:layout_height="@dimen/dp20"
-                                android:gravity="center"
-                                android:visibility="gone"
-                                android:textColor="@color/white"
-                                android:textSize="10dp"
-                                android:background="@drawable/ad_top_choose_point"
-                                />
-
-                        </RelativeLayout>
-
-
                     </LinearLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/rl_plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginLeft="@dimen/dp6">
 
+                        <ImageView
+                            android:id="@+id/img_plan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_site_plan"
+                            android:padding="@dimen/dp10"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_bumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="1"
+                            android:layout_marginLeft="@dimen/dp30"
+                            android:layout_marginTop="@dimen/dp10"
+                            android:paddingLeft="@dimen/dp_4"
+                            android:paddingRight="@dimen/dp_4"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_10"
+                            android:background="@drawable/ad_top_choose_point"
+                            />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <include layout="@layout/ui_layout_divider" />
@@ -238,7 +241,7 @@
 
                         <TextView
                             android:id="@+id/tv_mag_bottom"
-                            android:layout_width="@dimen/dp20"
+                            android:layout_width="@dimen/dp_40"
                             android:layout_height="@dimen/dp_3"
                             android:layout_marginTop="@dimen/dp5"
                             android:background="@mipmap/di_tab_line_big"/>
@@ -264,13 +267,13 @@
                             android:paddingLeft="10dp"
                             android:paddingRight="@dimen/spacing_default"
                             android:text="列表选点"
-                            android:textColor="#666666"
+                            android:textColor="#90666666"
                             android:textSize="@dimen/txt_big_content"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_list_bottom"
-                            android:layout_width="@dimen/dp20"
+                            android:layout_width="@dimen/dp_40"
                             android:layout_height="@dimen/dp_3"
                             android:layout_marginTop="@dimen/dp5"
                             android:visibility="gone"
@@ -279,9 +282,6 @@
 
 
                 </LinearLayout>
-
-
-
 
 
                 <View
@@ -297,6 +297,8 @@
                     android:layout_height="match_parent"
                     android:background="@color/background"
                     />
+
+                <include layout="@layout/layout_error" />
 
             </LinearLayout>
 

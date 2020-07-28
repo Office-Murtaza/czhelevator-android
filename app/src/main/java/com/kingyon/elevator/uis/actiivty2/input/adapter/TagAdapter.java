@@ -17,7 +17,7 @@ import java.util.List;
  * @Created By Admin  on 2020/4/29
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions: 话题适配器
  */
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHodler> {
     Context context;

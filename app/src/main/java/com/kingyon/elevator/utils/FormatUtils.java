@@ -522,10 +522,10 @@ public static String incomeType(String  source){
         String result;
         switch (payWay) {
             case Constants.PayType.ALI_PAY:
-                result = "线上支付";
+                result = "支付宝支付";
                 break;
             case Constants.PayType.WX_PAY:
-                result = "线上支付";
+                result = "微信支付";
                 break;
             case Constants.PayType.BALANCE_PAY:
                 result = "余额支付";

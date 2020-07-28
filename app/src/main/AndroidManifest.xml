@@ -122,13 +122,7 @@
 
         </activity>
 
-        <activity
-            android:name=".uis.actiivty2.HomeActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme" />
 
-<!--        -->
         <activity
             android:name=".uis.activities.AdvertisionActivity"
             android:screenOrientation="portrait" />
@@ -582,7 +576,7 @@
             ></activity>
         <!--        内容详情视频-->
         <activity android:name=".uis.actiivty2.content.VoideDetailsActivity"
-            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             ></activity>
         <!--        内容详情文章-->
         <activity android:name=".uis.actiivty2.content.ArticleDetailstActivity"
@@ -689,10 +683,6 @@
         <!--2.0消息-消息推送-->
         <activity android:name=".uis.actiivty2.massage.MessagePushActivity"
             android:screenOrientation="portrait"/>
-        <!--2.0测试推送内容-->
-        <activity android:name=".uis.actiivty2.content.ContentActivity"
-            android:screenOrientation="portrait"
-            />
         <!--2.0二维码显示-->
         <activity android:name=".uis.actiivty2.user.RECodeActivity"
             android:screenOrientation="portrait"
@@ -822,6 +812,11 @@
         <!--2.0验证码绑定-->
         <activity android:name=".uis.actiivty2.user.BindingActivity"
             android:screenOrientation="portrait"/>
+
+        <!--2.0图片编辑界面-->
+        <activity android:name=".uis.actiivty2.activityutils.ImagerEditorActivity"
+            android:screenOrientation="portrait"
+            />
 
 
         <!-- ****************友盟配置****************************** -->

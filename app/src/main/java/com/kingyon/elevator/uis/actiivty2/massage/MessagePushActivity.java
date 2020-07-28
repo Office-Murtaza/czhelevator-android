@@ -43,7 +43,7 @@ import static com.czh.myversiontwo.utils.Constance.WEB_ACTIVITY;
  * @Created By Admin  on 2020/6/1
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions: 推送消息
+ * @Instructions: 机器人推送消息
  */
 @Route(path = ACTIVITY_MESSAGE_PUSH)
 public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<MassagePushEntiy> {

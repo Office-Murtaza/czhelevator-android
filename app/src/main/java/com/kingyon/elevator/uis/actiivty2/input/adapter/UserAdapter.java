@@ -18,7 +18,7 @@ import com.leo.afbaselibrary.utils.GlideUtils;
  * @Created By Admin  on 2020/4/29
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:用户适配器
  */
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHodler> {
     Context context;

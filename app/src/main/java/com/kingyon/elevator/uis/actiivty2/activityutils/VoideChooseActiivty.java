@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.actiivty2.activityutils;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.entities.entities.Material;
 import com.kingyon.elevator.entities.entities.VideoInfo;
 import com.kingyon.elevator.mvpbase.MvpBaseActivity;
 import com.kingyon.elevator.photopicker.MediaData;
@@ -32,8 +34,10 @@ import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -319,4 +323,67 @@ public class VoideChooseActiivty extends MvpBaseActivity<VoideChoosePresenter> {
         mediaData.setCompressionPath(compressionPath);
         return mediaData;
     }
+
+    /**
+     * 获取本地所有的视频
+     *
+     * @return list
+     */
+    public static List<Material> getAllLocalVideos(Context context, int uid) {
+//        long totalUploadCount = MPSManager.getInstance(context).getMpsRecordCount(uid) + 1000;
+        String[] projection = {
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.DURATION,
+                MediaStore.Video.Media.SIZE
+        };
+        //全部图片
+        String where = MediaStore.Images.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=?";
+        String[] whereArgs = {"video/mp4", "video/3gp", "video/aiv", "video/rmvb", "video/vob", "video/flv",
+                "video/mkv", "video/mov", "video/mpg"};
+        List<Material> list = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                projection, where, whereArgs, MediaStore.Video.Media.DATE_ADDED + " DESC ");
+        if (cursor == null) {
+            return list;
+        }
+        try {
+            while (cursor.moveToNext()) {
+                long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)); // 大小
+                if (size < 600 * 1024 * 1024) {//<600M
+                    Material materialBean = new Material();
+                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)); // 路径
+                    long duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)); // 时长
+                    materialBean.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME)));
+                    materialBean.setLogo(path);
+                    materialBean.setFilePath(path);
+                    materialBean.setChecked(false);
+                    materialBean.setFileType(2);
+//                    materialBean.setFileId(totalUploadCount++);
+                    materialBean.setUploadedSize(0);
+                    materialBean.setTimeStamps(System.currentTimeMillis() + "");
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                    format.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                    String t = format.format(duration);
+                    materialBean.setTime("时间" + t);
+                    materialBean.setFileSize(size);
+                    list.add(materialBean);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
+        }
+        return list;
+    }
+
 }

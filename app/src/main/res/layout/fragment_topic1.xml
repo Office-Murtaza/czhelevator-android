@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.kingyon.elevator.view.ModifyTabLayout
@@ -14,8 +15,11 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_topic"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
-
+    <include layout="@layout/layout_error"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

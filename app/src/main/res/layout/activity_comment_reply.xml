@@ -29,7 +29,6 @@
             android:id="@+id/tv_comments_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12条回复"
             android:layout_gravity="center"
             android:textColor="#ff333333"
             android:layout_marginLeft="@dimen/sp_10"
