@@ -69,7 +69,7 @@ public class InvoiceApplyActivity extends BaseStateLoadingActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"")});
+        etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(this,10,true,"发票金额超过限制值，请重新输入")});
         updateType(tvCompany);
     }
 

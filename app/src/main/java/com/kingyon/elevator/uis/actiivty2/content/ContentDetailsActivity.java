@@ -316,7 +316,7 @@ public class ContentDetailsActivity extends BaseActivity {
                     });
                     break;
                 case R.id.iv_share_news:
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title);
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title,false);
                     break;
                 case R.id.im_collection:
                     /*收藏*/

@@ -258,16 +258,23 @@ public class UserCenterActivity extends BaseActivity {
                         if (ex.getCode() == -102) {
                             if (page > 1) {
                                 ToastUtils.showShort("已经没有更多了");
-                                smartRefreshLayout.finishLoadMoreWithNoMoreData();
                             } else {
                                 rvAttentionList.setVisibility(View.GONE);
                                 rlError.setVisibility(View.GONE);
                                 rlNull.setVisibility(View.VISIBLE);
+                                rlNotlogin.setVisibility(View.GONE);
                             }
-                        } else {
+
+                        } else if (ex.getCode()==100200){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.VISIBLE);
+                        }else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.GONE);
                         }
                     }
 
@@ -279,6 +286,7 @@ public class UserCenterActivity extends BaseActivity {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
+                            rlNotlogin.setVisibility(View.GONE);
                         } else if (conentEntity.getContent().size() <= 0 && page>1) {
                             showToast("已经没有了");
                         }else {
@@ -286,6 +294,7 @@ public class UserCenterActivity extends BaseActivity {
                             rvAttentionList.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
+                            rlNotlogin.setVisibility(View.GONE);
                         }
                     }
                 });

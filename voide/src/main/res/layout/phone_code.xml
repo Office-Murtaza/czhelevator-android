@@ -133,7 +133,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <EditText
+    <com.zhaoss.weixinrecorded.view.NoMenuEditText
         android:id="@+id/et_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -142,5 +142,6 @@
         android:background="@android:color/transparent"
         android:textColor="@android:color/transparent"
         android:cursorVisible="false"
+        android:maxLines="1"
         android:inputType="number"/>
 </RelativeLayout>

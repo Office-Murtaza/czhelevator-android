@@ -5,12 +5,58 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/img_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/bj"
-        />
+    <FrameLayout
+        android:id="@+id/work_space"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000">
+        <RelativeLayout
+            android:id="@+id/rl_touch_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouch
+                android:id="@+id/main_image"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center" />
+
+            <com.xinlan.imageeditlibrary.editimage.view.StickerView
+                android:id="@+id/sticker_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <com.xinlan.imageeditlibrary.editimage.view.CropImageView
+                android:id="@+id/crop_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <com.xinlan.imageeditlibrary.editimage.view.RotateImageView
+                android:id="@+id/rotate_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <com.xinlan.imageeditlibrary.editimage.view.TextStickerView
+                android:id="@+id/text_sticker_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <com.xinlan.imageeditlibrary.editimage.view.CustomPaintView
+                android:id="@+id/custom_paint_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/ll_root"
@@ -175,13 +221,12 @@
     <RelativeLayout
         android:id="@+id/rl_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200"
-        android:background="#60f4f4f4"
+        android:layout_height="@dimen/dp_400"
+        android:background="#80000000"
         android:paddingLeft="15dp"
         android:layout_above="@+id/ll_root"
         android:paddingRight="15dp"
         android:visibility="gone"
-
         >
         <TextView
             android:id="@+id/tv_close"

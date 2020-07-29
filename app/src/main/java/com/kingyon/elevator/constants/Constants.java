@@ -150,6 +150,7 @@ public interface Constants {
         String POINT_MONEY_PAY = "POINT_MONEY_PAY";
         /*光纤费支出*/
         String BANDWIDTH_PAY = "BANDWIDTH_PAY";
+        String BROADBAND_MONEY_PAY = "BROADBAND_MONEY_PAY";
     }
 
     interface DEVICE_PLACE {//L左屏，C中屏，R右屏

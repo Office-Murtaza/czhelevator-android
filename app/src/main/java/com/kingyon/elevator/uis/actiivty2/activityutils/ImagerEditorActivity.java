@@ -75,7 +75,7 @@ public class ImagerEditorActivity extends BaseActivity {
         adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         LogUtils.e(listPath.toString());
         for (int i = 0; i < listPath.size(); i++) {
-            adapter.addFrag(new ImagerEditorFragment().setIndex(listPath.get(i)), "全部");
+            adapter.addFrag(new ImagerEditorFragment().setIndex(this,listPath.get(i)), "全部");
         }
         adapter.notifyDataSetChanged();
         vp.setAdapter(adapter);

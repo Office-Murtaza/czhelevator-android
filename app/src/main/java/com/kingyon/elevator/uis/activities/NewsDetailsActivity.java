@@ -292,7 +292,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
         if (shareDialog == null) {
             BaseSharePramsProvider<NewsSharedEntity> baseSharePramsProvider = new BaseSharePramsProvider<>(NewsDetailsActivity.this);
             baseSharePramsProvider.setShareEntity(newsSharedEntity);
-            shareDialog = new ShareDialog(NewsDetailsActivity.this, baseSharePramsProvider);
+//            shareDialog = new ShareDialog(NewsDetailsActivity.this, baseSharePramsProvider);
         }
         shareDialog.show();
     }

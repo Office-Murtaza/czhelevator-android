@@ -2,23 +2,73 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/bg_bj"
+    android:padding="@dimen/sp_10"
     >
 
     <ImageView
+        android:id="@+id/img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_arrow_back"
+        android:src="@mipmap/ic_popup_close"
+        android:padding="@dimen/dp5"
         ></ImageView>
 
     <TextView
+        android:id="@+id/tv_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="查看全文"
         android:textColor="#ff333333"
         android:textSize="14sp"
+        android:padding="@dimen/dp5"
         android:layout_centerHorizontal="true"
         />
 
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="14dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tv_bt"
+        android:layout_marginTop="@dimen/sp_10"
+        >
+
+        <TextView
+            android:id="@+id/tv_original"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="原创"
+            android:textColor="#ffff3049"
+            android:textSize="10sp"
+            android:background="@drawable/bg_ad_original"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff333333"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp10"
+            />
+    </LinearLayout>
+
+
+    <com.bobomee.android.mentions.text.MentionTextView
+        android:id="@+id/tv_content"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff333333"
+        android:textSize="@dimen/sp_16"
+        android:layout_below="@+id/ll_title"
+        />
 
 </RelativeLayout>

@@ -9,8 +9,7 @@
         android:id="@+id/ll_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-10dp"
-        android:layout_marginTop="-10dp"
+        android:layout_margin="@dimen/dp10"
         android:background="@mipmap/bg_wallet_ticket"
         android:gravity="center_vertical"
         android:orientation="horizontal">

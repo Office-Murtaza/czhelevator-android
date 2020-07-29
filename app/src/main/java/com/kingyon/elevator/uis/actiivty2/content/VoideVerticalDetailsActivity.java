@@ -28,6 +28,7 @@ import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.dialogs.CommentDialog;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
+import com.kingyon.elevator.uis.dialogs.FulltextDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
@@ -148,6 +149,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         }
                         tvLikeNumer.setText(recommendEntity.likes + "");
                         tvCommentsNumber.setText(recommendEntity.comments + "");
+                        tvContent.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
                         GlideUtils.loadCircleImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait);
                         if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())) {
                             tvAttention.setVisibility(View.GONE);
@@ -212,7 +214,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     @OnClick({R.id.img_jb, R.id.btn_send,
             R.id.iv_dianzan, R.id.iv_share_news, R.id.img_like,
             R.id.img_comments, R.id.img_collect, R.id.img_share,
-            R.id.input_comment, R.id.tv_attention,R.id.img_bake, })
+            R.id.input_comment, R.id.tv_attention,R.id.img_bake,R.id.tv_qw })
     public void onViewClicked(View view) {
 
             switch (view.getId()) {
@@ -220,8 +222,8 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                     finish();
                     break;
                 case R.id.tv_qw:
-
-
+                    FulltextDialog fulltextDialog = new FulltextDialog(this,recommendEntity);
+                    fulltextDialog.show();
                     break;
                 case R.id.img_jb:
                         if (TokenUtils.isToken(this)) {
@@ -315,7 +317,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                     break;
                 case R.id.img_share:
                     /*分享*/
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www。baidu.com", recommendEntity.title);
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www。baidu.com", recommendEntity.title,true);
                     break;
                 case R.id.input_comment:
                     /*评论*/

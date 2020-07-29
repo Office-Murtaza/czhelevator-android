@@ -27,21 +27,25 @@ import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
+import retrofit2.http.PUT;
 
 public class ShareDialog extends Dialog implements OnClickListener,
         PlatformActionListener {
 
     protected Context mContext;
     protected ShareParamsProvider paramsProvider;
-    protected View shareQQ, shareMore, shareQzone, shareWechat, shareWechatMoments,
+    protected Oncilk oncilk;
+    protected View shareQQ, shareMore, shareQzone, shareWechat, shareWechatMoments,tv_throw,
             shareSina, shareCancel;
+    boolean isshow;
 
     protected ProgressDialog promotWaitBar;
     private final static int COMPLETE = 0, CANCEL = 1, ERROR = 2;
 
-    public ShareDialog(Context context, ShareParamsProvider paramsProvider) {
+    public ShareDialog(Context context, ShareParamsProvider paramsProvider,boolean isshow ) {
         super(context, R.style.ShareDialog);
         this.mContext = context;
+        this.isshow = isshow;
         setContentView(getLayoutId());
         Window window = getWindow();
         if (window != null) {
@@ -83,6 +87,12 @@ public class ShareDialog extends Dialog implements OnClickListener,
         shareSina = findViewById(R.id.share_sinaweibo);
         shareCancel = findViewById(R.id.share_btn_cancel);
         shareMore = findViewById(R.id.share_more);
+        tv_throw = findViewById(R.id.tv_throw);
+        if (isshow){
+            tv_throw.setVisibility(View.VISIBLE);
+        }else {
+            tv_throw.setVisibility(View.GONE);
+        }
 
         shareQQ.setOnClickListener(this);
         shareQzone.setOnClickListener(this);
@@ -91,6 +101,7 @@ public class ShareDialog extends Dialog implements OnClickListener,
         shareSina.setOnClickListener(this);
         shareCancel.setOnClickListener(this);
         shareMore.setOnClickListener(this);
+        tv_throw.setOnClickListener(this);
     }
 
     @Override
@@ -113,6 +124,7 @@ public class ShareDialog extends Dialog implements OnClickListener,
             plat = ShareSDK.getPlatform(QQ.NAME);
             plat.setPlatformActionListener(this);
             plat.share(paramsProvider.getParamsQQ());
+            oncilk.setOncilk("SHAREQQ");
         }
 //        else if (v == shareQzone) {
 //            plat = ShareSDK.getPlatform(QZone.NAME);
@@ -123,20 +135,26 @@ public class ShareDialog extends Dialog implements OnClickListener,
             plat = ShareSDK.getPlatform(Wechat.NAME);
             plat.setPlatformActionListener(this);
             plat.share(paramsProvider.getParamsWeChat());
+            oncilk.setOncilk("SHAREWECHAT");
         } else if (v == shareWechatMoments) {
             plat = ShareSDK.getPlatform(WechatMoments.NAME);
             plat.setPlatformActionListener(this);
             plat.share(paramsProvider.getParamsWeChatMoments());
+            oncilk.setOncilk("SHAREWECHATMOMENTS");
         } else if (v == shareSina) {
             plat = ShareSDK.getPlatform(SinaWeibo.NAME);
             plat.setPlatformActionListener(this);
             plat.share(paramsProvider.getParamsSina());
+            oncilk.setOncilk("SHARESINA");
         } else if (v == shareMore) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, paramsProvider.getParamsMore());
             sendIntent.setType("text/plain");
             mContext.startActivity(Intent.createChooser(sendIntent, "分享"));
+            oncilk.setOncilk("SHAREMORE");
+        }else if (v==tv_throw){
+            oncilk.setOncilk("THOROEW");
         }
     }
 
@@ -201,4 +219,11 @@ public class ShareDialog extends Dialog implements OnClickListener,
         this.paramsProvider = paramsProvider;
     }
 
+    public void setDialoOncilk(Oncilk oncilk) {
+        this.oncilk = oncilk;
+    }
+
+    public interface Oncilk{
+        void setOncilk(String type);
+    }
 }

@@ -141,7 +141,7 @@ public class TopicDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_jb:
-                SharedUtils.shared(this,shareDialog,homeTopicConentEntity.content,"www.baidu.com",homeTopicConentEntity.title);
+                SharedUtils.shared(this,shareDialog,homeTopicConentEntity.content,"www.baidu.com",homeTopicConentEntity.title,false);
                 break;
             case R.id.img_release:
                 ActivityUtils.setActivity(ACTIVITY_MAIN2_COMMUNITY_RELEASETY,

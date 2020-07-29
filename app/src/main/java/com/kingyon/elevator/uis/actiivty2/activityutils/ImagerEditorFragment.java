@@ -1,15 +1,35 @@
 package com.kingyon.elevator.uis.actiivty2.activityutils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -20,15 +40,34 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
 import com.kingyon.elevator.view.ColorBar;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
-import com.leo.afbaselibrary.utils.GlideUtils;
 import com.marvhong.videoeffect.helper.MagicFilterFactory;
 import com.marvhong.videoeffect.helper.MagicFilterType;
 import com.marvhong.videoeffect.utils.ConfigUtils;
+import com.xinlan.imageeditlibrary.BaseActivity;
+import com.xinlan.imageeditlibrary.editimage.fliter.PhotoProcessing;
+import com.xinlan.imageeditlibrary.editimage.fragment.AddTextFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.BeautyFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.CropFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.FilterListFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.PaintFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.RotateFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.StickerFragment;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.editimage.view.CropImageView;
+import com.xinlan.imageeditlibrary.editimage.view.CustomPaintView;
+import com.xinlan.imageeditlibrary.editimage.view.RotateImageView;
+import com.xinlan.imageeditlibrary.editimage.view.StickerView;
+import com.xinlan.imageeditlibrary.editimage.view.TextStickerView;
+import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouch;
+import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouchBase;
+import com.xinlan.imageeditlibrary.editimage.widget.RedoUndoController;
 import com.yalantis.ucrop.UCrop;
 import com.zhaoss.weixinrecorded.activity.MyiconAdapter;
 import com.zhaoss.weixinrecorded.util.FilterModel;
+import com.zhaoss.weixinrecorded.util.Utils;
 import com.zhaoss.weixinrecorded.view.TouchView;
 
 import java.io.File;
@@ -42,15 +81,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+
 /**
  * @Created By Admin  on 2020/7/22
  * @Email : 163235610@qq.com
  * @Author:Mrczh
  * @Instructions:
  */
-public class ImagerEditorFragment extends BaseFragment {
-    @BindView(R.id.img_image)
-    ImageView imgImage;
+public class ImagerEditorFragment extends BaseFragment implements ColorBar.ColorChangeListener {
+
     Unbinder unbinder;
     @BindView(R.id.ll_edit_filter)
     LinearLayout llEditFilter;
@@ -86,18 +125,105 @@ public class ImagerEditorFragment extends BaseFragment {
     LinearLayout llEffectContainer;
     @BindView(R.id.hsv_effect)
     HorizontalScrollView hsvEffect;
+
+    @BindView(R.id.main_image)
+    ImageViewTouch mainImage;
+    @BindView(R.id.sticker_panel)
+    StickerView stickerPanel;
+    @BindView(R.id.crop_panel)
+    CropImageView cropPanel;
+    @BindView(R.id.rotate_panel)
+    RotateImageView rotatePanel;
+    @BindView(R.id.text_sticker_panel)
+    TextStickerView textStickerPanel;
+    @BindView(R.id.custom_paint_view)
+    CustomPaintView customPaintView;
+    @BindView(R.id.work_space)
+    FrameLayout workSpace;
+    @BindView(R.id.rl_touch_view)
+    RelativeLayout rlTouchView;
     private String imgPath;
 
     /*功能*/
     public boolean isFilter = true;
     public boolean isSticket = true;
     public boolean isText = true;
+
+    /**
+     * 贴图Fragment
+     */
+    public StickerFragment mStickerFragment;
+    /**
+     * 滤镜FliterListFragment
+     */
+    public FilterListFragment mFilterListFragment;
+    /**
+     * 图片剪裁Fragment
+     */
+    public CropFragment mCropFragment;
+    /**
+     * 图片旋转Fragment
+     */
+    public RotateFragment mRotateFragment;
+    /**
+     * 图片添加文字
+     */
+    public AddTextFragment mAddTextFragment;
+    /**
+     * 绘制模式Fragment
+     */
+    public PaintFragment mPaintFragment;
+    /**
+     * 美颜模式Fragment
+     */
+    public BeautyFragment mBeautyFragment;
+
+    private LoadImageTask mLoadImageTask;
+
+    /**
+     * 展示图片控件 宽 高
+     */
+    private int imageWidth, imageHeight;
+
+    /**
+     * 底层显示Bitmap
+     */
+    private Bitmap mainBitmap;
+
+    /**
+     * 滤镜处理后的bitmap
+     */
+    private Bitmap fliterBit;
+
+    /**
+     * 标记变量
+     */
+    private Bitmap currentBitmap;
+
+    /**
+     * 撤销操作
+     */
+    private RedoUndoController mRedoUndoController;
+
     private List<FilterModel> mVideoEffects = new ArrayList<>(); //视频滤镜效果
     private MagicFilterType[] mMagicFilterTypes;
     private List<String> strlist = new ArrayList<>();
     private List<Integer> integers = new ArrayList<>();
-    public ImagerEditorFragment setIndex(String imgPath) {
+
+    protected int mOpTimes = 0;
+    protected boolean isBeenSaved = false;
+    Context contex;
+
+    private int windowWidth;
+    private int windowHeight;
+    private int dp100;
+
+    boolean isFirstShowEditText;
+    private InputMethodManager manager;
+
+    public ImagerEditorFragment setIndex(Context context, String imgPath) {
         this.imgPath = imgPath;
+        this.contex = context;
         return (this);
     }
 
@@ -109,9 +235,57 @@ public class ImagerEditorFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         LogUtils.e(imgPath);
-        GlideUtils.loadImage(getActivity(), imgPath, imgImage);
+        loadImage(imgPath);
+        initTopView();
         initFfects();
         initExpression();
+        initTextSpeed();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            initView();
+        }
+    }
+
+    private void initTopView() {
+        DisplayMetrics metrics = contex.getResources().getDisplayMetrics();
+        imageWidth = metrics.widthPixels / 2;
+        imageHeight = metrics.heightPixels / 2;
+
+        dp100 = (int) getResources().getDimension(com.zhaoss.weixinrecorded.R.dimen.dp100);
+        windowWidth = Utils.getWindowWidth(getActivity());
+        windowHeight = Utils.getWindowHeight(getActivity());
+        LogUtils.e(imageWidth, imageHeight,windowWidth,windowHeight);
+        colorbar.setOnColorChangerListener(this);
+
+
+        mStickerFragment = StickerFragment.newInstance();
+        mFilterListFragment = FilterListFragment.newInstance();
+        mCropFragment = CropFragment.newInstance();
+        mRotateFragment = RotateFragment.newInstance();
+        mAddTextFragment = AddTextFragment.newInstance();
+        mPaintFragment = PaintFragment.newInstance();
+        mBeautyFragment = BeautyFragment.newInstance();
+//        initColors();
+
+        etTag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvTag.setText(s.toString());
+                LogUtils.e(tvTag.getWidth(),tvTag.getHeight());
+            }
+        });
     }
 
     @Override
@@ -136,45 +310,42 @@ public class ImagerEditorFragment extends BaseFragment {
     @OnClick({R.id.ll_edit_filter, R.id.ll_edit_sticket, R.id.ll_edit_text,
             R.id.ll_edit_cut, R.id.ll_edit_fuzzy, R.id.ll_root, R.id.rl_expression,
             R.id.tv_close, R.id.tv_finish, R.id.tv_tag, R.id.tv_size, R.id.rl_edit_text,
-            R.id.ll_effect_container, R.id.hsv_effect,R.id.img_image})
+            R.id.ll_effect_container, R.id.hsv_effect})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_image:
-                initView();
-                break;
             case R.id.ll_edit_filter:
                 /*滤镜*/
                 if (isFilter) {
                     isFilter = false;
                     hsvEffect.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     isFilter = true;
                     hsvEffect.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_edit_sticket:
                 /*贴图*/
-                if (isSticket){
+                if (isSticket) {
                     isSticket = false;
                     rlExpression.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     isSticket = true;
                     rlExpression.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_edit_text:
                 /*文字*/
-                if (isText){
+                if (isText) {
                     isText = false;
                     rlEditText.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     isText = true;
                     rlEditText.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_edit_cut:
                 /*剪切*/
-                startCrop(getActivity(),Uri.fromFile(new File(imgPath)));
+                startCrop(getActivity(), Uri.fromFile(new File(imgPath)));
                 break;
             case R.id.ll_edit_fuzzy:
                 /*马赛克*/
@@ -187,10 +358,17 @@ public class ImagerEditorFragment extends BaseFragment {
 
                 break;
             case R.id.tv_close:
+                initView();
 
                 break;
             case R.id.tv_finish:
-
+                LogUtils.e("==============");
+                initView();
+//                changeTextState(!(rlEditText.getVisibility() == View.VISIBLE));
+                LogUtils.e(colorbar.getCurrentColor());
+                if (etTag.getText().length() > 0) {
+                    addTextToWindow(colorbar.getCurrentColor());
+                }
                 break;
             case R.id.tv_tag:
 
@@ -217,35 +395,40 @@ public class ImagerEditorFragment extends BaseFragment {
         hsvEffect.setVisibility(View.GONE);
         rlExpression.setVisibility(View.GONE);
         rlEditText.setVisibility(View.GONE);
+        SoftkeyboardUtils.hideInput(getActivity());
+
     }
 
 
     private void initFfects() {
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression1);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression2);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression3);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression4);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression5);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression6);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression7);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression8);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression9);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression10);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression11);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression12);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression13);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.expression14);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s1);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s2);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s3);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s4);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s5);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s6);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s11);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s7);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s8);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s9);
-        integers.add(com.zhaoss.weixinrecorded.R.mipmap.s10);
+        integers.add(R.mipmap.bg_sticker_01);
+        integers.add(R.mipmap.bg_sticker_02);
+        integers.add(R.mipmap.bg_sticker_03);
+        integers.add(R.mipmap.bg_sticker_04);
+        integers.add(R.mipmap.bg_sticker_05);
+        integers.add(R.mipmap.bg_sticker_06);
+        integers.add(R.mipmap.bg_sticker_07);
+        integers.add(R.mipmap.bg_sticker_08);
+        integers.add(R.mipmap.bg_sticker_09);
+        integers.add(R.mipmap.bg_sticker_10);
+        integers.add(R.mipmap.bg_sticker_11);
+        integers.add(R.mipmap.bg_sticker_12);
+        integers.add(R.mipmap.bg_sticker_13);
+        integers.add(R.mipmap.bg_sticker_14);
+        integers.add(R.mipmap.bg_sticker_15);
+        integers.add(R.mipmap.bg_sticker_16);
+        integers.add(R.mipmap.bg_sticker_17);
+        integers.add(R.mipmap.bg_sticker_18);
+        integers.add(R.mipmap.bg_sticker_19);
+        integers.add(R.mipmap.bg_sticker_20);
+        integers.add(R.mipmap.bg_sticker_21);
+        integers.add(R.mipmap.bg_sticker_22);
+        integers.add(R.mipmap.bg_sticker_23);
+        integers.add(R.mipmap.bg_sticker_24);
+        integers.add(R.mipmap.bg_sticker_25);
+        integers.add(R.mipmap.bg_sticker_26);
+        integers.add(R.mipmap.bg_sticker_27);
+        integers.add(R.mipmap.bg_sticker_28);
 
         strlist.add("原图");
         strlist.add("胶片");
@@ -280,13 +463,14 @@ public class ImagerEditorFragment extends BaseFragment {
         addEffectView();
 
     }
+
     private void addEffectView() {
         llEffectContainer.removeAllViews();
         for (int i = 0; i < mVideoEffects.size(); i++) {
             View itemView = LayoutInflater.from(getActivity())
-                    .inflate(com.zhaoss.weixinrecorded.R.layout.item_video_effect, llEffectContainer, false);
-            TextView tv = itemView.findViewById(com.zhaoss.weixinrecorded.R.id.tv);
-            ImageView iv = itemView.findViewById(com.zhaoss.weixinrecorded.R.id.iv);
+                    .inflate(R.layout.item_video_effect, llEffectContainer, false);
+            TextView tv = itemView.findViewById(R.id.tv);
+            ImageView iv = itemView.findViewById(R.id.iv);
             FilterModel model = mVideoEffects.get(i);
             int thumbId = MagicFilterFactory.filterType2Thumb(mMagicFilterTypes[i]);
             iv.setImageResource(thumbId);
@@ -298,7 +482,7 @@ public class ImagerEditorFragment extends BaseFragment {
                 public void onClick(View view) {
                     for (int j = 0; j < llEffectContainer.getChildCount(); j++) {
                         View tempItemView = llEffectContainer.getChildAt(j);
-                        TextView tempTv = tempItemView.findViewById(com.zhaoss.weixinrecorded.R.id.tv);
+                        TextView tempTv = tempItemView.findViewById(R.id.tv);
                         FilterModel tempModel = mVideoEffects.get(j);
                         if (j == index) {
                             //选中的滤镜效果
@@ -306,6 +490,9 @@ public class ImagerEditorFragment extends BaseFragment {
                                 tempTv.setTextColor(Color.parseColor("#f00000"));
 //                                openEffectAnimation(tempTv, tempModel, true);
                                 tempModel.setChecked(true);
+                                ProcessingImage task = new ProcessingImage();
+                                task.execute(j);
+                                initView();
                             }
                             ConfigUtils.getInstance().setMagicFilterType(mMagicFilterTypes[j]);
                             LogUtils.e(MagicFilterFactory.getFilter().getFragmentShader(), MagicFilterFactory.getFilter());
@@ -325,12 +512,13 @@ public class ImagerEditorFragment extends BaseFragment {
         }
 
     }
+
     /**
      * 初始化表情
      */
     private void initExpression() {
-        int dp80 = (int) getResources().getDimension(com.zhaoss.weixinrecorded.R.dimen.dp80);
-        int dp10 = (int) getResources().getDimension(com.zhaoss.weixinrecorded.R.dimen.dp10);
+        int dp80 = (int) getResources().getDimension(R.dimen.dp80);
+        int dp10 = (int) getResources().getDimension(R.dimen.dp10);
         GridView gridView = new GridView(getActivity());
         gridView.setPadding(dp10, dp10, dp10, dp10);
         gridView.setNumColumns(4);
@@ -343,7 +531,7 @@ public class ImagerEditorFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 rlExpression.setVisibility(View.GONE);
 //                iv_icon.setImageResource(R.mipmap.icon);
-//                addExpressionToWindow(integers.get(position));
+                addExpressionToWindow(integers.get(position));
             }
         });
         rlExpression.addView(gridView);
@@ -353,49 +541,48 @@ public class ImagerEditorFragment extends BaseFragment {
      * 添加表情到界面上
      */
     private void addExpressionToWindow(int result) {
-//        TouchView touchView = new TouchView(this);
-//        touchView.setBackgroundResource(result);
-//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp100, dp100);
-//        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-//        touchView.setLayoutParams(layoutParams);
-//
-//        touchView.setLimitsX(0, windowWidth);
-//        touchView.setLimitsY(0, windowHeight - dp100 / 2);
-//        touchView.setOnLimitsListener(new TouchView.OnLimitsListener() {
-//            @Override
-//            public void OnOutLimits(float x, float y) {
+        TouchView touchView = new TouchView(getActivity());
+        touchView.setBackgroundResource(result);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp100, dp100);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        touchView.setLayoutParams(layoutParams);
+
+        touchView.setLimitsX(0, windowWidth);
+        touchView.setLimitsY(0, windowHeight - dp100 / 2);
+        touchView.setOnLimitsListener(new TouchView.OnLimitsListener() {
+            @Override
+            public void OnOutLimits(float x, float y) {
 //                tv_hint_delete.setTextColor(Color.RED);
-//            }
-//
-//            @Override
-//            public void OnInnerLimits(float x, float y) {
+            }
+
+            @Override
+            public void OnInnerLimits(float x, float y) {
 //                tv_hint_delete.setTextColor(Color.WHITE);
-//            }
-//        });
-//        touchView.setOnTouchListener(new TouchView.OnTouchListener() {
-//            @Override
-//            public void onDown(TouchView view, MotionEvent event) {
+            }
+        });
+        touchView.setOnTouchListener(new TouchView.OnTouchListener() {
+            @Override
+            public void onDown(TouchView view, MotionEvent event) {
 //                tv_hint_delete.setVisibility(View.VISIBLE);
-//                Log.e("TAG",event.toString());
-//                changeMode(false);
-//            }
-//
-//            @Override
-//            public void onMove(TouchView view, MotionEvent event) {
-//
-//            }
-//
-//            @Override
-//            public void onUp(TouchView view, MotionEvent event) {
+                Log.e("TAG",event.toString());
+
+            }
+
+            @Override
+            public void onMove(TouchView view, MotionEvent event) {
+
+            }
+
+            @Override
+            public void onUp(TouchView view, MotionEvent event) {
 //                tv_hint_delete.setVisibility(View.GONE);
-//                changeMode(true);
-//                if (view.isOutLimits()) {
-//                    rl_touch_view.removeView(view);
-//                }
-//            }
-//        });
-//
-//        rl_touch_view.addView(touchView);
+                if (view.isOutLimits()) {
+                    rlTouchView.removeView(view);
+                }
+            }
+        });
+
+        rlTouchView.addView(touchView);
     }
 
     public static void startCrop(Activity activity, Uri uri) {
@@ -411,4 +598,266 @@ public class ImagerEditorFragment extends BaseFragment {
         options.setFreeStyleCropEnabled(true);
         UCrop.of(sourceUri, destinationUri).start(activity, UCrop.REQUEST_CROP);
     }
+
+
+    /**
+     * 异步载入编辑图片
+     *
+     * @param filepath
+     */
+    public void loadImage(String filepath) {
+        if (mLoadImageTask != null) {
+            mLoadImageTask.cancel(true);
+        }
+        mLoadImageTask = new LoadImageTask();
+        mLoadImageTask.execute(filepath);
+    }
+
+    @Override
+    public void colorChange(int color) {
+        etTag.setTextColor(color);
+    }
+
+    /**
+     * 导入文件图片任务
+     */
+    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return BitmapUtils.getSampledBitmap(params[0], 570,
+                    1280);
+//            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            changeMainBitmap(result, false);
+        }
+    }// end inner class
+
+    /**
+     * @param newBit
+     * @param needPushUndoStack
+     */
+    public void changeMainBitmap(Bitmap newBit, boolean needPushUndoStack) {
+        if (newBit == null)
+            return;
+        if (mainBitmap == null || mainBitmap != newBit) {
+            if (needPushUndoStack) {
+                mRedoUndoController.switchMainBit(mainBitmap, newBit);
+                increaseOpTimes();
+            }
+            mainBitmap = newBit;
+            mainImage.setImageBitmap(mainBitmap);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+        }
+    }
+
+
+    public void increaseOpTimes() {
+        mOpTimes++;
+        isBeenSaved = false;
+    }
+
+    public Bitmap getMainBit() {
+        return mainBitmap;
+    }
+
+    private final class ProcessingImage extends AsyncTask<Integer, Void, Bitmap> {
+        private Dialog dialog;
+        private Bitmap srcBitmap;
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            int type = params[0];
+            if (srcBitmap != null && !srcBitmap.isRecycled()) {
+                srcBitmap.recycle();
+            }
+
+            srcBitmap = Bitmap.createBitmap(getMainBit().copy(
+                    Bitmap.Config.ARGB_8888, true));
+            return PhotoProcessing.filterPhoto(srcBitmap, type);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+        }
+
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onCancelled(Bitmap result) {
+            super.onCancelled(result);
+            dialog.dismiss();
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+            if (result == null)
+                return;
+            if (fliterBit != null && (!fliterBit.isRecycled())) {
+                fliterBit.recycle();
+            }
+            fliterBit = result;
+            mainImage.setImageBitmap(fliterBit);
+            currentBitmap = fliterBit;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = BaseActivity.getLoadingDialog(getActivity(), com.xinlan.imageeditlibrary.R.string.handing,
+                    false);
+            dialog.show();
+        }
+
+    }
+
+    /**
+     * 添加文字到界面上
+     */
+    private void addTextToWindow(int currentColor) {
+        LogUtils.e(colorbar.getCurrentColor(),etTag.getWidth(),etTag.getHeight());
+        etTag.setTextColor(currentColor);
+        etTag.setTextColor(currentColor);
+        tvTag.setTextSize(Float.parseFloat(tvSize.getText().toString()));
+        TouchView touchView = new TouchView(getActivity());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tvTag.getWidth(), tvTag.getHeight());
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        touchView.setLayoutParams(layoutParams);
+        Bitmap bitmap = Bitmap.createBitmap(tvTag.getWidth(), tvTag.getHeight(), Bitmap.Config.ARGB_8888);
+        tvTag.draw(new Canvas(bitmap));
+//        touchView.setImageBitmap(bitmap);
+        touchView.setBackground(new BitmapDrawable(bitmap));
+//        touchView.setBackgroundResource(R.mipmap.color_click);
+        touchView.setPadding(10,10,10,10);
+        touchView.setLimitsX(0, windowWidth);
+        touchView.setLimitsY(0, windowHeight - dp100 / 2);
+        touchView.setOnLimitsListener(new TouchView.OnLimitsListener() {
+            @Override
+            public void OnOutLimits(float x, float y) {
+//                tv_hint_delete.setTextColor(Color.RED);
+            }
+
+            @Override
+            public void OnInnerLimits(float x, float y) {
+//                tv_hint_delete.setTextColor(Color.WHITE);
+            }
+        });
+        touchView.setOnTouchListener(new TouchView.OnTouchListener() {
+            @Override
+            public void onDown(TouchView view, MotionEvent event) {
+//                tv_hint_delete.setVisibility(View.VISIBLE);
+//                changeMode(false);
+            }
+
+            @Override
+            public void onMove(TouchView view, MotionEvent event) {
+
+            }
+
+            @Override
+            public void onUp(TouchView view, MotionEvent event) {
+//                tv_hint_delete.setVisibility(View.GONE);
+//                changeMode(true);
+                if (view.isOutLimits()) {
+                    rlTouchView.removeView(view);
+                }
+            }
+        });
+        rlTouchView.addView(touchView);
+        etTag.setText("");
+        tvTag.setTextColor(Color.parseColor( "#FA0606" ));
+        textSize.setProgress(14);
+        colorbar.setWz(60);
+        tvTag.setText("");
+    }
+
+
+    private void initTextSpeed() {
+        textSize.setMax(40);
+        textSize.setProgress(14);
+        textSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvSize.setText((progress+10) + "");
+                etTag.setTextSize((progress+10));
+                tvTag.setTextSize((progress+10));
+                LogUtils.e(tvTag.getWidth(),tvTag.getHeight());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+    }
+
+
+    /**
+     * 弹出键盘
+     */
+    public void popupEditText() {
+
+        isFirstShowEditText = true;
+        etTag.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (isFirstShowEditText) {
+                    isFirstShowEditText = false;
+                    etTag.setFocusable(true);
+                    etTag.setFocusableInTouchMode(true);
+                    etTag.requestFocus();
+                    isFirstShowEditText = !manager.showSoftInput(etTag, 0);
+                }
+            }
+        });
+    }
+
+    /**
+     * 执行文字编辑区域动画
+     */
+    private void startAnim(float start, float end, AnimatorListenerAdapter listenerAdapter) {
+
+        ValueAnimator va = ValueAnimator.ofFloat(start, end).setDuration(200);
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                rlEditText.setY(value);
+            }
+        });
+        if (listenerAdapter != null) va.addListener(listenerAdapter);
+        va.start();
+    }
+
+    /**
+     * 更改文字输入状态的界面
+     */
+    private void changeTextState(boolean flag) {
+
+        if (flag) {
+            rlEditText.setY(windowHeight);
+            rlEditText.setVisibility(View.VISIBLE);
+            startAnim(rlEditText.getY(), 0, null);
+            popupEditText();
+        } else {
+            manager.hideSoftInputFromWindow(etTag.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            startAnim(0, windowHeight, new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    rlEditText.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
 }

@@ -108,6 +108,7 @@ public class OrderCouponsActivity extends BaseStateRefreshingLoadingActivity<Obj
                             mItems.clear();
                         }
                         if (couponItemEntities != null) {
+
                             List<CouponItemEntity> discountCoupons = new ArrayList<>();
                             List<CouponItemEntity> voucherCoupons = new ArrayList<>();
                             for (CouponItemEntity item : couponItemEntities) {

@@ -267,7 +267,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             @Override
             public void onClick(View v) {
 //                SharedUtils.shared(context,"内容","http://www.gzonehr.cn/","标题");
-                SharedUtils.shared(context,shareDialog,queryRecommendEntity.content,"www.baidu.com",queryRecommendEntity.title);
+                SharedUtils.shared(context,shareDialog,queryRecommendEntity.content,"www.baidu.com",queryRecommendEntity.title,false);
             }
         });
 

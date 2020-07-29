@@ -217,6 +217,7 @@ public static String incomeType(String  source){
         case Constants.INCOME_TYPE.POINT_MONEY_PAY:
             result = "物业";
             break;
+        case Constants.INCOME_TYPE.BROADBAND_MONEY_PAY:
         case Constants.INCOME_TYPE.BANDWIDTH_PAY:
             result = "光纤";
             break;

@@ -143,7 +143,11 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
                         loadingComplete(true, couponItemEntityPageListEntity.getTotalPages());
                         FragmentActivity activity = getActivity();
                         if (activity instanceof MyCouponsActivty) {
-                            ((MyCouponsActivty) activity).resultNumber(status, couponItemEntityPageListEntity.getTotalElements());
+                            int num = 0;
+                            for (int i=0;i<couponItemEntityPageListEntity.getContent().size();i++){
+                                num = num + couponItemEntityPageListEntity.getContent().get(i).getCouponsCount();
+                            }
+                            ((MyCouponsActivty) activity).resultNumber(status, num);
                         }
                     }
                 });

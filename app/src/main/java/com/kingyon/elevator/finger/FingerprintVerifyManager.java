@@ -1,9 +1,9 @@
 package com.kingyon.elevator.finger;
 
 import android.app.Activity;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.finger.bean.VerificationDialogStyleBean;

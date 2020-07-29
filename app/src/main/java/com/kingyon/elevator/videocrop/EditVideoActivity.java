@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -52,7 +53,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -583,17 +583,34 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             }
         });
 
-        integers.add(R.mipmap.expression1);integers.add(R.mipmap.expression2);
-        integers.add(R.mipmap.expression3);integers.add(R.mipmap.expression4);
-        integers.add(R.mipmap.expression5);integers.add(R.mipmap.expression6);
-        integers.add(R.mipmap.expression7);integers.add(R.mipmap.expression8);
-        integers.add(R.mipmap.expression9);integers.add(R.mipmap.expression10);
-        integers.add(R.mipmap.expression11);integers.add(R.mipmap.expression12);
-        integers.add(R.mipmap.expression13);integers.add(R.mipmap.expression14);
-        integers.add(R.mipmap.s1);integers.add(R.mipmap.s2);integers.add(R.mipmap.s3);
-        integers.add(R.mipmap.s4);integers.add(R.mipmap.s5);integers.add(R.mipmap.s6);
-        integers.add(R.mipmap.s11);integers.add(R.mipmap.s7);integers.add(R.mipmap.s8);
-        integers.add(R.mipmap.s9);integers.add(R.mipmap.s10);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_01);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_02);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_03);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_04);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_05);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_06);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_07);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_08);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_09);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_10);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_11);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_12);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_13);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_14);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_15);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_16);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_17);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_18);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_19);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_20);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_21);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_22);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_23);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_24);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_25);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_26);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_27);
+        integers.add(com.kingyon.elevator.R.mipmap.bg_sticker_28);
 
         strlist.add("原图");strlist.add("胶片");strlist.add("怀旧");
         strlist.add("黑白");strlist.add("色温");strlist.add("重叠");

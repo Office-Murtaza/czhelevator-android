@@ -2,11 +2,11 @@ package com.kingyon.elevator.customview;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;

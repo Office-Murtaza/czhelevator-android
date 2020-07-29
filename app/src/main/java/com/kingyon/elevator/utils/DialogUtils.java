@@ -2,8 +2,8 @@ package com.kingyon.elevator.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.annotation.ColorRes;
 
-import androidx.annotation.ColorRes;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.customview.CashTipsDialog;

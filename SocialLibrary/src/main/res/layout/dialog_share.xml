@@ -74,6 +74,21 @@
             android:text="QQ"
             android:textColor="@color/coical_dialog_textcolor"
             android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_throw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_share_putin"
+            android:gravity="center_horizontal"
+            android:text="一键投放"
+            android:visibility="gone"
+            android:textColor="@color/coical_dialog_textcolor"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
 

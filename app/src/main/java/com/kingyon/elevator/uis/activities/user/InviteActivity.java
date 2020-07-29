@@ -113,7 +113,7 @@ public class InviteActivity extends BaseStateRefreshingActivity {
                 if (shareDialog == null) {
                     BaseSharePramsProvider<RecommendInfoEntity> baseSharePramsProvider = new BaseSharePramsProvider<>(this);
                     baseSharePramsProvider.setShareEntity(recommendInfo);
-                    shareDialog = new ShareDialog(this, baseSharePramsProvider);
+//                    shareDialog = new ShareDialog(this, baseSharePramsProvider);
                 }
                 shareDialog.show();
                 break;

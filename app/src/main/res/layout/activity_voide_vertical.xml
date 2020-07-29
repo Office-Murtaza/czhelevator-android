@@ -118,7 +118,6 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="手把手教你绝美的广告拍摄技巧"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -140,7 +139,6 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="描述内容--刘兵亮发起了刘兵亮发起了“汉字百人舞”征集设计师集体#字体设计大赛#"
                 android:textColor="#ffffffff"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginBottom="@dimen/dp10"
@@ -162,6 +160,7 @@
                 android:padding="@dimen/dp5"
                 android:visibility="gone"
                 android:layout_marginRight="@dimen/sp_10"
+                android:layout_marginBottom="@dimen/dp10"
                 ></TextView>
         </RelativeLayout>
 
@@ -290,7 +289,7 @@
             android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="126"
+            android:text="0"
             android:textColor="#ffffffff"
             android:textSize="12sp"
             />
@@ -308,7 +307,7 @@
             android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="126"
+            android:text="0"
             android:textColor="#ffffffff"
             android:textSize="12sp"
             />
