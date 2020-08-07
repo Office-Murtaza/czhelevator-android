@@ -96,6 +96,7 @@ public class QueryRecommendEntity implements Serializable{
             public List<AttenionUserEntiy> likesItem;
             public int isAttent;
             public int isCollect;
+            public int isLiked;
             public boolean original;
 
 

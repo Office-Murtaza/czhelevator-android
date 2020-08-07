@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.fragments.homepage;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,11 +20,14 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.AddCellToPlanPresenter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendHouseAdapter;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +74,26 @@ public class TextSearchTwoFragment extends BaseFragment {
         cityCode = String.valueOf(520100) ;
         cityId = 520100;
         initRefresh();
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                AdUtils.isSX = 2;
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            Thread.sleep(600);
+                            smartRefreshLayout.finishRefresh();
+                            AdUtils.isSX = 3;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
 
+            }
+        });
     }
 
 
@@ -79,7 +102,6 @@ public class TextSearchTwoFragment extends BaseFragment {
         return (this);
     }
     private void initRefresh() {
-
         dataAdd(entiyConentEntity);
     }
 

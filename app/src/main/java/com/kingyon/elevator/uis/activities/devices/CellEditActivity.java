@@ -274,8 +274,10 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             case R.id.ll_throwway:
                 OnWayDialog dialog = new OnWayDialog(this, new OnWayDialog.OnWayString() {
                     @Override
-                    public void onWay(String str) {
+                    public void onWay(String str,String type) {
                    tvThrowway.setText(str);
+
+                   throwWay = type;
                     }
                 });
                 dialog.show();
@@ -344,6 +346,10 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
             showToast("请选择小区类型");
             return;
         }
+        if (TextUtils.isEmpty(throwWay)) {
+            showToast("请选择投放类型");
+            return;
+        }
 
         flow = null;
         if (!TextUtils.isEmpty(CommonUtil.getEditText(etHumantraffic))) {
@@ -375,7 +381,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         imageAll = imagesAdapter.getAllDatas();
 
         tvCreate.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         occupancyRate = etOccupancyrate.getText().toString();
         averageSellingPrice = etAveragesellingprice.getText().toString();
         siteNumber = etSitenumber.getText().toString();
@@ -385,7 +391,6 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
         numberArea = StringEdit(etNumberarea);
         exclusiveAdvertising = tvExclusiveadvertising.getText().toString();
         deliveryTime = tvDeliverytime.getText().toString();
-        throwWay = tvThrowway.getText().toString();
         dealLogo();
     }
 
@@ -395,7 +400,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
 
     private void dealLogo() {
         if (logoFile != null && logoFile.size() > 0) {
-            showProgressDialog("小区封面上传中...");
+            showProgressDialog("小区封面上传中...",true);
             NetService.getInstance().uploadFile(this, logoFile.get(0), new NetUpload.OnUploadCompletedListener() {
                 @Override
                 public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -425,7 +430,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
 
     private void dealImages() {
         if (imageFiles != null && imageFiles.size() > 0) {
-            showProgressDialog("小区照片上传中...");
+            showProgressDialog("小区照片上传中...",true);
             NetService.getInstance().uploadFiles(this, imageFiles, new NetUpload.OnUploadCompletedListener() {
                 @Override
                 public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -470,7 +475,7 @@ public class CellEditActivity extends BaseStateLoadingActivity implements Addres
     }
 
     private void publishRequest() {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         double[] centerLatLon = FormatUtils.getInstance().getCenterLatLon(location);
         NetService.getInstance().addCell(edit ? editCellId : null, String.valueOf(adCode), address
                 , cellName, cellType, flow, logoResult, imagesResult, throwWay, occupancyRate, averageSellingPrice,

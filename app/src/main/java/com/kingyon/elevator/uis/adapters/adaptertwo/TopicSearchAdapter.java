@@ -15,6 +15,8 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
+import java.util.List;
+
 /**
  * @Created By Admin  on 2020/4/20
  * @Email : 163235610@qq.com
@@ -24,11 +26,11 @@ import com.leo.afbaselibrary.utils.GlideUtils;
 public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.ViewHolder> {
     Context context;
     private ItemClickListener mItemClickListener ;
-    ConentEntity<QueryTopicEntity.PageContentBean> pageContentBeanQueryTopicEntity;
+    List<QueryTopicEntity.PageContentBean> pageContentBeanQueryTopicEntity;
 
-    public TopicSearchAdapter(Context context, ConentEntity<QueryTopicEntity.PageContentBean> pageContentBeanQueryTopicEntity){
+    public TopicSearchAdapter(Context context){
         this.context = context;
-        this.pageContentBeanQueryTopicEntity = pageContentBeanQueryTopicEntity;
+
     }
 
     public interface ItemClickListener{
@@ -37,6 +39,9 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
     public void setOnItemClickListener(ItemClickListener itemClickListener){
         this.mItemClickListener = itemClickListener ;
 
+    }
+    public void addData(List<QueryTopicEntity.PageContentBean> pageContentBeanQueryTopicEntity){
+        this.pageContentBeanQueryTopicEntity = pageContentBeanQueryTopicEntity;
     }
 
     @NonNull
@@ -50,9 +55,13 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder != null) {
-            holder.tv_title.setText(pageContentBeanQueryTopicEntity.getContent().get(position).getTitle());
-            holder.tv_peoplenum.setText(pageContentBeanQueryTopicEntity.getContent().get(position).getPeopleNum()+"");
-            GlideUtils.loadImage(context,pageContentBeanQueryTopicEntity.getContent().get(position).getImage() , holder.imageView);
+            holder.tv_title.setText(pageContentBeanQueryTopicEntity.get(position).getTitle());
+            holder.tv_peoplenum.setText(pageContentBeanQueryTopicEntity.get(position).getPeopleNum()+"");
+            if (pageContentBeanQueryTopicEntity.get(position).getLatestImage()==null) {
+                GlideUtils.loadImage(context, pageContentBeanQueryTopicEntity.get(position).getImage(), holder.imageView);
+            }else {
+                GlideUtils.loadImage(context, pageContentBeanQueryTopicEntity.get(position).getLatestImage(), holder.imageView);
+            }
 
             // 点击事件一般都写在绑定数据这里，当然写到上边的创建布局时候也是可以的
             if (mItemClickListener != null) {
@@ -69,7 +78,7 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
 
     @Override
     public int getItemCount() {
-        return pageContentBeanQueryTopicEntity.getContent().size();
+        return pageContentBeanQueryTopicEntity.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

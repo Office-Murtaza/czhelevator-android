@@ -233,7 +233,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             couponIds = stringBuilder.length() > 1 ? stringBuilder.substring(0, stringBuilder.length() - 1) : "";
         }
         NetService.getInstance().commitOrder(planType, startTime, endTime, adEntity
-                , AppContent.getInstance().getGson().toJson(deviceParams), couponIds, 100053)
+                , AppContent.getInstance().getGson().toJson(deviceParams), couponIds, 0)
                 .subscribe(new CustomApiCallback<CommitOrderEntiy>() {
                     @Override
                     protected void onResultError(ApiException ex) {

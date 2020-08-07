@@ -160,7 +160,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
     }
 
     private void logout() {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvLogout.setEnabled(false);
         NetService.getInstance().logout()
                 .compose(this.<String>bindLifeCycle())
@@ -198,7 +198,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
 
     private void clearCache() {
         llCache.setEnabled(false);
-        showProgressDialog("正在清除缓存");
+        showProgressDialog("正在清除缓存",true);
         Glide.get(SettingActivity.this).clearMemory();
         Observable.just("").map(new Func1<String, String>() {
             @Override
@@ -216,7 +216,7 @@ public class SettingActivity extends BaseSwipeBackActivity {
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
-                        showProgressDialog("清除缓存成功");
+                        showProgressDialog("清除缓存成功",true);
                         return s;
                     }
                 }).delay(500, TimeUnit.MILLISECONDS)

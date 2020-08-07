@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/ll_topic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,6 +45,7 @@
                     android:textSize="12dp"
                     android:imeOptions="actionSearch"
                     android:lines="1"
+                    android:inputType="text"
                     />
 
             </LinearLayout>
@@ -72,8 +67,12 @@
             android:layout_height="1dp"
             android:background="#E1E1E1"
             />
-
-
+    <LinearLayout
+        android:id="@+id/ll_topic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
         <com.kingyon.elevator.view.ModifyTabLayout
             android:background="#ffffff"
             android:layout_marginTop="@dimen/dp10"
@@ -90,12 +89,26 @@
 
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh_layout_topic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_action_bar"
+        app:srlEnableAutoLoadMore="true"
+        app:srlEnableRefresh="true">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rl_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <include layout="@layout/layout_error"/>
 

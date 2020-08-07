@@ -8,10 +8,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.entities.CellItemEntity;
 import com.kingyon.elevator.entities.PlanPointGroup;
 import com.kingyon.elevator.entities.PointItemEntity;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
@@ -21,6 +25,7 @@ import com.kingyon.elevator.uis.widgets.FullyLinearLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.listeners.OnClickWithObjects;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
@@ -30,6 +35,7 @@ import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +56,7 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
 
     private long cellId;
     private String type;
+    private String type1;
     private long startTime;
     private long endTime;
     private List<PointItemEntity> choosedPoints;
@@ -61,9 +68,12 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
     protected String getTitleText() {
         cellId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         type = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
+        type1 = getIntent().getStringExtra(CommonUtil.KEY_VALUE_8);
         startTime = getIntent().getLongExtra(CommonUtil.KEY_VALUE_3, 0);
         endTime = getIntent().getLongExtra(CommonUtil.KEY_VALUE_4, 0);
-        choosedPoints = getIntent().getParcelableArrayListExtra(CommonUtil.KEY_VALUE_6);
+        Type listType = new TypeToken<ArrayList<PointItemEntity>>(){}.getType();
+        choosedPoints = new Gson().fromJson(getIntent().getStringExtra(CommonUtil.KEY_VALUE_6), listType);
+//        choosedPoints = getIntent().getParcelableArrayListExtra(CommonUtil.KEY_VALUE_6);
         chooseNumber = getIntent().getIntExtra(CommonUtil.KEY_VALUE_7, 0);
         return "单独指定电梯";
     }
@@ -100,8 +110,6 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                     });
                     DealScrollRecyclerView.getInstance().dealAdapter(childrenAdapter, rvPoints, new FullyLinearLayoutManager(mContext));
                 }
-
-
 
                 childrenAdapter.refreshDatas(item.getPoints());
                 holder.setVisible(R.id.rv_points, item.isExpand());
@@ -141,7 +149,7 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
         group.setExpand(!group.isExpand());
         mAdapter.notifyItemChanged(mItems.indexOf(group));
     }
-
+/*点击*/
     private void onPointClick(PointItemEntity entity) {
         if (TextUtils.equals(Constants.DELIVER_STATE.USABLE, entity.getDeliverState())) {
             entity.setChoosed(!entity.isChoosed());
@@ -229,7 +237,8 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
 
                     @Override
                     public void onNext(List<PointItemEntity> pointItemEntities) {
-                        List<PlanPointGroup> planPointGroups = FormatUtils.getInstance().getPlanPointGroupAssign(pointItemEntities, choosedPoints, chooseNumber);
+                        List<PlanPointGroup> planPointGroups
+                                = FormatUtils.getInstance().getPlanPointGroupAssign(pointItemEntities, choosedPoints, chooseNumber,type1);
                         canCacheChoose = true;
                         if (FIRST_PAGE == page) {
                             mItems.clear();
@@ -239,9 +248,43 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                             mItems.get(0).setExpand(true);
                         }
                         loadingComplete(true, 1);
-                        updateGroupChoose();
+                        if (type1.equals("order")) {
+                            httpAssign(pointItemEntities);
+                        }else {
+                            updateGroupChoose();
+                        }
                     }
                 });
+    }
+
+    private void httpAssign(List<PointItemEntity> pointItemEntities) {
+        if (type1.equals("order")) {
+            NetService.getInstance().orderAgain(AdUtils.orderSn)
+                    .compose(this.bindLifeCycle())
+                    .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
+                        @Override
+                        protected void onResultError(ApiException ex) {
+                            LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        }
+                        @Override
+                        public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                            LogUtils.e(orderComeEntiys.toString());
+                            for (int i = 0; i < orderComeEntiys.size(); i++) {
+                                for (int c = 0 ;c<orderComeEntiys.get(i).facilityIds.size();c++){
+                                    for (PointItemEntity pointItemEntity:pointItemEntities){
+                                        if (pointItemEntity.getObjectId()==orderComeEntiys.get(i).facilityIds.get(c)){
+                                            if (TextUtils.equals(Constants.DELIVER_STATE.USABLE, pointItemEntity.getDeliverState())) {
+                                                pointItemEntity.setChoosed(true);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+        }
+
     }
 
     @Override
@@ -272,17 +315,23 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
                 break;
             case R.id.tv_ensure:
                 ArrayList<PointItemEntity> choosedParams = getChoosedParams();
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(getChoosedParams());
+                String jsonString1 = gson.toJson(getAllParams());
+                LogUtils.e("", jsonString,jsonString1);
+
                 if (choosedParams.size() <= 0) {
                     showToast("还没有选择设备");
                 } else {
+                    LogUtils.e(getChoosedParams(),getAllParams());
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putLong(CommonUtil.KEY_VALUE_1, cellId);
                     bundle.putString(CommonUtil.KEY_VALUE_2, type);
                     bundle.putLong(CommonUtil.KEY_VALUE_3, startTime);
                     bundle.putLong(CommonUtil.KEY_VALUE_4, endTime);
-                    bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_6, getChoosedParams());
-                    bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_7, getAllParams());
+                    bundle.putString(CommonUtil.KEY_VALUE_6,jsonString);
+                    bundle.putString(CommonUtil.KEY_VALUE_7,jsonString1);
                     intent.putExtras(bundle);
                     setResult(RESULT_OK, intent);
                     finish();

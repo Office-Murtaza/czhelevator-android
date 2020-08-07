@@ -260,7 +260,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
 
     public void checkPayPasswordIsRight(String pwd) {
-        showProgressDialog("支付密码验证中...");
+        showProgressDialog("支付密码验证中...",true);
         NetService.getInstance().vaildPasswordIsRight(pwd)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -393,7 +393,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
     private void requestWithdraw(final double money, String way, String aliAccount,String wChatAcount, String bankName, String bankNo, String bankHolder) {
         tvEnsure.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().partnerWithdraw(money, way, aliAccount,wChatAcount, bankName, bankNo, bankHolder)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

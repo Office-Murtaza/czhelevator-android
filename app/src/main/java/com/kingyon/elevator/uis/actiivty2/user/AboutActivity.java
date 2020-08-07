@@ -82,7 +82,7 @@ public class AboutActivity extends BaseActivity {
 
     private void requestUpdate(final boolean update) {
         if (update) {
-            showProgressDialog(getString(R.string.wait));
+            showProgressDialog(getString(R.string.wait),true);
         }
         NetService.getInstance().getLatestVersion(this)
                 .compose(this.<VersionEntity>bindLifeCycle())

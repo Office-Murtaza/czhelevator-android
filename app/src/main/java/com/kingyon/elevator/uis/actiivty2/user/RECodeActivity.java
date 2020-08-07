@@ -52,7 +52,7 @@ public class RECodeActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         tvTopTitle.setText("我的二维码");
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().userProfile()
                 .compose(this.<UserEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<UserEntity>() {

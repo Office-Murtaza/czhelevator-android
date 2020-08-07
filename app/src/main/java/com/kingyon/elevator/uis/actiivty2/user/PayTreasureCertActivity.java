@@ -75,7 +75,7 @@ public class PayTreasureCertActivity extends BaseActivity {
                     "host" + host + "==" + "port" + port + "==" + "path" + path + "===" + "query" + query);
 
             LogUtils.e(DataSharedPreferences.getCertifyId()+"====");
-            showProgressDialog("请稍后...");
+            showProgressDialog("请稍后...",true);
             NetService.getInstance().setAliAuthQuery(DataSharedPreferences.getCertifyId())
                     .compose(this.bindLifeCycle())
                     .subscribe(new CustomApiCallback<String>() {
@@ -121,7 +121,7 @@ public class PayTreasureCertActivity extends BaseActivity {
         if (etName.getText().toString().isEmpty()||etNumber.getText().toString().isEmpty()){
             ToastUtils.showToast(this,"姓名身份证不能为空",1000);
         }else {
-            showProgressDialog("请稍后...");
+            showProgressDialog("请稍后...",true);
             NetService.getInstance().setAliIdentityAuth(etName.getText().toString(),etNumber.getText().toString())
                     .compose(this.bindLifeCycle())
                     .subscribe(new CustomApiCallback<PlanNumberEntiy>() {

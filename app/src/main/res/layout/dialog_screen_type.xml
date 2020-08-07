@@ -38,7 +38,7 @@
         android:id="@+id/tv_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DAY广告位"
+        android:text="DIY广告位"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"

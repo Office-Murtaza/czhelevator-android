@@ -139,7 +139,8 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
         UCrop.Options options = new UCrop.Options();
         options.setToolbarColor(Color.parseColor("#21282C"));
         options.setStatusBarColor(Color.parseColor("#21282C"));
-        UCrop.of(Uri.fromFile(new File(path)), Uri.fromFile(new File(getContext().getCacheDir(), System.currentTimeMillis() + ".png")))
+        UCrop.of(Uri.fromFile(new File(path)), Uri.fromFile(new File(getContext().getCacheDir(),
+                System.currentTimeMillis() + ".png")))
                 .withAspectRatio(Constants.adScreenProperty, 1)
 //                .withMaxResultSize(50000, (int) (50000 / cropProperty))
                 .withOptions(options)

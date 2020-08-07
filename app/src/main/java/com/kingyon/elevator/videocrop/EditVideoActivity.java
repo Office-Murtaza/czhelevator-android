@@ -460,6 +460,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             }
         });
 
+//        点击缓存
         img_wc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -471,8 +472,9 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                         rl_jq.setVisibility(View.INVISIBLE);
                         minNew =  seekBar.getSelectedMinValue();
                         maxNew =  seekBar.getSelectedMaxValue();
-//                        ((ViewGroup.MarginLayoutParams)mSurfaceView.getLayoutParams()).setMargins(0, 0, 0, 0);
-//                        LogUtils.e(minNew,maxNew,"完成",seekBar.getSelectedMinValue(), seekBar.getSelectedMaxValue());
+//                        seekBar.setSelectedMinValue(seekBar.getSelectedMinValue());
+//                        seekBar.setSelectedMaxValue(seekBar.getSelectedMaxValue());
+                        LogUtils.e(minNew,maxNew,seekBar.getSelectedMinValue(),seekBar.getSelectedMaxValue() );
                     }
                 });
 
@@ -487,8 +489,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 rl_jq.setVisibility(View.INVISIBLE);
                 seekBar.setSelectedMinValue(minNew);
                 seekBar.setSelectedMaxValue(maxNew);
-//                ((ViewGroup.MarginLayoutParams)mSurfaceView.getLayoutParams()).setMargins(0, 0, 0, 0);
-                // LogUtils.e(minNew,maxNew,seekBar.getSelectedMinValue(), seekBar.getSelectedMaxValue());
+                LogUtils.e(minNew,maxNew);
             }
         });
 
@@ -1443,7 +1444,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
      */
     private void startMediaCodec(String srcPath) {
         LogUtils.e(srcPath);
-        final String outputPath = Utils.getTrimmedVideoPath(this, "small_video/PDD",
+        final String outputPath = Utils.getTrimmedVideoPath(this, "czh_video/PDD",
                 "video_");
         mMp4Composer = new Mp4Composer(srcPath, outputPath)
                 // .rotation(Rotation.ROTATION_270)

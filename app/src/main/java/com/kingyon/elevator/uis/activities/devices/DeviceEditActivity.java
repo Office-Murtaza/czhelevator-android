@@ -14,6 +14,7 @@ import com.acker.simplezxing.activity.CaptureActivity;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CameraBrandEntity;
@@ -117,6 +118,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                 tvDeviceNo.setText(device.getDeviceNo());
                 tvCell.setTag(device.getCellId());
                 tvCell.setText(device.getCellName());
+                regionName = device.getRegionName();
                 tvBuild.setTag(device.getBuildId());
                 tvBuild.setText(device.getBuild());
 //                tvUnit.setTag(device.getUnitId());
@@ -165,6 +167,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                     if (tvCell.getTag() == null || ((long) tvCell.getTag()) != entity.getObjctId()) {
                         tvCell.setTag(entity.getObjctId());
                         tvCell.setText(entity.getCellName());
+                        regionName = entity.getRegionName();
                         clearBelowCell();
                     }
                 }
@@ -288,7 +291,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
             return;
         }
         tvSubmit.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().addDevice(edit ? (device != null ? device.getObjectId() : 0) : null
                 , deviceNo, deviceLocation, deviceType, cellId, buildId, unitId, liftId, cameraBrand, cameraIp)
                 .compose(this.<String>bindLifeCycle())
@@ -387,6 +390,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                             clearBelowCell();
                         }
                         regionName = cell.getRegionName();
+                        LogUtils.e(cell.toString());
                         tvCell.setText(cell.getCellName());
                     }
                     break;
@@ -429,10 +433,11 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                             etCameraIp.setText("");
                             etCameraIp.setSelection(etCameraIp.getText().length());
                         } else {
-                            llCamera.setEnabled(false);
-                            llCameraInfo.setEnabled(false);
-                            tvCameraInfo.setEnabled(false);
-                            etCameraIp.setEnabled(false);
+                            LogUtils.e(camera.toString());
+                            llCamera.setEnabled(true);
+                            llCameraInfo.setEnabled(true);
+                            tvCameraInfo.setEnabled(true);
+                            etCameraIp.setEnabled(true);
                             tvCameraInfo.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             tvCameraInfo.setText(camera.getBrand() != null ? camera.getBrand().getName() : "");
                             tvCameraInfo.setTag(camera.getBrand() != null ? camera.getBrand().getObjectId() : 0);
@@ -527,6 +532,7 @@ public class DeviceEditActivity extends BaseSwipeBackActivity implements AMapLoc
                         if (tvCell.getTag() == null) {
                             tvCell.setTag(entity.getObjctId());
                             tvCell.setText(entity.getCellName());
+                            regionName = entity.getRegionName();
                             clearBelowCell();
                         }
                         flLocation.setVisibility(View.VISIBLE);

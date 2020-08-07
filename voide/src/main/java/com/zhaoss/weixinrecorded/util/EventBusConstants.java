@@ -16,4 +16,7 @@ public class EventBusConstants {
     public static int VideoOrImageSelectSuccess = 100008; //图片或者视频选择成功
     public static int ReflashPlanCount = 100009; //计划单数据获取成功，刷新底部tab红点
     public static int ReflashPlanList = 1000010; //下单成功之后 刷新计划单列表，因为会删除下单成功的小区
+
+    public static int AdeditSuccess = 1000011; //下单成功之后 刷新计划单列表，因为会删除下单成功的小区
+    public static int CommunityReleasety = 1000012; //下单成功之后 刷新计划单列表，因为会删除下单成功的小区
 }

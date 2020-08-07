@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.GoPlaceAnOrderEntity;
 import com.kingyon.elevator.uis.adapters.adapterone.HousingAdPriceAdapter;
@@ -58,9 +59,10 @@ public class OrderDetailedTipsDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_detailed_tips_dialog_layout);
         ButterKnife.bind(this);
+        LogUtils.e(allPrice,zhekouPrice,couponsPrice,realMoney);
         all_money.setText("¥" + allPrice);
-        all_coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
-        coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
+        all_coupons_money.setText("-¥" + (allPrice - realMoney));
+        coupons_money.setText("-¥" + (allPrice - realMoney));
         zhekou_money.setText("-¥" + zhekouPrice);
 //        coupons_money.setText("-¥" + couponsPrice);
         all_real_price_money.setText("¥" + realMoney);

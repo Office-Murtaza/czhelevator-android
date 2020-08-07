@@ -50,7 +50,8 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
      *  planName 计划名字
      *
      * */
-    public AdvertisPutDialog(@NonNull BaseActivity context,int planId,String planName,View startView, View endView,String imageUrl,String type) {
+    public AdvertisPutDialog(@NonNull BaseActivity context,int planId,String planName,View startView,
+                             View endView,String imageUrl,String type) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.mContext = context;
         this.planId = planId;
@@ -150,6 +151,9 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
                                     .startView(startView)
                                     .endView(endView)
                                     .imageUrl(imageUrl)
+                                    .time(1000)
+                                    .animHeight(150)
+                                    .animWidth(150)
                                     .build();
                             animManager.startAnim();
                         }

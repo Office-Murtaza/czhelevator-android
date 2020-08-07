@@ -21,5 +21,6 @@
     <include layout="@layout/layout_error"
         android:visibility="gone"
         />
+    <include layout="@layout/layout_null"/>
 
 </LinearLayout>

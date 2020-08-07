@@ -104,7 +104,7 @@ public class EarningsYesterdayActivity extends BaseActivity {
      * 获取昨日收益数据
      */
     public void getYesterdayIncomeData(int page) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getYesterdayIncomeDetailedList(page)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentTxEntity<StatisticalEnity<EarningsYesterdayEnity>>>() {

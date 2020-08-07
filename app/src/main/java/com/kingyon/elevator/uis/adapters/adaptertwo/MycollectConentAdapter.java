@@ -21,6 +21,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
@@ -86,10 +87,12 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
         QueryRecommendEntity queryRecommendEntity = conentEntity.get(position);
 
         holder.tv_name.setText(queryRecommendEntity.nickname);
-        holder.tv_like_number.setText(queryRecommendEntity.likes + "");
-        holder.tv_like_number_bottm.setText("等" + queryRecommendEntity.likes + "人觉得很赞");
+        holder.tv_like_number_bottm.setText("等" + queryRecommendEntity.likeNum + "人觉得很赞");
         holder.tv_time.setText(TimeUtil.getRecentlyTime(queryRecommendEntity.createTime));
 
+        holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likeNum ,"点赞"));
+        holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.commentNum ,"评论"));
+        holder.tv_search.setText(StringUtils.getNumStr(queryRecommendEntity.shares ,"分享"));
 
         holder.tv_title.setClickable(false);
         holder.ll_conent_img.setClickable(false);
@@ -99,12 +102,14 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
         if (queryRecommendEntity.content == null) {
             holder.tv_title.setVisibility(View.GONE);
         }
-        if (queryRecommendEntity.likes < 100) {
+        if (queryRecommendEntity.likeNum<=0||!queryRecommendEntity.liked){
             holder.ll_like.setVisibility(View.GONE);
-        } else {
+        }else {
             holder.ll_like.setVisibility(View.VISIBLE);
+            holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likeNum));
+            GlideUtils.loadCircleImage(context, queryRecommendEntity.likesItem.get(0).photo, holder.img_topimg);
         }
-        if (queryRecommendEntity.liked) {
+        if (queryRecommendEntity.isLiked==1) {
             holder.img_like.setImageResource(R.mipmap.ic_small_like);
         } else {
             holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
@@ -206,16 +211,26 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
         holder.img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (queryRecommendEntity.liked) {
-                    queryRecommendEntity.liked =false;
+                if (queryRecommendEntity.isLiked==1) {
+                    queryRecommendEntity.isLiked =0;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                     ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                            HOME_CONTENT, CANCEL_LIKE, position, queryRecommendEntity, "1");
+                            HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                @Override
+                                public void isSuccess(boolean success) {
+
+                                }
+                            });
                 } else {
-                    queryRecommendEntity.liked =true;
+                    queryRecommendEntity.isLiked =1;
                     holder.img_like.setImageResource(R.mipmap.ic_small_like);
                     ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                            HOME_CONTENT, LIKE, position, queryRecommendEntity, "1");
+                            HOME_CONTENT, LIKE, new IsSuccess() {
+                                @Override
+                                public void isSuccess(boolean success) {
+
+                                }
+                            });
                 }
             }
         });
@@ -283,6 +298,10 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
         RelativeLayout rv_conent_img;
         @BindView(R.id.img_like)
         ImageView img_like;
+        @BindView(R.id.tv_comments_number)
+        TextView tv_comments_number;
+        @BindView(R.id.tv_search)
+        TextView tv_search;
         @BindView(R.id.tv_like_number)
         TextView tv_like_number;
         @BindView(R.id.img_shared)

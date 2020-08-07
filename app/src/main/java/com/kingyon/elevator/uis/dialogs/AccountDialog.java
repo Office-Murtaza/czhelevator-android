@@ -77,7 +77,7 @@ public class AccountDialog extends Dialog {
     }
 
     private void httpData() {
-        baseActivity.showProgressDialog(getString(R.string.wait));
+        baseActivity.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().steUserCashTypeList(0)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<UserCashTypeListEnity>>() {

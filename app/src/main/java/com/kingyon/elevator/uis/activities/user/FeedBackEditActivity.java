@@ -102,7 +102,7 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     }
 
     private void publishRequest(String pictures) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         try {
         PackageManager manager = getPackageManager();
         PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
@@ -200,7 +200,7 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
                 if (uploadAdapter.getItemRealCount() > 0) {
                     List<File> uploadFiles = uploadAdapter.getUploadDatas();
                     if (uploadFiles.size() > 0) {
-                        showProgressDialog(getString(R.string.wait));
+                        showProgressDialog(getString(R.string.wait),true);
                         NetService.getInstance().uploadFiles(this, uploadFiles, this);
                     } else {
                         publishRequest(NetService.getInstance().getUploadResultString(uploadAdapter.getAllDatas()));

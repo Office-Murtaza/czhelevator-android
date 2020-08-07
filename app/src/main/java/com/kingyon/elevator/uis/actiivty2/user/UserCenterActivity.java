@@ -142,7 +142,7 @@ public class UserCenterActivity extends BaseActivity {
             imgEdit.setVisibility(View.GONE);
             tvAttention1.setVisibility(View.VISIBLE);
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         httpData(page, otherUserAccount);
         httpTop(otherUserAccount);
 

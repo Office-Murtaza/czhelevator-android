@@ -217,6 +217,49 @@
         android:layout_above="@id/ll_root"
         android:visibility="gone"/>
 
+    <!--剪切-->
+    <RelativeLayout
+        android:id="@+id/rl_crop_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_root"
+        android:background="#60f4f4f4"
+        android:padding="@dimen/dp10"
+        android:visibility="gone"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_crop_panel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_below="@+id/tv_crop_qx"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            />
+
+        <TextView
+            android:id="@+id/tv_crop_qx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_18"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/tv_crop_yy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应用"
+            android:layout_alignParentRight="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_18"
+            ></TextView>
+    </RelativeLayout>
+
+
+
     <!--文字-->
     <RelativeLayout
         android:id="@+id/rl_edit_text"

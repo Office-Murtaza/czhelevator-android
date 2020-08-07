@@ -12,6 +12,14 @@ public class CameraBrandEntity implements Parcelable {
     private long objectId;
     private String name;
 
+    @Override
+    public String toString() {
+        return "CameraBrandEntity{" +
+                "objectId=" + objectId +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public long getObjectId() {
         return objectId;
     }

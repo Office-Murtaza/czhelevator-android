@@ -200,12 +200,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     protected void backFromSetting() {
     }
 
-    public void showProgressDialog(String message) {
+    public void showProgressDialog(String message,boolean isCancelable) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(BaseActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(false);
-            progressDialog.setCancelable(true);
+            progressDialog.setCancelable(isCancelable);
         }
         progressDialog.setMessage(message != null ? message : "");
         if (!progressDialog.isShowing()) {

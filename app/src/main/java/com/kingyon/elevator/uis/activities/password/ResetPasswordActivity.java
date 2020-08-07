@@ -145,7 +145,7 @@ public class ResetPasswordActivity extends BaseSwipeBackActivity {
             showToast("两次输入的密码不一致");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvLogin.setEnabled(false);
         NetService.getInstance().resetPassword(CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode)
                 , CommonUtil.getEditText(etPassword))

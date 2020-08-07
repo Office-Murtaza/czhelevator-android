@@ -116,7 +116,6 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
                     case Constants.AD_STATUS.REVIEW_FAILED:
 //                        "审核失败";
                         holder.setBackgroundRes(R.id.tv_status,R.mipmap.bg_advert_lose);
-
                         break;
 
                 }            }

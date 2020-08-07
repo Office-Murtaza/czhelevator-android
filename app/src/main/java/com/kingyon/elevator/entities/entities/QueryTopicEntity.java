@@ -91,6 +91,7 @@ public class QueryTopicEntity<T> {
             private String title;
             private String content;
             private String image;
+            private String latestImage;
             private String label;
             private int peopleNum;
             private String createAccount;
@@ -100,6 +101,7 @@ public class QueryTopicEntity<T> {
             private Object reserve1;
             private Object reserve2;
 
+
             @Override
             public String toString() {
                 return "PageContentBean{" +
@@ -107,6 +109,7 @@ public class QueryTopicEntity<T> {
                         ", title='" + title + '\'' +
                         ", content='" + content + '\'' +
                         ", image='" + image + '\'' +
+                        ", latestImage='" + latestImage + '\'' +
                         ", label='" + label + '\'' +
                         ", peopleNum=" + peopleNum +
                         ", createAccount='" + createAccount + '\'' +
@@ -117,6 +120,25 @@ public class QueryTopicEntity<T> {
                         ", reserve2=" + reserve2 +
                         '}';
             }
+
+
+
+            public String getLatestImage() {
+                return latestImage;
+            }
+
+            public void setLatestImage(String latestImage) {
+                this.latestImage = latestImage;
+            }
+
+            public boolean isDelete() {
+                return isDelete;
+            }
+
+            public void setDelete(boolean delete) {
+                isDelete = delete;
+            }
+
 
             public int getId() {
                 return id;

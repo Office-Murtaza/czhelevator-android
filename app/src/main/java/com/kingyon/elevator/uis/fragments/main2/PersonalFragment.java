@@ -1,5 +1,6 @@
 package com.kingyon.elevator.uis.fragments.main2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

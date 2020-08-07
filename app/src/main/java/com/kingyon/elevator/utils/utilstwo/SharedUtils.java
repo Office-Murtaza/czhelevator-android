@@ -1,6 +1,7 @@
 package com.kingyon.elevator.utils.utilstwo;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
@@ -9,6 +10,7 @@ import com.kingyon.elevator.entities.NewsSharedEntity;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
@@ -22,7 +24,7 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
  */
 public class SharedUtils {
 
-    public static  void shared(Context context,ShareDialog shareDialog,String summary,String shareUrl,String title,boolean isshow ) {
+    public static  void shared(BaseActivity context, ShareDialog shareDialog, String summary, String shareUrl, String title, boolean isshow ) {
         try {
             if (QuickClickUtils.isFastClick()) {
                 NewsSharedEntity newsSharedEntity = new NewsSharedEntity();
@@ -38,7 +40,9 @@ public class SharedUtils {
                         @Override
                         public void setOncilk(String type) {
                             if (isToken(context)) {
-                                startActivity(PlanNewFragment.class);
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString("type","ad");
+                                context.startActivity(PlanNewFragment.class,bundle1);
                             }else {
                                 ActivityUtils.setLoginActivity();
                             }

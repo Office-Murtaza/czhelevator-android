@@ -194,7 +194,7 @@ public class CooperationDeviceReportActivity extends BaseSwipeBackActivity imple
         if (uploadAdapter.getItemRealCount() > 0) {
             List<File> uploadFiles = uploadAdapter.getUploadDatas();
             if (uploadFiles.size() > 0) {
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
                 NetService.getInstance().uploadFiles(this, uploadFiles, this);
             } else {
                 publishRequest(NetService.getInstance().getUploadResultString(uploadAdapter.getAllDatas()));
@@ -205,7 +205,7 @@ public class CooperationDeviceReportActivity extends BaseSwipeBackActivity imple
     }
 
     private void publishRequest(String pictures) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvCreate.setEnabled(false);
         try {
             PackageManager manager = getPackageManager();

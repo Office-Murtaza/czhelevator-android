@@ -111,7 +111,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
         tvChooseTime.setText(xianshi+"");
         deviceId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         role = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().deviceDetails(deviceId)
                 .compose(this.<PointItemEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<PointItemEntity>() {
@@ -161,7 +161,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
     }
 
     private void httpData1(int page, String month, long deviceId) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getIncomeList(page, month, deviceId)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<EquipmentDetailsRevenueEntiy>>() {
@@ -215,7 +215,7 @@ public class EquipmentDetailsRevenueActivity extends BaseActivity {
     }
 
     private void httpData(int page, String month, long deviceId) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getEquipmentDetailsRevenue(page, month, deviceId)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<EquipmentDetailsRevenueEntiy>>() {

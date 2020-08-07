@@ -89,7 +89,7 @@ public class AnimManager {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getActivity(), animWidth),
                 UIUtil.dip2px(getActivity(), animHeight));
         animImageView.setLayoutParams(layoutParams);
-        GlideUtils.loadImage(getActivity(),imageUrl,animImageView);
+        GlideUtils.loadCircleImage(getActivity(),imageUrl,animImageView);
         setAnim(animImageView, startLocation, endLocation);
     }
 

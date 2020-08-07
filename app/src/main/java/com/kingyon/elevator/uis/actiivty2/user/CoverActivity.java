@@ -94,7 +94,7 @@ public class CoverActivity extends BaseActivity {
                     try {
                         ArrayList<String> mSelectPath2 = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
                         if (mSelectPath2 != null && mSelectPath2.size() > 0) {
-                            showProgressDialog(getString(R.string.wait));
+                            showProgressDialog(getString(R.string.wait),true);
                             NetService.getInstance().uploadFile(this, new File(mSelectPath2.get(0)), new NetUpload.OnUploadCompletedListener() {
                                 @Override
                                 public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -131,7 +131,7 @@ public class CoverActivity extends BaseActivity {
                     try {
                         String path =data.getStringExtra("path");
                         LogUtils.e(path);
-                        showProgressDialog(getString(R.string.wait));
+                        showProgressDialog(getString(R.string.wait),true);
                         NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
                             @Override
                             public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {

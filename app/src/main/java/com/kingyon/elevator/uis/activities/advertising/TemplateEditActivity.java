@@ -132,7 +132,7 @@ public class TemplateEditActivity extends BaseSwipeBackActivity implements Templ
 //        preVRight.setText(preVRight.isSelected() ? "完成" : "编辑");
 //        vTemplate.setEdit(preVRight.isSelected());
 
-        showProgressDialog("正在保存...");
+        showProgressDialog("正在保存...",true);
         Logger.i(AppContent.getInstance().getGson().toJson(vTemplate.getTemplate()));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);

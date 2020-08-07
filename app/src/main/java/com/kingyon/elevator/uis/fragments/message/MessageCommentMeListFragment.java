@@ -14,8 +14,11 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.actiivty2.input.Parser;
+import com.kingyon.elevator.uis.dialogs.DeleMassageDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
+import com.kingyon.elevator.utils.utilstwo.MassageUtils;
+import com.kingyon.elevator.view.DialogOnClick;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
@@ -131,6 +134,33 @@ public class MessageCommentMeListFragment extends BaseStateRefreshLoadingFragmen
                 }
                 break;
         }
+    }
+
+
+    @Override
+    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, CommentLikesListEntiy item, int position) {
+        DeleMassageDialog dialog = new DeleMassageDialog(getActivity());
+        dialog.show();
+        dialog.setDialogOnClick(new DialogOnClick() {
+            @Override
+            public void onClick() {
+                showProgressDialog(getString(R.string.wait));
+                dialog.dismiss();
+                MassageUtils.httpremoveCommentMe(String.valueOf(item.id), new IsSuccess() {
+                    @Override
+                    public void isSuccess(boolean success) {
+                        hideProgress();
+                        if (success){
+                            autoRefresh();
+                            showToast("删除成功");
+                        }else {
+                            showToast("删除失败");
+                        }
+                    }
+                });
+            }
+        });
+        return true;
     }
 
     @Override

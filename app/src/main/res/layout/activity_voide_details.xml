@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/rl"
             app:srlEnableAutoLoadMore="true"
-            app:srlEnableRefresh="false">
+            app:srlEnableRefresh="true">
 
             <LinearLayout
                 android:layout_width="match_parent"

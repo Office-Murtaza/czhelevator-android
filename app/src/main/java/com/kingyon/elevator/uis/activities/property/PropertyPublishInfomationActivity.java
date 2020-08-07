@@ -124,7 +124,7 @@ public class PropertyPublishInfomationActivity extends BaseSwipeBackActivity {
             return;
         }
         tvCreate.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().createPropertyInfomation(etContent.getText().toString(), devicesParams, startTime, endTime)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

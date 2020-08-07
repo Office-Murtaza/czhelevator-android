@@ -131,7 +131,7 @@ public class LiftEditActivity extends BaseSwipeBackActivity {
         }
 
         tvCreate.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().addLift(edit ? entity.getObjectId() : null, unitId
                 , etSn.getText().toString(), etName.getText().toString(), max, min, base)
                 .compose(this.<String>bindLifeCycle())

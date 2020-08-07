@@ -43,8 +43,9 @@
                 android:hint="请输入搜索内容……"
                 android:paddingLeft="@dimen/dp10"
                 android:textSize="12dp"
-                android:lines="1"
                 android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
                 />
 
         </LinearLayout>

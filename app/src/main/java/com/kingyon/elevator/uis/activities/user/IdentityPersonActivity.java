@@ -224,7 +224,7 @@ public class IdentityPersonActivity extends BaseStateLoadingActivity {
             showToast("请上传身份证反面照片");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvEnsure.setEnabled(false);
         NetService.getInstance().identityAuth(Constants.IDENTITY_TYPE.PERSON
                 , etName.getText().toString(), etNumber.getText().toString()
@@ -334,7 +334,7 @@ public class IdentityPersonActivity extends BaseStateLoadingActivity {
     }
 
     private void uploadBack(String backPath) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().uploadFile(this, new File(backPath), new NetUpload.OnUploadCompletedListener() {
             @Override
             public void uploadSuccess(List<String> images, List<String> hash,JSONObject response) {
@@ -360,7 +360,7 @@ public class IdentityPersonActivity extends BaseStateLoadingActivity {
     }
 
     private void uploadFace(String facePath) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         recIDCard(IDCardParams.ID_CARD_SIDE_FRONT, facePath);
         NetService.getInstance().uploadFile(this, new File(facePath), new NetUpload.OnUploadCompletedListener() {
             @Override

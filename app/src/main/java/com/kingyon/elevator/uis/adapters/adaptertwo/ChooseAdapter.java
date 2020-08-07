@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,10 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.leo.afbaselibrary.utils.ToastUtils;
 import com.litao.android.lib.entity.PhotoEntry;
+import com.muzhi.camerasdk.FilterImageActivity;
+import com.muzhi.camerasdk.model.CameraSdkParameterInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,15 +44,20 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
     private LayoutInflater mInflater;
 
     private OnItmeClickListener mlistener;
+
+    private EditOniclk editOniclk;
+
     ArrayList<String> listPath = new ArrayList<>();
+    private CameraSdkParameterInfo  mCameraSdkParameterInfo;
     public  interface OnItmeClickListener{
         void onItemClicked(int position);
 
     }
 
-    public ChooseAdapter(BaseActivity mContext, List<PhotoEntry> list) {
+    public ChooseAdapter(BaseActivity mContext, List<PhotoEntry> list,CameraSdkParameterInfo mCameraSdkParameterInfo) {
         this.mContext = mContext;
         this.list = list;
+        this.mCameraSdkParameterInfo = mCameraSdkParameterInfo;
         mlistener = (OnItmeClickListener) mContext;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         list.add(createAddEntry());
@@ -101,6 +110,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
                     listPath.remove(i);
                     notifyItemRemoved(i);
                     notifyItemRangeChanged(i,list.size()-i);
+                    mCameraSdkParameterInfo.getImage_list().remove(i);
 //                    删除
                 }
             });
@@ -108,21 +118,22 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
 //                    编辑
-                    LogUtils.e(i,listPath.toString());
-//                File imageFile = new File(entry.getPath());
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable(IMGEditActivity.EXTRA_IMAGE_URI, Uri.fromFile(imageFile));
-//                bundle.putInt("number",i);
-//                bundle.putString(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, new File(mContext.getExternalCacheDir(), String.format("%s.jpg", UUID.randomUUID().toString())).getAbsolutePath());
-//                mContext.startActivityForResult(IMGEditActivity.class, CommonUtil.REQ_CODE_4, bundle);
+                    mCameraSdkParameterInfo.setImage_list(listPath);
+                    if (editOniclk!=null) {
+                        editOniclk.editOniclk(listPath);
+                    }
 
-                    ARouter.getInstance().build(IMAGER_EDITOR_ACTIVITY)
-                            .withStringArrayList("listPath",listPath)
-                            .withInt("position",i)
-                            .navigation();
                 }
             });
         }
+    }
+
+    public void OnciclkEdit(EditOniclk editOniclk){
+        this.editOniclk = editOniclk;
+    }
+
+    public interface  EditOniclk{
+        void editOniclk(ArrayList<String> listPath);
     }
 
     @Override

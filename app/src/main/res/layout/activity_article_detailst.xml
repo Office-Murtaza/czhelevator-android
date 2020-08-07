@@ -135,11 +135,14 @@
                         android:layout_height="match_parent"
                         android:clipChildren="false"
                         android:clipToPadding="false"
+                        android:nestedScrollingEnabled="false"
                         android:paddingLeft="@dimen/spacing_four"
                         android:paddingRight="@dimen/spacing_four" />
 
                 </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
+
+
             </android.support.v4.widget.SwipeRefreshLayout>
         </com.leo.afbaselibrary.widgets.StateLayout>
 

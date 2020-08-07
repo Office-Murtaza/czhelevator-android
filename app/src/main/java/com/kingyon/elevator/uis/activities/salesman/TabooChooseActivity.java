@@ -51,7 +51,7 @@ public class TabooChooseActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         tvTopTitle.setText("禁忌行业选择");
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getIndustrys()
                 .compose(this.<List<IndustryEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<IndustryEntity>>() {

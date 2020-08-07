@@ -31,6 +31,7 @@ import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.FulltextDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.library.social.ShareDialog;
@@ -119,7 +120,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
         ConentUtils.topicStr = "";
         isRefresh = false;
         ARouter.getInstance().inject(this);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -254,12 +255,22 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                             recommendEntity.liked = false;
                             imgLike.setImageResource(R.mipmap.btn_big_like);
                             ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                    HOME_CONTENT, CANCEL_LIKE, 0, recommendEntity, "2");
+                                    HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                        @Override
+                                        public void isSuccess(boolean success) {
+
+                                        }
+                                    });
                         } else {
                             recommendEntity.liked = true;
                             imgLike.setImageResource(R.mipmap.btn_big_like_off);
                             ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                    HOME_CONTENT, LIKE, 0, recommendEntity, "2");
+                                    HOME_CONTENT, LIKE, new IsSuccess() {
+                                        @Override
+                                        public void isSuccess(boolean success) {
+
+                                        }
+                                    });
                         }
                     } else {
                         ActivityUtils.setLoginActivity();
@@ -280,7 +291,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                 case R.id.img_collect:
                     /*收藏*/
                     if (TokenUtils.isToken(this)) {
-                        showProgressDialog(getString(R.string.wait));
+                        showProgressDialog(getString(R.string.wait),true);
                         if (recommendEntity.isCollect == 0) {
                             ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
                                 @Override

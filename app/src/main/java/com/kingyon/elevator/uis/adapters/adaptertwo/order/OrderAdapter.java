@@ -23,10 +23,10 @@ import com.leo.afbaselibrary.utils.TimeUtil;
 import java.util.List;
 
 import static com.czh.myversiontwo.utils.CodeType.OEDER_COMPLETE;
-import static com.czh.myversiontwo.utils.CodeType.OEDER_REJECT;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_RELEASEING;
-import static com.czh.myversiontwo.utils.CodeType.OEDER_WAIT;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_WAITRELEASE;
+import static com.czh.myversiontwo.utils.CodeType.REVIEWFAILD;
+import static com.czh.myversiontwo.utils.CodeType.WAITREVIEW;
 import static com.czh.myversiontwo.utils.StringContent.ORADER_NUMBER;
 
 /**
@@ -78,12 +78,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 holder.tv_status.setText("待发布");
                 holder.tv_again.setVisibility(View.GONE);
                 switch (order.getAuditState()){
-                    case OEDER_WAIT:
+                    case WAITREVIEW:
                         /*审核中*/
                         holder.img_status.setVisibility(View.VISIBLE);
                         holder.img_status.setImageResource(R.mipmap.im_order_audit_wait);
                         break;
-                    case OEDER_REJECT:
+                    case REVIEWFAILD:
                         /*未通过*/
                         holder.img_status.setVisibility(View.VISIBLE);
                         holder.img_status.setImageResource(R.mipmap.im_order_audit_fail);

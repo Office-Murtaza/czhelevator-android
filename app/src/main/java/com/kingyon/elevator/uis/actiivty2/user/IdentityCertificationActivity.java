@@ -104,7 +104,7 @@ public class IdentityCertificationActivity extends BaseActivity {
         }else if (idCardPic.isEmpty()){
             ToastUtils.showToast(this,"请上传手持身份照",1000);
         }else {
-            showProgressDialog(getString(R.string.wait));
+            showProgressDialog(getString(R.string.wait),true);
             NetService.getInstance().setIdentyAuth(etName.getText().toString(),etNumber.getText().toString(),idCardPic,"CUSTOMER")
                     .compose(this.bindLifeCycle())
                     .subscribe(new CustomApiCallback<CertifiCationEntiy>() {
@@ -134,7 +134,7 @@ public class IdentityCertificationActivity extends BaseActivity {
                 case 101:
                     try {
                         String path =data.getStringExtra("path");
-                        showProgressDialog(getString(R.string.wait));
+                        showProgressDialog(getString(R.string.wait),true);
                         NetService.getInstance().uploadFile(this, new File(path), new NetUpload.OnUploadCompletedListener() {
                             @Override
                             public void uploadSuccess(List<String> images,List<String> hash,JSONObject response) {

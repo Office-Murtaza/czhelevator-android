@@ -219,7 +219,7 @@ public class RegisterActivity extends BaseSwipeBackActivity {
             showToast("请阅读并同意所有协议");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvLogin.setEnabled(false);
         NetService.getInstance().register(way, CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode)
                 , CommonUtil.getEditText(etPassword), openId, head, nickName)

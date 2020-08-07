@@ -60,7 +60,7 @@ public class WithdrawalWayActivity extends BaseActivity {
     }
 
     private void initData(int page) {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().steUserCashTypeList(page)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<UserCashTypeListEnity>>() {

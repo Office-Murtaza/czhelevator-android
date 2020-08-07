@@ -499,7 +499,7 @@ public class ArticleReleaseActivity extends BaseActivity {
                             files.add(file);
                         }
                     }
-                    showProgressDialog("图片上传中....");
+                    showProgressDialog("图片上传中....",false);
                     NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
                         @Override
                         public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -522,8 +522,8 @@ public class ArticleReleaseActivity extends BaseActivity {
                     break;
                 case ACCESS_VOIDE_PATH:
                     LogUtils.e(Matisse.obtainPathResult(data), Matisse.obtainResult(data), Matisse.obtainOriginalState(data));
-                    String videoCover = VideoUtils.saveBitmap(VideoUtils.getVideoThumb(Matisse.obtainPathResult(data).get(0)));
-                    showProgressDialog("视频上传中....");
+                    String videoCover = VideoUtils.saveBitmap(this,VideoUtils.getVideoThumb(Matisse.obtainPathResult(data).get(0)));
+                    showProgressDialog("视频上传中....",false);
                     NetService.getInstance().uploadFile(this, new File(videoCover), new NetUpload.OnUploadCompletedListener() {
                         @Override
                         public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {

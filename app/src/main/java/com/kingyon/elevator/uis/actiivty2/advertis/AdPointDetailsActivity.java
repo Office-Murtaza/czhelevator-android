@@ -145,7 +145,7 @@ public class AdPointDetailsActivity extends BaseActivity {
     }
 
     private void httpDetails() {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         LogUtils.e(panID);
         NetService.getInstance().cellDetails(Long.parseLong(panID), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
@@ -173,7 +173,11 @@ public class AdPointDetailsActivity extends BaseActivity {
                         tvElevatorsNumber.setText("电梯数：" + cellDetailsEntity.elevatorsNumber);
                         tvLowestFloor.setText("建筑面积：" + cellDetailsEntity.numberArea);
                         tvCarsNumber.setText("车位数：" + cellDetailsEntity.siteNumber);
-                        tvDeliveryTime.setText("交房时间：" + TimeUtil.getYmdDliverCh(cellDetailsEntity.deliveryTime));
+                        if (cellDetailsEntity.deliveryTime!= null) {
+                            tvDeliveryTime.setText("交房时间：" + TimeUtil.getYmdDliverCh(cellDetailsEntity.deliveryTime));
+                        }else {
+                            tvDeliveryTime.setText("交房时间：");
+                        }
                         tvUnits.setText("单元数：" + cellDetailsEntity.numberUnit);
                         tvDevicesNumber.setText("设备数：" + cellDetailsEntity.numberFacility);
                         tvHighestFloor.setText("社区楼层楼层：" + cellDetailsEntity.maxNumberFloor + "-" + cellDetailsEntity.maxNumberFloor);
@@ -258,7 +262,9 @@ public class AdPointDetailsActivity extends BaseActivity {
             case R.id.rl_plan:
                 /*进入计划*/
                 if (isToken(this)) {
-                    startActivity(PlanNewFragment.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type","ad");
+                    startActivity(PlanNewFragment.class,bundle);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -297,12 +303,14 @@ public class AdPointDetailsActivity extends BaseActivity {
                         AdUtils.httpPlannuber();
                         LogUtils.e(imageUrl);
                         AdUtils.type = type;
-
                         AnimManager animManager = new AnimManager.Builder()
                                 .with(AdPointDetailsActivity.this)
                                 .startView(tvProgram)
                                 .endView(imgPlan)
                                 .imageUrl(imageUrl)
+                                .time(1000)
+                                .animHeight(150)
+                                .animWidth(150)
                                 .build();
                         animManager.startAnim();
                     }

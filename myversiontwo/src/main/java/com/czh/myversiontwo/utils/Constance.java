@@ -121,6 +121,10 @@ public class Constance {
     public static final String MAIN_ACTIVITY = "/app/activity/main_activity";
     /**图片编辑*/
     public static final String IMAGER_EDITOR_ACTIVITY = "/app/activity/imagereditoractivity";
+    /**便民信息预览*/
+    public static final String ORDER_INFORMATION_ACTIVITY = "/app/activity/orderinformationactivity";
+    /**2.0本地预览*/
+    public static final String PREVIEW_AD_ACTIVITY = "/app/activity/previewadactivity";
 
 
 

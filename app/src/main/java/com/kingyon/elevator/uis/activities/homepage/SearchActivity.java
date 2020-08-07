@@ -75,6 +75,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
+import static com.kingyon.elevator.utils.utilstwo.AdUtils.isSX;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
@@ -169,6 +170,10 @@ public class SearchActivity extends BaseSwipeBackActivity {
             if (AdUtils.planNumber > 0) {
                 tvBumber.setText(AdUtils.planNumber + "");
                 tvBumber.setVisibility(View.VISIBLE);
+
+            }
+            if (isSX == 2){
+                httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
             }
             handler.postDelayed(this, 500);
         }
@@ -225,7 +230,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
                                     String areaId, String pointType, String keyWord, String distance) {
         LogUtils.e(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance);
-        showProgressDialog("加载中....");
+        showProgressDialog("加载中....",true);
         NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<RecommendHouseEntiy>>() {
@@ -363,7 +368,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
             notFirstIn = true;
             updateFragment();
             if (mapMode) {
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
             }
         }
         super.onResume();
@@ -420,7 +425,9 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.rl_plan:
                 if (isToken(this)) {
-                    startActivity(PlanNewFragment.class);
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("type","ad");
+                    startActivity(PlanNewFragment.class,bundle1);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -574,7 +581,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void updateDatas() {
         if (textFragment != null) {
             if (mapMode) {
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
             }
             EventBus.getDefault().post(new KeywordEntity(keyWord));
 //            textFragment.onParamsChange(keyWord, cityEntity, distance, areaIds, cellType);

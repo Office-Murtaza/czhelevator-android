@@ -1,33 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_normal"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_header" />
+    <include
+        android:id="@+id/ll_top"
+        layout="@layout/layout_header" />
 
-    <include layout="@layout/ui_layout_divider" />
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_top1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/spacing_twelve"
-        android:paddingLeft="@dimen/spacing_default"
-        android:paddingRight="@dimen/spacing_default"
-        android:paddingTop="@dimen/spacing_thirty_two"
-        android:text="便民信息内容"
-        android:textColor="#333333"
-        android:textSize="@dimen/txt_big_content"
-        android:textStyle="bold" />
+        android:layout_height="@dimen/dp_150"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10"
+        android:gravity="center"
+        android:layout_below="@+id/ll_top"
+        android:padding="@dimen/dp10"
+        android:background="@mipmap/bg_order_modify_head">
+
+
+        <TextView
+            android:id="@+id/tv_time_satr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4月20日(周三) "
+            android:textColor="#ff333333"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/tv_ad_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商业广告"
+                android:textColor="#ff003333"
+                android:textSize="16sp"
+                />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_order_modify_dotted"
+                android:padding="@dimen/dp_15"
+                ></ImageView>
+
+            <TextView
+                android:id="@+id/tv_total_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="11dp"
+                android:text="共2天"
+                android:textColor="#ff404040"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
+                android:paddingTop="@dimen/dp5"
+                android:paddingBottom="@dimen/dp5"
+                android:background="@drawable/ad_top_plan"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/tv_end"
+                android:layout_marginTop="@dimen/dp20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4月22日(周五) "
+                android:textColor="#ff333333"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:textSize="14sp"
+                />
+            <ImageView
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:src="@mipmap/ic_order_modify_head"
+                android:layout_alignParentBottom="true"
+                ></ImageView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginLeft="@dimen/spacing_default"
         android:layout_marginRight="@dimen/spacing_default"
-        android:background="@drawable/bg_infomation_advertising"
         android:gravity="right"
+        android:layout_below="@+id/ll_top1"
         android:orientation="vertical">
 
         <EditText
@@ -37,14 +122,14 @@
             android:layout_weight="1"
             android:background="@null"
             android:gravity="top|left"
-            android:hint="*请输入需要发布的内容"
+            android:hint="请输入需投放的便民信息内容"
             android:inputType="textMultiLine"
             android:maxLength="60"
             android:paddingBottom="10dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:paddingTop="10dp"
-            android:textSize="@dimen/txt_normal_content"
+            android:textSize="@dimen/sp_15"
             android:textStyle="bold" />
 
         <TextView
@@ -61,15 +146,18 @@
 
     <TextView
         android:id="@+id/tv_save"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_default"
         android:layout_marginRight="@dimen/spacing_default"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bg_six_btn"
+        android:background="@mipmap/btn_common_normal"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="保存"
+        android:text="提交修改"
         android:textColor="#ffffffff"
-        android:textSize="@dimen/txt_big_content"
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp20"
         android:textStyle="bold" />
-</LinearLayout>
+</RelativeLayout>

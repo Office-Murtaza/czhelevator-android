@@ -34,6 +34,7 @@ public class CommentListEntity {
     public int likesNum;
     public List<CommentListtwoEntity> child;
     public boolean report;
+    public int isLiked;
 
     @Override
     public String toString() {

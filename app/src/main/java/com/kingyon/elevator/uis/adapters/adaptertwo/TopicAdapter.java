@@ -14,11 +14,13 @@ import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import java.util.List;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_TOPIC_DETAILS;
+import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
  * Created By Admin  on 2020/4/15
@@ -48,16 +50,39 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder!=null) {
-            holder.tv_conent.setText(conentEntity.get(position).content);
-            holder.tv_title.setText(conentEntity.get(position).title);
-            holder.tv_nickname.setText(conentEntity.get(position).nickname);
+
+
+//            holder.tv_title.setText(conentEntity.get(position).title);
+//
+//            holder.tv_title.setText(delHTMLTag(conentEntity.get(position).content)+"");
+            if (conentEntity.get(position).latestContent==null) {
+                holder.tv_conent.setText(conentEntity.get(position).content);
+            }else {
+                holder.tv_conent.setText(delHTMLTag(conentEntity.get(position).latestContent));
+            }
+            if (conentEntity.get(position).latestNickname==null) {
+                holder.tv_nickname.setText(conentEntity.get(position).nickname);
+            }else {
+                holder.tv_nickname.setText(conentEntity.get(position).latestNickname);
+            }
+            if (conentEntity.get(position).latestPhoto==null) {
+                GlideUtils.loadCircleImage(context, conentEntity.get(position).photo, holder.img_portrait);
+            }else {
+                GlideUtils.loadCircleImage(context, conentEntity.get(position).latestPhoto, holder.img_portrait);
+            }
             if (conentEntity.get(position).image==null){
                 holder.ll_imagw.setVisibility(View.GONE);
             }else {
                 holder.ll_imagw.setVisibility(View.VISIBLE);
-                GlideUtils.loadRoundCornersImage(context,conentEntity.get(position).image,holder.img_topic_image,20);
+                if (conentEntity.get(position).latestImage==null) {
+                    GlideUtils.loadRoundCornersImage(context, conentEntity.get(position).image, holder.img_topic_image, 20);
+                }else {
+                    List<Object> list = StringUtils.StringToList(conentEntity.get(position).latestImage);
+                    LogUtils.e(list.toString());
+                    GlideUtils.loadRoundCornersImage(context, list.get(0).toString(), holder.img_topic_image, 20);
+                }
+
             }
-            GlideUtils.loadCircleImage(context,conentEntity.get(position).photo,holder.img_portrait);
             HomeTopicConentEntity homeTopicConentEntity = conentEntity.get(position);
             holder.ll_topic.setOnClickListener(new View.OnClickListener() {
                 @Override

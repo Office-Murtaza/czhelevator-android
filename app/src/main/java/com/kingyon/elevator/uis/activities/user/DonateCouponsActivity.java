@@ -85,6 +85,7 @@ public class DonateCouponsActivity extends BaseStateRefreshingLoadingActivity<Co
                 holder.setTextSize(R.id.tv_discounts_2, discount ? 14 : 32);
                 holder.setTextNotHide(R.id.tv_condition, String.format("满%s可用", CommonUtil.getMayTwoFloat(item.getCouponCondition())));
                 holder.setTextNotHide(R.id.tv_name, discount ? "折扣券" : "代金券");
+                holder.setBackgroundRes(R.id.ll_juan,discount ? R.mipmap.bg_wallet_discount:R.mipmap.bg_wallet_voucher);
 
 //                EditCountViewIntUpDown editCountView = holder.getView(R.id.ecv_count);
 //                editCountView.removeOnNumberChange();
@@ -215,7 +216,7 @@ public class DonateCouponsActivity extends BaseStateRefreshingLoadingActivity<Co
 
     private void requestDonate(String phone, String couponCounts, String couponsParam) {
         tvEnsure.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().donateCoupons(phone, couponCounts, couponsParam)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

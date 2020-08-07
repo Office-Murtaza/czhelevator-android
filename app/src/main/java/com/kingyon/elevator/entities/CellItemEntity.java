@@ -356,6 +356,7 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
         dest.writeInt(this.targetScreenNum);
         dest.writeByte(this.deleteCache ? (byte) 1 : (byte) 0);
         dest.writeString(this.planTypeCache);
+        dest.writeString(this.regionName);
         dest.writeLong(this.objctId);
         dest.writeString(this.cellName);
         dest.writeString(this.address);
@@ -387,6 +388,7 @@ public class CellItemEntity extends OnChoosedInterface implements Parcelable {
         this.targetScreenNum = in.readInt();
         this.deleteCache = in.readByte() != 0;
         this.planTypeCache = in.readString();
+        this.regionName = in.readString();
         this.objctId = in.readLong();
         this.cellName = in.readString();
         this.address = in.readString();

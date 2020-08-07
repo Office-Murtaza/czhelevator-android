@@ -348,7 +348,9 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
                 break;
             case R.id.ll_view_schedule:
                 if (isToken(getActivity())) {
-                    startActivity(PlanNewFragment.class);
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("type","ad");
+                    startActivity(PlanNewFragment.class,bundle1);
                 }else {
                     ActivityUtils.setLoginActivity();
                 }

@@ -14,13 +14,17 @@ import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.entities.entities.MassagePushEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.WebViewActivity;
+import com.kingyon.elevator.uis.dialogs.DeleMassageDialog;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
+import com.kingyon.elevator.utils.utilstwo.MassageUtils;
+import com.kingyon.elevator.view.DialogOnClick;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
@@ -168,6 +172,35 @@ public class MessagePushActivity extends BaseStateRefreshingLoadingActivity<Mass
 
                 break;
         }
+    }
+
+
+    @Override
+    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, MassagePushEntiy item, int position) {
+
+        DeleMassageDialog dialog = new DeleMassageDialog(MessagePushActivity.this);
+        dialog.show();
+        dialog.setDialogOnClick(new DialogOnClick() {
+            @Override
+            public void onClick() {
+                showProgressDialog(getString(R.string.wait),true);
+                dialog.dismiss();
+                MassageUtils.httremovePushMsg(String.valueOf(item.pushId), new IsSuccess() {
+                    @Override
+                    public void isSuccess(boolean success) {
+                        hideProgress();
+                        if (success){
+                            autoRefresh();
+                            showToast("删除成功");
+                        }else {
+                            showToast("删除失败");
+                        }
+                    }
+                });
+            }
+        });
+
+        return true;
     }
 
     @Override

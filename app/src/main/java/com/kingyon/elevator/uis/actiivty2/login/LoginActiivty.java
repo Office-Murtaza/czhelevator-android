@@ -166,7 +166,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                     authorizeUtils.setAuthorizeListener(this);
                 }
                 setThirdLoginEnabled(false);
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
                 authorizeUtils.authWechat();
                 break;
             case R.id.img_qq:
@@ -175,7 +175,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                     authorizeUtils.setAuthorizeListener(this);
                 }
                 setThirdLoginEnabled(false);
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
                 authorizeUtils.authQQ();
                 break;
             case R.id.img_wb:

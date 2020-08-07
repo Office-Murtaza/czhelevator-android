@@ -91,6 +91,16 @@ public interface Constants {
     }
 
     interface PayType {//ali，wechat，balance
+        /*
+        *    ALI,        // 支付宝
+        WECHAT,     // 微信
+        OFFLINE,    // 线下
+        COUPON,     //优惠券
+        BALANCE,    // 余额支付
+        FREE,       // 免费
+
+        * */
+
         String ALI_PAY = "ALI";
         String WX_PAY = "WECHAT";
         String BALANCE_PAY = "BALANCE";
@@ -98,6 +108,8 @@ public interface Constants {
         String FREE = "FREE";//免费订单
         String APPLY = "APPLY";//内购
         String OFFLINE = "OFFLINE";//线下支付
+        /*优惠卷*/
+        String COUPON = "COUPON";//线下支付
     }
 
     interface WithdrawType {//ali，bankCard

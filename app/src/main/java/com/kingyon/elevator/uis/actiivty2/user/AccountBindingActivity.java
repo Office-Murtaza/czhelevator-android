@@ -89,7 +89,7 @@ public class AccountBindingActivity extends BaseActivity implements AuthorizeUti
     }
 
     private void httpData() {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getCheckBind3Rd()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<UserEntity>() {

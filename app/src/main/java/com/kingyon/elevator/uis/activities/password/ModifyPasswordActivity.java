@@ -90,7 +90,7 @@ public class ModifyPasswordActivity extends BaseSwipeBackActivity {
             showToast("两次输入的密码不一致");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         preVRight.setEnabled(false);
         NetService.getInstance().changePassword(CommonUtil.getEditText(etOldPassword), CommonUtil.getEditText(etNewPassword))
                 .compose(this.<String>bindLifeCycle())

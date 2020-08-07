@@ -24,6 +24,7 @@ import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
@@ -241,7 +242,12 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                         queryRecommendEntity.liked = false;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
                         ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                                HOME_CONTENT, CANCEL_LIKE, position, queryRecommendEntity, "1");
+                                HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                         likes--;
                         queryRecommendEntity.likes = likes;
                         LogUtils.e(likes + "");
@@ -250,7 +256,12 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                         queryRecommendEntity.liked = true;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like);
                         ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                                HOME_CONTENT, LIKE, position, queryRecommendEntity, "1");
+                                HOME_CONTENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                         likes++;
                         queryRecommendEntity.likes = likes;
                         LogUtils.e(likes + "");

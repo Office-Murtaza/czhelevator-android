@@ -27,6 +27,7 @@ public class CommonUtil {
     public static final String KEY_VALUE_5 = "value_5";
     public static final String KEY_VALUE_6 = "value_6";
     public static final String KEY_VALUE_7 = "value_7";
+    public static final String KEY_VALUE_8 = "value_8";
     public static final int REQ_CODE_1 = 4001;
     public static final int REQ_CODE_2 = 4002;
     public static final int REQ_CODE_3 = 4003;

@@ -63,11 +63,13 @@ public class ADEntity implements Parcelable {
     private String urlImate;
     private long adIndustryId;
 
+
     @Override
     public String toString() {
         return "ADEntity{" +
                 "onlyInfo=" + onlyInfo +
                 ", objctId=" + objctId +
+                ", objectId=" + objectId +
                 ", planType='" + planType + '\'' +
                 ", screenType='" + screenType + '\'' +
                 ", adStatus='" + adStatus + '\'' +
@@ -77,6 +79,10 @@ public class ADEntity implements Parcelable {
                 ", faildReason='" + faildReason + '\'' +
                 ", title='" + title + '\'' +
                 ", adIndustry='" + adIndustry + '\'' +
+                ", name='" + name + '\'' +
+                ", urlVideo='" + urlVideo + '\'' +
+                ", typeAdvertise='" + typeAdvertise + '\'' +
+                ", urlImate='" + urlImate + '\'' +
                 ", adIndustryId=" + adIndustryId +
                 '}';
     }
@@ -229,6 +235,7 @@ public class ADEntity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte(this.onlyInfo ? (byte) 1 : (byte) 0);
         dest.writeLong(this.objctId);
+        dest.writeLong(this.objectId);
         dest.writeString(this.planType);
         dest.writeString(this.screenType);
         dest.writeString(this.adStatus);
@@ -248,6 +255,7 @@ public class ADEntity implements Parcelable {
     protected ADEntity(Parcel in) {
         this.onlyInfo = in.readByte() != 0;
         this.objctId = in.readLong();
+        this.objectId = in.readLong();
         this.planType = in.readString();
         this.screenType = in.readString();
         this.adStatus = in.readString();

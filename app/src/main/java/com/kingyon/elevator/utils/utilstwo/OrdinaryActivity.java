@@ -59,7 +59,7 @@ public class OrdinaryActivity {
      * 验证码跳转
      * */
     public static void CodeActivity(BaseActivity activity, String type, String phone,String unique, String avatar, String nickName ,String isbinding,String loginType) {
-        activity.showProgressDialog(activity.getString(R.string.wait));
+        activity.showProgressDialog(activity.getString(R.string.wait),true);
             NetService.getInstance().setSendCheckConde(type, phone)
                     .compose(activity.bindLifeCycle())
                     .subscribe(new CustomApiCallback<String>() {
@@ -83,7 +83,7 @@ public class OrdinaryActivity {
      * 验证码发送
      * */
     public static void CodeTextviewActivity(BaseActivity activity, String type, String phone, TextView textView){
-        activity.showProgressDialog(activity.getString(R.string.wait));
+        activity.showProgressDialog(activity.getString(R.string.wait),true);
         NetService.getInstance().setSendCheckConde(type,phone)
                 .compose(activity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -108,7 +108,7 @@ public class OrdinaryActivity {
      * 验证码验证
      * */
     public static void httpCheckVerifyCode(BaseActivity activity, String phone, String verifyCode , String unique,String avatar, String nickName,String loginType){
-        activity.showProgressDialog("请稍等...");
+        activity.showProgressDialog("请稍等...",true);
         NetService.getInstance().setBindPhone(phone,verifyCode,unique,avatar,nickName,loginType)
                 .compose(activity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<CodeEntity>() {
@@ -144,7 +144,7 @@ public class OrdinaryActivity {
     public static void httpLogin(BaseActivity baseActivity, String phone, String password, String way,
                                  String unique, String avatar, String nickName, LinearLayout llSf,
                                  TextView tvLoginUser,TextView tvCode) {
-        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait));
+        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait),true);
         NetService.getInstance().setLogin(phone,password,way,unique,avatar,nickName)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<CodeEntity>() {
@@ -264,7 +264,7 @@ public class OrdinaryActivity {
      * 设置密码
      * */
     public static void httpPasswordSetting(BaseActivity baseActivity,String phone,String password ,String inviter){
-        baseActivity.showProgressDialog("设置中");
+        baseActivity.showProgressDialog("设置中",true);
         LogUtils.e(phone,password,inviter);
         NetService.getInstance().setPasswordSetting(phone,password,inviter)
                 .compose(baseActivity.bindLifeCycle())
@@ -298,7 +298,7 @@ public class OrdinaryActivity {
      * 找回密码
      * */
     public static void httpResetPassword(BaseActivity baseActivity,String phone,String verifyCode,String newPassword){
-        baseActivity.showProgressDialog("请稍等");
+        baseActivity.showProgressDialog("请稍等",true);
         NetService.getInstance().setResetPassword(phone,verifyCode,newPassword)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -334,7 +334,7 @@ public class OrdinaryActivity {
             baseActivity.showToast("新密码长度不足6位");
             return;
         }
-        baseActivity.showProgressDialog(getString(R.string.wait));
+        baseActivity.showProgressDialog(getString(R.string.wait),true);
         tvLogin.setEnabled(false);
         NetService.getInstance().resetPassword(CommonUtil.getEditText(etMobile), CommonUtil.getEditText(etCode)
                 , CommonUtil.getEditText(etPassword))
@@ -370,7 +370,7 @@ public class OrdinaryActivity {
                                           String videoCover,long playTime, int videoHorizontalVertical,boolean isOriginal){
         LogUtils.e(title,content,image,video,type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal);
 
-        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait));
+        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait),true);
         NetService.getInstance().setContentPublish(title,content,image,video,type,
                 combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal)
                 .compose(baseActivity.bindLifeCycle())
@@ -445,7 +445,7 @@ public class OrdinaryActivity {
         }
         KeyBoardUtils.closeKeybord(baseActivitym);
         tvSubmit.setEnabled(false);
-        baseActivitym.showProgressDialog(getString(R.string.wait));
+        baseActivitym.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().createInvoice(invoiceType, etName.getText().toString()
                 , companyType ? etTaxpayer.getText().toString() : "",  ""
                 , sum, etEmail.getText().toString(), etContent.getText().toString())

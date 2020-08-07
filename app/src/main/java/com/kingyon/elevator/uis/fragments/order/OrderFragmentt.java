@@ -8,14 +8,20 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.order.OrderDetailsActivity;
+import com.kingyon.elevator.uis.dialogs.popwindow.MassageDelePopWindow;
+import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
@@ -28,17 +34,21 @@ import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.CodeType.OEDER_COMPLETE;
-import static com.czh.myversiontwo.utils.CodeType.OEDER_REJECT;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_RELEASEING;
-import static com.czh.myversiontwo.utils.CodeType.OEDER_WAIT;
+import static com.czh.myversiontwo.utils.CodeType.OEDER_SOWING;
 import static com.czh.myversiontwo.utils.CodeType.OEDER_WAITRELEASE;
+import static com.czh.myversiontwo.utils.CodeType.REVIEWFAILD;
+import static com.czh.myversiontwo.utils.CodeType.WAITREVIEW;
 import static com.czh.myversiontwo.utils.StringContent.ORADER_NUMBER;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/6/11
@@ -76,14 +86,15 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                     case OEDER_WAITRELEASE:
                         holder.setText(R.id.tv_status, "待发布");
                         holder.setVisible(R.id.tv_again, false);
+                        holder.setVisible(R.id.img_delete, false);
                         LogUtils.e(item.getAuditState());
                         switch (item.getAuditState()) {
-                            case OEDER_WAIT:
+                            case WAITREVIEW:
                                 /*审核中*/
                                 holder.setVisible(R.id.img_status, true);
                                 holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_wait);
                                 break;
-                            case OEDER_REJECT:
+                            case REVIEWFAILD:
                                 /*未通过*/
                                 holder.setVisible(R.id.img_status, true);
                                 holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_fail);
@@ -95,9 +106,18 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                     case OEDER_COMPLETE:
                         holder.setText(R.id.tv_status, "已完成");
                         holder.setVisible(R.id.tv_again, true);
+                        holder.setVisible(R.id.img_delete, true);
+                        holder.setText(R.id.tv_again, "再来一单");
+                        break;
+                    case OEDER_SOWING:
+                        holder.setText(R.id.tv_status, "已完成");
+                        holder.setVisible(R.id.tv_again, true);
+                        holder.setVisible(R.id.img_delete, true);
+                        holder.setText(R.id.tv_again, "重新投放");
                         break;
                     case OEDER_RELEASEING:
                         holder.setVisible(R.id.tv_again, false);
+                        holder.setVisible(R.id.img_delete, false);
                         holder.setText(R.id.tv_status, "发布中");
                         break;
                     default:
@@ -106,11 +126,65 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                 holder.setOnClickListener(R.id.tv_again, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AdUtils.type = item.getOrderType();
+                        if (isToken(getActivity())) {
+                            httpOrderAgain(item.getOrderSn());
+
+                        }else {
+                            ActivityUtils.setLoginActivity();
+                        }
                         LogUtils.e("再来一单");
+                    }
+                });
+                holder.setOnClickListener(R.id.img_delete, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MassageDelePopWindow window =  new MassageDelePopWindow(getActivity());
+                        window.showAtBottom(holder.getView(R.id.img_delete));
+                        window.onClick(new IsSuccess() {
+                            @Override
+                            public void isSuccess(boolean success) {
+                                window.dismiss();
+                                showProgressDialog(getString(R.string.wait));
+                                NetService.getInstance().orderDelete(item.getOrderSn())
+                                        .subscribe(new CustomApiCallback<String>() {
+                                            @Override
+                                            protected void onResultError(ApiException ex) {
+                                                hideProgress();
+                                                showToast(ex.getDisplayMessage());
+                                            }
+                                            @Override
+                                            public void onNext(String s) {
+                                                hideProgress();
+                                                showToast("删除成功");
+                                                autoRefresh();
+                                            }
+                                        });
+
+                            }
+                        });
                     }
                 });
             }
         };
+    }
+
+    private void httpOrderAgain(String orderSn) {
+        AdUtils.orderSn = orderSn;
+        NetService.getInstance().orderAgain(orderSn)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                    }
+                    @Override
+                    public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type","order");
+                        startActivity(PlanNewFragment.class,bundle);
+                    }
+                });
     }
 
     @Override

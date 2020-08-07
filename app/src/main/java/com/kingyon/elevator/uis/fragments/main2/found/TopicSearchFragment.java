@@ -2,6 +2,8 @@ package com.kingyon.elevator.uis.fragments.main2.found;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,10 +17,17 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.main.TopicSelectionActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.TopicSearchAdapter;
+import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,7 +54,11 @@ public class TopicSearchFragment extends BaseFragment {
     RelativeLayout rlError;
     @BindView(R.id.rl_null)
     RelativeLayout rlNull;
-
+    @BindView(R.id.smart_refresh_layout_topic)
+    SmartRefreshLayout smartRefreshLayoutTopic;
+    TopicSearchAdapter topicSearchAdapter;
+    int page = 1;
+    List<QueryTopicEntity.PageContentBean> list = new ArrayList<>();
     public TopicSearchFragment setIndex(int label) {
         this.label = label;
         return (this);
@@ -58,24 +71,42 @@ public class TopicSearchFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        list.clear();
         httpQuerTopic(1, "", label);
+
+        smartRefreshLayoutTopic.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                list.clear();
+                httpQuerTopic(1, "", label);
+            }
+        });
+        smartRefreshLayoutTopic.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                httpQuerTopic(page, "", label);
+            }
+        });
+
 
     }
 
     private void httpQuerTopic(int page, String title, int label) {
         showProgressDialog("请稍等");
-        NetService.getInstance().setOueryTopic(page,title, label)
+        NetService.getInstance().setOueryTopic(page, title, label)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryTopicEntity.PageContentBean>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         ToastUtils.showShort(ex.getDisplayMessage());
-                        if (ex.getCode()==-102){
+                        OrdinaryActivity.closeRefresh(smartRefreshLayoutTopic);
+                        if (ex.getCode() == -102) {
                             /*没有数据*/
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
                             rvList.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
                             rvList.setVisibility(View.GONE);
@@ -85,30 +116,46 @@ public class TopicSearchFragment extends BaseFragment {
 
                     @Override
                     public void onNext(ConentEntity<QueryTopicEntity.PageContentBean> pageContentBeanQueryTopicEntity) {
+                        OrdinaryActivity.closeRefresh(smartRefreshLayoutTopic);
                         if (pageContentBeanQueryTopicEntity.getContent().size() > 0) {
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
                             rvList.setVisibility(View.VISIBLE);
-                            TopicSearchAdapter topicSearchAdapter = new TopicSearchAdapter(getActivity(), pageContentBeanQueryTopicEntity);
-                            rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            rvList.setAdapter(topicSearchAdapter);
-                            hideProgress();
+                            addData(pageContentBeanQueryTopicEntity);
 
-                            topicSearchAdapter.setOnItemClickListener(new TopicSearchAdapter.ItemClickListener() {
-                                @Override
-                                public void onItemClick(int position) {
-                                    List<QueryTopicEntity.PageContentBean> data = pageContentBeanQueryTopicEntity.getContent();
-                                    QueryTopicEntity.PageContentBean tag = data.get(position);
-                                    setResult(tag);
-                                }
-                            });
-                        }else {
+                        } else {
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
                             rvList.setVisibility(View.GONE);
                         }
                     }
                 });
+    }
+
+    private void addData(ConentEntity<QueryTopicEntity.PageContentBean> content) {
+        hideProgress();
+        for (int i = 0; i < content.getContent().size(); i++) {
+            QueryTopicEntity.PageContentBean queryRecommendEntity = new QueryTopicEntity.PageContentBean();
+            queryRecommendEntity = content.getContent().get(i);
+            list.add(queryRecommendEntity);
+        }
+        if (topicSearchAdapter == null || page == 1) {
+            topicSearchAdapter = new TopicSearchAdapter(getActivity());
+            topicSearchAdapter.addData(list);
+            rvList.setAdapter(topicSearchAdapter);
+            rvList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
+        } else {
+            topicSearchAdapter.addData(list);
+            topicSearchAdapter.notifyDataSetChanged();
+        }
+        topicSearchAdapter.setOnItemClickListener(new TopicSearchAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                List<QueryTopicEntity.PageContentBean> data = content.getContent();
+                QueryTopicEntity.PageContentBean tag = data.get(position);
+                setResult(tag);
+            }
+        });
     }
 
     private void setResult(QueryTopicEntity.PageContentBean tag) {
@@ -123,8 +170,6 @@ public class TopicSearchFragment extends BaseFragment {
     protected void dealLeackCanary() {
 
     }
-
-
 
 
     @Override

@@ -60,6 +60,7 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.AdZoneEntiy;
 import com.kingyon.elevator.entities.entities.AtListEntiy;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.AuthStatusEntily;
@@ -84,6 +85,7 @@ import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.MassagePushEntiy;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -122,14 +124,14 @@ public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
 //    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
     String domainReleaseName = "http://test.pddtv.cn:8080/app/v2/";//外网正式服地址
-//    String domainReleaseName = "http://192.168.1.250:8080/app/v2/";//外网正式服地址
+//    String domainReleaseName = "http://192.168.1.181:8080/app/v2/";//外网正式服地址
 
 
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
-//    String domainDebugName = "http://192.168.1.250:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
+    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.32:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
@@ -175,7 +177,7 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<QueryTopicEntity.PageContentBean>>
     getOueryTopic(@Field("page") int page,
-                  @Field("title") String title,@Field("labelId") int label);
+                  @Field("title") String title,@Field("labelId") String label);
 
     /*2.0静态/通用获取七牛云参数*/
     @POST("common/getQiNiu")
@@ -384,6 +386,10 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> deleteAd(@Field("objectId") long objectId);
 
+    /*2.0广告专区*/
+    @GET("rest/contentAdv/getAdvList")
+    Observable<AdZoneEntiy> getAdvList(@Query("page") int page, @Query("rows") int rows,@Query("params") String params);
+
 
     /*2.0获取分类模板*/
     @POST("ad/getAdTempletType")
@@ -521,6 +527,42 @@ public interface NetApi {
     @POST("massage/removeRobot")
     @FormUrlEncoded
     Observable<String> removeRobot (@Field("robot_id") String robot_id);
+
+    /*2.0删除@我的记录*/
+    @POST("massage/removeAtMe")
+    @FormUrlEncoded
+    Observable<String> removeAtMe(@Field("id") String id);
+
+    /*2.0删除评论点赞*/
+    @POST("massage/removeCommentLikes")
+    @FormUrlEncoded
+    Observable<String> removeCommentLikes(@Field("id") String id);
+
+    /*2.0删除评论我的记录*/
+    @POST("massage/removeCommentMe")
+    @FormUrlEncoded
+    Observable<String> removeCommentMe(@Field("id") String id);
+
+    /*2.删除内容点赞*/
+    @POST("massage/removeContentLikes")
+    @FormUrlEncoded
+    Observable<String> removeContentLikes(@Field("id") String id);
+
+    /*2.删除关注消息*/
+    @POST("mmassage/removeLikeMsg")
+    @FormUrlEncoded
+    Observable<String> removeLikeMsg(@Field("id") String id);
+
+    /*2.删除我的消息*/
+    @POST("massage/removeMsg")
+    @FormUrlEncoded
+    Observable<String> removeMsg(@Field("id") String id);
+
+    /*2.删除推送消息*/
+    @POST("massage/removePushMsg")
+    @FormUrlEncoded
+    Observable<String> removePushMsg(@Field("push_id") String id);
+
 
     /*2.0客服管理内容*/
     @POST("customSv/getWikipedia")
@@ -771,6 +813,11 @@ public interface NetApi {
     Observable<ConentEntity<OrderDetailsEntity>> orderList(@Field("orderStatus") String status,
                                                              @Field("auditStatus") String auditStatus,
                                                              @Field("page") int page);
+
+    /*2.0再来一单*/
+    @POST("order/orderAgain")
+    @FormUrlEncoded
+    Observable<List<OrderComeEntiy>>orderAgain(@Field("orderSn") String orderSn);
 
 
     /*2.0查看订单点位列表*/

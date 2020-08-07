@@ -1,7 +1,9 @@
 package com.kingyon.elevator.utils.utilstwo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.os.Environment;
 import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -12,6 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * @Created By Admin  on 2020/5/12
@@ -170,11 +175,31 @@ public class VideoUtils {
         return fileSizeString;
     }
 
-    /** 保存方法 */
-    public  static String saveBitmap(Bitmap bitmap) {
+    /**
+     * 保存方法
+     * */
+    public  static String saveBitmap(Context context,Bitmap bitmap) {
         Log.e(TAG, "保存图片");
+        String finalPath = "";
+        String dirPath = "";
+        String dirName = "czh_image/PDD";
+        String fileNamePrefix = "image_";
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            dirPath = context.getExternalCacheDir() + File.separator + dirName; // /mnt/sdcard/Android/data/<package name>/files/...
+        } else {
+            dirPath = context.getCacheDir() + File.separator + dirName; // /data/data/<package name>/files/...
+        }
+        File file = new File(dirPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        finalPath = file.getAbsolutePath();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+                .format(new Date());
+        String outputName = fileNamePrefix + timeStamp + ".png";
+        finalPath = finalPath + "/" + outputName;
         String pidname = String.valueOf(TimeUtils.getCurTimeLong());
-        File f = new File("/sdcard/PDD/", pidname+".png");
+        File f = new File(finalPath);
         if (f.exists()) {
             f.delete();
         }
@@ -183,8 +208,8 @@ public class VideoUtils {
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
-            Log.i(TAG, "已经保存");
-            return "/sdcard/PDD/"+pidname+".png";
+            Log.e(TAG, "已经保存"+finalPath);
+            return finalPath;
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

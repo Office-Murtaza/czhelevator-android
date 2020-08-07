@@ -21,15 +21,20 @@ import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
+import com.umeng.commonsdk.debug.I;
 
 import java.util.List;
 
+import static com.czh.myversiontwo.utils.CodeType.CANCEL_LIKE;
 import static com.czh.myversiontwo.utils.CodeType.HOME_COMMENT;
+import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
+import static com.czh.myversiontwo.utils.CodeType.LIKE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_COMMENT_TWO;
 
 /**
@@ -44,6 +49,7 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
     List<CommentListEntity> conentEntity;
     String type;
     GetRefresh getRefresh;
+    int likeNum;
     /**
      * type 1 一级 2 子级
      * */
@@ -74,15 +80,16 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
             }else {
                 holder.tv_comment_hf.setText("回复");
             }
+            likeNum = commentListEntity.likesNum;
             holder.tv_like_number.setText(StringUtils.getNumStr(commentListEntity.likesNum,"点赞"));
             holder.tv_name.setText(commentListEntity.nickname);
             holder.tv_time.setText(TimeUtil.getRecentlyTime(commentListEntity.createTime));
             GlideUtils.loadCircleImage(context, commentListEntity.photo, holder.img_portrait);
-//            if (conentEntity.get(position).liked){
-//                holder.img_like.setImageResource(R.mipmap.ic_small_like);
-//            }else {
-//                holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
-//            }
+            if (conentEntity.get(position).isLiked==1){
+                holder.img_like.setImageResource(R.mipmap.ic_small_like);
+            }else {
+                holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
+            }
             holder.ll_comments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,12 +121,29 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
             holder.img_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (true) {
-
+                    if (commentListEntity.isLiked==0) {
+                        commentListEntity.isLiked = 1;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like);
-                    }else {
+                        ConentUtils.httpHandlerLikeOrNot(context, commentListEntity.id,
+                                HOME_COMMENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum+1,"点赞"));
+                                        commentListEntity.likesNum = likeNum+1;
 
+                                    }
+                                });
+                    }else {
+                        commentListEntity.isLiked = 0;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
+                        ConentUtils.httpHandlerLikeOrNot(context, commentListEntity.id,
+                                HOME_COMMENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum-1,"点赞"));
+                                        commentListEntity.likesNum = likeNum-1;
+                                    }
+                                });
                     }
 
                 }

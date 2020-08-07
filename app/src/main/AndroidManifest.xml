@@ -57,6 +57,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:icon,android:theme,android:name">
 <!--        订单  -->
@@ -569,6 +570,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NextTheme"
             android:windowSoftInputMode="stateVisible|adjustResize"
+            android:launchMode="singleTask"
             />
         <!--        内容详情图文-->
         <activity android:name=".uis.actiivty2.content.ContentDetailsActivity"
@@ -599,7 +601,7 @@
         <activity android:name=".uis.actiivty2.main.VoideReleasetyActiivty"
             android:screenOrientation="portrait"
             />
-<!--话题详情-->
+<!--        话题详情-->
         <activity android:name=".uis.actiivty2.content.TopicDetailsActivity"
             android:screenOrientation="portrait"
             ></activity>
@@ -817,6 +819,28 @@
         <activity android:name=".uis.actiivty2.activityutils.ImagerEditorActivity"
             android:screenOrientation="portrait"
             />
+
+        <!--2.0预览便民信息-->
+        <activity android:name=".uis.activities.order.OrderInformationactivity"
+            android:screenOrientation="portrait"
+            />
+
+        <!--2.0预览本地广告内容-->
+        <activity android:name=".uis.activities.advertising.PreviewAdActivity"
+            android:screenOrientation="portrait"
+            />
+
+
+        <!-- CameraSDK相册选取 -->
+        <activity android:name="com.muzhi.camerasdk.PhotoPickActivity" />
+        <activity android:name="com.muzhi.camerasdk.PreviewActivity" />
+        <activity android:name="com.muzhi.camerasdk.CropperImageActivity" />
+        <activity android:name="com.muzhi.camerasdk.FilterImageActivity" />
+        <activity android:name="com.muzhi.camerasdk.CutActivity" />
+        <activity android:name="com.muzhi.camerasdk.PhotoEnhanceActivity" />
+        <activity android:name="com.muzhi.camerasdk.StickerActivity" />
+        <activity android:name="com.muzhi.camerasdk.GraffitiActivity" />
+
 
 
         <!-- ****************友盟配置****************************** -->

@@ -159,7 +159,7 @@ public class InvoiceApplyActivity extends BaseStateLoadingActivity {
         }
         KeyBoardUtils.closeKeybord(this);
         tvSubmit.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().createInvoice(invoiceType, etName.getText().toString()
                 , companyType ? etTaxpayer.getText().toString() : "", companyType ? etBank.getText().toString() : ""
                 , sum, etEmail.getText().toString(), etContent.getText().toString())

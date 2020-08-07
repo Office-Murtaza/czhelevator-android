@@ -14,18 +14,19 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_200"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp10"
             >
 
-            <com.zhihu.matisse.internal.ui.widget.RoundedRectangleImageView
+            <ImageView
+                android:id="@+id/img_videoCover"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_200"
-                android:src="@mipmap/bj"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 />
 
             <TextView
+                android:id="@+id/tv_isoriginal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="原创"
@@ -56,6 +57,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_hot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="HOT"
@@ -77,6 +79,7 @@
             android:orientation="horizontal"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
+            android:padding="@dimen/dp10"
             android:gravity="center_vertical"
             >
             <ImageView
@@ -120,6 +123,7 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
+            android:padding="@dimen/dp10"
             android:visibility="gone"
             >
 
@@ -148,8 +152,8 @@
 
             <TextView
                 android:id="@+id/tv_two_zpb"
-                android:layout_width="150dp"
-                android:layout_height="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="12 点赞    6 评论    123播放"
                 android:textColor="#ffb4b3b3"
                 android:textSize="12sp"

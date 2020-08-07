@@ -5,19 +5,24 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
+import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.TimeUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
+import com.leo.afbaselibrary.utils.GlideUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -30,8 +35,16 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
     EditText etContent;
     @BindView(R.id.tv_length)
     TextView tvLength;
+    @BindView(R.id.tv_time_satr)
+    TextView tvTimeSatr;
+    @BindView(R.id.tv_ad_type)
+    TextView tvAdType;
+    @BindView(R.id.tv_total_day)
+    TextView tvTotalDay;
+    @BindView(R.id.tv_end)
+    TextView tvEnd;
 
-    private ADEntity adEntity;
+    private OrderDetailsEntity adEntity;
 
     @Override
     protected String getTitleText() {
@@ -46,6 +59,10 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
+        tvTimeSatr.setText(TimeUtil.times(adEntity.getAdStartTime()) + TimeUtil.getWeek(adEntity.getAdStartTime()/1000));
+        tvEnd.setText(TimeUtil.times(adEntity.getAdEndTime()) + TimeUtil.getWeek(adEntity.getAdEndTime()/1000));
+        etContent.setText(adEntity.getAdvertising().getName());
+        tvTotalDay.setText(TimeUtil.getDayNumber((adEntity.getAdEndTime()),(adEntity.getAdStartTime())));
         etContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -62,7 +79,7 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
                 tvLength.setText(String.format("%s/60", s.length()));
             }
         });
-        etContent.setText((adEntity != null && adEntity.getTitle() != null) ? adEntity.getTitle() : "");
+        etContent.setText((adEntity != null && adEntity.getAdvertising().getName() != null) ? adEntity.getAdvertising().getName() : "");
         etContent.setSelection(etContent.getText().length());
     }
 
@@ -72,14 +89,14 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
             showToast("还没有输入任何内容");
             return;
         }
-        if (adEntity != null && TextUtils.equals(adEntity.getTitle(), etContent.getText().toString())) {
+        if (adEntity != null && TextUtils.equals(adEntity.getAdvertising().getName(), etContent.getText().toString())) {
             showToast("还没有对内容做任何修改");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
-        NetService.getInstance().createOrEidtAd(adEntity != null ? adEntity.getObjctId() : null
+        showProgressDialog(getString(R.string.wait), true);
+        NetService.getInstance().createOrEidtAd(adEntity != null ? adEntity.getAdvertising().getObjectId() : null
                 , true, Constants.PLAN_TYPE.INFORMATION, Constants.AD_SCREEN_TYPE.INFORMATION
-                , etContent.getText().toString(), null, null, null, null, null,null)
+                , etContent.getText().toString(), null, null, null, null, null, null)
                 .compose(this.<ADEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ADEntity>() {
                     @Override
@@ -99,5 +116,12 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
                         finish();
                     }
                 });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

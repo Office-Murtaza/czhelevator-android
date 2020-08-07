@@ -126,7 +126,7 @@ public class OrderDownActivity extends BaseStateLoadingActivity {
             showToast("请选择一个原因");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvEnsure.setEnabled(false);
         NetService.getInstance().downAd(orderId, reason.getObjectId(), etRemark.getText().toString())
                 .compose(this.<String>bindLifeCycle())

@@ -138,7 +138,7 @@ public class DeviceLiveActivity extends BaseSwipeBackActivity {
         socketClient = new CameraWebSocketClient(NetApi.socketDomainName);
         socketClient.setWebSocketListener(webSocketListener);
         socketClient.connect();
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
     }
 
     private CameraWebSocketClient.WebSocketListener webSocketListener = new CameraWebSocketClient.WebSocketListener() {

@@ -152,7 +152,7 @@ public class FeedBackDetailsActivity extends BaseStateRefreshingLoadingActivity<
             return;
         }
         tvPublish.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().commentFeedBack(feedBackId, etEdit.getText().toString())
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

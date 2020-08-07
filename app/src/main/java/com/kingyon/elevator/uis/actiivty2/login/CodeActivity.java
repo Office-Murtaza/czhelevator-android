@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,7 +64,7 @@ public class CodeActivity extends BaseActivity {
     @BindView(R.id.tv_number6)
     TextView tvNumber6;
     @BindView(R.id.tv_code_next)
-    TextView tvCodeNext;
+    Button tvCodeNext;
     @BindView(R.id.pc_1)
     PhoneCode pc1;
     @Autowired
@@ -94,11 +95,13 @@ public class CodeActivity extends BaseActivity {
 
         tvCodePhone.setText("+86  "+phone);
 
+        tvCodeNext.setClickable(false);
         pc1.setOnInputListener(new PhoneCode.OnInputListener() {
             @Override
             public void onSucess(String code) {
                 tvCodeNext.setBackgroundResource(R.mipmap.btn_common_normal);
                 tvCodeNext.setClickable(true);
+
             }
 
             @Override
@@ -117,6 +120,7 @@ public class CodeActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         OrdinaryActivity.codeActivity = this;
+        tvCodeNext.setClickable(false);
     }
 
     @OnClick({R.id.img_top_back, R.id.tv_sendcode, R.id.tv_code_next})

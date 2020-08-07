@@ -107,6 +107,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     AlwaysMarqueeTextView tvNotice;
     private boolean editMode;
     PlanSelectDateNewDialog planSelectDateNewDialog;
+    String type;
 
 //    public static PlanNewFragment newInstance() {
 //        Bundle args = new Bundle();
@@ -123,12 +124,9 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     @Override
     public void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
         StatusBarUtil.setHeadViewPadding(this, flTitle);
-//        StatusBarUtil.setTransparent(this);
         StatusBarUtil.setTransparent(this, false);
+        type = getIntent().getStringExtra("type");
         selectedIndex = 0;
         updateMode();
         initDateView();
@@ -138,10 +136,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
                 tvNotice.setText(delHTMLTag(data) + "");
             }
         });
-
-
     }
-
 
     private void initDateView() {
         tv_start_date.setText(String.format("%d月%d日", DateUtils.getLastSelectDateDay().getMonth(), DateUtils.getLastSelectDateDay().getDay()));
@@ -158,7 +153,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
 
     @Override
     public Fragment getContent(int pos) {
-        return PlanListFragment.newInstance(mItems.get(pos).getType());
+        return PlanListFragment.newInstance(mItems.get(pos).getType(),type);
     }
 
     @Override

@@ -387,7 +387,7 @@ public class CellLocationChooseActivity extends BaseSwipeBackActivity implements
      */
     public void geoAddress(LatLonPoint searchLatlonPoint) {
 //        Log.i("MY", "geoAddress"+ searchLatlonPoint.toString());
-        showProgressDialog("正在加载...");
+        showProgressDialog("正在加载...",true);
         searchText.setText("");
         if (searchLatlonPoint != null) {
             LogUtils.e(searchLatlonPoint, GeocodeSearch.AMAP);

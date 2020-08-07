@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/my_action_bar"
             app:srlEnableAutoLoadMore="true"
-            app:srlEnableRefresh="false">
+            app:srlEnableRefresh="true">
 
 
            <android.support.v4.widget.NestedScrollView

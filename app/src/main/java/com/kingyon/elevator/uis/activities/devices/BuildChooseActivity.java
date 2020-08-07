@@ -74,6 +74,9 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
         superior = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
         regionName = getIntent().getStringExtra(CommonUtil.KEY_VALUE_3);
         super.init(savedInstanceState);
+        if (TextUtils.isEmpty(regionName)){
+            tvDz.setVisibility(View.GONE);
+        }
         if (!TextUtils.isEmpty(superior)) {
             tvSuperior.setText(superior);
             tvDz.setText(regionName + "");
@@ -81,6 +84,7 @@ public class BuildChooseActivity extends BaseStateRefreshingLoadingActivity<Norm
             tvSuperior.setVisibility(View.GONE);
             tvDz.setVisibility(View.GONE);
         }
+
     }
 
     @Override

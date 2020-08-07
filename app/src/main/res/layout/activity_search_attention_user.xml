@@ -52,6 +52,8 @@
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:maxLines="1"
+                android:inputType="text"
+                android:lines="1"
                 />
 
         </LinearLayout>

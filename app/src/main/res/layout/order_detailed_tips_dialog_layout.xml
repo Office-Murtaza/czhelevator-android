@@ -62,7 +62,8 @@
         android:listSelector="@color/transparent"
         android:divider="@color/transparent"
         android:layout_marginEnd="27dp"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        />
 
     <View
         android:layout_width="match_parent"

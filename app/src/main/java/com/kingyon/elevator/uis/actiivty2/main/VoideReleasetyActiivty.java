@@ -190,7 +190,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
     private void initData() {
 //        LogUtils.e(videoPath);
 
-        videoCover = VideoUtils.saveBitmap(VideoUtils.getVideoThumb(videoPath));
+        videoCover = VideoUtils.saveBitmap(this,VideoUtils.getVideoThumb(videoPath));
         LogUtils.e(VideoUtils.isCross(videoPath));
         LogUtils.e(videoCover + "图片地址");
         httpuUploadImage(videoCover);
@@ -301,7 +301,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
         files.clear();
         File file = new File(videoPath);
         files.add(file);
-        showProgressDialog("请稍等...");
+        showProgressDialog("请稍等...",true);
         NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
             @Override
             public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -348,7 +348,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
         LogUtils.e(editTitle.getText().toString(),
                 editConent.getText().toString(), null, "视频地址", TYPE_VIDEO, "3", topicId, atAccount,
                 videoSize, videoCoverUrl, videoTime);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),false);
         NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
             @Override
             public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -417,7 +417,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
                 case ACCESS_VOIDE_RELEASETY:
                     LogUtils.e(data.getStringExtra("videoPath"));
                     videoPath = data.getStringExtra("videoPath");
-                    httpuUploadImage(VideoUtils.saveBitmap(VideoUtils.getVideoThumb(videoPath)));
+                    httpuUploadImage(VideoUtils.saveBitmap(this,VideoUtils.getVideoThumb(videoPath)));
                     break;
                 case REQUEST_USER_APPEND:
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);

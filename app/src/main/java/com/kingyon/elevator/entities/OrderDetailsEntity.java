@@ -73,6 +73,8 @@ public class OrderDetailsEntity implements Parcelable {
     private String invoiceId;
     private int numberScreen;
     private String auditState;
+    private String auditContent;
+    private float throwProportion;
     private List<OrderCommunityEntiy> lstHousingBean;
 
     @Override
@@ -109,6 +111,22 @@ public class OrderDetailsEntity implements Parcelable {
                 ", isInvoice=" + isInvoice +
                 ", invoiceId='" + invoiceId + '\'' +
                 '}';
+    }
+
+    public String getAuditContent() {
+        return auditContent;
+    }
+
+    public void setAuditContent(String auditContent) {
+        this.auditContent = auditContent;
+    }
+
+    public float getThrowProportion() {
+        return throwProportion;
+    }
+
+    public void setThrowProportion(float throwProportion) {
+        this.throwProportion = throwProportion;
     }
 
     public List<OrderCommunityEntiy> getLstHousingBean() {

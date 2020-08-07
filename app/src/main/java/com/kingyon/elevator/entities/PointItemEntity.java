@@ -33,6 +33,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
 
     private List<Long> occupyTimes;
     private String deliverState;
+    private String regionName;
     private long objectId;
     private String cellName;
     private String cellAddress;
@@ -52,6 +53,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
     private String liveAddress;
     private long netTime;
     private long installTime;
+    private boolean isChoosed;
 
     @Override
     public String toString() {
@@ -77,6 +79,24 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
                 ", netTime=" + netTime +
                 ", installTime=" + installTime +
                 '}';
+    }
+
+    @Override
+    public boolean isChoosed() {
+        return isChoosed;
+    }
+
+    @Override
+    public void setChoosed(boolean choosed) {
+        isChoosed = choosed;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
     public List<Long> getOccupyTimes() {
@@ -264,6 +284,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(this.occupyTimes);
         dest.writeString(this.deliverState);
+        dest.writeString(this.regionName);
         dest.writeLong(this.objectId);
         dest.writeString(this.cellName);
         dest.writeString(this.cellAddress);
@@ -291,6 +312,7 @@ public class PointItemEntity extends OnChoosedInterface implements Parcelable {
         this.deliverState = in.readString();
         this.objectId = in.readLong();
         this.cellName = in.readString();
+        this.regionName = in.readString();
         this.cellAddress = in.readString();
         this.cellId = in.readLong();
         this.build = in.readString();

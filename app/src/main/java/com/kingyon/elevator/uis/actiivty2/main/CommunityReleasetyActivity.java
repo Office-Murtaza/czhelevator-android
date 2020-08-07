@@ -40,12 +40,18 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.litao.android.lib.Utils.GridSpacingItemDecoration;
 import com.litao.android.lib.entity.PhotoEntry;
+import com.muzhi.camerasdk.MessageWrap;
+import com.muzhi.camerasdk.model.CameraSdkParameterInfo;
+import com.muzhi.camerasdk.model.ImageInfo;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -102,7 +108,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     List<String> userList = new ArrayList<>();
     List<String> tagList = new ArrayList<>();
 
-
+    private CameraSdkParameterInfo mCameraSdkParameterInfo=new CameraSdkParameterInfo();
     String topicId ;
     String atAccount;
     String TAG_FORMAT = "&nbsp;<tag id='%1$s' name='%2$s'>%2$s</tag>&nbsp;";
@@ -110,7 +116,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     StringBuffer sb = new StringBuffer();
     private boolean isOriginal = false;
 
-
+    private ArrayList<PhotoEntry> pic_list = new ArrayList<>();
     @Override
     public int getContentViewId() {
         return R.layout.activity_community_releaset;
@@ -118,6 +124,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
 
     @Override
     public void init(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         OrdinaryActivity.communityReleasetyActivity = this;
         showSoftInputFromWindow(editContent);
@@ -147,7 +154,6 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                     }
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             tvZishu.setText(s.toString().length()+"/500");
@@ -169,7 +175,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        mAdapter = new ChooseAdapter(this,list);
+        mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
         rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
         rcvListImg.setAdapter(mAdapter);
         rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
@@ -214,14 +220,14 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             CharSequence convertMetionString = editContent.getFormatCharSequence();
             LogUtils.e(convertMetionString, list.size(), list.toString());
             files.clear();
-            for (int c = 0; c < list.size(); c++) {
-                if (list.get(c).getPath() != null) {
-                    File file = new File(list.get(c).getPath());
+            for (int c = 0; c < pic_list.size(); c++) {
+                if (pic_list.get(c).getPath() != null) {
+                    File file = new File(pic_list.get(c).getPath());
                     files.add(file);
                 }
             }
             if (files.size() > 0) {
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),false);
                 NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
                     @Override
                     public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -256,7 +262,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Override
     public void onItemClicked(int position) {
         if (position == mAdapter.getItemCount()-1) {
-            list.clear();
+            pic_list.clear();
             RxPermissions rxPermissions = new RxPermissions(this);
             rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .subscribe(aBoolean -> {
@@ -271,28 +277,40 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     }
 
     private void startAction() {
-        Matisse.from(this)
-                .choose(MimeType.ofImage(), false)
-                .countable(true)
-                .capture(false)
-                .captureStrategy(
-                        new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
-                .maxSelectable(6)
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                .thumbnailScale(0.85f)
-                .imageEngine(new GlideEngine())
-                .setOnSelectedListener((uriList, pathList) -> {
-                    Log.e("onSelected", "onSelected: pathList=" + pathList);
-                })
-                .showSingleMediaType(true)
-                .originalEnable(true)
-                .maxOriginalSize(10)
-                .autoHideToolbarOnSingleTap(true)
-                .setOnCheckedListener(isChecked -> {
-                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
-                })
-                .forResult(ACCESS_IMAGE_PATH);
+//        Matisse.from(this)
+//                .choose(MimeType.ofImage(), false)
+//                .countable(true)
+//                .capture(false)
+//                .captureStrategy(
+//                        new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
+//                .maxSelectable(6)
+//                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+//                .thumbnailScale(0.85f)
+//                .imageEngine(new GlideEngine())
+//                .setOnSelectedListener((uriList, pathList) -> {
+//                    Log.e("onSelected", "onSelected: pathList=" + pathList);
+//                })
+//                .showSingleMediaType(true)
+//                .originalEnable(true)
+//                .maxOriginalSize(10)
+//                .autoHideToolbarOnSingleTap(true)
+//                .setOnCheckedListener(isChecked -> {
+//                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+//                })
+//                .forResult(ACCESS_IMAGE_PATH);
+        mCameraSdkParameterInfo.setSingle_mode(false);
+        mCameraSdkParameterInfo.setShow_camera(false);
+        mCameraSdkParameterInfo.setMax_image(6);
+        mCameraSdkParameterInfo.setCroper_image(false);
+        mCameraSdkParameterInfo.setFilter_image(true);
+        Intent intent = new Intent();
+        intent.setClassName(getApplication(), "com.muzhi.camerasdk.PhotoPickActivity");
+        //intent.setClassName(getApplication(), "com.muzhi.camerasdk.CameraActivity");
+        Bundle b=new Bundle();
+        b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+        intent.putExtras(b);
+        startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_FROM_GALLERY);
 
     }
 
@@ -300,6 +318,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && null != data) {
+            LogUtils.e("==================",requestCode,resultCode,data.toString());
             switch (requestCode) {
                 case REQUEST_USER_APPEND:
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
@@ -324,7 +343,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                         list.add(photoEntry);
                      }
                     LogUtils.e(list.toString());
-                    mAdapter = new ChooseAdapter(this,list);
+                    mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
                     rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
                     rcvListImg.setAdapter(mAdapter);
                     rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
@@ -342,9 +361,91 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
 //                        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
 
                     }
-            }
-        }
+                    break;
+                case CameraSdkParameterInfo.TAKE_PICTURE_FROM_GALLERY:
+                    if(data!=null){
+                        getBundle(data.getExtras());
+                    }
+                    LogUtils.e("==================TAKE_PICTURE_FROM_GALLERY");
+                    break;
 
+
+            }
+            }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(MessageWrap message) {
+        LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
+        pic_list.clear();
+        for (int c= 0;c<message.message.size();c++){
+            PhotoEntry photoEntry = new PhotoEntry();
+            photoEntry.setPath(message.message.get(c));
+            pic_list.add(photoEntry);
+        }
+        LogUtils.e(pic_list.toString());
+        mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
+        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+        rcvListImg.setAdapter(mAdapter);
+        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    private void getBundle(Bundle bundle){
+        if(bundle!=null){
+            pic_list=new ArrayList<PhotoEntry>();
+            mCameraSdkParameterInfo=(CameraSdkParameterInfo)bundle.getSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER);
+            ArrayList<String> list= mCameraSdkParameterInfo.getImage_list();
+            LogUtils.e(list.size(),list);
+            if(list!=null){
+                for(int i=0;i<list.size();i++){
+                    PhotoEntry img=new PhotoEntry();
+                    if (list.get(i)!=null) {
+                        img.setPath(list.get(i));
+                        pic_list.add(img);
+                    }
+
+                }
+                mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
+                rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+                rcvListImg.setAdapter(mAdapter);
+                rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+                LogUtils.e(pic_list.size(),pic_list.toString());
+
+                mAdapter.OnciclkEdit(new ChooseAdapter.EditOniclk() {
+                    @Override
+                    public void editOniclk(ArrayList<String> listPath) {
+                        LogUtils.e(listPath.toString());
+//                        mCameraSdkParameterInfo.setImage_list(listPath);
+//                        Intent intent = new Intent();
+//                        intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
+//                        Bundle b=new Bundle();
+//                        b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+//                        intent.putExtras(b);
+//                        startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
+
+                        mCameraSdkParameterInfo.setImage_list(listPath);
+                        Intent intent = new Intent();
+                        intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
+                        Bundle b=new Bundle();
+                        b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+                        intent.putExtras(b);
+                        startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
+
+
+                    }
+                });
+            }
+//            if(pic_list.size()<mCameraSdkParameterInfo.getMax_image()){
+//                PhotoEntry item=new PhotoEntry();
+////                item.setAddButton(true);
+//                pic_list.add(item);
+//            }
+
+//            mImageGridAdapter.setList(pic_list);
+        }
     }
 
     @Override

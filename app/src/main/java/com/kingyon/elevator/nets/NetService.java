@@ -87,6 +87,7 @@ import com.kingyon.elevator.entities.VersionEntity;
 import com.kingyon.elevator.entities.WalletRecordEntity;
 import com.kingyon.elevator.entities.WithdrawItemEntity;
 import com.kingyon.elevator.entities.YesterdayIncomeEntity;
+import com.kingyon.elevator.entities.entities.AdZoneEntiy;
 import com.kingyon.elevator.entities.entities.AtListEntiy;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.AuthStatusEntily;
@@ -111,6 +112,7 @@ import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageListMentiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
 import com.kingyon.elevator.entities.entities.MassagePushEntiy;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.entities.entities.PartnershipStatusEntily;
 import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
@@ -224,7 +226,11 @@ public class NetService {
     }
     /*2.0话题*/
     public Observable<ConentEntity<QueryTopicEntity.PageContentBean>> setOueryTopic(int page,String title,int label){
-        return addSchedulers(getApi().getOueryTopic(page,title,label));
+        if (label==0){
+            return addSchedulers(getApi().getOueryTopic(page,title,""));
+        }else {
+            return addSchedulers(getApi().getOueryTopic(page,title, String.valueOf(label)));
+        }
     }
     /*2.0话题栏目*/
     public Observable<TopicLabelEntity<TopicLabelEntity.PageContentBean>> setTopicLable(){
@@ -462,6 +468,46 @@ public class NetService {
     public Observable<String> removeRobot(String robot_id){
         return addSchedulers(getApi().removeRobot(robot_id));
     }
+
+
+    /*2.0删除@我的记录*/
+    public Observable<String> removeAtMe(String robot_id){
+        return addSchedulers(getApi().removeAtMe(robot_id));
+    }
+
+
+    /*2.0删除评论点赞*/
+    public Observable<String> removeCommentLikes(String robot_id){
+        return addSchedulers(getApi().removeCommentLikes(robot_id));
+    }
+
+
+    /*2.0删除评论我的记录*/
+    public Observable<String> removeCommentMe(String robot_id){
+        return addSchedulers(getApi().removeCommentMe(robot_id));
+    }
+
+    /*2.删除内容点赞*/
+    public Observable<String> removeContentLikes(String robot_id){
+        return addSchedulers(getApi().removeContentLikes(robot_id));
+    }
+
+
+    /*2.删除关注消息*/
+    public Observable<String> removeLikeMsg(String robot_id){
+        return addSchedulers(getApi().removeLikeMsg(robot_id));
+    }
+
+    /*2.删除我的消息*/
+    public Observable<String> removeMsg(String robot_id){
+        return addSchedulers(getApi().removeMsg(robot_id));
+    }
+
+    /*2.删除推送消息*/
+    public Observable<String> removePushMsg(String robot_id){
+        return addSchedulers(getApi().removePushMsg(robot_id));
+    }
+
 
     /*2.0客服管理内容*/
     public Observable<WikipediaEntiy> getWikipedia(){
@@ -937,6 +983,12 @@ public class NetService {
     public Observable<ConentEntity<OrderDetailsEntity>> orderList(String status,String auditStatus, int page) {
         return addSchedulers(getApi().orderList(status, auditStatus,page));
     }
+
+    /*2.0再来一单*/
+    public Observable<List<OrderComeEntiy>> orderAgain(String orderSn){
+        return addSchedulers(getApi().orderAgain(orderSn));
+    }
+
     /*2.0合同下载地址*/
     public Observable<DataEntity<String>> downloadContract() {
         return addSchedulers(getApi().downloadContract());
@@ -1103,6 +1155,10 @@ public class NetService {
     /*2.0广告删除*/
     public Observable<String> deleteAd(long objectId) {
         return addSchedulers(getApi().deleteAd(objectId));
+    }
+    /*2.0广告专区*/
+    public Observable<AdZoneEntiy> getAdvList(int page,int rows, String params){
+        return addSchedulers(getApi().getAdvList(page, rows, params));
     }
 
     public Observable<ConentEntity<AdTempletEntity>> getPicAdTemplet(String screenSplit, String sort

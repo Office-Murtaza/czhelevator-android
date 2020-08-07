@@ -24,22 +24,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnClickWithObjectListener;
 import com.kingyon.elevator.uis.activities.advertising.AdEditActivity;
 import com.kingyon.elevator.uis.activities.advertising.InfomationAdvertisingActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderCommunityAdapter;
+import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
@@ -48,6 +52,7 @@ import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -57,6 +62,9 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.czh.myversiontwo.utils.Constance.ORDER_INFORMATION_ACTIVITY;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * Created by GongLi on 2019/1/4.
@@ -348,6 +356,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 tvReleaseMonit.setVisibility(View.GONE);
                 break;
             case Constants.OrderStatus.COMPLETE:
+            case Constants.OrderStatus.SOWING:
                 updateOperateViewVisiable(R.id.ll_order_operate_release);
                 tvReleaseDown.setVisibility(View.VISIBLE);
                 break;
@@ -382,7 +391,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.OrderStatus.RELEASEING:
                 closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_releasing);
-                tvReleaseInfo.setText(String.format("当前设备投放百分比  %s%%", CommonUtil.getMayTwoFloat(order.getReleaseingPercent() * 100)));
+                tvReleaseInfo.setText(String.format("当前设备投放百分比  %s%%", CommonUtil.getMayTwoFloat(order.getThrowProportion() * 100)));
                 break;
             case Constants.OrderStatus.COMPLETE:
                 tvReleaseDown.setText("查看监播表");
@@ -398,7 +407,9 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "无");
                 break;
             case Constants.OrderStatus.SOWING:
-                closeOrderCountDown();
+                tvReleaseDown.setVisibility(View.VISIBLE);
+                tvReleaseDown.setText("重新投放");
+//                closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
                 tvFailedTitle.setText("已下播");
                 tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "用户主动申请下播");
@@ -413,20 +424,18 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     private void updateHeadWaitRelease(OrderDetailsEntity order) {
         ADEntity advertising = order.getAdvertising();
-        String adStatus = advertising != null && advertising.getTypeAdvertise() != null ? advertising.getTypeAdvertise() : "";
+        String adStatus = advertising != null && advertising.getAdStatus() != null ? advertising.getAdStatus() : "";
+        LogUtils.e(adStatus);
         switch (adStatus) {
             case Constants.AD_STATUS.REVIEW_FAILED:
                 updateHeadViewVisiable(R.id.ll_order_head_authfailed);
-                tvAuthfailedReason.setText((advertising != null && advertising.getFaildReason() != null) ? advertising.getFaildReason() : "无");
-//                imgHead.setImageResource(R.drawable.bg_order_authfailed);
+                tvAuthfailedReason.setText((order.getAuditContent() != null) ? order.getAuditContent() : "无");
                 break;
             case Constants.AD_STATUS.WAIT_REVIEW:
                 updateHeadViewVisiable(R.id.ll_order_head_authing);
-//                imgHead.setImageResource(R.drawable.bg_order_authing);
                 break;
             default:
                 updateHeadViewVisiable(R.id.ll_order_head_waitrelease);
-//                imgHead.setImageResource(R.drawable.bg_order_waitrelease);
                 break;
         }
     }
@@ -497,15 +506,13 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 jumpToAdvertising(orderDetails);
                 break;
             case R.id.tv_completed_monit:
-                showToast("再来一单");
-//                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
-//                    showToast("便民服务广告不能查看监播表");
-//                    return;
-//                }
-//                Bundle bundle5 = new Bundle();
-//                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
-//                bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
-//                startActivity(OrderMonitActivity.class, bundle5);
+                if (isToken(this)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type","order");
+                    startActivity(PlanNewFragment.class,bundle);
+                }else {
+                    ActivityUtils.setLoginActivity();
+                }
                 break;
             case R.id.tv_copy_sn:
                 if (orderDetails != null && !TextUtils.isEmpty(orderDetails.getOrderSn())) {
@@ -530,6 +537,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     Bundle bundle2 = new Bundle();
                     bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                     startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
+                }else if (tvReleaseDown.getText().toString().equals("重新投放")){
+                    httpOrderAgain(orderDetails.getOrderSn());
                 }else {
                 if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
                     showToast("便民服务广告不能查看监播表");
@@ -552,11 +561,32 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 startActivity(OrderMonitActivity.class, bundle4);
                 break;
             case R.id.tv_ad_name:
+                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
+//                    showToast("便民服务广告不能查看广告");
+                    ActivityUtils.setActivity(ORDER_INFORMATION_ACTIVITY,"content",orderDetails.getAdvertising().getName());
+                    return;
+                }
                 JumpUtils.getInstance().jumpToAdPreview(this, orderDetails.getAdvertising(),"order");
                 break;
         }
     }
-
+    private void httpOrderAgain(String orderSn) {
+        AdUtils.orderSn = orderSn;
+        NetService.getInstance().orderAgain(orderSn)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                    }
+                    @Override
+                    public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type","order");
+                        startActivity(PlanNewFragment.class,bundle);
+                    }
+                });
+    }
     private void jumpToAdvertising(OrderDetailsEntity orderDetails) {
         ADEntity advertising = orderDetails.getAdvertising();
         if (advertising == null) {
@@ -567,17 +597,13 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
         LogUtils.e(advertising.toString());
         switch (advertising.getPlanType()) {
             case Constants.PLAN_TYPE.BUSINESS:
-                bundle.putBoolean(CommonUtil.KEY_VALUE_1, true);
-                bundle.putParcelable(CommonUtil.KEY_VALUE_2, advertising);
-                startActivityForResult(AdEditActivity.class, CommonUtil.REQ_CODE_1, bundle);
-                break;
             case Constants.PLAN_TYPE.DIY:
                 bundle.putBoolean(CommonUtil.KEY_VALUE_1, true);
-                bundle.putParcelable(CommonUtil.KEY_VALUE_2, advertising);
+                bundle.putParcelable(CommonUtil.KEY_VALUE_2, orderDetails);
                 startActivityForResult(AdEditActivity.class, CommonUtil.REQ_CODE_1, bundle);
                 break;
             case Constants.PLAN_TYPE.INFORMATION:
-                bundle.putParcelable(CommonUtil.KEY_VALUE_1, advertising);
+                bundle.putParcelable(CommonUtil.KEY_VALUE_1, orderDetails);
                 startActivityForResult(InfomationAdvertisingActivity.class, CommonUtil.REQ_CODE_1, bundle);
                 break;
         }

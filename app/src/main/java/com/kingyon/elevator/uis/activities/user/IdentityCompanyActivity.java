@@ -180,7 +180,7 @@ public class IdentityCompanyActivity extends BaseStateLoadingActivity {
             showToast("请上传营业执照图片");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvEnsure.setEnabled(false);
         NetService.getInstance().identityAuth(Constants.IDENTITY_TYPE.COMPANY
                 , null, null, null, null
@@ -211,7 +211,7 @@ public class IdentityCompanyActivity extends BaseStateLoadingActivity {
         if (RESULT_OK == resultCode && CommonUtil.REQ_CODE_1 == requestCode && data != null) {
             ArrayList<String> facePath = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
             if (facePath != null && facePath.size() > 0) {
-                showProgressDialog(getString(R.string.wait));
+                showProgressDialog(getString(R.string.wait),true);
                 NetService.getInstance().uploadFile(this, new File(facePath.get(0)), new NetUpload.OnUploadCompletedListener() {
                     @Override
                     public void uploadSuccess(List<String> images,List<String> hash, JSONObject response) {

@@ -5,6 +5,7 @@ import com.kingyon.elevator.entities.entities.PlanNumberEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 /**
  * @Created By Admin  on 2020/6/10
@@ -14,8 +15,12 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
  */
 public class AdUtils {
     public static int planNumber = 0;
+    public static int isSX = 1;
+    public static SmartRefreshLayout smartRefreshLayout;
     public static String ordinaryType = "ordina";
     public static String  type  = "BUSINESS";
+    public static String orderSn;
+
 
     public static void httpPlannuber() {
         NetService.getInstance().setAdPlan()

@@ -70,15 +70,15 @@ public class OnWayDialog extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_video_image:
-                onWayString.onWay("视频/海报");
+                onWayString.onWay("视频/海报","VIDEO_AND_POSTER");
                 dismiss();
                 break;
             case R.id.tv_video:
-                onWayString.onWay("视频");
+                onWayString.onWay("视频","VIDEO");
                 dismiss();
                 break;
             case R.id.tv_image:
-                onWayString.onWay("海报");
+                onWayString.onWay("海报","POSTER");
                 dismiss();
                 break;
             case R.id.share_btn_cancel:
@@ -88,6 +88,6 @@ public class OnWayDialog extends Dialog {
     }
 
     public  interface OnWayString{
-        void onWay(String str);
+        void onWay(String str,String type);
     }
 }

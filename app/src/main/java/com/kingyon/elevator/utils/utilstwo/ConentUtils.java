@@ -51,28 +51,25 @@ public class ConentUtils {
     /**
      * 点赞取消点赞
      * */
-    public static void httpHandlerLikeOrNot(BaseActivity baseActivity, int objId, String likeType, String handleType, int position,
-                                            QueryRecommendEntity conent,String type){
+    public static void httpHandlerLikeOrNot(BaseActivity baseActivity, int objId, String likeType, String handleType,IsSuccess isSuccess){
         NetService.getInstance().setHandlerLikeOrNot(objId,likeType,handleType)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         ToastUtils.showToast(baseActivity,ex.getDisplayMessage(),1000);
+                        isSuccess.isSuccess(false);
                     }
                     @Override
                     public void onNext(String s) {
-                        if (likeType.equals(LIKE)){
-//                            conent.liked = true;
-                            conent.likes = conent.likes++;
-                        }else {
-//                            conent.liked = false;
-                            conent.likes = conent.likes--;
-                        }
+                        isSuccess.isSuccess(true);
                     }
                 });
     }
 
+    public static void httpHandlerLikeOrNot1(IsSuccess isSuccess){
+        isSuccess.isSuccess(true);
+    };
 
     /**
      * 内容举报
@@ -165,7 +162,7 @@ public class ConentUtils {
 
     public static void httpComment(BaseActivity baseActivity,int contentId,int parentId,String comment,IsSuccedListener isSuccedListener){
         LogUtils.e(contentId,comment,parentId);
-        baseActivity.showProgressDialog(getString(R.string.wait));
+        baseActivity.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().setComment(contentId,parentId,comment)
                 .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -331,7 +328,7 @@ public class ConentUtils {
     public static void httpEidtProfile(BaseActivity baseActivity,String avatar,String nikeName,
                            String sex,String city,String birthday,
                            String intro,String cover,AddCollect addCollect){
-        baseActivity.showProgressDialog(getString(R.string.wait));
+        baseActivity.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().userEidtProfile(avatar,nikeName,sex,city,birthday,intro,cover)
                 .compose(baseActivity.<UserEntity>bindLifeCycle())
                 .subscribe(new CustomApiCallback<UserEntity>() {

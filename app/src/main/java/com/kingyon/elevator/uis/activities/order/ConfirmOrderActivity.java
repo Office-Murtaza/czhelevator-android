@@ -382,10 +382,12 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_cat_order_detailed:
+                LogUtils.e(getAllMoney(),realPayPrice,zheKouPrice,couponsPrice);
                 DialogUtils.getInstance().showOrderDetailedTipsDialog(this, goPlaceAnOrderEntity, getAllMoney(),
                         realPayPrice,
                         zheKouPrice,
                         couponsPrice);
+
                 break;
             case R.id.tv_youhuiquan:
                 goSelectDiscount();

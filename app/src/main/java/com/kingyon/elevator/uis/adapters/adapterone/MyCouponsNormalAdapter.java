@@ -52,6 +52,7 @@ public class MyCouponsNormalAdapter extends MultiItemTypeAdapter<Object> {
             holder.setTextSize(R.id.tv_discounts_2, discount ? 14 : 32);
             holder.setTextNotHide(R.id.tv_condition, String.format("满%s可用", CommonUtil.getMayTwoFloat(item.getCouponCondition())));
             holder.setTextNotHide(R.id.tv_name, discount ? "折扣券" : "代金券");
+            holder.setBackgroundRes(R.id.ll_juan,discount ? R.mipmap.bg_wallet_discount:R.mipmap.bg_wallet_voucher);
 
             holder.setTextNotHide(R.id.tv_number, String.format("×%s", item.getCouponsCount()));
             holder.setVisible(R.id.tv_number, RoleUtils.getInstance().roleBeTarget(Constants.RoleType.PARTNER, AppContent.getInstance().getMyUserRole()));

@@ -49,6 +49,7 @@ import com.kingyon.elevator.utils.utilstwo.SrcSuccess;
 import com.kingyon.elevator.view.AlwaysMarqueeTextView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.uis.fragments.BaseStateRefreshFragment;
 
 import java.util.List;
 
@@ -62,10 +63,10 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_HAVE_WITHDRAWAL;
 import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 
 /**
- * 合伙人首页
+ * 合伙人首页BaseStateRefreshingActivity
  */
 
-public class CooperationInfoFragment extends BaseFragment implements OnParamsChangeInterface {
+public class CooperationInfoFragment extends BaseStateRefreshFragment implements OnParamsChangeInterface {
 
 
     @BindView(R.id.img_top_back)
@@ -135,7 +136,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     }
 
     private void httpData() {
-        showProgressDialog(getString(R.string.wait));
+//        showProgressDialog(getString(R.string.wait));
         NetService.getInstance().setPartnerIndexInfo()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<PartnerIndexInfoEntity>>() {
@@ -143,13 +144,14 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
+                        loadingComplete(STATE_ERROR);
                     }
 
                     @Override
                     public void onNext(ConentEntity<PartnerIndexInfoEntity> list) {
                         hideProgress();
                         PartnerIndexInfoEntity partnerIndexInfoEntity = list.getContent().get(0);
-
+                        loadingComplete(STATE_CONTENT);
                         updateUI(partnerIndexInfoEntity);
                         LogUtils.e(partnerIndexInfoEntity.toString());
                     }
@@ -321,5 +323,10 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onRefresh() {
+        httpData();
     }
 }

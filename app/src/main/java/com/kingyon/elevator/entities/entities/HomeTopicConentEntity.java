@@ -23,12 +23,40 @@ public class HomeTopicConentEntity {
      *         "peopleNum": 0,
      *         "labelName": "日常",
      *         "delete": false
+     *
+     *
+     "id": 100049,
+
+     "title": "铲屎官集合点",
+     "content": "快来晒晒你家毛孩
+     "image": "http:\/\/c
+     "label": 89,
+     "createAccount": "2"
+     "atAccount": null,
+     "createTime": 159667
+     "nickname": "万吉相",
+     "photo": "http:\/\/c
+     "uAuthStatus": null,
+     "peopleNum": 0,
+     "labelName": "宠物",
+     "latestPhoto": "http
+     "latestNickname": "宝
+     "latestTitle": "",
+     "latestContent": "不不
+     "latestImage": null,
+     "delete": null
+     *
      *         */
 
     public int id;
     public String title;
     public String content;
+    public String latestContent;
+    public String latestTitle;
+    public String latestPhoto;
+    public String latestNickname;
     public String image;
+    public String latestImage;
     public int label;
     public String createAccount;
     public Object atAccount;

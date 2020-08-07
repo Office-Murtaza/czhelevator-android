@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.fragments.homepage;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -150,10 +151,11 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         return R.layout.fragment_map_search;
     }
 
+
+
     @Override
     public void init(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
-        LogUtils.e(latitude,longitude);
         /*地图*/
         initMap();
         /*标点*/
@@ -533,7 +535,6 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         }
         mapView.onDestroy();
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -577,13 +578,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
+
 
     @OnClick()
     public void onViewClicked() {

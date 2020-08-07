@@ -39,6 +39,8 @@ public class TopicFragment extends FoundFragemtUtils {
     Unbinder unbinder;
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+    @BindView(R.id.rl_null)
+    RelativeLayout rlNull;
 
     @Override
     protected void lazyLoad() {
@@ -66,7 +68,7 @@ public class TopicFragment extends FoundFragemtUtils {
                         hideProgress();
                         rlError.setVisibility(View.VISIBLE);
                         vp.setVisibility(View.GONE);
-
+                        rlNull.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -74,6 +76,7 @@ public class TopicFragment extends FoundFragemtUtils {
                         LogUtils.e(conentEntity.getContent().toString());
                         rlError.setVisibility(View.GONE);
                         vp.setVisibility(View.VISIBLE);
+                        rlNull.setVisibility(View.GONE);
                         tabLayout.setViewHeight(dp2px(30));
                         tabLayout.setBottomLineWidth(dp2px(10));
                         tabLayout.setBottomLineHeight(dp2px(3));
@@ -88,17 +91,22 @@ public class TopicFragment extends FoundFragemtUtils {
                         tabLayout.setmTextBgSelectResId(R.drawable.bg_ad_type2);
                         tabLayout.setTextSize(16);
                         //等寬
-                        CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
-                        adapter.cleanFrag();
-                        for (int i = 0; i < conentEntity.getContent().size(); i++) {
-//                            if(!new TopicTypeFragment().isAdded()) {
-                            adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
-                                    conentEntity.getContent().get(i).labelName);
-//                            }
-                        }
+                        if (conentEntity.getContent().size()<=0){
+                            rlError.setVisibility(View.GONE);
+                            vp.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                            hideProgress();
+                        }else {
+                            CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
+                            adapter.cleanFrag();
+                            for (int i = 0; i < conentEntity.getContent().size(); i++) {
+                                adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
+                                        conentEntity.getContent().get(i).labelName);
+                            }
                         vp.setAdapter(adapter);
                         vp.setOffscreenPageLimit(adapter.getCount());
                         tabLayout.setupWithViewPager(vp);
+                        }
                     }
                 });
 

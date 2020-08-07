@@ -13,6 +13,15 @@ public class CameraEntity implements Parcelable {
     private String ipAddress;
     private long objectId;
 
+    @Override
+    public String toString() {
+        return "CameraEntity{" +
+                "brand=" + brand +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", objectId=" + objectId +
+                '}';
+    }
+
     public CameraBrandEntity getBrand() {
         return brand;
     }

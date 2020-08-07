@@ -10,10 +10,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
+import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CONTENT_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VIDEO_DRTAILS;
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS;
 
 /**
  * Created By Admin  on 2020/4/14
@@ -40,14 +48,21 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder != null) {
+            QueryRecommendTopEntity queryRecommendTopEntity = conentEntity.getContent().get(position);
             holder.tvTitle.setText(conentEntity.getContent().get(position).title);
-            holder.tvName.setText(conentEntity.getContent().get(position).sourceName);
-            holder.tvNumber.setText(conentEntity.getContent().get(position).readNum+"阅读");
-            if (conentEntity.getContent().get(position).image==null){
+            holder.tvName.setText(conentEntity.getContent().get(position).nickname);
+            holder.tvNumber.setText(conentEntity.getContent().get(position).browseTimes+"阅读");
+            if (conentEntity.getContent().get(position).videoCover==null){
                 holder.ll_image.setVisibility(View.GONE);
             }else {
-                GlideUtils.loadRoundCornersImage(context,conentEntity.getContent().get(position).image,holder.imageView,20);
+                GlideUtils.loadRoundCornersImage(context,conentEntity.getContent().get(position).videoCover,holder.imageView,20);
             }
+            holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itmeonClick(queryRecommendTopEntity);
+                }
+            });
 
         }
     }
@@ -60,7 +75,7 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle,tvName,tvNumber;
         ImageView imageView;
-        LinearLayout ll_image;
+        LinearLayout ll_image,ll_itme_root;
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
@@ -68,7 +83,38 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
             tvNumber = itemView.findViewById(R.id.tv_number);
             imageView = itemView.findViewById(R.id.img_topimg);
             ll_image = itemView.findViewById(R.id.ll_image);
+            ll_itme_root = itemView.findViewById(R.id.ll_itme_root);
 
         }
     }
+
+    private void itmeonClick(QueryRecommendTopEntity queryRecommendEntity) {
+        switch (queryRecommendEntity.type) {
+            case "wsq":
+                LogUtils.e(queryRecommendEntity.id);
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_CONTENT_DRTAILS,
+                        "contentId",queryRecommendEntity.id);
+                break;
+            case "video":
+                LogUtils.e(queryRecommendEntity.videoHorizontalVertical);
+
+                if (queryRecommendEntity.videoHorizontalVertical==0) {
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VIDEO_DRTAILS,
+                            "contentId",queryRecommendEntity.id);
+                }else if (queryRecommendEntity.videoHorizontalVertical==1){
+                    ActivityUtils.setActivity(ACTIVITY_MAIN2_VOIDEVERTICAL_DRTAILS,
+                            "contentId",queryRecommendEntity.id);
+                }
+                break;
+            case "article":
+
+                ActivityUtils.setActivity(ACTIVITY_MAIN2_ARTICLE_DRTAILS,
+                        "contentId",queryRecommendEntity.id);
+
+                break;
+            default:
+        }
+
+    }
+
 }

@@ -17,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.uis.dialogs.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -41,6 +44,7 @@ import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.utilstwo.AdUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -58,6 +62,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -141,11 +146,14 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     private Long startTimeCache;
     SimpleDateFormat simpleDateFormat;
     SelectDateEntity selectDateEntity;
+    String type;
+    int num = 0;
 
 
-    public static PlanListFragment newInstance(String planType) {
+    public static PlanListFragment newInstance(String planType,String type) {
         Bundle args = new Bundle();
         args.putString(CommonUtil.KEY_VALUE_1, planType);
+        args.putString(CommonUtil.KEY_VALUE_2, type);
         PlanListFragment fragment = new PlanListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -161,6 +169,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             planType = getArguments().getString(CommonUtil.KEY_VALUE_1);
+            type = getArguments().getString(CommonUtil.KEY_VALUE_2);
         }
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         selectDateEntity = DateUtils.getLastSelectDateDay();
@@ -178,6 +187,45 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    private void httpOrderAgain(CellItemEntity item) {
+        if (type.equals("order")){
+            NetService.getInstance().orderAgain(  AdUtils.orderSn)
+                    .compose(this.bindLifeCycle())
+                    .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
+                        @Override
+                        protected void onResultError(ApiException ex) {
+                            LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        }
+                        @Override
+                        public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                            LogUtils.e(orderComeEntiys.toString());
+                            for (int i=0;i<orderComeEntiys.size();i++){
+                                for (Object obj : mItems) {
+                                    if (obj instanceof CellItemEntity) {
+                                        CellItemEntity item1 = (CellItemEntity) obj;
+                                        ArrayList<PointItemEntity> allPoints = item.getAllPoints();
+                                        ArrayList<PointItemEntity> points = item.getPoints();
+                                        if (item1.getObjctId()==orderComeEntiys.get(i).housingInfoId){
+                                            item1.setAllPoints(allPoints);
+                                            item1.setPoints(points);
+                                            item1.setChoosed(true);
+                                            item1.setChoosedScreenNum(orderComeEntiys.get(i).facilityIds.size());
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            updatePriceUI();
+                        }
+                    });
+        }else {
+            item.setChoosedScreenNum(1);
+        }
+
     }
 
     @Override
@@ -238,7 +286,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                     item.setPlanTypeCache(planType);
                                     //改为默认只选择一台设备
 //                                    item.setChoosedScreenNum(item.getTargetScreenNum());
-                                    item.setChoosedScreenNum(1);
+                                    httpOrderAgain(item);
+
                                 }
                                 mItems.addAll(cellItemEntities);
                                 if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
@@ -273,9 +322,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             updatePriceUI();
                             updateEditUI();
                             EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanCount, null));
+
                         }
                     });
-
 
         } else {
             mCurrPage = FIRST_PAGE;
@@ -331,6 +380,12 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
 
     @Override
     public void onCellAssignClick(CellItemEntity item) {
+        LogUtils.e(item.toString(),
+                editMode,
+                item.getPoints(),
+                item.getChoosedScreenNum(),
+                item.getObjctId(),
+                planType);
         if (editMode) {
             onEditChooseClick(item);
             return;
@@ -344,8 +399,11 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         bundle.putString(CommonUtil.KEY_VALUE_2, planType);
         bundle.putLong(CommonUtil.KEY_VALUE_3, startTime);
         bundle.putLong(CommonUtil.KEY_VALUE_4, endTime);
+        bundle.putString(CommonUtil.KEY_VALUE_8, type);
         if (item.getPoints() != null) {
-            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_6, item.getPoints());
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(item.getPoints());
+            bundle.putString(CommonUtil.KEY_VALUE_6, jsonString);
         } else {
             bundle.putInt(CommonUtil.KEY_VALUE_7, item.getChoosedScreenNum());
         }
@@ -500,10 +558,12 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             case R.id.tv_folding:
                 /*折叠*/
                 if (isfolding){
-                    isSelectAll = false;
+                    isfolding = false;
+                    tvFolding.setText("展开");
                     preRecyclerView.setVisibility(View.GONE);
                 }else {
-                    isSelectAll = true;
+                    isfolding = true;
+                    tvFolding.setText("折叠");
                     preRecyclerView.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -742,14 +802,17 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         super.onActivityResult(requestCode, resultCode, data);
         if (BaseActivity.RESULT_OK == resultCode && data != null) {
             String type = data.getStringExtra(CommonUtil.KEY_VALUE_2);
+            LogUtils.e(type,requestCode);
             if (TextUtils.equals(this.planType, type)) {
                 switch (requestCode) {
                     case 8100:
                         long cellId = data.getLongExtra(CommonUtil.KEY_VALUE_1, 0);
                         long startTime = data.getLongExtra(CommonUtil.KEY_VALUE_3, 0);
                         long endTime = data.getLongExtra(CommonUtil.KEY_VALUE_4, 0);
-                        ArrayList<PointItemEntity> points = data.getParcelableArrayListExtra(CommonUtil.KEY_VALUE_6);
-                        ArrayList<PointItemEntity> allPoints = data.getParcelableArrayListExtra(CommonUtil.KEY_VALUE_7);
+                        Type listType = new TypeToken<ArrayList<PointItemEntity>>(){}.getType();
+                        Type listType1 = new TypeToken<ArrayList<PointItemEntity>>(){}.getType();
+                        ArrayList<PointItemEntity> points = new Gson().fromJson(data.getStringExtra(CommonUtil.KEY_VALUE_6), listType);
+                        ArrayList<PointItemEntity> allPoints = new Gson().fromJson(data.getStringExtra(CommonUtil.KEY_VALUE_7), listType1);
                         for (Object object : mItems) {
                             if (object instanceof CellItemEntity) {
                                 CellItemEntity cell = (CellItemEntity) object;

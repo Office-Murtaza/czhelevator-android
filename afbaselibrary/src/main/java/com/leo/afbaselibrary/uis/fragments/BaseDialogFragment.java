@@ -137,7 +137,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     public void showProgressDialog(String message) {
         if (getActivity() instanceof BaseActivity) {
             BaseActivity baseActivity = (BaseActivity) getActivity();
-            baseActivity.showProgressDialog(message);
+            baseActivity.showProgressDialog(message,true);
         }
     }
 

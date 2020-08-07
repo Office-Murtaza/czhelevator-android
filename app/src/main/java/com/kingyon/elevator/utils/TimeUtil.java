@@ -2,8 +2,12 @@ package com.kingyon.elevator.utils;
 
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -97,6 +101,12 @@ public class TimeUtil {
 
     public static int getYear(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        Date now = new Date(time);
+        return Integer.parseInt(format.format(now));
+    }
+
+    public static int getMonthDay(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("MM月dd日");
         Date now = new Date(time);
         return Integer.parseInt(format.format(now));
     }
@@ -317,5 +327,69 @@ public class TimeUtil {
             e.printStackTrace();
             return 0L;
         }
+    }
+
+    /**
+     * 输入时间戳变星期,例如（1402733340）输出（"周六"）
+     */
+    public static String getWeek(long timeStamp) {
+        int mydate = 0;
+        String week = null;
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(new Date(timeStamp * 1000L));
+        mydate = cd.get(Calendar.DAY_OF_WEEK);
+        // 获取指定日期转换成星期几
+        if (mydate == 1) {
+            week = "（周日）";
+        } else if (mydate == 2) {
+            week = "（周一）";
+        } else if (mydate == 3) {
+            week = "（周二）";
+        } else if (mydate == 4) {
+            week = "（周三）";
+        } else if (mydate == 5) {
+            week = "（周四）";
+        } else if (mydate == 6) {
+            week = "（周五）";
+        } else if (mydate == 7) {
+            week = "（周六）";
+        }
+        return week;
+    }
+
+    public static String times(long timeStamp) {
+        SimpleDateFormat sdr = new SimpleDateFormat("MM月dd日");
+        return sdr.format(new Date(timeStamp)).replaceAll("#",
+                getWeek(timeStamp));
+
+
+    }
+
+    public static String getDayNumber(long starTime,long endTime) {
+        String daystr = "";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date1 = formatter.format(starTime);
+        String date2 = formatter.format(endTime);
+        // 获取服务器返回的时间戳 转换成"yyyy-MM-dd HH:mm:ss"
+        // 计算的时间差
+        LogUtils.e(date1,date2);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date d1 = df.parse(date1);
+            Date d2 = df.parse(date2);
+            // 这样得到的差值是微秒级别
+            long diff = d1.getTime() - d2.getTime();
+            long days = diff / (1000 * 60 * 60 * 24);
+            long hours = (diff - days * (1000 * 60 * 60 * 24))
+                    / (1000 * 60 * 60);
+            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours
+                    * (1000 * 60 * 60))
+                    / (1000 * 60);
+//            Log.i("viewDataFill", "会员剩余: " + " + hours + "小时" + minutes + "分");
+            LogUtils.e(days,hours,minutes);
+            daystr = String.valueOf((days+1));
+        } catch (Exception e) {
+        }
+        return "共" + daystr + "天";
     }
 }

@@ -65,7 +65,7 @@ public class CustomerServiceCenterActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         tvTopTitle.setText("客服中心");
         tvNickname.setText("Hi，"+DataSharedPreferences.getNickName());
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getWikipedia()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<WikipediaEntiy>() {

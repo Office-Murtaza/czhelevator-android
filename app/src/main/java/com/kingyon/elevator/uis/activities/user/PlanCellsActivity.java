@@ -135,7 +135,7 @@ public class PlanCellsActivity extends BaseStateRefreshingLoadingActivity<CellIt
             showToast("需要至少选择一个小区");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvDelete.setEnabled(false);
 //        NetService.getInstance().plansRemoveCells(AppContent.getInstance().getGson().toJson(deleteParams))
 //                .compose(this.<String>bindLifeCycle())

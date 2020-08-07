@@ -53,6 +53,7 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
     TextView tvBake;
     public static final String RESULT_USER = "RESULT_USER";
     String extend;
+    String keyWords;
     @Override
     public int getContentViewId() {
         return R.layout.activity_search_attention_user;
@@ -74,11 +75,39 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
 
             @Override
             public void afterTextChanged(Editable s) {
-                extend = s.toString();
-                httpData(1,ATTENTION,extend);
+                keyWords = s.toString();
+
+                httpDataAll(1,keyWords);
             }
         });
     }
+
+    private void httpDataAll(int page, String keyWords) {
+        NetService.getInstance().getMatching(page, keyWords)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        showToast(ex.getDisplayMessage());
+                        loadingComplete(false, 100000);
+                    }
+                    @Override
+                    public void onNext(ConentEntity<AttenionUserEntiy> attenionUserEntiyConentEntity) {
+                        if (attenionUserEntiyConentEntity == null||attenionUserEntiyConentEntity.getContent()==null ) {
+                            throw new ResultException(9001, "返回参数异常");
+                        }
+                        if (FIRST_PAGE == page) {
+                            mItems.clear();
+                        }
+                        mItems.addAll(attenionUserEntiyConentEntity.getContent());
+                        if (page>1&&attenionUserEntiyConentEntity.getContent().size()<=0){
+                            showToast("已经没有了");
+                        }
+                        loadingComplete(true, attenionUserEntiyConentEntity.getTotalPages());
+                    }
+                });
+    }
+
 
     @Override
     protected String getTitleText() {

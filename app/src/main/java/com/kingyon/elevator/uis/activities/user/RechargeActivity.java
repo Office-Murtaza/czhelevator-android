@@ -155,7 +155,7 @@ public class RechargeActivity extends BaseSwipeBackActivity implements IWeakHand
         tvEnsure.setEnabled(false);
         tvAliPay.setEnabled(false);
         tvWxPay.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         setPayEnableDelay();
         NetService.getInstance().rechageWallet(payWay, sum)
                 .compose(this.<WxPayEntity>bindLifeCycle())

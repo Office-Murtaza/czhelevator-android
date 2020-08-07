@@ -69,7 +69,7 @@ public class IdentitySuccessActivity extends BaseActivity {
         if (getIntent().getStringExtra("type")!=null) {
             type = getIntent().getStringExtra("type");
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().getAuthStatus()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<AuthStatusEntily>() {

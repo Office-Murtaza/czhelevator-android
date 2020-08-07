@@ -138,7 +138,7 @@ public class CellDetailsEntity  {
         public int minNumberFloor;
         public int siteNumber;
         public int peopleCoverd;
-        public long deliveryTime;
+        public Long deliveryTime;
         public String competitiveMedia;
         public String remarks;
         public String throwWay;

@@ -1,12 +1,15 @@
 package com.kingyon.elevator.uis.actiivty2.content;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,39 +32,37 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ContentCommentsAdapter;
-import com.kingyon.elevator.uis.dialogs.DeleteArticeleDialog;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
+import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
-import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
-import com.leo.afbaselibrary.nets.exceptions.ResultException;
-import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingLoadingActivity;
-import com.leo.afbaselibrary.uis.adapters.BaseAdapter;
-import com.leo.afbaselibrary.uis.adapters.MultiItemTypeAdapter;
-import com.leo.afbaselibrary.uis.adapters.holders.CommonHolder;
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
-import com.leo.afbaselibrary.widgets.StateLayout;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.CodeType.CANCEL_LIKE;
-import static com.czh.myversiontwo.utils.CodeType.HOME_COMMENT;
 import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
 import static com.czh.myversiontwo.utils.CodeType.LIKE;
-import static com.czh.myversiontwo.utils.Constance.ACTIVITY_COMMENT_TWO;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
 import static com.czh.myversiontwo.utils.StringContent.getHtmlData;
+import static com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment.isRefresh;
 
 /**
  * Created By Admin  on 2020/4/17
@@ -70,7 +71,7 @@ import static com.czh.myversiontwo.utils.StringContent.getHtmlData;
  * @author:Mrczh Instructions: 文章详情
  */
 @Route(path = ACTIVITY_MAIN2_ARTICLE_DRTAILS)
-public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<CommentListEntity> {
+public class ArticleDetailstActivity extends BaseActivity {
     @BindView(R.id.img_bake)
     ImageView imgBake;
     @BindView(R.id.img_portrait)
@@ -81,6 +82,25 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
     TextView tvAttention;
     @BindView(R.id.img_jb)
     ImageView imgJb;
+    @BindView(R.id.webview)
+    WebView webview;
+    @BindView(R.id.tv_comments_number)
+    TextView tvCommentsNumber;
+    @BindView(R.id.ecv_list_pl)
+    RecyclerView ecvListPl;
+    @BindView(R.id.input_comment_container)
+    ImageView inputCommentContainer;
+    @BindView(R.id.iv_share_news)
+    ImageView ivShareNews;
+    @BindView(R.id.im_collection)
+    ImageView imCollection;
+    @BindView(R.id.iv_like)
+    ImageView ivLike;
+    @Autowired
+    int contentId;
+
+    QueryRecommendEntity recommendEntity;
+
     @BindView(R.id.tv_original)
     TextView tvOriginal;
     @BindView(R.id.tv_title)
@@ -91,186 +111,53 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
     TextView tvLikeComments;
     @BindView(R.id.tv_time)
     TextView tvTime;
-    @BindView(R.id.webview)
-    WebView webview;
-    @BindView(R.id.tv_comments_number)
-    TextView tvCommentsNumber;
-    @BindView(R.id.input_comment_container)
-    ImageView inputCommentContainer;
-    @BindView(R.id.iv_share_news)
-    ImageView ivShareNews;
-    @BindView(R.id.im_collection)
-    ImageView imCollection;
-    @BindView(R.id.iv_like)
-    ImageView ivLike;
-
-    @Autowired
-    int contentId;
-
-    QueryRecommendEntity recommendEntity;
+    @BindView(R.id.smart_refresh_layout)
+    SmartRefreshLayout smartRefreshLayout;
+    private int page = 1;
+    List<CommentListEntity> listEntities = new ArrayList<>();
+    ContentCommentsAdapter contentCommentsAdapter;
     private ShareDialog shareDialog;
-    @Override
-    protected MultiItemTypeAdapter<CommentListEntity> getAdapter() {
-        return new BaseAdapter<CommentListEntity>(this, R.layout.item_content_comments, mItems) {
-            @Override
-            protected void convert(CommonHolder holder, CommentListEntity item, int position) {
-                holder.setText(R.id.tv_comment,item.comment);
-                holder.setText(R.id.tv_comment_hf,StringUtils.getNumStr(item.child.size(),"回复"));
-                holder.setText(R.id.tv_like_number,StringUtils.getNumStr(item.likesNum,"点赞"));
-                holder.setText(R.id.tv_name,item.nickname);
-                holder.setText(R.id.tv_time,TimeUtil.getRecentlyTime(item.createTime));
-                GlideUtils.loadCircleImage(ArticleDetailstActivity.this, item.photo, holder.getView(R.id.img_portrait));
-//            if (mItems.liked){
-//                holder.img_like.setImageResource(R.mipmap.ic_small_like);
-//            }else {
-//                holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
-//            }
-                holder.setOnClickListener(R.id.tv_comment_hf,new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        commentOnClick(item);
-                    }
-                });
-                holder.setOnClickListener(R.id.img_comments,new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        commentOnClick(item);
-                    }
-                });
+    int i = 1;
 
-                holder.setOnClickListener(R.id.img_delete,new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (TokenUtils.isToken(ArticleDetailstActivity.this)){
-                            LogUtils.e(DataSharedPreferences.getCreatateAccount(),item.createAccount);
-                            if (TokenUtils.isCreateAccount(item.createAccount)){
-                                /*删除*/
-                                DeleteShareDialog deleteShareDialog = new DeleteShareDialog(ArticleDetailstActivity.this,item.id,
-                                        null,"3",position,null,null);
-                                deleteShareDialog.show();
-
-                            }else {
-                                /*举报*/
-                                ReportShareDialog reportShareDialog = new ReportShareDialog(ArticleDetailstActivity.this,item.id,HOME_COMMENT);
-                                reportShareDialog.show();
-                            }
-                        }else {
-                            ActivityUtils.setLoginActivity();
-                        }
-
-                    }
-                });
-                holder.setOnClickListener(R.id.img_like,new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (true) {
-
-                            holder.setImageResource(R.id.img_like,R.mipmap.ic_small_like);
-                        }else {
-
-                            holder.setImageResource(R.id.img_like,R.mipmap.ic_small_like_off);
-                        }
-
-                    }
-                });
-                
-            }
-        };
-    }
-
-    private void commentOnClick(CommentListEntity item) {
-        if (item.child.size() > 0) {
-            /*跳转*/
-            ARouter.getInstance().build(ACTIVITY_COMMENT_TWO)
-                    .withInt("contentId", item.contentId)
-                    .withInt("onId", item.id)
-                    .navigation();
-        } else {
-            InputCommentActivity.openEditor(ArticleDetailstActivity.this, new EditorCallback() {
-                @Override
-                public void onCancel() {
-                    LogUtils.d("关闭输入法-------------");
-                    KeyboardUtils.hideSoftInput(ArticleDetailstActivity.this);
-                }
-
-                @Override
-                public void onSubmit(String content) {
-                    ConentUtils.httpComment(ArticleDetailstActivity.this, item.contentId,
-                            item.id, content, new ConentUtils.IsSuccedListener() {
-                                @Override
-                                public void onisSucced(boolean isSucced) {
-//                                                        getRefresh.onRefresh(isSucced);
-                                    autoRefresh();
-                                }
-                            });
-                }
-
-                @Override
-                public void onAttached(ViewGroup rootView) {
-
-                }
-
-                @Override
-                public void onIcon() {
-
-                }
-            });
-        }
-    }
-
-    @Override
-    protected void loadData(int page) {
-        NetService.getInstance().setQueryListComment(page, contentId)
-                .compose(this.bindLifeCycle())
-                .subscribe(new CustomApiCallback<ConentEntity<CommentListEntity>>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
-//                        showToast(ex.getDisplayMessage());
-                        loadingComplete(true, 1);
-                        showState(STATE_CONTENT);
-                    }
-
-                    @Override
-                    public void onNext(ConentEntity<CommentListEntity> conentEntity) {
-                        if (conentEntity == null || conentEntity.getContent() == null) {
-                            throw new ResultException(9001, "返回参数异常");
-                        }
-                        if (FIRST_PAGE == page) {
-                            mItems.clear();
-                        }
-                        mItems.addAll(conentEntity.getContent());
-                        if (page > 1 && conentEntity.getContent().size() <= 0) {
-                            showToast("已经没有了");
-                        }
-                        loadingComplete(true, conentEntity.getTotalPages());
-                    }
-                });
-
-    }
-
-    @Override
-    protected String getTitleText() {
-        return null;
-    }
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_article_detailst;
+        return R.layout.activity_article_details;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
-        super.initViews(savedInstanceState);
+    public void init(Bundle savedInstanceState) {
+        isRefresh = false;
         ARouter.getInstance().inject(this);
-        ConentUtils.topicStr = "";
+        LogUtils.e(contentId);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        initData();
+        httpComment(page, contentId);
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                httpComment(page,contentId);
+            }
+        });
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page=1;
+                listEntities.clear();
+                httpComment(page,contentId);
+                initData();
+            }
+        });
+
+
+    }
+
+    private void initData() {
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -324,35 +211,83 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                         }else {
                             imCollection.setImageResource(R.mipmap.btn_big_collect);
                         }
-                        if (recommendEntity.liked) {
-                            ivLike.setImageResource(R.mipmap.btn_big_like_off);
-                        } else {
-                            ivLike.setImageResource(R.mipmap.btn_big_like);
-                        }
+//
+//                        webSettings.setJavaScriptEnabled(true);
+//                        webSettings.setAllowFileAccess(true);
+//                        webview.getSettings().setBlockNetworkLoads(false);
+                        LogUtils.e( getHtmlData(recommendEntity.content));
+
                         hideProgress();
                     }
                 });
 
+
     }
 
-    @OnClick({R.id.img_bake, R.id.img_portrait, R.id.tv_name, R.id.tv_attention, R.id.img_jb, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like})
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    private void httpComment(int page, int id) {
+        LogUtils.e(page, id);
+        NetService.getInstance().setQueryListComment(page, id)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<ConentEntity<CommentListEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+//                        ToastUtils.showToast(ArticleDetailsActivity.this,ex.getDisplayMessage(),1000);
+                    }
+
+                    @Override
+                    public void onNext(ConentEntity<CommentListEntity> conentEntity) {
+                        dataAdd(conentEntity);
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+
+                    }
+                });
+    }
+
+    private void dataAdd(ConentEntity<CommentListEntity> conentEntity) {
+
+        for (int i = 0; i < conentEntity.getContent().size(); i++) {
+            CommentListEntity commentListEntity = new CommentListEntity();
+            commentListEntity = conentEntity.getContent().get(i);
+            listEntities.add(commentListEntity);
+        }
+        if (contentCommentsAdapter == null || page == 1) {
+            ecvListPl.setNestedScrollingEnabled(false);
+            ecvListPl.setFocusable(false);
+            contentCommentsAdapter = new ContentCommentsAdapter(ArticleDetailstActivity.this,"1",
+                    new ContentCommentsAdapter.GetRefresh() {
+                        @Override
+                        public void onRefresh(boolean isSucced) {
+                            listEntities.clear();
+                            page=1;
+                            httpComment(page, recommendEntity.id);
+                        }
+                    });
+            contentCommentsAdapter.addData(listEntities);
+            ecvListPl.setAdapter(contentCommentsAdapter);
+            ecvListPl.setLayoutManager(new GridLayoutManager(ArticleDetailstActivity.this, 1, GridLayoutManager.VERTICAL, false));
+        } else {
+            contentCommentsAdapter.addData(listEntities);
+            contentCommentsAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @SuppressWarnings("AlibabaSwitchStatement")
+    @OnClick({R.id.img_bake, R.id.img_jb, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like, R.id.tv_attention})
     public void onViewClicked(View view) {
+
         switch (view.getId()) {
             case R.id.img_bake:
                 finish();
-                break;
-            case R.id.img_portrait:
-
-                break;
-            case R.id.tv_name:
-
-                break;
-            case R.id.tv_attention:
-                if (TokenUtils.isToken(this)) {
-                    httpAddUser();
-                }else {
-                    ActivityUtils.setLoginActivity();
-                }
                 break;
             case R.id.img_jb:
                 if (TokenUtils.isToken(this)) {
@@ -370,7 +305,6 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                 }
                 break;
             case R.id.input_comment_container:
-
                 if (TokenUtils.isToken(this)) {
                     InputCommentActivity.openEditor(ArticleDetailstActivity.this, new EditorCallback() {
                         @Override
@@ -386,7 +320,8 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                                         @Override
                                         public void onisSucced(boolean isSucced) {
                                             if (isSucced) {
-                                                autoRefresh();
+                                                listEntities.clear();
+                                                httpComment(1, recommendEntity.id);
                                             }
                                         }
                                     });
@@ -406,12 +341,13 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                 }else {
                     ActivityUtils.setLoginActivity();
                 }
+
                 break;
             case R.id.iv_share_news:
                 SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title,false);
-
                 break;
             case R.id.im_collection:
+                /*收藏*/
                 if (TokenUtils.isToken(this)) {
                     if (recommendEntity.isCollect == 0) {
                         ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
@@ -444,27 +380,57 @@ public class ArticleDetailstActivity extends BaseStateRefreshingLoadingActivity<
                 }else {
                     ActivityUtils.setLoginActivity();
                 }
-
                 break;
             case R.id.iv_like:
-
                 if (TokenUtils.isToken(this)) {
                     if (recommendEntity.liked) {
                         recommendEntity.liked = false;
                         ivLike.setImageResource(R.mipmap.btn_big_like);
                         ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                HOME_CONTENT, CANCEL_LIKE, 0, recommendEntity, "2");
+                                HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                     } else {
                         recommendEntity.liked = true;
                         ivLike.setImageResource(R.mipmap.btn_big_like_off);
                         ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                HOME_CONTENT, LIKE, 0, recommendEntity, "2");
+                                HOME_CONTENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                     }
                 }else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
+            case R.id.tv_attention:
+                if (TokenUtils.isToken(this)) {
+                    httpAddUser();
+                }else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            default:
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+
+
+
+    @OnClick()
+    public void onViewClicked() {
     }
 
     private void httpAddUser() {

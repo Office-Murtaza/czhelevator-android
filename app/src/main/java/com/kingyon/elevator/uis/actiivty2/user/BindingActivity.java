@@ -109,7 +109,7 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
             showToast("请输入验证码");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvNext.setEnabled(false);
         NetService.getInstance().unbindPhone(mobile, CommonUtil.getEditText(etCode), "UNBIND_OLD")
                 .compose(BindingActivity.this.<String>bindLifeCycle())
@@ -151,7 +151,7 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
                                    authorizeUtils = new AuthorizeUtils(BindingActivity.this, null);
                                    authorizeUtils.setAuthorizeListener(BindingActivity.this);
                                }
-                               showProgressDialog(getString(R.string.wait));
+                               showProgressDialog(getString(R.string.wait),true);
                                authorizeUtils.authWechat();
                                break;
                            case "QQ":
@@ -160,7 +160,7 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
                                    authorizeUtils = new AuthorizeUtils(BindingActivity.this, null);
                                    authorizeUtils.setAuthorizeListener(BindingActivity.this);
                                }
-                               showProgressDialog(getString(R.string.wait));
+                               showProgressDialog(getString(R.string.wait),true);
                                authorizeUtils.authQQ();
                                break;
                            

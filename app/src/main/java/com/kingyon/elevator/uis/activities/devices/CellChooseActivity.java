@@ -152,6 +152,7 @@ public class CellChooseActivity extends BaseStateRefreshingLoadingActivity<CellI
 //            setResult(RESULT_OK, intent);
 //            finish();
 //        }
+        LogUtils.e(item.toString());
         if (item != null) {
             Intent intent = new Intent();
             intent.putExtra(CommonUtil.KEY_VALUE_1, item);

@@ -37,6 +37,8 @@ import com.kingyon.elevator.uis.adapters.adaptertwo.ContentImageAdapter;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
+import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
@@ -49,6 +51,7 @@ import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +131,29 @@ public class ContentDetailsActivity extends BaseActivity {
         ConentUtils.topicStr = "";
         isRefresh = false;
         LogUtils.e(contentId);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
+        initData();
+        httpComment(page, contentId);
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                httpComment(page, contentId);
+            }
+        });
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                httpComment(page, contentId);
+                initData();
+                listEntities.clear();
+            }
+        });
+
+    }
+
+    private void initData() {
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -198,17 +223,11 @@ public class ContentDetailsActivity extends BaseActivity {
                         } else {
                             ivLike.setImageResource(R.mipmap.btn_big_like);
                         }
-                        httpComment(page, recommendEntity.id);
-                        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-                            @Override
-                            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                                page++;
-                                httpComment(page, recommendEntity.id);
-                            }
-                        });
+
                         hideProgress();
                     }
                 });
+
     }
 
     private void httpComment(int page, int id) {
@@ -219,13 +238,14 @@ public class ContentDetailsActivity extends BaseActivity {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
-                        smartRefreshLayout.finishLoadMore();
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
+
                     }
 
                     @Override
                     public void onNext(ConentEntity<CommentListEntity> conentEntity) {
                         dataAdd(conentEntity);
-                        smartRefreshLayout.finishLoadMore();
+                        OrdinaryActivity.closeRefresh(smartRefreshLayout);
 
                     }
                 });
@@ -354,12 +374,22 @@ public class ContentDetailsActivity extends BaseActivity {
                         recommendEntity.liked = false;
                         ivLike.setImageResource(R.mipmap.btn_big_like);
                         ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                HOME_CONTENT, CANCEL_LIKE, 0, recommendEntity, "2");
+                                HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                     } else {
                         recommendEntity.liked = true;
                         ivLike.setImageResource(R.mipmap.btn_big_like_off);
                         ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                HOME_CONTENT, LIKE, 0, recommendEntity, "2");
+                                HOME_CONTENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                     }
 
                     break;

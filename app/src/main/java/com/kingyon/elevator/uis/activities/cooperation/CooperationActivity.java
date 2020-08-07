@@ -73,6 +73,7 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
 
                     @Override
                     public void onNext(CooperationEntity cooperationEntity) {
+                        mLayoutRefresh.setEnabled(false);
                         LogUtils.e(cooperationEntity.toString());
                         CooperationIdentityEntity identity = cooperationEntity.getIdentity();
                         CooperationInfoNewEntity info = cooperationEntity.getInfo();

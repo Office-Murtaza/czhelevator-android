@@ -167,7 +167,7 @@ public class AddCellToPlanPresenter {
     }
 
     public void addCellToPlan(long cellId, final String type, CellDetailsActivity cellDetailsActivity) {
-        cellDetailsActivity.showProgressDialog("计划添加中...");
+        cellDetailsActivity.showProgressDialog("计划添加中...",true);
         NetService.getInstance().plansAddCells(type, String.valueOf(cellId))
                 .compose(baseActivity.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

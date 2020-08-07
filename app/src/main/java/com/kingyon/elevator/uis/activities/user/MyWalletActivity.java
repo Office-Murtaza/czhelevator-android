@@ -73,7 +73,7 @@ public class MyWalletActivity extends BaseActivity {
     }
 
     private void httpData() {
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().myWallet()
                 .subscribe(new CustomApiCallback<DataEntity<Float>>() {
                     @Override

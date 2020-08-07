@@ -82,42 +82,46 @@
             android:text="完成"/>
     </RelativeLayout>
 
+    <!--文字-->
     <RelativeLayout
         android:id="@+id/rl_edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="#000"
+        android:background="#000000"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:visibility="gone"
-       >
+        >
         <TextView
             android:id="@+id/tv_close"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:text="取消"
             android:textSize="18sp"
             android:textColor="#fff"
+            android:layout_marginTop="@dimen/dp10"
             android:gravity="center"/>
         <TextView
             android:id="@+id/tv_finish"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="18sp"
-            android:textColor="#3CAC57"
+            android:textColor="#FF001E"
+            android:layout_marginTop="@dimen/dp10"
             android:layout_alignParentRight="true"
             android:text="完成"/>
         <EditText
             android:id="@+id/et_tag"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_margin="5dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="15dp"
             android:textSize="24sp"
             android:layout_below="@id/tv_finish"
             android:textColor="#FA0606"
             android:gravity="top"
+            android:textCursorDrawable="@null"
             android:background="@null"/>
         <TextView
             android:id="@+id/tv_tag"
@@ -204,6 +208,7 @@
             android:gravity="center"
             android:layout_alignParentBottom="true">
 
+            <!--滤镜-->
             <RelativeLayout
                 android:id="@+id/rl_cut_size"
                 android:layout_width="0dp"
@@ -229,6 +234,7 @@
                     />
             </RelativeLayout>
 
+            <!--贴图-->
             <RelativeLayout
                 android:id="@+id/rl_icon"
                 android:layout_width="0dp"
@@ -254,6 +260,7 @@
                     />
             </RelativeLayout>
 
+            <!--文字-->
             <RelativeLayout
                 android:id="@+id/rl_text"
                 android:layout_width="0dp"
@@ -279,6 +286,7 @@
                     />
             </RelativeLayout>
 
+            <!--剪切-->
             <RelativeLayout
                 android:id="@+id/rl_cut_time"
                 android:layout_width="0dp"
@@ -304,6 +312,7 @@
                     />
             </RelativeLayout>
 
+            <!--涂鸦-->
             <RelativeLayout
                 android:id="@+id/rl_pen"
                 android:layout_width="0dp"
@@ -333,6 +342,7 @@
                     />
             </RelativeLayout>
 
+            <!--调速-->
             <RelativeLayout
                 android:id="@+id/rl_speed"
                 android:layout_width="0dp"
@@ -362,6 +372,7 @@
 
         </LinearLayout>
 
+        <!--剪切View-->
         <RelativeLayout
             android:id="@+id/rl_jq"
             android:layout_width="match_parent"
@@ -517,6 +528,7 @@
             android:background="#3C3E40"
             android:layout_above="@id/ll_bottom"/>
 
+
         <LinearLayout
             android:id="@+id/ll_color"
             android:layout_width="match_parent"
@@ -551,14 +563,14 @@
             android:visibility="gone"/>
 
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/rl_filter"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:background="#f4f4f4"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_above="@id/v_line"-->
-<!--            />-->
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/rl_filter"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="80dp"-->
+        <!--            android:background="#f4f4f4"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:layout_above="@id/v_line"-->
+        <!--            />-->
 
         <!--滤镜-->
         <HorizontalScrollView
@@ -579,6 +591,7 @@
 
         </HorizontalScrollView>
 
+        <!--调速-->
         <LinearLayout
             android:id="@+id/ll_progress"
             android:layout_width="match_parent"

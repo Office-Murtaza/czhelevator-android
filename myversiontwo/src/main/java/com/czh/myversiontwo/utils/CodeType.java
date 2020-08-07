@@ -115,12 +115,30 @@ public class CodeType {
  public static final String OEDER_SOWING = "SOWING";
 
  /**
-  * 审核状态（NEED_AUDIT-待审、WAIT-审核中、PASS-审核通过、REJECT-拒绝/驳回）
+  * 审核状态（NEED_AUDIT-待审、WAITREVIEW-审核中、PASS-审核通过、REJECT-拒绝/驳回）
+  *
+  *        NO_AUDIT, // 不需要审核
+  *         WAITREVIEW, // 待审核
+  *         REVIEWFAILD, // 审核未通过
+  *         REVIEWSUCCESS, // 待发布/审核通过
+  *         RELEASEING, // 发布中
+  *         COMPLETE, // 完成
+  *         SOWING, // 下播
   * */
- public static final String OEDER_NEED_AUDIT = "NEED_AUDIT";
- public static final String OEDER_WAIT = "WAIT";
- public static final String OEDER_PASS = "PASS";
- public static final String OEDER_REJECT = "REJECT";
+ /*不需要审核*/
+ public static final String NO_AUDIT = "NO_AUDIT";
+ /*待审核*/
+ public static final String WAITREVIEW = "WAITREVIEW";
+ /*审核未通过*/
+ public static final String REVIEWFAILD = "REVIEWFAILD";
+ /*待发布/审核通过*/
+ public static final String REVIEWSUCCESS = "REVIEWSUCCESS";
+ /*发布中*/
+ public static final String RELEASEING = "RELEASEING";
+ /*完成*/
+ public static final String COMPLETE = "COMPLETE";
+ /*下播*/
+ public static final String SOWING = "SOWING";
 
 
 

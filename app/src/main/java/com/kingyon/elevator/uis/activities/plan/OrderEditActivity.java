@@ -378,7 +378,7 @@ public class OrderEditActivity extends BaseStateLoadingActivity {
             couponIds = stringBuilder.length() > 1 ? stringBuilder.substring(0, stringBuilder.length() - 1) : "";
         }
         tvEnsure.setEnabled(false);
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().commitOrder(type, startTime, endTime, adEntity.getObjctId()
                 , AppContent.getInstance().getGson().toJson(deviceParams), couponIds, industry.getObjectId())
                 .compose(this.<CommitOrderEntiy>bindLifeCycle())

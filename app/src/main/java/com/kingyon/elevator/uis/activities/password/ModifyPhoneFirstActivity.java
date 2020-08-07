@@ -71,7 +71,7 @@ public class ModifyPhoneFirstActivity extends BaseSwipeBackActivity {
             showToast("请输入验证码");
             return;
         }
-        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait),true);
         tvNext.setEnabled(false);
         NetService.getInstance().unbindPhone(mobile, CommonUtil.getEditText(etCode), "UNBIND_OLD")
                 .compose(this.<String>bindLifeCycle())

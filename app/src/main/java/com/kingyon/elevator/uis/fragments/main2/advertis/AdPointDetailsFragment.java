@@ -20,6 +20,7 @@ import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.TimeUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.ToastUtils;
@@ -87,7 +88,7 @@ public class AdPointDetailsFragment extends BaseFragment {
             tvPrice.setText(cellDetailsEntity.averageSellingPrice+"");
             tvTraffic.setText(cellDetailsEntity.numberTraffic+"");
             tvCoverage.setText(cellDetailsEntity.peopleCoverd+"");
-            tvWsp.setText(cellDetailsEntity.throwWay+""/*+FormatUtils.getInstance().getCellDistance()*/);
+            tvWsp.setText( FormatUtils.getInstance().getthrowWay(cellDetailsEntity.throwWay)+"");
             tvAttribute.setText(FormatUtils.getInstance().getCellType(cellDetailsEntity.type));
             switch (type) {
                 case "1":

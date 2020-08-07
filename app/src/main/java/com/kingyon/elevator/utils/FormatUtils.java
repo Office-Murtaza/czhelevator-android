@@ -205,6 +205,29 @@ public class FormatUtils {
         return result;
     }
 
+
+    public String getthrowWay(String throwWay) {
+        if (throwWay == null) {
+            return "";
+        }
+        String result;
+        switch (throwWay) {
+            case "VIDEO":
+                result = "视频";
+            break;
+            case "VIDEO_AND_POSTER":
+                result =  "视频和海报";
+            break;
+            case "POSTER":
+                result = "海报";
+            break;
+            default:
+                result =  throwWay;
+                break;
+        }
+        return result;
+    }
+
 public static String incomeType(String  source){
     if (source == null) {
         return "";
@@ -277,43 +300,83 @@ public static String incomeType(String  source){
         return groups;
     }
 
-    public List<PlanPointGroup> getPlanPointGroupAssign(List<PointItemEntity> pointItemEntities, List<PointItemEntity> chooseds, int choosedNumber) {
-        LinkedHashMap<String, PlanPointGroup> map = new LinkedHashMap<>();
-        if (pointItemEntities != null) {
-            int cacheNumber = 0;
-            for (PointItemEntity item : pointItemEntities) {
-                if (chooseds == null || chooseds.size() < 1) {
-                    if (cacheNumber < choosedNumber && TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState())) {
-                        cacheNumber++;
-                        item.setChoosed(true);
+    public List<PlanPointGroup> getPlanPointGroupAssign(List<PointItemEntity> pointItemEntities, List<PointItemEntity> chooseds,
+                                                        int choosedNumber,String type) {
+        if (type.equals("order")) {
+            LinkedHashMap<String, PlanPointGroup> map = new LinkedHashMap<>();
+            if (pointItemEntities != null) {
+                int cacheNumber = 0;
+                for (PointItemEntity item : pointItemEntities) {
+                    if (chooseds == null || chooseds.size() < 1) {
+                        if (cacheNumber < choosedNumber && TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState())) {
+                            cacheNumber++;
+//                            item.setChoosed(true);
+                        } else {
+//                            item.setChoosed(false);
+                        }
                     } else {
-                        item.setChoosed(false);
+                        if (TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState()) && hasChoosed(chooseds, item.getObjectId())) {
+                            item.setChoosed(true);
+                        } else {
+                            item.setChoosed(false);
+                        }
                     }
-                } else {
-                    if (TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState()) && hasChoosed(chooseds, item.getObjectId())) {
-                        item.setChoosed(true);
+                    String keyStr = String.format("%s-%s", item.getCellId(), item.getBuildId());
+                    PlanPointGroup pointGroup;
+                    if (map.containsKey(keyStr)) {
+                        pointGroup = map.get(keyStr);
                     } else {
-                        item.setChoosed(false);
+                        pointGroup = new PlanPointGroup(keyStr);
+                        pointGroup.setCellName(item.getCellName());
+                        pointGroup.setCellId(item.getCellId());
+                        pointGroup.setBuildName(item.getBuild());
+                        pointGroup.setBuildId(item.getBuildId());
                     }
+                    pointGroup.addPoint(item);
+                    map.put(keyStr, pointGroup);
                 }
-                String keyStr = String.format("%s-%s", item.getCellId(), item.getBuildId());
-                PlanPointGroup pointGroup;
-                if (map.containsKey(keyStr)) {
-                    pointGroup = map.get(keyStr);
-                } else {
-                    pointGroup = new PlanPointGroup(keyStr);
-                    pointGroup.setCellName(item.getCellName());
-                    pointGroup.setCellId(item.getCellId());
-                    pointGroup.setBuildName(item.getBuild());
-                    pointGroup.setBuildId(item.getBuildId());
-                }
-                pointGroup.addPoint(item);
-                map.put(keyStr, pointGroup);
             }
+            ArrayList<PlanPointGroup> groups = new ArrayList<>();
+            groups.addAll(map.values());
+            return groups;
+        }else {
+            LinkedHashMap<String, PlanPointGroup> map = new LinkedHashMap<>();
+            if (pointItemEntities != null) {
+                int cacheNumber = 0;
+                for (PointItemEntity item : pointItemEntities) {
+                    if (chooseds == null || chooseds.size() < 1) {
+                        if (cacheNumber < choosedNumber && TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState())) {
+                            cacheNumber++;
+                            item.setChoosed(true);
+                        } else {
+                            item.setChoosed(false);
+                        }
+                    } else {
+                        if (TextUtils.equals(Constants.DELIVER_STATE.USABLE, item.getDeliverState()) && hasChoosed(chooseds, item.getObjectId())) {
+                            item.setChoosed(true);
+                        } else {
+                            item.setChoosed(false);
+                        }
+                    }
+                    String keyStr = String.format("%s-%s", item.getCellId(), item.getBuildId());
+                    PlanPointGroup pointGroup;
+                    if (map.containsKey(keyStr)) {
+                        pointGroup = map.get(keyStr);
+                    } else {
+                        pointGroup = new PlanPointGroup(keyStr);
+                        pointGroup.setCellName(item.getCellName());
+                        pointGroup.setCellId(item.getCellId());
+                        pointGroup.setBuildName(item.getBuild());
+                        pointGroup.setBuildId(item.getBuildId());
+                    }
+                    pointGroup.addPoint(item);
+                    map.put(keyStr, pointGroup);
+                }
+            }
+            ArrayList<PlanPointGroup> groups = new ArrayList<>();
+            groups.addAll(map.values());
+            return groups;
         }
-        ArrayList<PlanPointGroup> groups = new ArrayList<>();
-        groups.addAll(map.values());
-        return groups;
     }
 
     private boolean hasChoosed(List<PointItemEntity> chooseds, long objectId) {
@@ -539,6 +602,9 @@ public static String incomeType(String  source){
                 break;
             case Constants.PayType.OFFLINE:
                 result = "线下支付";
+                break;
+            case Constants.PayType.COUPON:
+                result = "优惠卷支付";
                 break;
             default:
                 result = "";
