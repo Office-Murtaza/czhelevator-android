@@ -94,7 +94,7 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
             return;
         }
         showProgressDialog(getString(R.string.wait), true);
-        NetService.getInstance().createOrEidtAd(adEntity != null ? adEntity.getAdvertising().getObjectId() : null
+        NetService.getInstance().createOrEidtAd(adEntity != null ? Long.valueOf(adEntity.getAdvertising().getObjectId()) : null
                 , true, Constants.PLAN_TYPE.INFORMATION, Constants.AD_SCREEN_TYPE.INFORMATION
                 , etContent.getText().toString(), null, null, null, null, null, null)
                 .compose(this.<ADEntity>bindLifeCycle())

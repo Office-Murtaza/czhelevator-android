@@ -73,14 +73,13 @@
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="@dimen/dp_5"
                    android:layout_marginRight="@dimen/dp_5"
-                   android:progressDrawable="@mipmap/bg_range_slider1"
+                   android:progressDrawable="@drawable/bg_range_slider1"
                    android:thumb="@drawable/ic_range_slider"
                    android:max="50"
                    android:progress="10"
                    />
 
            </LinearLayout>
-
 
             <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
                 android:id="@+id/pfl_cells"

@@ -175,7 +175,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
+        mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
         rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
         rcvListImg.setAdapter(mAdapter);
         rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
@@ -335,38 +335,40 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                     LogUtils.e(newTopic);
 //                    tagList.add(String.valueOf(tag.getId()));
                     break;
-                case ACCESS_IMAGE_PATH:
-                    LogUtils.e(Matisse.obtainPathResult(data),Matisse.obtainResult(data),Matisse.obtainOriginalState(data));
-                    for (int c= 0;c<Matisse.obtainPathResult(data).size();c++){
-                        PhotoEntry photoEntry = new PhotoEntry();
-                        photoEntry.setPath(Matisse.obtainPathResult(data).get(c));
-                        list.add(photoEntry);
-                     }
-                    LogUtils.e(list.toString());
-                    mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
-                    rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-                    rcvListImg.setAdapter(mAdapter);
-                    rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
-                    break;
-                case CommonUtil.REQ_CODE_4:
-                    String savedPath = data.getStringExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH);
-                    int number = data.getIntExtra("number",0);
-                    if (!TextUtils.isEmpty(savedPath) && new File(savedPath).exists()) {
-                        list.get(number).setPath(savedPath);
-                        mAdapter.notifyDataSetChanged();
-//                        LogUtils.e(list.toString());
-//                        mAdapter = new ChooseAdapter(this,list);
-//                        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-//                        rcvListImg.setAdapter(mAdapter);
-//                        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
-
-                    }
-                    break;
+//                case ACCESS_IMAGE_PATH:
+//                    LogUtils.e(Matisse.obtainPathResult(data),Matisse.obtainResult(data),Matisse.obtainOriginalState(data));
+//                    for (int c= 0;c<Matisse.obtainPathResult(data).size();c++){
+//                        PhotoEntry photoEntry = new PhotoEntry();
+//                        photoEntry.setPath(Matisse.obtainPathResult(data).get(c));
+//                        list.add(photoEntry);
+//                     }
+//                    LogUtils.e(list.toString());
+//                    mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
+//                    rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+//                    rcvListImg.setAdapter(mAdapter);
+//                    rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+//                    break;
+//                case CommonUtil.REQ_CODE_4:
+//                    String savedPath = data.getStringExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH);
+//                    int number = data.getIntExtra("number",0);
+//                    if (!TextUtils.isEmpty(savedPath) && new File(savedPath).exists()) {
+//                        list.get(number).setPath(savedPath);
+//                        mAdapter.notifyDataSetChanged();
+////                        LogUtils.e(list.toString());
+////                        mAdapter = new ChooseAdapter(this,list);
+////                        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+////                        rcvListImg.setAdapter(mAdapter);
+////                        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+//
+//                    }
+//                    break;
                 case CameraSdkParameterInfo.TAKE_PICTURE_FROM_GALLERY:
                     if(data!=null){
                         getBundle(data.getExtras());
+                        LogUtils.e("****777777777777777");
+                    }else {
+                        LogUtils.e("*******************");
                     }
-                    LogUtils.e("==================TAKE_PICTURE_FROM_GALLERY");
                     break;
 
 
@@ -376,7 +378,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetMessage(MessageWrap message) {
         LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
-        pic_list.clear();
+//        pic_list.clear();
+        LogUtils.e("11111111111111111111");
         for (int c= 0;c<message.message.size();c++){
             PhotoEntry photoEntry = new PhotoEntry();
             photoEntry.setPath(message.message.get(c));
@@ -418,14 +421,6 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                     @Override
                     public void editOniclk(ArrayList<String> listPath) {
                         LogUtils.e(listPath.toString());
-//                        mCameraSdkParameterInfo.setImage_list(listPath);
-//                        Intent intent = new Intent();
-//                        intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
-//                        Bundle b=new Bundle();
-//                        b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
-//                        intent.putExtras(b);
-//                        startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
-
                         mCameraSdkParameterInfo.setImage_list(listPath);
                         Intent intent = new Intent();
                         intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
@@ -434,23 +429,21 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                         intent.putExtras(b);
                         startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
 
-
                     }
                 });
             }
-//            if(pic_list.size()<mCameraSdkParameterInfo.getMax_image()){
-//                PhotoEntry item=new PhotoEntry();
-////                item.setAddButton(true);
-//                pic_list.add(item);
-//            }
-
-//            mImageGridAdapter.setList(pic_list);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        initView();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        LogUtils.e("***********");
+        return;
     }
 }

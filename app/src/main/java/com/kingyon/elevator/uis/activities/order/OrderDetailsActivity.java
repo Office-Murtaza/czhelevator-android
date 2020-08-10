@@ -295,7 +295,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
                         tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getName() == null) ? "" : order.getAdvertising().getName());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
-                        tvDuration.setText(String.format("%s-%s", TimeUtil.getAllTimeDuration(order.getAdStartTime()), TimeUtil.getAllTimeDuration(order.getAdEndTime())));
+                        tvDuration.setText(String.format("%s 至 %s（%s）", TimeUtil.getYMdTime(order.getAdStartTime()), TimeUtil.getYMdTime(order.getAdEndTime()),
+                                com.kingyon.elevator.utils.TimeUtil.getDayNumber((order.getAdStartTime()),(order.getAdEndTime()))));
 
                         long startDealTime = TimeUtil.getDayStartTimeMilliseconds(order.getAdStartTime());
                         long endDealTime = TimeUtil.getDayEndTimeMilliseconds(order.getAdEndTime());

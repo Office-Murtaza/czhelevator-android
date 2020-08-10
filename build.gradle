@@ -53,8 +53,8 @@ ext {
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 19,
             targetSdkVersion : 26,
-            versionCode      : 55,
-            versionName      : "1.6.4"]
+            versionCode      : 56,
+            versionName      : "1.6.5"]
     dependencies = [
             googleSupportVersion: "27.1.1"
     ]

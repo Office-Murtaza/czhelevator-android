@@ -46,8 +46,8 @@ public class ADEntity implements Parcelable {
      */
 
     private boolean onlyInfo;
-    private long objctId;
-    private long objectId;
+    private String objctId;
+    private String objectId;
     private String planType;
     private String screenType;
     private String adStatus;
@@ -61,7 +61,7 @@ public class ADEntity implements Parcelable {
     private String urlVideo;
     private String typeAdvertise;
     private String urlImate;
-    private long adIndustryId;
+    private String adIndustryId;
 
 
     @Override
@@ -87,11 +87,11 @@ public class ADEntity implements Parcelable {
                 '}';
     }
 
-    public long getObjectId() {
+    public String getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(long objectId) {
+    public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
 
@@ -135,11 +135,11 @@ public class ADEntity implements Parcelable {
         this.onlyInfo = onlyInfo;
     }
 
-    public long getObjctId() {
+    public String getObjctId() {
         return objctId;
     }
 
-    public void setObjctId(long objctId) {
+    public void setObjctId(String objctId) {
         this.objctId = objctId;
     }
 
@@ -215,11 +215,11 @@ public class ADEntity implements Parcelable {
         this.adIndustry = adIndustry;
     }
 
-    public long getAdIndustryId() {
+    public String getAdIndustryId() {
         return adIndustryId;
     }
 
-    public void setAdIndustryId(long adIndustryId) {
+    public void setAdIndustryId(String adIndustryId) {
         this.adIndustryId = adIndustryId;
     }
 
@@ -234,8 +234,8 @@ public class ADEntity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte(this.onlyInfo ? (byte) 1 : (byte) 0);
-        dest.writeLong(this.objctId);
-        dest.writeLong(this.objectId);
+        dest.writeString(this.objctId);
+        dest.writeString(this.objectId);
         dest.writeString(this.planType);
         dest.writeString(this.screenType);
         dest.writeString(this.adStatus);
@@ -249,13 +249,13 @@ public class ADEntity implements Parcelable {
         dest.writeString(this.urlVideo);
         dest.writeString(this.typeAdvertise);
         dest.writeString(this.urlImate);
-        dest.writeLong(this.adIndustryId);
+        dest.writeString(this.adIndustryId);
     }
 
     protected ADEntity(Parcel in) {
         this.onlyInfo = in.readByte() != 0;
-        this.objctId = in.readLong();
-        this.objectId = in.readLong();
+        this.objctId = in.readString();
+        this.objectId = in.readString();
         this.planType = in.readString();
         this.screenType = in.readString();
         this.adStatus = in.readString();
@@ -269,7 +269,7 @@ public class ADEntity implements Parcelable {
         this.urlVideo = in.readString();
         this.typeAdvertise = in.readString();
         this.urlImate = in.readString();
-        this.adIndustryId = in.readLong();
+        this.adIndustryId = in.readString();
     }
 
     public static final Creator<ADEntity> CREATOR = new Creator<ADEntity>() {

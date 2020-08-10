@@ -36,9 +36,14 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.marvhong.videoeffect.FillMode;
+import com.marvhong.videoeffect.Rotation;
+import com.marvhong.videoeffect.composer.Mp4Composer;
+import com.marvhong.videoeffect.helper.MagicFilterFactory;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
@@ -58,6 +63,7 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import com.zhihu.matisse.internal.utils.SingleMediaScanner;
+import com.zhihu.matisse.utils.FFmpet;
 
 import java.util.ArrayList;
 
@@ -330,6 +336,8 @@ public class MatisseActivity extends AppCompatActivity implements
             startActivityForResult(intent, REQUEST_CODE_PREVIEW);
             /*下一步*/
         } else if (v.getId() == R.id.button_apply) {
+//            1111111111
+
             Intent result = new Intent();
             ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
@@ -338,6 +346,23 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             setResult(RESULT_OK, result);
             finish();
+//            Log.e("TAG",selectedUris.toString()+"=======\n"+selectedPaths.toString()+"=======\n"+mOriginalEnable);
+//            FFmpet.showLoadingDialog(this,"请稍后...",false);
+//            FFmpet.GetCompression(selectedPaths.get(0), "/sdcard/PDD/test" + System.currentTimeMillis() + ".mp4", new FFmpet.IsonSuccess() {
+//                @Override
+//                public void onSuccess(String outpath) {
+//                    FFmpet.closeLoadingDialog();
+//                    ArrayList<String> selectedPaths1 = new ArrayList<>();
+//                    selectedPaths1.add(outpath);
+//                    Intent result = new Intent();
+//                    result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths1);
+//                    result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
+//                    setResult(RESULT_OK, result);
+//                    finish();
+//                }
+//            });
+
+
         } else if (v.getId() == R.id.originalLayout) {
             int count = countOverMaxSize();
             if (count > 0) {

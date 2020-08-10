@@ -92,6 +92,8 @@
                 android:layout_marginLeft="@dimen/dp10"
                 android:phoneNumber="true"
                 android:maxLength="11"
+                android:maxLines="1"
+                android:lines="1"
                 ></EditText>
 
 
@@ -144,6 +146,8 @@
                 android:hint="请输入验证码"
                 android:inputType="number"
                 android:maxLength="6"
+                android:maxLines="1"
+                android:lines="1"
                 ></EditText>
 
 
@@ -202,6 +206,8 @@
                 android:maxLength="20"
                 android:password="true"
                 android:inputType="textPassword"
+                android:maxLines="1"
+                android:lines="1"
                 ></EditText>
 
 

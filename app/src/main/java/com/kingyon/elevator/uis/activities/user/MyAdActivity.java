@@ -199,7 +199,7 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
     }
 
     private void onAdDelete(ADEntity item) {
-        NetService.getInstance().deleteAd(item.getObjctId())
+        NetService.getInstance().deleteAd(Long.parseLong(item.getObjctId()))
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override

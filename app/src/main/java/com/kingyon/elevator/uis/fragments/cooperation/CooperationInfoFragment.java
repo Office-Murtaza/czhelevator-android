@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -66,7 +68,7 @@ import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
  * 合伙人首页BaseStateRefreshingActivity
  */
 
-public class CooperationInfoFragment extends BaseStateRefreshFragment implements OnParamsChangeInterface {
+public class CooperationInfoFragment extends BaseFragment implements OnParamsChangeInterface, SwipeRefreshHelper.OnSwipeRefreshListener  {
 
 
     @BindView(R.id.img_top_back)
@@ -98,6 +100,9 @@ public class CooperationInfoFragment extends BaseStateRefreshFragment implements
     LinearLayout llIncomeToday;
     @BindView(R.id.tv_notice)
     AlwaysMarqueeTextView tvNotice;
+    @BindView(R.id.pre_refresh)
+    SwipeRefreshLayout preRefresh;
+    protected SwipeRefreshHelper mSwipeRefreshHelper;
     private CooperationInfoNewEntity cooperationInfoNewEntity;
     private TipDialog<String> tipDialog;
 
@@ -130,9 +135,11 @@ public class CooperationInfoFragment extends BaseStateRefreshFragment implements
         ConentUtils.httpData(Constants.AgreementType.PARTNER_PROMPT.getValue(), new SrcSuccess() {
             @Override
             public void srcSuccess(String data) {
-                tvNotice.setText(delHTMLTag(data)+"");
+                tvNotice.setText(delHTMLTag(data) + "");
             }
         });
+        mSwipeRefreshHelper = new SwipeRefreshHelper(preRefresh);
+        mSwipeRefreshHelper.setOnSwipeRefreshListener(this);
     }
 
     private void httpData() {
@@ -144,14 +151,14 @@ public class CooperationInfoFragment extends BaseStateRefreshFragment implements
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
-                        loadingComplete(STATE_ERROR);
+                        loadingComplete();
                     }
 
                     @Override
                     public void onNext(ConentEntity<PartnerIndexInfoEntity> list) {
                         hideProgress();
                         PartnerIndexInfoEntity partnerIndexInfoEntity = list.getContent().get(0);
-                        loadingComplete(STATE_CONTENT);
+                        loadingComplete();
                         updateUI(partnerIndexInfoEntity);
                         LogUtils.e(partnerIndexInfoEntity.toString());
                     }
@@ -171,6 +178,11 @@ public class CooperationInfoFragment extends BaseStateRefreshFragment implements
                     }
                 });
 
+    }
+
+    private void loadingComplete() {
+        /*cancel*/
+        mSwipeRefreshHelper.refreshComplete();
     }
 
     @Override
@@ -326,7 +338,13 @@ public class CooperationInfoFragment extends BaseStateRefreshFragment implements
     }
 
     @Override
-    public void onRefresh() {
+    public void onfresh() {
+        httpData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         httpData();
     }
 }

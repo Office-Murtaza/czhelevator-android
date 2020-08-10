@@ -214,6 +214,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.img_delete:
                 /*删除*/
+                imgImage.setClickable(false);
                 isDelete = false;
                 tvTextUpdata.setVisibility(View.VISIBLE);
                 imgUpdata.setVisibility(View.VISIBLE);
@@ -222,6 +223,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 tvEdit.setVisibility(View.GONE);
                 break;
             case R.id.img_updata:
+                imgImage.setClickable(true);
                 /*添加视频图片*/
                 MyActivityUtils.goPhotoPickerActivity(this, Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT, entity.getOrderType());
                 break;
@@ -239,14 +241,16 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     private void httpUpDataAd() {
         if (etContent.getText().toString().isEmpty()){
             showToast("广告名称为空");
-        }else if (pathData==null){
+        }else if (pathData.isEmpty()){
             showToast("内容未修改");
         }else {
-            if (isImage){
+            if (isHttp==2){
                 /*图篇*/
                 uploadAdVideoOrImg(pathData,entity.getAdvertising().getPlanType(),"FULLIMAGE",etContent.getText().toString());
+                LogUtils.e("---FULLIMAGE----");
             }else {
                 /*视频*/
+                LogUtils.e("++++++FULLVIDEO++++++");
                 uploadAdVideoOrImg(pathData,entity.getAdvertising().getPlanType(),"FULLVIDEO",etContent.getText().toString());
             }
         }
@@ -453,7 +457,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                 handler.post(() -> {
                     if (images != null && images.size() > 0) {
                         String uploadUrl = images.get(0);
-                        commitAd(uploadUrl, planType, screenType, adName, resPath,response.optString("hash"),entity.getAdvertising().getObjectId());
+                        commitAd(uploadUrl, planType, screenType, adName, resPath,response.optString("hash"), Long.parseLong(entity.getAdvertising().getObjectId()));
                         LogUtils.e("成功 提交服务器",uploadUrl);
                     } else {
                        showToast("上传失败，请重试");
@@ -496,6 +500,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         }
         LogUtils.e(objctId, false
                 , planType, screenType, adName, videoUrl, imageUrl, null, videoLocalPath, imageLocalPath,hash);
+
         NetService.getInstance().createOrEidtAd(objctId, false
                 , planType, screenType, adName, videoUrl, imageUrl, null, videoLocalPath, imageLocalPath,hash)
                 .subscribe(new CustomApiCallback<ADEntity>() {

@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.fragments.homepage;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,8 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.Circle;
+import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
@@ -181,7 +184,14 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvKm.setText("范围"+(progress/10)+"km");
-                moveMapToPositon(longitude, latitude, cityZoomLevel + 5-(progress/10));
+//                moveMapToPositon(longitude, latitude, cityZoomLevel + 5-(progress/10));
+                LatLng latLng = new LatLng(latitude,longitude);
+                aMap.addCircle(new CircleOptions().
+                        center(latLng).
+                        radius(progress*10).
+                        fillColor(Color.argb(1, 1, 1, 1)).
+                        strokeColor(Color.argb(1, 1, 1, 1)).
+                        strokeWidth(15));
             }
 
             @Override

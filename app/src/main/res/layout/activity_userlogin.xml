@@ -75,6 +75,8 @@
                 android:layout_marginLeft="@dimen/dp10"
                 android:maxLength="11"
                 android:phoneNumber="true"
+                android:maxLines="1"
+                android:lines="1"
                 ></EditText>
 
         </LinearLayout>
@@ -123,6 +125,8 @@
                 android:hint="请输入密码"
                 android:password="true"
                 android:maxLength="20"
+                android:maxLines="1"
+                android:lines="1"
                 ></EditText>
 
             <ImageView

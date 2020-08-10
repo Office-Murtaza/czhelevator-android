@@ -32,6 +32,7 @@ import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.activities.advertising.NetVideoPlayActivity;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.VideoUtils;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -108,6 +109,8 @@ public class VoideReleasetyActiivty extends BaseActivity {
     ImageView imageOriginal;
     @BindView(R.id.imag_reprinted)
     ImageView imagReprinted;
+    List<String> userList = new ArrayList<>();
+    List<String> tagList = new ArrayList<>();
     String topicId;
     String atAccount;
     String videoCover;
@@ -345,6 +348,14 @@ public class VoideReleasetyActiivty extends BaseActivity {
         int videoSize = (int) VideoUtils.getVideoSize(videoPath);
         long videoTime = VideoUtils.getVideoDuration(videoPath);
         CharSequence convertMetionString = editConent.getFormatCharSequence();
+
+        tagList = StringUtils.getTagString(String.valueOf(editConent.getFormatCharSequence()));
+        String topicId1 = tagList.toString().replace("[","");
+        topicId = topicId1.replace("]","");
+        userList = StringUtils.getUserString(String.valueOf(editConent.getFormatCharSequence()));
+        String atAccount1 = userList.toString().replace("[","");
+        atAccount = atAccount1.replace("]","");
+
         LogUtils.e(editTitle.getText().toString(),
                 editConent.getText().toString(), null, "视频地址", TYPE_VIDEO, "3", topicId, atAccount,
                 videoSize, videoCoverUrl, videoTime);
@@ -421,13 +432,13 @@ public class VoideReleasetyActiivty extends BaseActivity {
                     break;
                 case REQUEST_USER_APPEND:
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
-                    atAccount = String.valueOf(user.followerAccount);
+//                    atAccount = String.valueOf(user.followerAccount);
                     editConent.insert(user);
                     break;
                 case REQUEST_TAG_APPEND:
                     QueryTopicEntity.PageContentBean tag = (QueryTopicEntity.PageContentBean) data.getSerializableExtra(TagList.RESULT_TAG);
                     editConent.insert(tag);
-                    topicId = String.valueOf(tag.getId());
+//                    topicId = String.valueOf(tag.getId());
 //                    newTopic = String.format(TAG_FORMAT, tag.getId(), tag.getTitle());
 //                    LogUtils.e(newTopic);
                     break;

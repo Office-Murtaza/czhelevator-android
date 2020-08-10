@@ -370,7 +370,7 @@ public class OrdinaryActivity {
                                           String videoCover,long playTime, int videoHorizontalVertical,boolean isOriginal){
         LogUtils.e(title,content,image,video,type,combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal);
 
-        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait),true);
+        baseActivity.showProgressDialog(baseActivity.getString(R.string.wait),false);
         NetService.getInstance().setContentPublish(title,content,image,video,type,
                 combination,topicId,atAccount,videoSize,videoCover,playTime,videoHorizontalVertical,isOriginal)
                 .compose(baseActivity.bindLifeCycle())

@@ -1047,7 +1047,7 @@ public class NetService {
                     localMaterialEntity.setUserId(AppContent.getInstance().getMyUserId());
                     localMaterialEntity.setPlanType(adEntity.getPlanType());
                     localMaterialEntity.setScreenType(screenType);
-                    localMaterialEntity.setAdId(adEntity.getObjctId());
+                    localMaterialEntity.setAdId(Long.parseLong(adEntity.getObjctId()));
                     localMaterialEntity.setType(Constants.Materia_Type.VIDEO);
                     localMaterialEntity.setUrl(adEntity.getVideoUrl());
                     localMaterialEntity.setPath(videoPath);
@@ -1061,7 +1061,7 @@ public class NetService {
                     localMaterialEntity.setUserId(AppContent.getInstance().getMyUserId());
                     localMaterialEntity.setPlanType(adEntity.getPlanType());
                     localMaterialEntity.setScreenType(screenType);
-                    localMaterialEntity.setAdId(adEntity.getObjctId());
+                    localMaterialEntity.setAdId(Long.parseLong(adEntity.getObjctId()));
                     localMaterialEntity.setType(Constants.Materia_Type.IMAGE);
                     localMaterialEntity.setUrl(adEntity.getImageUrl());
                     localMaterialEntity.setPath(imagePath);

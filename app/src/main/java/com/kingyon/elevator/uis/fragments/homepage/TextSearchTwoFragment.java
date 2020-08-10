@@ -69,8 +69,10 @@ public class TextSearchTwoFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         addCellToPlanPresenter = new AddCellToPlanPresenter((BaseActivity) getActivity());
         LocationEntity entity = AppContent.getInstance().getLocation();
-        latitude = String.valueOf(entity.getLatitude());
-        longitude = String.valueOf(entity.getLongitude());
+        if (entity!=null) {
+            latitude = String.valueOf(entity.getLatitude());
+            longitude = String.valueOf(entity.getLongitude());
+        }
         cityCode = String.valueOf(520100) ;
         cityId = 520100;
         initRefresh();

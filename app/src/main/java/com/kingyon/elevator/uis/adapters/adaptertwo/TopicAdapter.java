@@ -52,7 +52,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         if (holder!=null) {
 
 
-//            holder.tv_title.setText(conentEntity.get(position).title);
+            holder.tv_title.setText(conentEntity.get(position).title);
 //
 //            holder.tv_title.setText(delHTMLTag(conentEntity.get(position).content)+"");
             if (conentEntity.get(position).latestContent==null) {

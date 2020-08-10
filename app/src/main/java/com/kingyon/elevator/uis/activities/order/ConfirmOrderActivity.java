@@ -356,7 +356,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             et_input_ad_name.setFocusable(false);
             et_input_ad_name.setText(adEntity.getTitle());
             DataSharedPreferences.saveAdName(adEntity.getTitle());
-            adEntityID = adEntity.getObjctId();
+            adEntityID = Long.parseLong(adEntity.getObjctId());
             switch (adEntity.getScreenType()) {
                 case Constants.AD_SCREEN_TYPE.FULL_VIDEO:
                     GlideUtils.loadVideoFrame(ConfirmOrderActivity.this, adEntity.getVideoUrl(), ad_img_preview);
@@ -605,7 +605,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
 
     @Override
     public void adUploadSuccess(ADEntity adEntity) {
-        adEntityID =   adEntity.getObjctId();
+        adEntityID = Long.parseLong(adEntity.getObjctId());
         presenter.commitOrder(goPlaceAnOrderEntity, coupons, goPlaceAnOrderEntity.getPlanType(),
                 goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
     }

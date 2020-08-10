@@ -26,6 +26,7 @@ import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.VideoUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -134,6 +135,11 @@ public class ArticleReleaseActivity extends BaseActivity {
     private String TOP_TAG = "&nbsp;<tag style='color: #4dacee;' id='%s' name='%s'>#%s#</tag>&nbsp;";
     List<File> files = new ArrayList<>();
     private String imageCover;
+
+    List<String> userList = new ArrayList<>();
+    List<String> tagList = new ArrayList<>();
+    String topicId ;
+    String atAccount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -421,8 +427,16 @@ public class ArticleReleaseActivity extends BaseActivity {
         if (editTitle.getText().toString().isEmpty()) {
             ToastUtils.showShort("标题不能为空");
         } else {
+
+            tagList = StringUtils.getTagString(String.valueOf(richEditor.getHtml()));
+            String topicId1 = tagList.toString().replace("[","");
+            topicId = topicId1.replace("]","");
+            userList = StringUtils.getUserString(String.valueOf(richEditor.getHtml()));
+            String atAccount1 = userList.toString().replace("[","");
+            atAccount = atAccount1.replace("]","");
+            LogUtils.e(topicId,atAccount,tagList.toString(),userList.toString());
             OrdinaryActivity.httpContentPublish(this, editTitle.getText().toString(), richEditor.getHtml(), "", ""
-                    , TYPE_ARTICLE, "1", "", "", 0, imageCover, 0, 3, isOriginal);
+                    , TYPE_ARTICLE, "1", topicId, atAccount, 0, imageCover, 0, 3, isOriginal);
 
         }
     }
@@ -552,7 +566,6 @@ public class ArticleReleaseActivity extends BaseActivity {
                     break;
                 case REQUEST_TAG_APPEND:
                     QueryTopicEntity.PageContentBean tag = (QueryTopicEntity.PageContentBean) data.getSerializableExtra(TagList.RESULT_TAG);
-
                     String newTopic = String.format(TOP_TAG, tag.getId(), tag.getTitle(), tag.getTitle());
                     LogUtils.e(newTopic);
                     richEditor.setHtml(richEditor.getHtml() + newTopic);
