@@ -1,6 +1,8 @@
 package com.kingyon.elevator.utils.utilstwo;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +41,9 @@ import static com.czh.myversiontwo.utils.CodeType.WX;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_CODE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_PASSSWORD_SETTING;
 import static com.kingyon.elevator.constants.Constants.LoginType.ALI;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_ARTICLE_DRAFT;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_COMMUNITY_DRAFT;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_VIDEO_DRAFT;
 import static com.kingyon.elevator.photopicker.UtilsHelper.getString;
 
 /**
@@ -385,14 +390,32 @@ public class OrdinaryActivity {
                     baseActivity.hideProgress();
                     LogUtils.e(s);
                     baseActivity.finish();
-                        ToastUtils.showToast(baseActivity,"发布成功",1000);
+                    ToastUtils.showToast(baseActivity,"发布成功",1000);
+                    initShaClear(baseActivity);
 
                     }
                 });
 
     }
 
-        /**
+    private static void initShaClear(BaseActivity baseActivity) {
+        SharedPreferences sharedPreferences= baseActivity.getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+        SharedPreferences sharedPreferences1= baseActivity.getSharedPreferences(SAVE_MICRO_VIDEO_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.clear();
+        editor1.commit();
+        SharedPreferences sharedPreferences2= baseActivity.getSharedPreferences(SAVE_MICRO_COMMUNITY_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+        editor2.clear();
+        editor2.commit();
+
+
+    }
+
+    /**
          * 未登录或者token失效
          * */
 

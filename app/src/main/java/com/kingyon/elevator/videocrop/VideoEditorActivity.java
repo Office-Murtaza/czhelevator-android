@@ -429,7 +429,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
                 if (msg.what == ExtractFrameWorkThread.MSG_SAVE_SUCCESS) {
                     if (activity.videoEditAdapter != null) {
                         VideoEditInfo info = (VideoEditInfo) msg.obj;
-                        LogUtils.e(info.toString());
+//                        LogUtils.e(info.toString());
                         activity.videoEditAdapter.addItemVideoInfo(info);
                     }
                 }

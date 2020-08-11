@@ -305,7 +305,7 @@ public class VoideDetailsActivity extends BaseActivity {
         if (contentCommentsAdapter == null || page == 1) {
             ecvListPl.setNestedScrollingEnabled(false);
             ecvListPl.setFocusable(false);
-            contentCommentsAdapter = new ContentCommentsAdapter(VoideDetailsActivity.this, "1",
+            contentCommentsAdapter = new ContentCommentsAdapter(VoideDetailsActivity.this, "1",0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {

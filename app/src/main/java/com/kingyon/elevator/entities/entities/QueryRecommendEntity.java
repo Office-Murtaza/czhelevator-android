@@ -75,8 +75,8 @@ public class QueryRecommendEntity implements Serializable{
             public String createAccount;
             public String type;
             public int combination;
-            public int topicId;
-            public Object atAccount;
+            public String topicId;
+            public String atAccount;
             public int status;
             public long createTime;
             public Object topicTitle;

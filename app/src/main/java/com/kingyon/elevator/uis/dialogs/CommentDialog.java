@@ -133,7 +133,7 @@ public class CommentDialog extends Dialog{
             listEntities.add(commentListEntity);
         }
         if (contentCommentsAdapter == null || page == 1) {
-            contentCommentsAdapter = new ContentCommentsAdapter(mContext, "1",
+            contentCommentsAdapter = new ContentCommentsAdapter(mContext, "1",0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import com.kingyon.elevator.photopicker.MediaDirectory;
 import com.kingyon.elevator.presenter.PhotoPickerPresenter;
 import com.kingyon.elevator.uis.activities.user.MyAdActivity;
 import com.kingyon.elevator.uis.adapters.adapterone.FolderListAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.ChooseAdapter;
 import com.kingyon.elevator.uis.fragments.PhotoPickerFragment;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
@@ -34,6 +36,10 @@ import com.kingyon.elevator.utils.QuickClickUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.view.PhotoPickerView;
 import com.leo.afbaselibrary.utils.EasyPermissions;
+import com.litao.android.lib.Utils.GridSpacingItemDecoration;
+import com.litao.android.lib.entity.PhotoEntry;
+import com.muzhi.camerasdk.MessageWrap;
+import com.muzhi.camerasdk.model.CameraSdkParameterInfo;
 import com.yalantis.ucrop.UCrop;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
@@ -77,6 +83,9 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
     Drawable openFolderDrawable;
     Drawable closeFolderDrawable;
     public static PhotoPickerActivity photoPickerActivity;
+
+    private CameraSdkParameterInfo mCameraSdkParameterInfo=new CameraSdkParameterInfo();
+    ArrayList<String> listPath = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -373,12 +382,38 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
 
     private void handleCropResult(Intent result) {
         Uri resultUri = UCrop.getOutput(result);
-        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
-            LogUtils.d("裁剪成功的图片链接：", resultUri.getPath());
-            MyActivityUtils.goConfirmOrderActivity(this, Constants.FROM_TYPE.MEDIADATA, resultUri.getPath(), Constants.Materia_Type.IMAGE);
-        } else if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
-            LogUtils.d("裁剪成功返回到广告界面的图片链接：", resultUri.getPath());
-            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, resultUri.getPath()));
-        }
+            LogUtils.d("裁剪成功的图片链接：", resultUri.getPath(),
+                    Constants.FROM_TYPE.MEDIADATA,Constants.Materia_Type.IMAGE);
+            listPath.clear();
+            listPath.add(resultUri.getPath());
+            mCameraSdkParameterInfo.setFilter_image(true);
+            mCameraSdkParameterInfo.setSingle_mode(false);
+            mCameraSdkParameterInfo.setShow_camera(false);
+            mCameraSdkParameterInfo.setMax_image(6);
+            mCameraSdkParameterInfo.setCroper_image(false);
+            mCameraSdkParameterInfo.setImage_list(listPath);
+            Intent intent = new Intent();
+            intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
+            Bundle b=new Bundle();
+            b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+            intent.putExtras(b);
+            startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
+
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(MessageWrap message) {
+        LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
+//        pic_list.clear();
+        if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
+
+            MyActivityUtils.goConfirmOrderActivity(this, Constants.FROM_TYPE.MEDIADATA, message.message.get(0), Constants.Materia_Type.IMAGE);
+
+        }else if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT){
+
+            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.VideoOrImageSelectSuccess, message.message.get(0)));
+        }
+        finish();
+    }
+
 }

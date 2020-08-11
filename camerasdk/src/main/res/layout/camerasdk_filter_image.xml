@@ -34,12 +34,15 @@
            android:layout_gravity="bottom"
            android:max="100" 
            android:visibility="gone"/>
+
+
    	<RelativeLayout
            android:id="@+id/content_container"
            android:layout_width="match_parent"
            android:layout_height="100dp"
            android:paddingTop="3dip"
            android:paddingBottom="3dip"
+
            android:background="@color/camerasdk_main_tools_bg" >
 
            <com.muzhi.camerasdk.library.views.HorizontalListView
@@ -57,8 +60,108 @@
                android:visibility="gone" />
        </RelativeLayout>
 
-       
-        <LinearLayout
+    <!--文字-->
+    <RelativeLayout
+        android:id="@+id/rl_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#60000000"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_finish"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="#FF001E"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:text="完成"/>
+
+        <ImageView
+            android:id="@+id/img_test"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:src="@mipmap/bg_sticker_01"
+            android:visibility="gone"
+            ></ImageView>
+        <EditText
+            android:id="@+id/et_tag"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="15dp"
+            android:textSize="24sp"
+            android:layout_below="@id/tv_finish"
+            android:textColor="#FA0606"
+            android:gravity="top"
+            android:textCursorDrawable="@null"
+            android:background="@null"/>
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:layout_centerInParent="true"
+            android:textColor="#FA0606"
+            android:textSize="50dp"
+            android:visibility="invisible" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="字体大小"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:layout_below="@id/et_tag"
+            android:layout_marginBottom="10dp"
+            />
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/et_tag"
+            android:layout_marginBottom="10dp"
+            />
+
+        <SeekBar
+            android:id="@+id/text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="50dp"
+            android:layout_below="@id/tv_size"
+            android:layout_marginBottom="10dp"/>
+
+        <com.muzhi.camerasdk.utils.ColorBar
+            android:id="@+id/colorbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/text_size"
+            />
+
+    </RelativeLayout>
+    
+    <LinearLayout
             android:id="@+id/tab_item_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,8 +202,6 @@
 
         </LinearLayout>
 
-            
-   
 
 </LinearLayout>
 

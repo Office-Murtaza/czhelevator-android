@@ -488,7 +488,6 @@ public class ConentUtils {
 
                     @Override
                     public void onNext(DataEntity<String> dataEntity) {
-                        LogUtils.e(dataEntity.getData());
                         srcSuccess.srcSuccess(dataEntity.getData());
                     }
                 });

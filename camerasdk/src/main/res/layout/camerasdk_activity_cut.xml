@@ -83,6 +83,7 @@
 	   android:layout_height="@dimen/camerasdk_bootom_tab_height"
 	   android:orientation="horizontal"
 	   android:gravity="center"
+       android:visibility="gone"
 	   android:background="@color/camerasdk_main_bottom_bg">			
             
        <RadioButton

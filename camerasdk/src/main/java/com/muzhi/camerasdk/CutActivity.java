@@ -15,7 +15,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 
-
+/*裁剪*/
 public class CutActivity extends BaseActivity {
   
     private CropImageView mCropView;

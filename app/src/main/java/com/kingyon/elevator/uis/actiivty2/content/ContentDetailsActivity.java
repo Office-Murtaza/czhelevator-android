@@ -264,7 +264,7 @@ public class ContentDetailsActivity extends BaseActivity {
         if (contentCommentsAdapter == null || page == 1) {
             ecvListPl.setNestedScrollingEnabled(false);
             ecvListPl.setFocusable(false);
-            contentCommentsAdapter = new ContentCommentsAdapter(ContentDetailsActivity.this, "1",
+            contentCommentsAdapter = new ContentCommentsAdapter(ContentDetailsActivity.this, "1",0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {

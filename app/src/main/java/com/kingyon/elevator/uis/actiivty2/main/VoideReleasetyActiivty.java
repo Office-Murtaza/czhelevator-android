@@ -2,7 +2,9 @@ package com.kingyon.elevator.uis.actiivty2.main;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +12,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +33,9 @@ import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.activityutils.VideoCoverActivity;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.activities.advertising.NetVideoPlayActivity;
+import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.VideoUtils;
@@ -61,8 +66,10 @@ import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_RELEASETY;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_TAG_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_USER_APPEND;
+import static com.czh.myversiontwo.utils.CodeType.TYPE_ARTICLE;
 import static com.czh.myversiontwo.utils.CodeType.TYPE_VIDEO;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDE_RELEASETY;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_ARTICLE_DRAFT;
 
 
 /**
@@ -118,6 +125,7 @@ public class VoideReleasetyActiivty extends BaseActivity {
     @BindView(R.id.tv_zhi_number)
     TextView tvZhiNumber;
     boolean isOriginal  = false;
+    int videoHorizontalVertical;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -197,7 +205,11 @@ public class VoideReleasetyActiivty extends BaseActivity {
         LogUtils.e(VideoUtils.isCross(videoPath));
         LogUtils.e(videoCover + "图片地址");
         httpuUploadImage(videoCover);
-
+        if (VideoUtils.isCross(videoPath)) {
+            videoHorizontalVertical  = 0;
+        }else {
+            videoHorizontalVertical = 1;
+        }
     }
 
     private void httpuUploadImage(String videoCover) {
@@ -224,7 +236,8 @@ public class VoideReleasetyActiivty extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_bake:
-                finish();
+//                initDialogBack();
+                    finish();
                 break;
             case R.id.tv_releaset:
                 if (editTitle.getText().toString().isEmpty()){
@@ -299,6 +312,25 @@ public class VoideReleasetyActiivty extends BaseActivity {
         }
     }
 
+    private void initDialogBack() {
+        if (editTitle.getText().toString().isEmpty()){
+            finish();
+        }else {
+            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
+            saveDraftsDialog.show();
+            saveDraftsDialog.Clicked(new IsSuccess() {
+                @Override
+                public void isSuccess(boolean success) {
+                    if (success){
+                        saveContent();
+                    }else {
+                        finish();
+                    }
+                }
+            });
+        }
+    }
+
     private void httpCover() {
         List<File> files = new ArrayList<>();
         files.clear();
@@ -363,15 +395,10 @@ public class VoideReleasetyActiivty extends BaseActivity {
         NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
             @Override
             public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
-                if (VideoUtils.isCross(videoPath)) {
                     OrdinaryActivity.httpContentPublish(VoideReleasetyActiivty.this, editTitle.getText().toString(),
                             String.valueOf(convertMetionString), null, images.get(0), TYPE_VIDEO, "3", topicId, atAccount,
-                            videoSize, videoCoverUrl, videoTime, 0,isOriginal);
-                } else {
-                    OrdinaryActivity.httpContentPublish(VoideReleasetyActiivty.this, editTitle.getText().toString(),
-                            String.valueOf(convertMetionString), null, images.get(0), TYPE_VIDEO, "3", topicId, atAccount,
-                            videoSize, videoCoverUrl, videoTime, 1,isOriginal);
-                }
+                            videoSize, videoCoverUrl, videoTime, videoHorizontalVertical,isOriginal);
+
             }
 
             @Override
@@ -429,6 +456,11 @@ public class VoideReleasetyActiivty extends BaseActivity {
                     LogUtils.e(data.getStringExtra("videoPath"));
                     videoPath = data.getStringExtra("videoPath");
                     httpuUploadImage(VideoUtils.saveBitmap(this,VideoUtils.getVideoThumb(videoPath)));
+                    if (VideoUtils.isCross(videoPath)) {
+                        videoHorizontalVertical  = 0;
+                    }else {
+                        videoHorizontalVertical = 1;
+                    }
                     break;
                 case REQUEST_USER_APPEND:
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
@@ -446,5 +478,41 @@ public class VoideReleasetyActiivty extends BaseActivity {
             }
         }
     }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
+//            saveDraftsDialog.show();
+//            saveDraftsDialog.Clicked(new IsSuccess() {
+//                @Override
+//                public void isSuccess(boolean success) {
+//                    if (success){
+//                        saveContent();
+//                    }else {
+//                        finish();
+//                    }
+//                }
+//            });
+//            return false;
+//        }else {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//    }
 
+    private void saveContent() {
+        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("title", editTitle.getText().toString());
+        editor.putString("content",  String.valueOf(editConent.getFormatCharSequence()));
+        editor.putString("type", TYPE_VIDEO);
+        editor.putString("topicId", topicId);
+        editor.putString("atAccount", atAccount);
+        editor.putString("videoCover", videoCoverUrl);
+        editor.putBoolean("isOriginal", isOriginal);
+        editor.putInt("videoHorizontalVertical", videoHorizontalVertical);
+        editor.putBoolean("marrid",false);
+        editor.commit();
+        finish();
+
+    }
 }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -33,7 +35,9 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ChooseAdapter;
+import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -63,11 +67,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.kareluo.imaging.IMGEditActivity;
 
+import static android.widget.TextView.BufferType.NORMAL;
+import static android.widget.TextView.BufferType.SPANNABLE;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_IMAGE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_TAG_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_USER_APPEND;
+import static com.czh.myversiontwo.utils.CodeType.TYPE_ARTICLE;
 import static com.czh.myversiontwo.utils.CodeType.TYPE_WSQ;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_COMMUNITY_RELEASETY;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_ARTICLE_DRAFT;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_COMMUNITY_DRAFT;
 
 /**
  * Created By Admin  on 2020/4/15
@@ -128,6 +137,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         ARouter.getInstance().inject(this);
         OrdinaryActivity.communityReleasetyActivity = this;
         showSoftInputFromWindow(editContent);
+        LogUtils.e(topicId1,title);
         if (topicId1!=null){
             topicId = topicId1;
             QueryTopicEntity.PageContentBean pageContentBean = new QueryTopicEntity.PageContentBean();
@@ -159,6 +169,20 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             tvZishu.setText(s.toString().length()+"/500");
             }
         });
+
+//        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_COMMUNITY_DRAFT, Context .MODE_PRIVATE);
+//        String content=sharedPreferences.getString("content","");
+//
+//        if (content!=null){
+//            topicId=sharedPreferences.getString("topicId","");
+//            atAccount=sharedPreferences.getString("atAccount","");
+//            String files=sharedPreferences.getString("files","");
+//            LogUtils.e(topicId,atAccount,files,content);
+//            editContent.setText(content,SPANNABLE);
+//
+//
+//        }
+
     }
     public void showSoftInputFromWindow(EditText editText){
         editText.setFocusable(true);
@@ -186,6 +210,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_bake:
+//                initDialogBack();
                 finish();
                 break;
             case R.id.tv_releaset:
@@ -204,6 +229,25 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                 startActivityForResult(TopicSelectionActivity.getIntent(CommunityReleasetyActivity.this), REQUEST_TAG_APPEND);
                 break;
                 default:
+        }
+    }
+
+    private void initDialogBack() {
+        if (editContent.getText().toString().isEmpty()) {
+            finish();
+        }else {
+            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
+            saveDraftsDialog.show();
+            saveDraftsDialog.Clicked(new IsSuccess() {
+                @Override
+                public void isSuccess(boolean success) {
+                    if (success) {
+                        saveContent();
+                    } else {
+                        finish();
+                    }
+                }
+            });
         }
     }
 
@@ -440,10 +484,49 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         super.onResume();
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        LogUtils.e("***********");
-        return;
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
+//            saveDraftsDialog.show();
+//            saveDraftsDialog.Clicked(new IsSuccess() {
+//                @Override
+//                public void isSuccess(boolean success) {
+//                    if (success){
+//                        saveContent();
+//                    }else {
+//                        finish();
+//                    }
+//                }
+//            });
+//            return false;
+//        }else {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//    }
+
+    private void saveContent() {
+        files.clear();
+        for (int c = 0; c < pic_list.size(); c++) {
+            if (pic_list.get(c).getPath() != null) {
+                File file = new File(pic_list.get(c).getPath());
+                files.add(file);
+            }
+        }
+        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_COMMUNITY_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("title", "");
+        editor.putString("content", String.valueOf(editContent.getFormatCharSequence()));
+        editor.putString("type", TYPE_WSQ);
+        editor.putString("topicId", topicId);
+        editor.putString("atAccount", atAccount);
+        editor.putString("files", files.toString());
+        editor.putBoolean("isOriginal", isOriginal);
+        editor.putInt("videoHorizontalVertical", 3);
+        editor.putBoolean("marrid",false);
+        editor.commit();
+        finish();
+
+
     }
 }

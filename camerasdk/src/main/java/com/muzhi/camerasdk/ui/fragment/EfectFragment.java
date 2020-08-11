@@ -212,17 +212,21 @@ public class EfectFragment extends Fragment {
 	}
 	
 	//加贴纸
-	public void addSticker(int drawableId,final String path){
+	public void addSticker(int drawableId,final String path,Bitmap bitmap,String type){
 		sticknum++;
 		HSuperImageView imageView = new HSuperImageView(getActivity(), sticknum);
-		
-		if(drawableId>0){
-			Bitmap bmp = BitmapFactory.decodeResource(getResources(), drawableId);
-			showSticker(bmp,imageView);
+		if (type.equals("BITMAP")){
+			showSticker(bitmap,imageView);
+		}else {
+			if(drawableId>0){
+				Bitmap bmp = BitmapFactory.decodeResource(getResources(), drawableId);
+				showSticker(bmp,imageView);
+			}
+			else{
+				downLoad(drawableId,path,imageView);
+			}
 		}
-		else{
-			downLoad(drawableId,path,imageView);			
-		}
+
 				
 		sticklist.add(imageView);
 		effect_main.addView(imageView,new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));

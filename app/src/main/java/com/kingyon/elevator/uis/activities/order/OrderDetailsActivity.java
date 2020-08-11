@@ -296,7 +296,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getName() == null) ? "" : order.getAdvertising().getName());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
                         tvDuration.setText(String.format("%s 至 %s（%s）", TimeUtil.getYMdTime(order.getAdStartTime()), TimeUtil.getYMdTime(order.getAdEndTime()),
-                                com.kingyon.elevator.utils.TimeUtil.getDayNumber((order.getAdStartTime()),(order.getAdEndTime()))));
+                                com.kingyon.elevator.utils.TimeUtil.getDayNumber((order.getAdEndTime()),(order.getAdStartTime()))));
 
                         long startDealTime = TimeUtil.getDayStartTimeMilliseconds(order.getAdStartTime());
                         long endDealTime = TimeUtil.getDayEndTimeMilliseconds(order.getAdEndTime());
@@ -539,6 +539,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                     startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
                 }else if (tvReleaseDown.getText().toString().equals("重新投放")){
+                    AdUtils.type = orderDetails.getOrderType();
                     httpOrderAgain(orderDetails.getOrderSn());
                 }else {
                 if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {

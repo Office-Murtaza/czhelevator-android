@@ -184,7 +184,7 @@ dependencies {
 //    视频压缩
     implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
 //    编辑视频
-    implementation 'com.github.yangjie10930:EpMedia:v1.0.1'
+    implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
 //    加载库
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     implementation 'com.github.kaxi4it:BidirectionalSeekBar:1.0'

@@ -76,8 +76,11 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
             @Override
             public void afterTextChanged(Editable s) {
                 keyWords = s.toString();
-
-                httpDataAll(1,keyWords);
+                if (keyWords.length()>0) {
+                    httpDataAll(1, keyWords);
+                }else {
+                    autoRefresh();
+                }
             }
         });
     }

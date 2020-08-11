@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.adapters.adaptertwo;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.bobomee.android.mentions.text.MentionTextView;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
+import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
@@ -31,7 +34,7 @@ import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> {
     Context context;
     List<HomeTopicConentEntity> conentEntity;
-
+    Parser mTagParser = new Parser();
     public TopicAdapter(Context context){
         this.context = context;
     }
@@ -58,7 +61,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             if (conentEntity.get(position).latestContent==null) {
                 holder.tv_conent.setText(conentEntity.get(position).content);
             }else {
-                holder.tv_conent.setText(delHTMLTag(conentEntity.get(position).latestContent));
+                holder.tv_conent.setText(conentEntity.get(position).latestContent);
             }
             if (conentEntity.get(position).latestNickname==null) {
                 holder.tv_nickname.setText(conentEntity.get(position).nickname);
@@ -77,9 +80,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                 if (conentEntity.get(position).latestImage==null) {
                     GlideUtils.loadRoundCornersImage(context, conentEntity.get(position).image, holder.img_topic_image, 20);
                 }else {
-                    List<Object> list = StringUtils.StringToList(conentEntity.get(position).latestImage);
-                    LogUtils.e(list.toString());
-                    GlideUtils.loadRoundCornersImage(context, list.get(0).toString(), holder.img_topic_image, 20);
+                    if (!conentEntity.get(position).latestImage.isEmpty()) {
+                        List<Object> list = StringUtils.StringToList(conentEntity.get(position).latestImage);
+                        LogUtils.e(list.toString());
+                        GlideUtils.loadRoundCornersImage(context, list.get(0).toString(), holder.img_topic_image, 20);
+                    }else {
+                        GlideUtils.loadRoundCornersImage(context, conentEntity.get(position).image, holder.img_topic_image, 20);
+                    }
                 }
 
             }
@@ -90,9 +97,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                     LogUtils.e(conentEntity.get(position).id);
                     ActivityUtils.setActivity(ACTIVITY_MAIN2_TOPIC_DETAILS,"topicid",
                             String.valueOf(conentEntity.get(position).id));
-//                    ARouter.getInstance().build(ACTIVITY_MAIN2_TOPIC_DETAILS)
-//                            .withString("conentEntity", JsonUtils.beanToJson(homeTopicConentEntity))
-//                            .navigation();
                 }
             });
         }
@@ -104,7 +108,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_title,tv_conent,tv_nickname;
+        TextView tv_title,tv_nickname;
+        MentionTextView tv_conent;
         ImageView img_topic_image,img_portrait;
         LinearLayout ll_topic,ll_imagw;
         public ViewHolder(View itemView) {
@@ -116,6 +121,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             tv_nickname = itemView.findViewById(R.id.tv_nickname);
             img_portrait = itemView.findViewById(R.id.img_portrait);
             ll_imagw = itemView.findViewById(R.id.ll_imagw);
+            tv_conent.setMovementMethod(new LinkMovementMethod());
+            tv_conent.setParserConverter(mTagParser);
         }
     }
 }

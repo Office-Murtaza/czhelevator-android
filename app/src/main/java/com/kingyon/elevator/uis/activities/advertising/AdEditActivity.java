@@ -90,7 +90,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     LinearLayout llTop;
     @BindView(R.id.tv_top)
     TextView tvTop;
-    @BindView(R.id.img_delete)
+    @BindView(R.id.img_delete1)
     ImageView imgDelete;
     @BindView(R.id.img_updata)
     ImageView imgUpdata;
@@ -131,6 +131,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
+        imgDelete.bringToFront();
         tvTimeSatr.setText(TimeUtil.times(entity.getAdStartTime()) + TimeUtil.getWeek(entity.getAdStartTime()/1000));
         tvEnd.setText(TimeUtil.times(entity.getAdEndTime()) + TimeUtil.getWeek(entity.getAdEndTime()/1000));
         etContent.setText(entity.getAdvertising().getName());
@@ -195,7 +196,7 @@ public class AdEditActivity extends BaseSwipeBackActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.pre_v_back, R.id.img_image, R.id.img_delete, R.id.img_updata, R.id.tv_next, R.id.tv_edit})
+    @OnClick({R.id.pre_v_back, R.id.img_image, R.id.img_delete1, R.id.img_updata, R.id.tv_next, R.id.tv_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pre_v_back:
@@ -212,15 +213,16 @@ public class AdEditActivity extends BaseSwipeBackActivity {
                     }
                 }
                 break;
-            case R.id.img_delete:
+            case R.id.img_delete1:
                 /*删除*/
-                imgImage.setClickable(false);
+                LogUtils.e("------------");
                 isDelete = false;
                 tvTextUpdata.setVisibility(View.VISIBLE);
                 imgUpdata.setVisibility(View.VISIBLE);
                 imgDelete.setVisibility(View.GONE);
                 imgImage.setImageBitmap(null);
                 tvEdit.setVisibility(View.GONE);
+                imgImage.setClickable(false);
                 break;
             case R.id.img_updata:
                 imgImage.setClickable(true);

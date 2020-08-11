@@ -2,16 +2,28 @@ package com.muzhi.camerasdk;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -30,6 +42,7 @@ import com.muzhi.camerasdk.model.Constants;
 import com.muzhi.camerasdk.model.Filter_Effect_Info;
 import com.muzhi.camerasdk.model.Filter_Sticker_Info;
 import com.muzhi.camerasdk.ui.fragment.EfectFragment;
+import com.muzhi.camerasdk.utils.ColorBar;
 import com.muzhi.camerasdk.utils.FilterUtils;
 import com.muzhi.camerasdk.view.CustomViewPager;
 
@@ -37,7 +50,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-public class FilterImageActivity extends BaseActivity {
+public class FilterImageActivity extends BaseActivity implements ColorBar.ColorChangeListener{
 	
 	private CameraSdkParameterInfo mCameraSdkParameterInfo=new CameraSdkParameterInfo();
 	
@@ -66,6 +79,15 @@ public class FilterImageActivity extends BaseActivity {
 	private int current=0;
 	private int num;
 
+	/*文字*/
+	private RelativeLayout rl_edit_text,content_container,layout_actionbar_root;
+	private TextView tv_close,tv_finish,tv_tag,tv_size;
+	private EditText et_tag;
+	private SeekBar text_size;
+	private ColorBar colorbar;
+	private ImageView img_test;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,6 +115,7 @@ public class FilterImageActivity extends BaseActivity {
 		
 		initEvent();
 		initData();
+		initTextSpeed();
 		
 	}
 
@@ -114,10 +137,63 @@ public class FilterImageActivity extends BaseActivity {
 		sticker_listview = (HorizontalListView) findViewById(R.id.sticker_listview);
 		images_listview = (HorizontalListView) findViewById(R.id.images_listview);
 		loading_layout = (RelativeLayout) findViewById(R.id.loading);
-		
+
+		/*文字*/
+		rl_edit_text = findViewById(R.id.rl_edit_text);
+		content_container = findViewById(R.id.content_container);
+		layout_actionbar_root = findViewById(R.id.layout_actionbar_root);
+		tv_close = findViewById(R.id.tv_close);
+		tv_finish = findViewById(R.id.tv_finish);
+		tv_tag = findViewById(R.id.tv_tag);
+		tv_size = findViewById(R.id.tv_size);
+		et_tag = findViewById(R.id.et_tag);
+		text_size = findViewById(R.id.text_size);
+		img_test = findViewById(R.id.img_test);
+		colorbar = findViewById(R.id.colorbar);
+		colorbar.setOnColorChangerListener(this);
+
+	}
+	private void initTextSpeed() {
+		text_size.setMax(40);
+		text_size.setProgress(14);
+		text_size.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@RequiresApi(api = Build.VERSION_CODES.M)
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				tv_size.setText((progress+10) + "");
+				et_tag.setTextSize((progress+10));
+				tv_tag.setTextSize((progress+10));
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
 	}
 
 	private void initEvent(){
+		/*文字输入*/
+		et_tag.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+			@Override
+			public void afterTextChanged(Editable s) {
+				tv_tag.setText(s.toString());
+			}
+		});
+
+
 		tab_effect.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -155,18 +231,49 @@ public class FilterImageActivity extends BaseActivity {
 			public void onClick(View v) {
 				// TODO 贴纸Tab
 				complate();
+				Log.e("TAG","完成");
 			}
 		});
 		txt_enhance.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO 图片增强
+				// TODO 添加文字
 //				Constants.bitmap=((EfectFragment)fragments.get(current)).getCurrentBitMap();
 //				Intent intent = new Intent();
 //				intent.setClassName(getApplication(), "com.muzhi.camerasdk.PhotoEnhanceActivity");
 //				startActivityForResult(intent,Constants.RequestCode_Croper);
-				Toast.makeText(FilterImageActivity.this,"开发当中",Toast.LENGTH_LONG).show();
+//				Toast.makeText(FilterImageActivity.this,"开发当中",Toast.LENGTH_LONG).show();
+
+				rl_edit_text.setVisibility(View.VISIBLE);
+				content_container.setVisibility(View.GONE);
+				layout_actionbar_root.setVisibility(View.GONE);
+			}
+		});
+		/**/
+		tv_close.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.e("TAG","89898989898989898989");
+				rl_edit_text.setVisibility(View.GONE);
+				content_container.setVisibility(View.VISIBLE);
+				layout_actionbar_root.setVisibility(View.VISIBLE);
+				et_tag.setText("");
+				tv_tag.setTextColor(Color.parseColor( "#FA0606" ));
+				text_size.setProgress(14);
+				colorbar.setWz(60);
+			}
+		});
+		/*文字完成*/
+		tv_finish.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rl_edit_text.setVisibility(View.GONE);
+				content_container.setVisibility(View.VISIBLE);
+				layout_actionbar_root.setVisibility(View.VISIBLE);
+				if (et_tag.getText().length() > 0) {
+					addTextToWindow(colorbar.getCurrentColor());
+				}
 			}
 		});
 		txt_graffiti.setOnClickListener(new OnClickListener() {
@@ -210,15 +317,18 @@ public class FilterImageActivity extends BaseActivity {
 				if(info.isLib()){
 					Intent intent=new Intent(mContext,StickerActivity.class);
 					startActivityForResult(intent, Constants.RequestCode_Sticker);
+					Log.e("TAG","11111111111111"+info);
 				}
 				else{
 					String path=stickerList.get(arg2).getLocal_path();
 					int drawableId=stickerList.get(arg2).getDrawableId();
-					((EfectFragment)fragments.get(current)).addSticker(drawableId, path);
+					((EfectFragment)fragments.get(current)).addSticker(drawableId, path,null,"IMAGE");
+					Log.e("TAG",path+"===="+drawableId);
 				}
 				
 			}
 		});
+
 		images_listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -260,6 +370,43 @@ public class FilterImageActivity extends BaseActivity {
 		
 	}
 
+	/*文字转bitmap*/
+	private void addTextToWindow(int currentColor) {
+		Log.e("TAG",et_tag.getText().toString()+"===="+tv_tag.getText().toString());
+		tv_tag.setTextColor(currentColor);
+		et_tag.setTextColor(currentColor);
+		tv_tag.setTextSize(Float.parseFloat(tv_size.getText().toString()));
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tv_tag.getWidth(), tv_tag.getHeight());
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		tv_tag.setLayoutParams(layoutParams);
+		tv_tag.setDrawingCacheEnabled(true);
+		tv_tag.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+		Bitmap bitmap = Bitmap.createBitmap(tv_tag.getDrawingCache());
+
+		((EfectFragment)fragments.get(current)).addSticker(0, "",bitmap,"BITMAP");
+		et_tag.setText("");
+		tv_tag.setTextColor(Color.parseColor( "#FA0606" ));
+		text_size.setProgress(14);
+		colorbar.setWz(60);
+		tv_tag.setText("");
+
+	}
+	public Bitmap getNewBitMap(String text,TextView textView,int currentColor) {
+		Bitmap newBitmap = Bitmap.createBitmap(textView.getWidth(),textView.getHeight(), Bitmap.Config.ARGB_4444);
+		Canvas canvas = new Canvas(newBitmap);
+		canvas.drawBitmap(newBitmap, 0, 0, null);
+		TextPaint textPaint = new TextPaint();
+		textPaint.setAntiAlias(true);
+		textPaint.setTextSize(Float.parseFloat(tv_size.getText().toString())*6);
+		textPaint.setColor(currentColor);
+		StaticLayout sl= new StaticLayout(text, textPaint,
+				newBitmap.getWidth()-8, Layout.Alignment.ALIGN_CENTER,
+				1.0f, 0.0f, false);
+		canvas.translate(6, 40);
+		sl.draw(canvas);
+		return newBitmap;
+	}
 	private void initData(){		
         
 		boolean flag=false;
@@ -402,9 +549,6 @@ public class FilterImageActivity extends BaseActivity {
 					}
 
 				}
-				
-				
-				
 				finish();
 				
 			}
@@ -424,31 +568,15 @@ public class FilterImageActivity extends BaseActivity {
 		else if(resultCode == Constants.RequestCode_Sticker){
 			if(data!=null){
 				Filter_Sticker_Info info=(Filter_Sticker_Info)data.getSerializableExtra("info");
-				((EfectFragment)fragments.get(current)).addSticker(0, info.getImage());
+				((EfectFragment)fragments.get(current)).addSticker(0, info.getImage(),null,"IAMGE");
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	@Override
+	public void colorChange(int color) {
+		et_tag.setTextColor(color);
+	}
 }

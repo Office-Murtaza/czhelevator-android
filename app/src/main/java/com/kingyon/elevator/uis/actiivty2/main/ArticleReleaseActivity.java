@@ -2,10 +2,13 @@ package com.kingyon.elevator.uis.actiivty2.main;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,12 +21,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
+import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
@@ -45,12 +51,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.widget.TextView.BufferType.SPANNABLE;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_IMAGE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_TAG_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_USER_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.TYPE_ARTICLE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_ARTICLE_DRAFT;
+import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_COMMUNITY_DRAFT;
 
 
 /**
@@ -131,8 +140,8 @@ public class ArticleReleaseActivity extends BaseActivity {
     private boolean isText = true;
     private boolean isRevoke1 = true;
     private boolean isOriginal = false;
-    private String TOP_USER = "&nbsp;<user style='color: #4dacee;' id='%s' name='%s'>@%s</user>&nbsp;";
-    private String TOP_TAG = "&nbsp;<tag style='color: #4dacee;' id='%s' name='%s'>#%s#</tag>&nbsp;";
+    private String TOP_USER = "&nbsp;<user id='%s' style='color: #4dacee;' name='%s'>@%s</user>&nbsp;";
+    private String TOP_TAG = "&nbsp;<tag id='%s' style='color: #4dacee;' name='%s'>#%s#</tag>&nbsp;";
     List<File> files = new ArrayList<>();
     private String imageCover;
 
@@ -166,6 +175,18 @@ public class ArticleReleaseActivity extends BaseActivity {
         richEditor.setPlaceholder("请输入文章内容");
         initEditro();
         initRichEditor();
+        initData();
+    }
+
+    private void initData() {
+        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context .MODE_PRIVATE);
+        String content=sharedPreferences.getString("content","");
+        String title=sharedPreferences.getString("title","");
+        imageCover=sharedPreferences.getString("imageCover","");
+        isOriginal=sharedPreferences.getBoolean("isOriginal",false);
+        editTitle.setText(title+"");
+        richEditor.setHtml(content);
+
     }
 
     private void initEditro() {
@@ -203,7 +224,8 @@ public class ArticleReleaseActivity extends BaseActivity {
             case R.id.img_bake:
                 /*返回*/
                 initCancel();
-                finish();
+                initDialogBack();
+//                finish();
                 SoftkeyboardUtils.hideInput(this);
                 break;
             case R.id.tv_title:
@@ -423,6 +445,31 @@ public class ArticleReleaseActivity extends BaseActivity {
         }
     }
 
+    private void initDialogBack() {
+
+        if (editTitle.getText().toString().isEmpty()){
+            finish();
+        }else {
+            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
+            saveDraftsDialog.show();
+            saveDraftsDialog.Clicked(new IsSuccess() {
+                @Override
+                public void isSuccess(boolean success) {
+                    if (success){
+                        saveContent();
+                    }else {
+                        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        finish();
+                    }
+                }
+            });
+        }
+
+    }
+
     private void httpReleaset() {
         if (editTitle.getText().toString().isEmpty()) {
             ToastUtils.showShort("标题不能为空");
@@ -590,8 +637,32 @@ public class ArticleReleaseActivity extends BaseActivity {
                 com.leo.afbaselibrary.utils.ToastUtils.showToast(ArticleReleaseActivity.this, ex.getDisplayMessage(), 1000);
             }
         }, false);
-
-
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            initDialogBack();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    private void saveContent() {
+        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("title", editTitle.getText().toString());
+        editor.putString("content", richEditor.getHtml());
+        editor.putString("type", TYPE_ARTICLE);
+        editor.putString("topicId", topicId);
+        editor.putString("atAccount", atAccount);
+        editor.putString("videoCover", imageCover);
+        editor.putBoolean("isOriginal", isOriginal);
+        editor.putInt("videoHorizontalVertical", 3);
+        editor.putBoolean("marrid",false);
+        editor.commit();
+        finish();
+
+    }
 }

@@ -50,13 +50,15 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
     String type;
     GetRefresh getRefresh;
     int likeNum;
+    int onId;
     /**
      * type 1 一级 2 子级
      * */
-    public ContentCommentsAdapter(BaseActivity context,String type, GetRefresh getRefresh){
+    public ContentCommentsAdapter(BaseActivity context,String type,int onId, GetRefresh getRefresh){
         this.context = context;
         this.type = type;
         this.getRefresh = getRefresh;
+        this.onId = onId;
     }
 
     @NonNull
@@ -153,6 +155,7 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
     }
 
     private void commentOnClick(CommentListEntity commentListEntity) {
+        LogUtils.e(type);
         if (type.equals("1")) {
             if (commentListEntity.child.size() > 0) {
                 /*跳转*/
@@ -160,7 +163,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                         .withInt("contentId", commentListEntity.contentId)
                         .withInt("onId", commentListEntity.id)
                         .navigation();
-            } else {
+            } else
+                {
                 InputCommentActivity.openEditor(context, new EditorCallback() {
                     @Override
                     public void onCancel() {
@@ -199,8 +203,10 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                 }
                 @Override
                 public void onSubmit(String content) {
+                    LogUtils.e( commentListEntity.contentId,
+                            onId, "回复 : "+commentListEntity.nickname+" "+content);
                     ConentUtils.httpComment(context, commentListEntity.contentId,
-                            commentListEntity.id, content, new ConentUtils.IsSuccedListener() {
+                            onId, "回复 : "+commentListEntity.nickname+" "+content, new ConentUtils.IsSuccedListener() {
                                 @Override
                                 public void onisSucced(boolean isSucced) {
                                     getRefresh.onRefresh(isSucced);

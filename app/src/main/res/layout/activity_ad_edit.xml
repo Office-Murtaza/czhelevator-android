@@ -162,7 +162,7 @@
             </ImageView>
 
             <ImageView
-                android:id="@+id/img_delete"
+                android:id="@+id/img_delete1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_order_modify_delete"

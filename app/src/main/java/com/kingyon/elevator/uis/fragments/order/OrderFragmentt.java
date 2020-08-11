@@ -140,10 +140,10 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                 holder.setOnClickListener(R.id.tv_again, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AdUtils.type = item.getOrderType();
-                        if (isToken(getActivity())) {
-                            httpOrderAgain(item.getOrderSn());
 
+                        if (isToken(getActivity())) {
+                            AdUtils.type = item.getOrderType();
+                            httpOrderAgain(item.getOrderSn());
                         }else {
                             ActivityUtils.setLoginActivity();
                         }

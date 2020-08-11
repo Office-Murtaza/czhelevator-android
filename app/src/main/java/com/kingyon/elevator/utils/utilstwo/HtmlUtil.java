@@ -16,6 +16,7 @@ public class HtmlUtil {
     private static final String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; // 定义style的正则表达式
     private static final String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
     private static final String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
+    private static final String regEx_space1 = "&nbsp;";//定义空格回车换行符
 
 
     public static void test() {
@@ -44,7 +45,12 @@ public class HtmlUtil {
 
         Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
         Matcher m_space = p_space.matcher(htmlStr);
-        htmlStr = m_space.replaceAll(""); // 过滤空格回车标签
+        htmlStr = m_space.replaceAll("");
+
+        Pattern p_space1 = Pattern.compile(regEx_space1, Pattern.CASE_INSENSITIVE);
+        Matcher m_space1 = p_space1.matcher(htmlStr);
+        htmlStr = m_space1.replaceAll(""); // 过滤空格回车标签
+
         return htmlStr.trim(); // 返回文本字符串
     }
 

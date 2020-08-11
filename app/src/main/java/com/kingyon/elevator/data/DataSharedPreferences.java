@@ -1,5 +1,6 @@
 package com.kingyon.elevator.data;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -49,6 +50,15 @@ public class DataSharedPreferences {
 
     /*保存用户昵称*/
     public static  final  String USER_NICKNAME ="USER_NICKNAME";
+
+    /*保存微社区草稿*/
+    public static final String SAVE_MICRO_COMMUNITY_DRAFT = "SAVE_MICRO_COMMUNITY_DRAFT";
+
+    /*保存视频草稿*/
+    public static final String SAVE_MICRO_VIDEO_DRAFT = "SAVE_MICRO_VIDEO_DRAFT";
+
+    /*保存文章草稿*/
+    public static final String SAVE_MICRO_ARTICLE_DRAFT = "SAVE_MICRO_ARTICLE_DRAFT";
 
 
     /*保存广告名称*/

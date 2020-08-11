@@ -929,58 +929,10 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
 
     }
     private void finishVideo() {
-        final boolean isSpeed = videoSpeed != 1;
         mMediaPlayer.stop();
         handler.postDelayed(runnable,500); // 开始Timer
         String videoPath = Utils.getTrimmedVideoPath(this, "small_video/PDD", "voide1");
-        String outfilePath = Utils.getTrimmedVideoPath(this, "small_video/PDD", "voide2");
         editorTextView = showProgressDialog();
-        float videoSpeed1 = Float.parseFloat(tv_speed.getText().toString());
-//        if(isSpeed){
-//            EpEditor.changePTS(path, outfilePath, videoSpeed1, EpEditor.PTS.ALL, new OnEditorListener() {
-//                @Override
-//                public void onSuccess() {
-//                    if (planType!=null) {
-//                        if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
-//                            if (((seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()) / videoSpeed) >= 15) {
-//                                editSpeed(outfilePath, videoPath, seekBar.getSelectedMinValue(), 15);
-//                            } else {
-//                                editSpeed(outfilePath, videoPath, seekBar.getSelectedMinValue(), (long) ((seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()) / videoSpeed));
-//                            }
-//                        } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
-//                            if (((seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()) / videoSpeed) >= 60) {
-//                                editSpeed(outfilePath, videoPath, seekBar.getSelectedMinValue(), 60);
-//                            } else {
-//                                editSpeed(outfilePath, videoPath, seekBar.getSelectedMinValue(), (long) ((seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()) / videoSpeed));
-//                            }
-//                        }
-//                    }else {
-//                        editSpeed(outfilePath, videoPath, seekBar.getSelectedMinValue(), (long) ((seekBar.getSelectedMaxValue() - seekBar.getSelectedMinValue()) / videoSpeed));
-//                    }
-//
-//                }
-//                @Override
-//                public void onFailure() {
-//                    closeProgressDialog();
-//                    ToastUtils.showShort("视频编辑失败，请稍后再试");
-//                }
-//                @Override
-//                public void onProgress(float progress) {
-//                    progress1 = (int)((progress/2)*100);
-//                    LogUtils.e("onProgress=="+progress,progress1);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (String.valueOf(Math.floor(progress1)).length()<=6) {
-//                                editorTextView.setText("视频编辑中" + (int) Math.floor(progress1) + "%");
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//
-//        }else {
-
         if (isEdit){
             try {
                 EpVideo epVideo = new EpVideo(path);
@@ -1048,57 +1000,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             }
 
         }
-
-//        }
     }
-
-    /*视频变速*/
-//    private void editSpeed(String outfilePath,String videoPath,long star,long end) {
-//        try {
-//            EpVideo epVideo = new EpVideo(outfilePath);
-//            EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-//            epVideo.clip(star,end);
-//            EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
-//                    mMediaPlayer.getVideoWidth(),
-//                    mMediaPlayer.getVideoHeight(),false);
-//            epVideo.addDraw(epDraw);
-//            EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
-//                @Override
-//                public void onSuccess() {
-//                    LogUtils.e("成功");
-//                    startMediaCodec(videoPath);
-//                }
-//
-//                @Override
-//                public void onFailure() {
-//                    closeProgressDialog();
-//                    LogUtils.e("失败");
-//                }
-//
-//                @Override
-//                public void onProgress(float progress) {
-//                    LogUtils.e("onProgress=="+progress);
-//                    progress2 = (int) (progress1+(progress/2)*100);
-//                    LogUtils.e("onProgress=="+progress,progress2);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (String.valueOf(Math.floor(progress2)).length()<=6&&Math.floor(progress2)<=100) {
-//                                editorTextView.setText("视频编辑中" + (int) Math.floor(progress2) + "%");
-//                            }else {
-//                                editorTextView.setText("视频编辑中50%");
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-
     //更改界面模式
     private void changeMode(boolean flag) {
         if (flag) {
@@ -1171,7 +1073,6 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             public void onMove(TouchView view, MotionEvent event) {
 
             }
-
             @Override
             public void onUp(TouchView view, MotionEvent event) {
                 tv_hint_delete.setVisibility(View.GONE);
@@ -1181,7 +1082,6 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 }
             }
         });
-
         rl_touch_view.addView(touchView);
     }
 

@@ -169,15 +169,24 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                     holder.tv_video_time.setText("文章");
                     holder.tv_title.setText(queryRecommendEntity.title);
                 }else {
-                    RoundImageView imageView3 = new RoundImageView(context);
-                    LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
-                    GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView3,20);
-                    imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP );
-                    holder.ll_conent_img.addView(imageView3,params1);
-                    holder.ll_xssjcs.setVisibility(View.VISIBLE);
-                    holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
-                    holder.tv_video_time.setText("文章");
-                    holder.tv_title.setText(queryRecommendEntity.title);
+                    if (queryRecommendEntity.videoCover.equals("")){
+                        holder.ll_conent_img.setVisibility(View.GONE);
+                        holder.ll_xssjcs.setVisibility(View.GONE);
+                        holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
+                        holder.tv_video_time.setText("文章");
+                        holder.tv_title.setText(queryRecommendEntity.title);
+                    }else {
+                        RoundImageView imageView3 = new RoundImageView(context);
+                        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
+                        GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView3,20);
+                        imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP );
+                        holder.ll_conent_img.addView(imageView3,params1);
+                        holder.ll_xssjcs.setVisibility(View.VISIBLE);
+                        holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
+                        holder.tv_video_time.setText("文章");
+                        holder.tv_title.setText(queryRecommendEntity.title);
+                    }
+
                 }
                 break;
                 default:

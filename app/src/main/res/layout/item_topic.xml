@@ -54,19 +54,18 @@
 
             </LinearLayout>
 
-            <TextView
+
+            <com.bobomee.android.mentions.text.MentionTextView
                 android:id="@+id/tv_conent"
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginRight="@dimen/dp10"
-                android:layout_marginBottom="5dp"
-                android:ellipsize="end"
-                android:text="加载"
+                android:textColor="#ff333333"
+                android:textSize="@dimen/sp_16"
                 android:maxLines="2"
-                android:textColor="#ff666666"
-                android:textSize="14sp" />
+                android:ellipsize="end"
+                />
+
 
             <LinearLayout
                 android:layout_marginTop="@dimen/dp20"

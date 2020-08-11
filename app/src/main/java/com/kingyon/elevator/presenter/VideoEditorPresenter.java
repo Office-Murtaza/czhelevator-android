@@ -32,6 +32,7 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
             if (isViewAttached()) {
                 getView().showProgressDialog("视频裁剪中...", false);
             }
+            LogUtils.e(endTime1,endTime,startTime/1000,(int)(startTime/1000),(int)endTime1);
             EpVideo epVideo = new EpVideo(RuntimeUtils.selectVideoPath);
             EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
             epVideo.clip((startTime/1000),endTime1);

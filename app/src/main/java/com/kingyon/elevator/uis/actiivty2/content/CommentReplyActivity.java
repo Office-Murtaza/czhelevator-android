@@ -137,7 +137,7 @@ public class CommentReplyActivity extends BaseActivity {
             listEntities.add(commentListEntity);
         }
         if (contentCommentsAdapter == null || page == 1) {
-            contentCommentsAdapter = new ContentCommentsAdapter(CommentReplyActivity.this, "2",
+            contentCommentsAdapter = new ContentCommentsAdapter(CommentReplyActivity.this, "2",onId,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {
