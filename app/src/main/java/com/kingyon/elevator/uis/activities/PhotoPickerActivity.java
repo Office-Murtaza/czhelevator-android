@@ -146,7 +146,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
         });
         fragmentList = new ArrayList<>();
         if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
-            presenter.loadAdInfo();
+            presenter.loadAdInfo(planType);
         }
         if (EasyPermissions.hasPermissions(this, permsPhoto)) {
             //有权限

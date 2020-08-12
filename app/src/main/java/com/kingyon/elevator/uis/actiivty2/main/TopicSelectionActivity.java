@@ -140,7 +140,7 @@ public class TopicSelectionActivity extends BaseActivity {
                 .subscribe(new CustomApiCallback<ConentEntity<QueryTopicEntity.PageContentBean>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        com.blankj.utilcode.util.ToastUtils.showShort(ex.getDisplayMessage());
+//                        com.blankj.utilcode.util.ToastUtils.showShort(ex.getDisplayMessage());
                         OrdinaryActivity.closeRefresh(smartRefreshLayoutTopic);
                         if (ex.getCode() == -102) {
                             /*没有数据*/

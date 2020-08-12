@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.adapters.adaptertwo;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.bobomee.android.mentions.text.MentionTextView;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.CommentListEntity;
+import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.kingyon.elevator.uis.activities.inputcomment.EditorCallback;
 import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
@@ -51,6 +54,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
     GetRefresh getRefresh;
     int likeNum;
     int onId;
+    private String TOP_USER = "&nbsp;<user id='%s' style='color: #4dacee;' name='%s'>@%s</user>&nbsp;";
+    Parser mTagParser = new Parser();
     /**
      * type 1 一级 2 子级
      * */
@@ -205,8 +210,10 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                 public void onSubmit(String content) {
                     LogUtils.e( commentListEntity.contentId,
                             onId, "回复 : "+commentListEntity.nickname+" "+content);
+                    String atAccount = String.format(TOP_USER, commentListEntity.createAccount, commentListEntity.nickname, commentListEntity.nickname);
+
                     ConentUtils.httpComment(context, commentListEntity.contentId,
-                            onId, "回复 : "+commentListEntity.nickname+" "+content, new ConentUtils.IsSuccedListener() {
+                            onId, "回复 "+atAccount+" : "+content, new ConentUtils.IsSuccedListener() {
                                 @Override
                                 public void onisSucced(boolean isSucced) {
                                     getRefresh.onRefresh(isSucced);
@@ -237,7 +244,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_comment_hf,tv_time,tv_comment,tv_like_number,tv_name;
+        TextView tv_comment_hf,tv_time,tv_like_number,tv_name;
+        MentionTextView tv_comment;
         ImageView img_like,img_portrait,img_delete,img_comments;
         LinearLayout ll_comments;
         public ViewHolder(View itemView) {
@@ -252,6 +260,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
             img_portrait = itemView.findViewById(R.id.img_portrait);
             img_delete = itemView.findViewById(R.id.img_delete);
             img_comments = itemView.findViewById(R.id.img_comments);
+            tv_comment.setMovementMethod(new LinkMovementMethod());
+            tv_comment.setParserConverter(mTagParser);
         }
     }
 

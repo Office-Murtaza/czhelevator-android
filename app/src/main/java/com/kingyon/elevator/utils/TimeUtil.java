@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Joe on 2016/12/21.
@@ -392,4 +394,14 @@ public class TimeUtil {
         }
         return "共" + daystr + "天";
     }
+    /*毫秒转时间*/
+    public static String SsTima( float startTime){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+// time为转换格式后的字符串
+        String time = dateFormat.format(new Date(String.valueOf(startTime)));
+
+        return time;
+    }
+
 }

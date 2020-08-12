@@ -21,6 +21,7 @@
             app:srlEnableRefresh="true">
 
             <android.support.v4.widget.NestedScrollView
+                android:id="@+id/net_scro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
@@ -99,9 +100,11 @@
                     </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_web"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
+                            android:descendantFocusability="blocksDescendants"
                             >
 
 
@@ -109,47 +112,48 @@
                                 android:id="@+id/webview"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layerType="software"
-                                >
-                            </WebView>
+                                />
 
-                            <LinearLayout
-                                android:layout_marginTop="@dimen/dp20"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center_vertical"
-                                android:padding="@dimen/dp10"
-                                android:background="@drawable/bg_content_pl"
-
-                                >
-
-                                <TextView
-                                    android:id="@+id/tv_comments_number"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0条评论"
-                                    android:textColor="#ff333333"
-                                    android:textSize="12sp"
-                                    />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                >
-
-                                <android.support.v7.widget.RecyclerView
-                                    android:layout_marginTop="@dimen/dp10"
-                                    android:id="@+id/ecv_list_pl"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"/>
-                            </LinearLayout>
 
                         </LinearLayout>
 
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/dp20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp10"
+                        android:background="@drawable/bg_content_pl"
+
+
+                        >
+
+                        <TextView
+                            android:id="@+id/tv_comments_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0条评论"
+                            android:textColor="#ff333333"
+                            android:textSize="12sp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+
+                        >
+
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_marginTop="@dimen/dp10"
+                            android:id="@+id/ecv_list_pl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

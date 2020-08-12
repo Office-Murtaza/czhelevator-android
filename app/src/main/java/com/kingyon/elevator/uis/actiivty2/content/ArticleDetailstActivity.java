@@ -1,16 +1,23 @@
 package com.kingyon.elevator.uis.actiivty2.content;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -113,6 +120,10 @@ public class ArticleDetailstActivity extends BaseActivity {
     TextView tvTime;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+//    @BindView(R.id.net_scro)
+//    NestedScrollView netScro;
+    @BindView(R.id.ll_web)
+    LinearLayout llWeb;
     private int page = 1;
     List<CommentListEntity> listEntities = new ArrayList<>();
     ContentCommentsAdapter contentCommentsAdapter;
@@ -131,24 +142,24 @@ public class ArticleDetailstActivity extends BaseActivity {
         ARouter.getInstance().inject(this);
         LogUtils.e(contentId);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        }
         initData();
         httpComment(page, contentId);
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                httpComment(page,contentId);
+                httpComment(page, contentId);
             }
         });
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page=1;
+                page = 1;
                 listEntities.clear();
-                httpComment(page,contentId);
+                httpComment(page, contentId);
                 initData();
             }
         });
@@ -157,7 +168,7 @@ public class ArticleDetailstActivity extends BaseActivity {
     }
 
     private void initData() {
-        showProgressDialog(getString(R.string.wait),true);
+        showProgressDialog(getString(R.string.wait), true);
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -165,15 +176,55 @@ public class ArticleDetailstActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         hideProgress();
                         finish();
-                        ToastUtils.showToast(ArticleDetailstActivity.this,ex.getDisplayMessage(),1000);
+                        ToastUtils.showToast(ArticleDetailstActivity.this, ex.getDisplayMessage(), 1000);
                     }
 
+                    @SuppressLint("JavascriptInterface")
                     @Override
                     public void onNext(QueryRecommendEntity queryRecommendEntity) {
 
                         recommendEntity = queryRecommendEntity;
 
                         webview.loadDataWithBaseURL(null, getHtmlData(recommendEntity.content), "text/html", "utf-8", null);
+                        webview.setWebChromeClient(new WebChromeClient());
+                        //该方法解决的问题是打开浏览器不调用系统浏览器，直接用webview打开
+                        webview.setWebViewClient(new WebViewClient() {
+
+                            @Override
+                            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                                super.onPageStarted(view, url, favicon);
+                            }
+
+                            @Override
+                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                view.loadUrl(url);
+                                return true;
+                            }
+
+                            @Override
+                            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                                super.onReceivedError(view, request, error);
+                            }
+
+                            @Override
+                            public void onPageFinished(WebView view, String url) {
+                                super.onPageFinished(view, url);
+                                //解决ScrollView嵌套WebView加载成功但是展示不出来的问题
+                                //原因是ScrollView和WebView抢焦点，导致WebView宽高被重置为0
+                                //解决办法为，把WebView的高度进行重置
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) webview.getLayoutParams();
+                                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                                DisplayMetrics dm = new DisplayMetrics();
+                                wm.getDefaultDisplay().getMetrics(dm);
+                                int width = dm.widthPixels;         // 屏幕宽度（像素）
+                                int height = dm.heightPixels;       // 屏幕高度（像素）
+                                params.width = width;
+                                params.height = height;
+                                webview.setLayoutParams(params);
+                            }
+                        });
+
+//                        webview.setWebViewClient(webViewClient);
 
                         tvName.setText(recommendEntity.nickname + "");
                         GlideUtils.loadCircleImage(ArticleDetailstActivity.this, recommendEntity.photo, imgPortrait);
@@ -185,9 +236,9 @@ public class ArticleDetailstActivity extends BaseActivity {
                         tvLikeComments.setText(String.format("%s 点赞    %s 评论    ", recommendEntity.likes, recommendEntity.comments));
                         tvCommentsNumber.setText(String.format("%s条评论", recommendEntity.comments));
 
-                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())){
+                        if (recommendEntity.createAccount.equals(DataSharedPreferences.getCreatateAccount())) {
                             tvAttention.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             tvAttention.setVisibility(View.VISIBLE);
                         }
                         if (recommendEntity.isAttent == 0) {
@@ -206,16 +257,13 @@ public class ArticleDetailstActivity extends BaseActivity {
                         } else {
                             tvOriginal.setText("转载");
                         }
-                        if (recommendEntity.isCollect>0){
+                        if (recommendEntity.isCollect > 0) {
                             imCollection.setImageResource(R.mipmap.btn_big_collect_off);
-                        }else {
+                        } else {
                             imCollection.setImageResource(R.mipmap.btn_big_collect);
                         }
-//
-//                        webSettings.setJavaScriptEnabled(true);
-//                        webSettings.setAllowFileAccess(true);
-//                        webview.getSettings().setBlockNetworkLoads(false);
-                        LogUtils.e( getHtmlData(recommendEntity.content));
+
+                        LogUtils.e(getHtmlData(recommendEntity.content));
 
                         hideProgress();
                     }
@@ -230,6 +278,7 @@ public class ArticleDetailstActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
 
     private void httpComment(int page, int id) {
         LogUtils.e(page, id);
@@ -262,12 +311,12 @@ public class ArticleDetailstActivity extends BaseActivity {
         if (contentCommentsAdapter == null || page == 1) {
             ecvListPl.setNestedScrollingEnabled(false);
             ecvListPl.setFocusable(false);
-            contentCommentsAdapter = new ContentCommentsAdapter(ArticleDetailstActivity.this,"1",0,
+            contentCommentsAdapter = new ContentCommentsAdapter(ArticleDetailstActivity.this, "1", 0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {
                             listEntities.clear();
-                            page=1;
+                            page = 1;
                             httpComment(page, recommendEntity.id);
                         }
                     });
@@ -338,13 +387,13 @@ public class ArticleDetailstActivity extends BaseActivity {
 
                         }
                     });
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
 
                 break;
             case R.id.iv_share_news:
-                SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title,false);
+                SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title, false);
                 break;
             case R.id.im_collection:
                 /*收藏*/
@@ -377,7 +426,7 @@ public class ArticleDetailstActivity extends BaseActivity {
                             }
                         });
                     }
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -404,14 +453,14 @@ public class ArticleDetailstActivity extends BaseActivity {
                                     }
                                 });
                     }
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
             case R.id.tv_attention:
                 if (TokenUtils.isToken(this)) {
                     httpAddUser();
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -425,8 +474,6 @@ public class ArticleDetailstActivity extends BaseActivity {
         super.onBackPressed();
         finish();
     }
-
-
 
 
     @OnClick()

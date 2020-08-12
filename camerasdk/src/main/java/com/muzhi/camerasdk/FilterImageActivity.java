@@ -378,7 +378,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 		tv_tag.setTextSize(Float.parseFloat(tv_size.getText().toString()));
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tv_tag.getWidth(), tv_tag.getHeight());
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		tv_tag.setLayoutParams(layoutParams);
+//		tv_tag.setLayoutParams(layoutParams);
 		tv_tag.setDrawingCacheEnabled(true);
 		tv_tag.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
 				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));

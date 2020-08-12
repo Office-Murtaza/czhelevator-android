@@ -108,6 +108,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
     private boolean editMode;
     PlanSelectDateNewDialog planSelectDateNewDialog;
     String type;
+    String orderComeEntiys;
 
 //    public static PlanNewFragment newInstance() {
 //        Bundle args = new Bundle();
@@ -127,6 +128,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         StatusBarUtil.setHeadViewPadding(this, flTitle);
         StatusBarUtil.setTransparent(this, false);
         type = getIntent().getStringExtra("type");
+        orderComeEntiys = getIntent().getStringExtra("orderComeEntiys");
         selectedIndex = 0;
         updateMode();
         initDateView();
@@ -153,7 +155,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
 
     @Override
     public Fragment getContent(int pos) {
-        return PlanListFragment.newInstance(mItems.get(pos).getType(),type);
+        return PlanListFragment.newInstance(mItems.get(pos).getType(),type,orderComeEntiys);
     }
 
     @Override

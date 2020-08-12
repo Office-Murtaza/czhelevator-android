@@ -13,16 +13,15 @@
         android:orientation="vertical"
         >
 
-        <TextView
+        <com.bobomee.android.mentions.text.MentionTextView
             android:id="@+id/tv_title"
+            android:layout_marginTop="@dimen/dp10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="总通知统计全国梯联网分公司已经超过120家"
             android:textColor="#ff333333"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp_16"
             android:maxLines="2"
             android:ellipsize="end"
-            android:layout_margin="@dimen/dp10"
             />
 
         <LinearLayout

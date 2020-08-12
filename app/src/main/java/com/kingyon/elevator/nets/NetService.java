@@ -217,8 +217,8 @@ public class NetService {
         return addSchedulers(getApi().getBindPhone(phone,verifyCode,unique,avatar,nickName,way));
     }
     /*2.0验证码验证*/
-    public Observable<CodeEntity> setCheckVerifyCode(String phone, String verifyCode){
-        return addSchedulers(getApi().getCheckVerifyCode(phone,verifyCode));
+    public Observable<String> setCheckVerifyCode(String phone, String verifyCode,String type){
+        return addSchedulers(getApi().getCheckVerifyCode(phone,verifyCode,type));
     }
     /*2.0找回密码*/
     public Observable<String> setResetPassword(String phone,String verifyCode,String newPassword){
@@ -1152,6 +1152,12 @@ public class NetService {
     public Observable<ConentEntity<ADEntity>> myAdList(String planType, int page) {
         return addSchedulers(getApi().myAdList(planType, page));
     }
+
+    /*2.0我的广告列表*/
+    public Observable<ConentEntity<ADEntity>> AdList(String planType, int page) {
+        return addSchedulers(getApi().AdList(planType, page));
+    }
+
     /*2.0广告删除*/
     public Observable<String> deleteAd(long objectId) {
         return addSchedulers(getApi().deleteAd(objectId));

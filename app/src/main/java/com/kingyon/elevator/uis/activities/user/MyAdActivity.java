@@ -217,7 +217,7 @@ public class MyAdActivity extends BaseStateRefreshingLoadingActivity<ADEntity> i
 
     @Override
     protected void loadData(final int page) {
-        NetService.getInstance().myAdList(type, page)
+        NetService.getInstance().AdList(type, page)
                 .compose(this.<ConentEntity<ADEntity>>bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<ADEntity>>() {
                     @Override

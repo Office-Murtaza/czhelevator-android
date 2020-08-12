@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.ADEntity;
@@ -44,6 +45,7 @@ import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.AdUtils;
+import com.kingyon.elevator.view.AutoFoldTextView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
@@ -88,6 +90,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     LinearLayout llOrderHeadCancel;
     @BindView(R.id.ll_order_head_authing)
     LinearLayout llOrderHeadAuthing;
+    @BindView(R.id.tv_zk)
+    TextView tv_zk;
     @BindView(R.id.tv_authfailed_reason)
     TextView tvAuthfailedReason;
     @BindView(R.id.tv_authfailed_modify)
@@ -200,6 +204,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     private long countDownTime;
     private float limitedY;
     private boolean notFirstIn;
+    private boolean ifZk = true;
+
 
     @Override
     protected String getTitleText() {
@@ -431,6 +437,11 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.AD_STATUS.REVIEW_FAILED:
                 updateHeadViewVisiable(R.id.ll_order_head_authfailed);
                 tvAuthfailedReason.setText((order.getAuditContent() != null) ? order.getAuditContent() : "无");
+                if (order.getAuditContent().length()>20){
+                    tv_zk.setVisibility(View.VISIBLE);
+                }else {
+                    tv_zk.setVisibility(View.GONE);
+                }
                 break;
             case Constants.AD_STATUS.WAIT_REVIEW:
                 updateHeadViewVisiable(R.id.ll_order_head_authing);
@@ -494,7 +505,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     @OnClick({R.id.ll_devices, R.id.tv_authfailed_modify, R.id.tv_completed_monit,
             R.id.tv_copy_sn, R.id.tv_waitpay_cancel, R.id.tv_waitpay_pay,
-            R.id.tv_release_down, R.id.tv_release_monit,R.id.tv_ad_name})
+            R.id.tv_release_down, R.id.tv_release_monit,R.id.tv_ad_name,R.id.tv_zk})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_devices:
@@ -570,6 +581,17 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 }
                 JumpUtils.getInstance().jumpToAdPreview(this, orderDetails.getAdvertising(),"order");
                 break;
+            case R.id.tv_zk:
+                if (ifZk){
+                    ifZk = false;
+                    tv_zk.setText("收起");
+                    tvAuthfailedReason.setMaxLines(Integer.MAX_VALUE);
+                }else {
+                    ifZk = true;
+                    tv_zk.setText("展开");
+                    tvAuthfailedReason.setMaxLines(2);
+                }
+                break;
         }
     }
     private void httpOrderAgain(String orderSn) {
@@ -583,8 +605,11 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     }
                     @Override
                     public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        Gson gson = new Gson();
+                        String jsonString = gson.toJson(orderComeEntiys);
                         Bundle bundle = new Bundle();
                         bundle.putString("type","order");
+                        bundle.putString("orderComeEntiys",jsonString);
                         startActivity(PlanNewFragment.class,bundle);
                     }
                 });

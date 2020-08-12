@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -194,8 +195,11 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                     }
                     @Override
                     public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        Gson gson = new Gson();
+                        String jsonString = gson.toJson(orderComeEntiys);
                         Bundle bundle = new Bundle();
                         bundle.putString("type","order");
+                        bundle.putString("orderComeEntiys",jsonString);
                         startActivity(PlanNewFragment.class,bundle);
                     }
                 });
@@ -232,7 +236,7 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                         if (page > 1 && orderDetailsEntityPageListEntity.getContent().size() <= 0) {
                             showToast("已经没有了");
                         }
-                        loadingComplete(true, orderDetailsEntityPageListEntity.getTotalPages());
+                        loadingComplete(true, 100000);
                     }
                 });
     }

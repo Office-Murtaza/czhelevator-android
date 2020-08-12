@@ -7,6 +7,11 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.TimeUtil;
+import com.kingyon.elevator.utils.utilstwo.FileUtil;
+import com.kingyon.elevator.utils.utilstwo.FileUtils;
+import com.kingyon.elevator.videocrop.VideoClipUtils;
+import com.kingyon.elevator.videocrop.VideoCropListener;
 import com.kingyon.elevator.view.VideoEditorView;
 
 import VideoHandle.EpEditor;
@@ -23,7 +28,7 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
         super(mContext);
     }
 
-    public void startCropVideo(Activity context, String videoPath, float startTime, float endTime) {
+    public void startCropVideo(Activity context, String videoPath, float startTime, float endTime,int cropTime) {
         try {
             LogUtils.e("裁剪参数：", RuntimeUtils.selectVideoPath, videoPath, startTime, endTime);
 
@@ -32,10 +37,10 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
             if (isViewAttached()) {
                 getView().showProgressDialog("视频裁剪中...", false);
             }
-            LogUtils.e(endTime1,endTime,startTime/1000,(int)(startTime/1000),(int)endTime1);
+
             EpVideo epVideo = new EpVideo(RuntimeUtils.selectVideoPath);
             EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-            epVideo.clip((startTime/1000),endTime1);
+            epVideo.clip((int)(startTime/1000),cropTime);
             EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
                 @Override
                 public void onSuccess() {
@@ -61,14 +66,17 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
                     LogUtils.d("onProgress=="+progress);
                 }
             });
+
+
+
 //            VideoClipUtils.clip(context,RuntimeUtils.selectVideoPath, videoPath,
 //                    startTime,
 //                    endTime,
 //                    new VideoCropListener() {
 //                        @Override
 //                        public void cropSuccess() {
-//
-//
+//                            getView().hideProgressDailog();
+//                            getView().cropVideoSuccess(videoPath);
 //                        }
 //
 //                        @Override
@@ -87,6 +95,9 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
                 getView().hideProgressDailog();
             }
         }
+
     }
+
+
 
 }

@@ -60,8 +60,8 @@ public class PhotoPickerPresenter extends BasePresenter<PhotoPickerView> {
         return false;
     }
 
-    public void loadAdInfo() {
-        NetService.getInstance().myAdList("", 1)
+    public void loadAdInfo(String planType) {
+        NetService.getInstance().AdList(planType, 1)
                 .subscribe(new CustomApiCallback<ConentEntity<ADEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {

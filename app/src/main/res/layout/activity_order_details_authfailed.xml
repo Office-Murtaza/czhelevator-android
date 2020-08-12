@@ -45,8 +45,19 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white_normal"
                 android:textStyle="bold"
-                tools:text="有不符合相关法律内容请修改后重新上传" />
+                android:maxLines="2"
+                tools:text="有不符合律内容上传有不符合相关法律内容请修改后重新上传" />
+
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_zk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="展开"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/white_normal"
+            ></TextView>
     </LinearLayout>
 
     <TextView

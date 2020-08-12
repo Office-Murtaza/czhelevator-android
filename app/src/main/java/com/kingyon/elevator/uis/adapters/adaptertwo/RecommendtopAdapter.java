@@ -3,6 +3,7 @@ package com.kingyon.elevator.uis.adapters.adaptertwo;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.bobomee.android.mentions.text.MentionTextView;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
+import com.kingyon.elevator.uis.actiivty2.input.Parser;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_DRTAILS;
@@ -33,6 +36,7 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
 
     Context context;
     ConentEntity<QueryRecommendTopEntity> conentEntity;
+    Parser mTagParser = new Parser();
     public RecommendtopAdapter(Context context, ConentEntity<QueryRecommendTopEntity> conentEntity){
         this.context = context;
         this.conentEntity = conentEntity;
@@ -49,7 +53,7 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder != null) {
             QueryRecommendTopEntity queryRecommendTopEntity = conentEntity.getContent().get(position);
-            holder.tvTitle.setText(conentEntity.getContent().get(position).title);
+            holder.tvTitle.setText(conentEntity.getContent().get(position).title.equals("") ? conentEntity.getContent().get(position).content:conentEntity.getContent().get(position).title);
             holder.tvName.setText(conentEntity.getContent().get(position).nickname);
             holder.tvNumber.setText(conentEntity.getContent().get(position).browseTimes+"阅读");
             if (conentEntity.getContent().get(position).videoCover==null){
@@ -73,7 +77,8 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle,tvName,tvNumber;
+        TextView tvName,tvNumber;
+        MentionTextView tvTitle;
         ImageView imageView;
         LinearLayout ll_image,ll_itme_root;
         public ViewHolder(View itemView) {
@@ -84,7 +89,8 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
             imageView = itemView.findViewById(R.id.img_topimg);
             ll_image = itemView.findViewById(R.id.ll_image);
             ll_itme_root = itemView.findViewById(R.id.ll_itme_root);
-
+            tvTitle.setMovementMethod(new LinkMovementMethod());
+            tvTitle.setParserConverter(mTagParser);
         }
     }
 

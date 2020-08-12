@@ -130,9 +130,9 @@ public interface NetApi {
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
+//    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
 //    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
-//    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
@@ -165,7 +165,7 @@ public interface NetApi {
     /*2.0验证码验证*/
     @POST("userSecurity/checkVerifyCode")
     @FormUrlEncoded
-    Observable<CodeEntity> getCheckVerifyCode (@Field("phone") String phone,@Field("verifyCode") String verifyCode);
+    Observable<String> getCheckVerifyCode (@Field("phone") String phone,@Field("verifyCode") String verifyCode,@Field("type") String type);
 
     /*2.0忘记密码*/
     @POST("userSecurity/resetPassword")
@@ -371,6 +371,11 @@ public interface NetApi {
     @POST("myAd/adList")
     @FormUrlEncoded
     Observable<ConentEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
+
+    /*2.0我的广告列表*/
+    @POST("ad/adList")
+    @FormUrlEncoded
+    Observable<ConentEntity<ADEntity>> AdList(@Field("planType") String planType, @Field("page") int page);
 
     /*2.0创建编辑广告*/
     @POST("ad/createOrEidtAd")

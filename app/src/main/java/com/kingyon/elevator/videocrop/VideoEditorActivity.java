@@ -97,6 +97,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     private String planType = "";
     private LSOVideoScale videoCompress;
     private Mp4Composer mMp4Composer;
+    private int cropTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +111,12 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
             MAX_CUT_DURATION = 15000;
             MIN_CUT_DURATION = 15000;
             crop_video_time.setText("裁剪时长15S");
+            cropTime  = 15;
         } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
             MAX_CUT_DURATION = 60000;
             MIN_CUT_DURATION = 60000;
             crop_video_time.setText("裁剪时长60S");
+            cropTime  = 60;
         }
         initData();
         initView();
@@ -129,7 +132,9 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
                 String name = System.currentTimeMillis() + ".mp4";
                 videoPath = RuntimeUtils.videoPath + File.separator + name;
                 RuntimeUtils.cropVideoPath = videoPath;
-                presenter.startCropVideo(this,videoPath, startTime, startTime + MIN_CUT_DURATION > duration ? duration : startTime + MIN_CUT_DURATION);
+
+
+                presenter.startCropVideo(this,videoPath, startTime, startTime + MIN_CUT_DURATION > duration ? duration : startTime + MIN_CUT_DURATION,cropTime);
                 break;
             case R.id.cancel_crop:
                 finish();
@@ -423,7 +428,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
 
         @Override
         public void handleMessage(Message msg) {
-            LogUtils.e(msg.obj.toString());
+//            LogUtils.e(msg.obj.toString());
             VideoEditorActivity activity = mActivity.get();
             if (activity != null) {
                 if (msg.what == ExtractFrameWorkThread.MSG_SAVE_SUCCESS) {

@@ -19,6 +19,12 @@ import java.io.IOException;
 public class FileUtils {
 	public static final String FOLDER_NAME = "xinlanedit";
 
+	public static final String FFMAGE (String intpath,String outpath,String star,String end){
+
+		return " -i "+intpath+" -ss "+star+" -c copy -t "+end+" "+outpath;
+	}
+
+
 	/**
 	 * 获取存贮文件的文件夹路径
 	 * 

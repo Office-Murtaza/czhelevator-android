@@ -147,13 +147,15 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     SimpleDateFormat simpleDateFormat;
     SelectDateEntity selectDateEntity;
     String type;
+    String orderComeEntiys;
     int num = 0;
 
 
-    public static PlanListFragment newInstance(String planType,String type) {
+    public static PlanListFragment newInstance(String planType,String type,String orderComeEntiys) {
         Bundle args = new Bundle();
         args.putString(CommonUtil.KEY_VALUE_1, planType);
         args.putString(CommonUtil.KEY_VALUE_2, type);
+        args.putString(CommonUtil.KEY_VALUE_3, orderComeEntiys);
         PlanListFragment fragment = new PlanListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -170,6 +172,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         if (getArguments() != null) {
             planType = getArguments().getString(CommonUtil.KEY_VALUE_1);
             type = getArguments().getString(CommonUtil.KEY_VALUE_2);
+            orderComeEntiys = getArguments().getString(CommonUtil.KEY_VALUE_3);
         }
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         selectDateEntity = DateUtils.getLastSelectDateDay();
@@ -191,39 +194,77 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
 
     }
 
-    private void httpOrderAgain(CellItemEntity item) {
+    private void httpOrderAgain(List<CellItemEntity> cellItemEntities) {
         if (type.equals("order")){
-            NetService.getInstance().orderAgain(  AdUtils.orderSn)
-                    .compose(this.bindLifeCycle())
-                    .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
-                        @Override
-                        protected void onResultError(ApiException ex) {
-                            LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-                        }
-                        @Override
-                        public void onNext(List<OrderComeEntiy> orderComeEntiys) {
-                            LogUtils.e(orderComeEntiys.toString());
-                            for (int i=0;i<orderComeEntiys.size();i++){
-                                for (Object obj : mItems) {
-                                    if (obj instanceof CellItemEntity) {
-                                        CellItemEntity item1 = (CellItemEntity) obj;
-                                        ArrayList<PointItemEntity> allPoints = item.getAllPoints();
-                                        ArrayList<PointItemEntity> points = item.getPoints();
-                                        if (item1.getObjctId()==orderComeEntiys.get(i).housingInfoId){
-                                            item1.setAllPoints(allPoints);
-                                            item1.setPoints(points);
-                                            item1.setChoosed(true);
-                                            item1.setChoosedScreenNum(orderComeEntiys.get(i).facilityIds.size());
-                                        }
-                                    }
+            if (type.equals("order")) {
+//                LogUtils.e(orderComeEntiys,item,mItems);
+                Type listType = new TypeToken<ArrayList<OrderComeEntiy>>() {}.getType();
+                ArrayList<OrderComeEntiy> accsList = new Gson().fromJson(orderComeEntiys, listType);
+                StringBuffer sb = new StringBuffer();
+                LogUtils.e(accsList.size(), accsList.toString());
+                for (int i = 0; i < accsList.size(); i++) {
+                    LogUtils.e(accsList.get(i).housingInfoId);
+
+                    if (accsList.get(i).occupationNum == 0) {
+                        LogUtils.e("111111111");
+                        for (int a = 0;a<cellItemEntities.size();a++) {
+                            LogUtils.e("222222222222");
+                            if (cellItemEntities.get(a) instanceof CellItemEntity) {
+                                LogUtils.e("3333333333333");
+                                CellItemEntity item1 = cellItemEntities.get(a);
+                                ArrayList<PointItemEntity> allPoints = item1.getAllPoints();
+                                ArrayList<PointItemEntity> points = item1.getPoints();
+                                LogUtils.e("**************" + item1.getObjctId());
+                                if (cellItemEntities.get(a).getObjctId() == accsList.get(i).housingInfoId) {
+                                    LogUtils.e("**************");
+                                    item1.setAllPoints(allPoints);
+                                    item1.setPoints(points);
+                                    item1.setChoosed(true);
+                                    item1.setChoosedScreenNum(accsList.get(i).facilityIds.size());
                                 }
                             }
-                            mAdapter.notifyDataSetChanged();
-                            updatePriceUI();
                         }
-                    });
+                    } else {
+                        LogUtils.e(accsList.get(i).housingName + "占用" + accsList.get(i).occupationNum);
+                        sb.append(accsList.get(i).housingName + "占用" + accsList.get(i).occupationNum);
+                    }
+                }
+                LogUtils.e(sb.toString());
+                mAdapter.notifyDataSetChanged();
+                updatePriceUI();
+            }
+
+//            NetService.getInstance().orderAgain(  AdUtils.orderSn)
+//                    .compose(this.bindLifeCycle())
+//                    .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
+//                        @Override
+//                        protected void onResultError(ApiException ex) {
+//                            LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+//                        }
+//                        @Override
+//                        public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+//                            LogUtils.e(orderComeEntiys.toString());
+//                            for (int i=0;i<orderComeEntiys.size();i++){
+//                                for (Object obj : mItems) {
+//                                    if (obj instanceof CellItemEntity) {
+//                                        CellItemEntity item1 = (CellItemEntity) obj;
+//                                        ArrayList<PointItemEntity> allPoints = item.getAllPoints();
+//                                        ArrayList<PointItemEntity> points = item.getPoints();
+//                                        if (item1.getObjctId()==orderComeEntiys.get(i).housingInfoId){
+//                                            item1.setAllPoints(allPoints);
+//                                            item1.setPoints(points);
+//                                            item1.setChoosed(true);
+//                                            item1.setChoosedScreenNum(orderComeEntiys.get(i).facilityIds.size());
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            mAdapter.notifyDataSetChanged();
+//                            updatePriceUI();
+//                        }
+//                    });
         }else {
-            item.setChoosedScreenNum(1);
+            cellItemEntities.get(0).setChoosedScreenNum(1);
         }
 
     }
@@ -286,7 +327,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                     item.setPlanTypeCache(planType);
                                     //改为默认只选择一台设备
 //                                    item.setChoosedScreenNum(item.getTargetScreenNum());
-                                    httpOrderAgain(item);
+                                    httpOrderAgain(cellItemEntities);
 
                                 }
                                 mItems.addAll(cellItemEntities);
