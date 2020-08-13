@@ -120,7 +120,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
 //                    编辑
                     mCameraSdkParameterInfo.setImage_list(listPath);
                     if (editOniclk!=null) {
-                        editOniclk.editOniclk(listPath);
+                        editOniclk.editOniclk(listPath,i);
                     }
 
                 }
@@ -133,7 +133,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
     }
 
     public interface  EditOniclk{
-        void editOniclk(ArrayList<String> listPath);
+        void editOniclk(ArrayList<String> listPath,int num);
     }
 
     @Override

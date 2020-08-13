@@ -429,9 +429,6 @@ public class PhotoPickActivity extends BaseActivity {
 		File imageFile = new File(path);
 		Glide.with(mContext)
 		.load(imageFile)
-//		.error(R.drawable.camerasdk_pic_loading)
-//		.override(mItemSize, mItemSize)
-//        .centerCrop()
 		.into(imageView);
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override

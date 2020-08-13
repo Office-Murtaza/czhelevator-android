@@ -24,6 +24,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center" />
+
 	 	<include layout="@layout/camerasdk_loading"/>
        
     </FrameLayout>
@@ -70,6 +71,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:visibility="gone"
+
         >
         <TextView
             android:id="@+id/tv_close"
@@ -111,16 +113,20 @@
             android:gravity="top"
             android:textCursorDrawable="@null"
             android:background="@null"/>
-        <TextView
+
+        <EditText
             android:id="@+id/tv_tag"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="15dp"
             android:padding="5dp"
             android:layout_centerInParent="true"
             android:textColor="#FA0606"
-            android:textSize="50dp"
-            android:visibility="invisible" />
+            android:gravity="center"
+            android:textSize="24sp"
+            android:background="#00000000"
+            android:visibility="invisible"
+            />
 
 
         <TextView

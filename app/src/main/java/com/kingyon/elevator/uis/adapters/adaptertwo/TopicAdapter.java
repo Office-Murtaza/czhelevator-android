@@ -17,6 +17,7 @@ import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.HomeTopicConentEntity;
 import com.kingyon.elevator.uis.actiivty2.input.Parser;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
@@ -56,7 +57,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
 
             holder.tv_title.setText(conentEntity.get(position).title);
-//
+
+            holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
+
 //            holder.tv_title.setText(delHTMLTag(conentEntity.get(position).content)+"");
             if (conentEntity.get(position).latestContent==null) {
                 holder.tv_conent.setText(conentEntity.get(position).content);

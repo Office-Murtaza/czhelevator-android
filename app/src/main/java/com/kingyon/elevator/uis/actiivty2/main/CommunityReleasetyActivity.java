@@ -262,7 +262,6 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             ToastUtils.showShort("内容不能为空");
         }else {
             CharSequence convertMetionString = editContent.getFormatCharSequence();
-            LogUtils.e(convertMetionString, list.size(), list.toString());
             files.clear();
             for (int c = 0; c < pic_list.size(); c++) {
                 if (pic_list.get(c).getPath() != null) {
@@ -321,28 +320,6 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     }
 
     private void startAction() {
-//        Matisse.from(this)
-//                .choose(MimeType.ofImage(), false)
-//                .countable(true)
-//                .capture(false)
-//                .captureStrategy(
-//                        new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
-//                .maxSelectable(6)
-//                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-//                .thumbnailScale(0.85f)
-//                .imageEngine(new GlideEngine())
-//                .setOnSelectedListener((uriList, pathList) -> {
-//                    Log.e("onSelected", "onSelected: pathList=" + pathList);
-//                })
-//                .showSingleMediaType(true)
-//                .originalEnable(true)
-//                .maxOriginalSize(10)
-//                .autoHideToolbarOnSingleTap(true)
-//                .setOnCheckedListener(isChecked -> {
-//                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
-//                })
-//                .forResult(ACCESS_IMAGE_PATH);
         mCameraSdkParameterInfo.setSingle_mode(false);
         mCameraSdkParameterInfo.setShow_camera(false);
         mCameraSdkParameterInfo.setMax_image(6);
@@ -422,7 +399,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetMessage(MessageWrap message) {
         LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
-//        pic_list.clear();
+        pic_list.clear();
         LogUtils.e("11111111111111111111");
         for (int c= 0;c<message.message.size();c++){
             PhotoEntry photoEntry = new PhotoEntry();
@@ -463,13 +440,14 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
 
                 mAdapter.OnciclkEdit(new ChooseAdapter.EditOniclk() {
                     @Override
-                    public void editOniclk(ArrayList<String> listPath) {
+                    public void editOniclk(ArrayList<String> listPath,int num) {
                         LogUtils.e(listPath.toString());
                         mCameraSdkParameterInfo.setImage_list(listPath);
                         Intent intent = new Intent();
                         intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
                         Bundle b=new Bundle();
                         b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+                        b.putInt("num",num);
                         intent.putExtras(b);
                         startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
 
@@ -482,9 +460,12 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtils.e("11111111111111111111"+pic_list.toString(),list.toString());
+
     }
 
-//    @Override
+
+    //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 //            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);

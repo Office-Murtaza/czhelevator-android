@@ -64,6 +64,7 @@ import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.kingyon.elevator.utils.utilstwo.FileUtils;
 import com.kingyon.elevator.videocrop.video.RangeSeekBar;
 import com.kingyon.elevator.view.ColorBar;
 import com.lansosdk.videoeditor.LanSoEditor;
@@ -905,6 +906,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             // 在Android6.0以前，需要另想办法处理，后续查到好的方法再补充
         }
     }
+    /*视频速度调节*/
     private void initTextSpeed() {
         text_size.setMax(40);
         text_size.setProgress(14);
@@ -928,64 +930,15 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
         });
 
     }
+
+    /*导出视频*/
     private void finishVideo() {
         mMediaPlayer.stop();
         handler.postDelayed(runnable,500); // 开始Timer
-        String videoPath = Utils.getTrimmedVideoPath(this, "small_video/PDD", "voide1");
+        String videoPath = Utils.getTrimmedVideoPath(this, "czh_video/PDD", "voide1");
         editorTextView = showProgressDialog();
         if (isEdit){
-            try {
-                EpVideo epVideo = new EpVideo(path);
-                EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-                epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
-                EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
-                        mMediaPlayer.getVideoWidth(),
-                        mMediaPlayer.getVideoHeight(),false);
-                epVideo.addDraw(epDraw);
-                EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
-                    @Override
-                    public void onSuccess() {
-                        LogUtils.e("成功");
-                        if (isMediaCodec) {
-                            startMediaCodec(videoPath);
-                        }else {
-                            closeProgressDialog();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, videoPath, getVideoDuration(videoPath), fromType);
-                                }
-                            });
-                        }
-                    }
-                    @Override
-                    public void onFailure() {
-                        closeProgressDialog();
-                        ToastUtils.showShort("视频编辑失败，请稍后再试");
-                    }
-
-                    @Override
-                    public void onProgress(float progress) {
-                        LogUtils.e("onProgress=="+progress);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (String.valueOf(Math.floor(progress*100)).length()<=6) {
-                                    if (Math.floor(progress*100)>100){
-                                        editorTextView.setText("视频编辑中99%");
-                                    }else {
-                                        editorTextView.setText("视频编辑中" + (int) Math.floor(progress * 100) + "%");
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            startMediaCodec(path);
         }else {
             if (isMediaCodec){
                 startMediaCodec(path);
@@ -1001,6 +954,62 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
 
         }
     }
+
+    private void starEpVideo(String path, String videoPath) {
+        try {
+            String videoPath1 = Utils.getTrimmedVideoPath(this, "czh_video/PDD", "voide1");
+            EpVideo epVideo = new EpVideo(path);
+            EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
+            epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
+            EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
+                    mMediaPlayer.getVideoWidth(),
+                    mMediaPlayer.getVideoHeight(),false);
+            epVideo.addDraw(epDraw);
+            EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
+                @Override
+                public void onSuccess() {
+                    LogUtils.e("成功");
+
+                    closeProgressDialog();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this,
+                                    PreviewVideoActivity.class, videoPath, getVideoDuration(videoPath), fromType);
+                        }
+                    });
+                }
+                @Override
+                public void onFailure() {
+                    closeProgressDialog();
+                    ToastUtils.showShort("视频编辑失败，请稍后再试");
+                }
+
+                @Override
+                public void onProgress(float progress) {
+                    LogUtils.e("onProgress=="+progress);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (String.valueOf(Math.floor(progress*100)).length()<=6) {
+                                if (Math.floor(progress*100)>100){
+                                    editorTextView.setText("视频编辑中99%");
+                                }else {
+                                    editorTextView.setText("视频编辑中" + (int) Math.floor(progress * 100) + "%");
+                                }
+                            }
+                        }
+                    });
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     //更改界面模式
     private void changeMode(boolean flag) {
         if (flag) {
@@ -1391,6 +1400,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
         LogUtils.e(srcPath);
         final String outputPath = Utils.getTrimmedVideoPath(this, "czh_video/PDD",
                 "video_");
+        String videoPath = Utils.getTrimmedVideoPath(this, "czh_video/PDD", "voide1");
         mMp4Composer = new Mp4Composer(srcPath, outputPath)
                 // .rotation(Rotation.ROTATION_270)
 //                .size(768, 1220)
@@ -1414,13 +1424,17 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                     @Override
                     public void onCompleted() {
                         LogUtils.e("TAG", "filterVideo---onCompleted"+outputPath);
-                        closeProgressDialog();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath), fromType);
-                            }
-                        });
+                        if(isEdit) {
+                            starEpVideo(outputPath, videoPath);
+                        }else {
+                            closeProgressDialog();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MyActivityUtils.goPreviewVideoActivity(EditVideoActivity.this, PreviewVideoActivity.class, outputPath, getVideoDuration(outputPath), fromType);
+                                }
+                            });
+                        }
                     }
 
                     @Override

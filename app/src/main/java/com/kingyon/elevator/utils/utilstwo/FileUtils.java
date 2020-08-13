@@ -19,12 +19,16 @@ import java.io.IOException;
 public class FileUtils {
 	public static final String FOLDER_NAME = "xinlanedit";
 
-	public static final String FFMAGE (String intpath,String outpath,String star,String end){
+	public static final String FFMAGE (String intpath,String outpath,String star,String end,String img){
 
-		return " -i "+intpath+" -ss "+star+" -c copy -t "+end+" "+outpath;
+		return "-i "+img+" -filter_complex overlay -vcodec h264 -ss "+star+" -t "+end+" -i "+intpath+" -vcodec copy -acodec copy "+outpath;
 	}
+	/* ffmpeg -ss 00:00:15 -t 00:00:05 -i input.mp4 -vcodec copy -acodec copy  -i iQIYI_logo.png -filter_complex overlay output.mp4*/
 
-
+	/*转码*/
+	public static final String FFMAGEZM (String intpath,String outpath){
+		return "-i "+intpath+" -vcodec h264 "+outpath;
+	}
 	/**
 	 * 获取存贮文件的文件夹路径
 	 * 

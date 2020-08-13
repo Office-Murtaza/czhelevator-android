@@ -123,16 +123,16 @@ import rx.Observable;
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
 //    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
-    String domainReleaseName = "http://test.pddtv.cn:8080/app/v2/";//外网正式服地址
-//    String domainReleaseName = "http://192.168.1.181:8080/app/v2/";//外网正式服地址
+//    String domainReleaseName = "http://test.pddtv.cn:8080/app/v2/";//外网正式服地址
+    String domainReleaseName = "http://192.168.1.146:8080/app/v2/";//外网正式服地址
 
 
 //    1.0测试接口
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
-//    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
+    String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
 //    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
-    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
 
@@ -373,7 +373,7 @@ public interface NetApi {
     Observable<ConentEntity<ADEntity>> myAdList(@Field("planType") String planType, @Field("page") int page);
 
     /*2.0我的广告列表*/
-    @POST("ad/adList")
+    @POST("ad/adlist")
     @FormUrlEncoded
     Observable<ConentEntity<ADEntity>> AdList(@Field("planType") String planType, @Field("page") int page);
 
@@ -633,8 +633,8 @@ public interface NetApi {
 //设备报修
     @POST("common/repairDevice")
     @FormUrlEncoded
-    Observable<String> repairDevice(@Field("deviceId") long deviceId, @Field("reasonId") Long reasonId
-            , @Field("remarks") String remarks, @Field("images") String images,@Field("equ_name")String equ_name,@Field("app_version") String app_version);
+    Observable<String> repairDevice(@Field("facilityId") long deviceId, @Field("faultReason") Long reasonId
+            , @Field("content") String remarks, @Field("images") String images,@Field("equName")String equ_name,@Field("appVersion") String app_version);
 
 //获取设备报修原因列表（add)
     @POST("common/repairReasons")

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -81,8 +82,8 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 
 	/*文字*/
 	private RelativeLayout rl_edit_text,content_container,layout_actionbar_root;
-	private TextView tv_close,tv_finish,tv_tag,tv_size;
-	private EditText et_tag;
+	private TextView tv_close,tv_finish,tv_size;
+	private EditText et_tag,tv_tag;
 	private SeekBar text_size;
 	private ColorBar colorbar;
 	private ImageView img_test;
@@ -190,6 +191,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 			@Override
 			public void afterTextChanged(Editable s) {
 				tv_tag.setText(s.toString());
+				tv_tag.setTag(s.toString());
 			}
 		});
 
@@ -248,6 +250,10 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 				rl_edit_text.setVisibility(View.VISIBLE);
 				content_container.setVisibility(View.GONE);
 				layout_actionbar_root.setVisibility(View.GONE);
+
+				et_tag.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+				imm.showSoftInput(et_tag, InputMethodManager.SHOW_IMPLICIT);
 			}
 		});
 		/**/
@@ -273,6 +279,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 				layout_actionbar_root.setVisibility(View.VISIBLE);
 				if (et_tag.getText().length() > 0) {
 					addTextToWindow(colorbar.getCurrentColor());
+
 				}
 			}
 		});
@@ -372,18 +379,15 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 
 	/*文字转bitmap*/
 	private void addTextToWindow(int currentColor) {
+		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		View v =  getWindow().peekDecorView();
+		if (null != v) {
+			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		}
 		Log.e("TAG",et_tag.getText().toString()+"===="+tv_tag.getText().toString());
-		tv_tag.setTextColor(currentColor);
-		et_tag.setTextColor(currentColor);
 		tv_tag.setTextSize(Float.parseFloat(tv_size.getText().toString()));
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tv_tag.getWidth(), tv_tag.getHeight());
-		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-//		tv_tag.setLayoutParams(layoutParams);
 		tv_tag.setDrawingCacheEnabled(true);
-		tv_tag.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-		Bitmap bitmap = Bitmap.createBitmap(tv_tag.getDrawingCache());
-
+		Bitmap bitmap = tv_tag.getDrawingCache();
 		((EfectFragment)fragments.get(current)).addSticker(0, "",bitmap,"BITMAP");
 		et_tag.setText("");
 		tv_tag.setTextColor(Color.parseColor( "#FA0606" ));
@@ -392,21 +396,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 		tv_tag.setText("");
 
 	}
-	public Bitmap getNewBitMap(String text,TextView textView,int currentColor) {
-		Bitmap newBitmap = Bitmap.createBitmap(textView.getWidth(),textView.getHeight(), Bitmap.Config.ARGB_4444);
-		Canvas canvas = new Canvas(newBitmap);
-		canvas.drawBitmap(newBitmap, 0, 0, null);
-		TextPaint textPaint = new TextPaint();
-		textPaint.setAntiAlias(true);
-		textPaint.setTextSize(Float.parseFloat(tv_size.getText().toString())*6);
-		textPaint.setColor(currentColor);
-		StaticLayout sl= new StaticLayout(text, textPaint,
-				newBitmap.getWidth()-8, Layout.Alignment.ALIGN_CENTER,
-				1.0f, 0.0f, false);
-		canvas.translate(6, 40);
-		sl.draw(canvas);
-		return newBitmap;
-	}
+
 	private void initData(){		
         
 		boolean flag=false;
@@ -578,5 +568,6 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 	@Override
 	public void colorChange(int color) {
 		et_tag.setTextColor(color);
+		tv_tag.setTextColor(color);
 	}
 }

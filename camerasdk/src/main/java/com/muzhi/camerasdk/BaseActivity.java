@@ -55,22 +55,15 @@ public abstract class BaseActivity extends FragmentActivity{
 			btn_back=(TextView)findViewById(MResource.getIdRes(mContext, "camerasdk_btn_back"));
 			imgBack=(ImageView) findViewById(MResource.getIdRes(mContext, "img_back"));
 		}
-//		btn_back.setVisibility(View.VISIBLE);
 		imgBack.setVisibility(View.VISIBLE);
-//		btn_back.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				finish();
-//			}
-//		});
 		imgBack.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+
 				finish();
+
 			}
 		});
 	}
