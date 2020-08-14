@@ -60,7 +60,7 @@ public class QueryRecommendTopEntity {
         public String createAccount;
         public String type;
         public int combination;
-        public int topicId;
+        public String topicId;
         public String atAccount;
         public int status;
         public long createTime;

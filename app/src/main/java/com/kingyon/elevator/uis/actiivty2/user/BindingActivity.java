@@ -111,7 +111,7 @@ public class BindingActivity extends BaseActivity implements AuthorizeUtils.Auth
         }
         showProgressDialog(getString(R.string.wait),true);
         tvNext.setEnabled(false);
-        NetService.getInstance().unbindPhone(mobile, CommonUtil.getEditText(etCode), "UNBIND_OLD")
+        NetService.getInstance().setCheckVerifyCode(mobile, CommonUtil.getEditText(etCode), "UNBIND_OLD")
                 .compose(BindingActivity.this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override

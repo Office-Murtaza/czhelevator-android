@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.uis.actiivty2.user.BindingActivity;
 import com.kingyon.elevator.utils.CheckCodePresenter;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -66,6 +67,7 @@ public class ModifyPhoneFirstActivity extends BaseSwipeBackActivity {
         }
     }
 
+    /*验证码验证*/
     private void verify() {
         if (TextUtils.isEmpty(CommonUtil.getEditText(etCode))) {
             showToast("请输入验证码");
@@ -88,9 +90,12 @@ public class ModifyPhoneFirstActivity extends BaseSwipeBackActivity {
                     public void onNext(String s) {
                         tvNext.setEnabled(true);
                         hideProgress();
+                        /*绑定手机号*/
                         startActivity(ModifyPhoneSecondActivity.class);
                         finish();
                     }
                 });
     }
+
+
 }
