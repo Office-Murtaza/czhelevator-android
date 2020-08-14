@@ -220,7 +220,7 @@ public class TopicSelectionActivity extends BaseActivity {
                 .subscribe(new CustomApiCallback<TopicLabelEntity<TopicLabelEntity.PageContentBean>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        ToastUtils.showToast(TopicSelectionActivity.this, ex.getDisplayMessage(), 1000);
+//                        ToastUtils.showToast(TopicSelectionActivity.this, ex.getDisplayMessage(), 1000);
                         llTopic.setVisibility(View.GONE);
                         rlError.setVisibility(View.VISIBLE);
                         rlNull.setVisibility(View.GONE);

@@ -188,10 +188,10 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 LatLng latLng = new LatLng(latitude,longitude);
                 aMap.addCircle(new CircleOptions().
                         center(latLng).
-                        radius(progress*10).
+                        radius(1000).
                         fillColor(Color.argb(1, 1, 1, 1)).
                         strokeColor(Color.argb(1, 1, 1, 1)).
-                        strokeWidth(15));
+                        strokeWidth(progress*10));
             }
 
             @Override

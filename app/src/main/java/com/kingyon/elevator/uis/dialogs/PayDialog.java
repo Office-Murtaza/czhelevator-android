@@ -467,6 +467,10 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
 
     }
 
+
+    /*
+    *支付宝回调
+    * */
     @Override
     public void handleMessage(Message msg) {
         LogUtils.e(msg.obj,msg.arg1,msg.arg2,msg.replyTo,msg.toString());
@@ -514,6 +518,7 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
         }
     }
 
+    /*微信回调*/
     @Subscribe
     public void onWxPayResult(WxPayStatusEntity wxPayStatusEntity) {
         LogUtils.e(wxPayStatusEntity.getCode()+"=========");

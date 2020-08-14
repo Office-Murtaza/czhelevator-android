@@ -14,34 +14,42 @@
         app:srlEnableAutoLoadMore="true"
         app:srlEnableRefresh="true">
 
-
-         <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_attention_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_attention_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_attention_list1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_attention_list1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
 
-             <include layout="@layout/layout_error"
-                 android:visibility="gone"
-                 />
-             <include layout="@layout/layout_null"
-                 android:visibility="gone"
-                 />
+                 <include layout="@layout/layout_error"
+                     android:visibility="gone"
+                     />
+                 <include layout="@layout/layout_null"
+                     android:visibility="gone"
+                     />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

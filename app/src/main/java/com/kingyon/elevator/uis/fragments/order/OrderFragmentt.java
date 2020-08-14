@@ -215,6 +215,7 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
 
     @Override
     protected void loadData(int page) {
+        LogUtils.e(type,type1,page);
         NetService.getInstance().orderList(type, type1, page)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<OrderDetailsEntity>>() {

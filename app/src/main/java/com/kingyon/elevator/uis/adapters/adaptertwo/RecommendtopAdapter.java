@@ -59,7 +59,11 @@ public class RecommendtopAdapter extends RecyclerView.Adapter<RecommendtopAdapte
             if (conentEntity.getContent().get(position).videoCover==null){
                 holder.ll_image.setVisibility(View.GONE);
             }else {
-                GlideUtils.loadRoundCornersImage(context,conentEntity.getContent().get(position).videoCover,holder.imageView,20);
+                if (conentEntity.getContent().get(position).videoCover.equals("")){
+                    holder.ll_image.setVisibility(View.GONE);
+                }else {
+                    GlideUtils.loadRoundCornersImage(context, conentEntity.getContent().get(position).videoCover, holder.imageView, 20);
+                }
             }
             holder.ll_itme_root.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -54,12 +54,18 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
 
     }
 
-    public ChooseAdapter(BaseActivity mContext, List<PhotoEntry> list,CameraSdkParameterInfo mCameraSdkParameterInfo) {
+    public ChooseAdapter(BaseActivity mContext,CameraSdkParameterInfo mCameraSdkParameterInfo) {
         this.mContext = mContext;
-        this.list = list;
         this.mCameraSdkParameterInfo = mCameraSdkParameterInfo;
         mlistener = (OnItmeClickListener) mContext;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LogUtils.e("1*****");
+    }
+
+
+    public void getDataList(List<PhotoEntry> list){
+        LogUtils.e("2*****");
+        this.list = list;
         list.add(createAddEntry());
         for (int i=0;i<list.size();i++){
             if (list.get(i).getPath()!=null) {
@@ -67,7 +73,6 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
             }
         }
     }
-
 
     public List<PhotoEntry> getData(){
         return list.subList(0,list.size());
@@ -91,6 +96,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        LogUtils.e("123123123123123123123123123123123",i);
         if (i==list.size()-1){
             viewHolder.mImageView.setImageResource(R.mipmap.btn_image_upload);
             viewHolder.ima_delete.setVisibility(View.GONE);

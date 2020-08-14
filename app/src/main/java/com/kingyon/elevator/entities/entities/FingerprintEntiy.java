@@ -6,7 +6,7 @@ import org.litepal.crud.DataSupport;
  * @Created By Admin  on 2020/7/22
  * @Email : 163235610@qq.com
  * @Author:Mrczh
- * @Instructions:
+ * @Instructions:指纹保存
  */
 public class FingerprintEntiy extends DataSupport {
 

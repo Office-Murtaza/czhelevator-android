@@ -610,6 +610,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                 goPlaceAnOrderEntity.getStartTime(), goPlaceAnOrderEntity.getEndTime(), adEntityID);
     }
 
+    /*下单成功*/
     @Override
     public void orderCommitSuccess(CommitOrderEntiy orderEntiy) {
         Bundle bundle = new Bundle();

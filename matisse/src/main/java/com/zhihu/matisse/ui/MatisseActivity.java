@@ -330,10 +330,10 @@ public class MatisseActivity extends AppCompatActivity implements
     public void onClick(View v) {
         /*预览*/
         if (v.getId() == R.id.button_preview) {
-            Intent intent = new Intent(this, SelectedPreviewActivity.class);
-            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
-            intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
-            startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+//            Intent intent = new Intent(this, SelectedPreviewActivity.class);
+//            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+//            intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
+//            startActivityForResult(intent, REQUEST_CODE_PREVIEW);
             /*下一步*/
         } else if (v.getId() == R.id.button_apply) {
 //            1111111111
@@ -385,14 +385,14 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("TAG-MatisseActivity","******************"+position);
-        mAlbumCollection.setStateCurrentSelection(position);
-        mAlbumsAdapter.getCursor().moveToPosition(position);
-        Album album = Album.valueOf(mAlbumsAdapter.getCursor());
-        Log.e("TAG-MatisseActivity","******************"+album.getCoverUri().toString());
-        if (album.isAll() && SelectionSpec.getInstance().capture) {
-            album.addCaptureCount();
-        }
-        onAlbumSelected(album);
+//        mAlbumCollection.setStateCurrentSelection(position);
+//        mAlbumsAdapter.getCursor().moveToPosition(position);
+//        Album album = Album.valueOf(mAlbumsAdapter.getCursor());
+//        Log.e("TAG-MatisseActivity","******************"+album.getCoverUri().toString());
+//        if (album.isAll() && SelectionSpec.getInstance().capture) {
+//            album.addCaptureCount();
+//        }
+//        onAlbumSelected(album);
     }
 
     @Override

@@ -2,11 +2,12 @@
 <litepal>
     <dbname value="elevator" />
 
-    <version value="5" />
+    <version value="6" />
 
     <list>
         <mapping class="com.kingyon.elevator.entities.SearchHistoryEntity" />
         <mapping class="com.kingyon.elevator.entities.LocalMaterialEntity" />
         <mapping class="com.kingyon.elevator.entities.entities.FingerprintEntiy"/>
+        <mapping class="com.kingyon.elevator.entities.entities.SearchEntuy"/>
     </list>
 </litepal>

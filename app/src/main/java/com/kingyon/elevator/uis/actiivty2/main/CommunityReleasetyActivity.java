@@ -35,6 +35,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ChooseAdapter;
+import com.kingyon.elevator.uis.adapters.adaptertwo.ChoosetAdapter;
 import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
@@ -105,7 +106,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     ImageView imgHuati;
     @BindView(R.id.tv_zishu)
     TextView tvZishu;
-    ChooseAdapter mAdapter;
+    ChoosetAdapter mAdapter;
     @Autowired
     String imagePath;
     @Autowired
@@ -126,6 +127,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     private boolean isOriginal = false;
 
     private ArrayList<PhotoEntry> pic_list = new ArrayList<>();
+    ArrayList<String> list1 = new ArrayList<>();
+    ArrayList<String> list2 = new ArrayList<>();
     @Override
     public int getContentViewId() {
         return R.layout.activity_community_releaset;
@@ -135,6 +138,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     public void init(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
+        list1.add("");
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         OrdinaryActivity.communityReleasetyActivity = this;
         showSoftInputFromWindow(editContent);
         LogUtils.e(topicId1,title);
@@ -170,18 +175,44 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             }
         });
 
-//        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_COMMUNITY_DRAFT, Context .MODE_PRIVATE);
-//        String content=sharedPreferences.getString("content","");
-//
-//        if (content!=null){
-//            topicId=sharedPreferences.getString("topicId","");
-//            atAccount=sharedPreferences.getString("atAccount","");
-//            String files=sharedPreferences.getString("files","");
-//            LogUtils.e(topicId,atAccount,files,content);
-//            editContent.setText(content,SPANNABLE);
-//
-//
-//        }
+        mAdapter = new ChoosetAdapter(this,mCameraSdkParameterInfo);
+        mAdapter.getDataList(list1);
+        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+        rcvListImg.setAdapter(mAdapter);
+        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+        mAdapter.OnciclkEdit(new ChoosetAdapter.EditOniclk() {
+            @Override
+            public void editOniclk(ArrayList<String> listPath,int num) {
+                LogUtils.e(listPath.toString());
+                mCameraSdkParameterInfo.setImage_list(listPath);
+                Intent intent = new Intent();
+                intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
+                Bundle b=new Bundle();
+                b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
+                b.putInt("num",num);
+                intent.putExtras(b);
+                startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
+
+            }
+        });
+        mAdapter.OnItmeClickListener(new ChoosetAdapter.OnItmeClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                if (position == mAdapter.getItemCount()-1) {
+                    pic_list.clear();
+                    RxPermissions rxPermissions = new RxPermissions(CommunityReleasetyActivity.this);
+                    rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(aBoolean -> {
+                                if (aBoolean) {
+                                    startAction();
+                                } else {
+                                    Toast.makeText(CommunityReleasetyActivity.this, "没有权限", Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }, Throwable::printStackTrace);
+                }
+            }
+        });
 
     }
     public void showSoftInputFromWindow(EditText editText){
@@ -191,19 +222,6 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         InputMethodManager inputManager =
                 (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(editText, 0);
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
-        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-        rcvListImg.setAdapter(mAdapter);
-        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
-
     }
 
     @OnClick({R.id.img_bake, R.id.tv_releaset,R.id.img_icon, R.id.img_aite, R.id.img_huati})
@@ -338,8 +356,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LogUtils.e("11111111111",requestCode,resultCode);
         if (resultCode == Activity.RESULT_OK && null != data) {
-            LogUtils.e("==================",requestCode,resultCode,data.toString());
             switch (requestCode) {
                 case REQUEST_USER_APPEND:
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
@@ -354,63 +372,41 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                     topicId = String.valueOf(tag.getId());
                     newTopic = String.format(TAG_FORMAT, tag.getId(), tag.getTitle());
                     LogUtils.e(newTopic);
-//                    tagList.add(String.valueOf(tag.getId()));
                     break;
-//                case ACCESS_IMAGE_PATH:
-//                    LogUtils.e(Matisse.obtainPathResult(data),Matisse.obtainResult(data),Matisse.obtainOriginalState(data));
-//                    for (int c= 0;c<Matisse.obtainPathResult(data).size();c++){
-//                        PhotoEntry photoEntry = new PhotoEntry();
-//                        photoEntry.setPath(Matisse.obtainPathResult(data).get(c));
-//                        list.add(photoEntry);
-//                     }
-//                    LogUtils.e(list.toString());
-//                    mAdapter = new ChooseAdapter(this,list,mCameraSdkParameterInfo);
-//                    rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-//                    rcvListImg.setAdapter(mAdapter);
-//                    rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
-//                    break;
-//                case CommonUtil.REQ_CODE_4:
-//                    String savedPath = data.getStringExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH);
-//                    int number = data.getIntExtra("number",0);
-//                    if (!TextUtils.isEmpty(savedPath) && new File(savedPath).exists()) {
-//                        list.get(number).setPath(savedPath);
-//                        mAdapter.notifyDataSetChanged();
-////                        LogUtils.e(list.toString());
-////                        mAdapter = new ChooseAdapter(this,list);
-////                        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-////                        rcvListImg.setAdapter(mAdapter);
-////                        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
-//
+
+
+//                case CameraSdkParameterInfo.TAKE_PICTURE_FROM_GALLERY:
+//                    if(data!=null){
+////                        getBundle(data.getExtras());
 //                    }
 //                    break;
-                case CameraSdkParameterInfo.TAKE_PICTURE_FROM_GALLERY:
-                    if(data!=null){
-                        getBundle(data.getExtras());
-                        LogUtils.e("****777777777777777");
-                    }else {
-                        LogUtils.e("*******************");
-                    }
-                    break;
-
 
             }
-            }
+        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetMessage(MessageWrap message) {
         LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
-        pic_list.clear();
+//        pic_list.clear();
+
         LogUtils.e("11111111111111111111");
         for (int c= 0;c<message.message.size();c++){
             PhotoEntry photoEntry = new PhotoEntry();
             photoEntry.setPath(message.message.get(c));
             pic_list.add(photoEntry);
+            list1.add(message.message.get(c));
         }
-        LogUtils.e(pic_list.toString());
-        mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
-        rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-        rcvListImg.setAdapter(mAdapter);
-        rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+        for (int i = 0;i<list1.size();i++){
+            if (!list1.get(i).isEmpty()) {
+                list2.add(list1.get(i));
+            }
+        }
+        list2.add("");
+        LogUtils.e(list1.toString(),list2.toString());
+        mCameraSdkParameterInfo.setImage_list(list2);
+        mAdapter.getDataList(list2);
+        mAdapter.notifyDataSetChanged();
+
     }
     @Override
     protected void onDestroy() {
@@ -430,29 +426,13 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                         img.setPath(list.get(i));
                         pic_list.add(img);
                     }
-
                 }
-                mAdapter = new ChooseAdapter(this,pic_list,mCameraSdkParameterInfo);
+                mAdapter = new ChoosetAdapter(this,mCameraSdkParameterInfo);
+                mAdapter.getDataList(list1);
                 rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
                 rcvListImg.setAdapter(mAdapter);
                 rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
                 LogUtils.e(pic_list.size(),pic_list.toString());
-
-                mAdapter.OnciclkEdit(new ChooseAdapter.EditOniclk() {
-                    @Override
-                    public void editOniclk(ArrayList<String> listPath,int num) {
-                        LogUtils.e(listPath.toString());
-                        mCameraSdkParameterInfo.setImage_list(listPath);
-                        Intent intent = new Intent();
-                        intent.setClassName(getApplication(), "com.muzhi.camerasdk.FilterImageActivity");
-                        Bundle b=new Bundle();
-                        b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
-                        b.putInt("num",num);
-                        intent.putExtras(b);
-                        startActivityForResult(intent, CameraSdkParameterInfo.TAKE_PICTURE_PREVIEW);
-
-                    }
-                });
             }
         }
     }
@@ -460,31 +440,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.e("11111111111111111111"+pic_list.toString(),list.toString());
 
     }
-
-
-    //    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-//            SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
-//            saveDraftsDialog.show();
-//            saveDraftsDialog.Clicked(new IsSuccess() {
-//                @Override
-//                public void isSuccess(boolean success) {
-//                    if (success){
-//                        saveContent();
-//                    }else {
-//                        finish();
-//                    }
-//                }
-//            });
-//            return false;
-//        }else {
-//            return super.onKeyDown(keyCode, event);
-//        }
-//    }
 
     private void saveContent() {
         files.clear();

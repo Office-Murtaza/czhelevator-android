@@ -150,7 +150,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     String orderComeEntiys;
     int num = 0;
 
-
+    List<CellItemEntity> cellItemEntities;
     public static PlanListFragment newInstance(String planType,String type,String orderComeEntiys) {
         Bundle args = new Bundle();
         args.putString(CommonUtil.KEY_VALUE_1, planType);
@@ -298,6 +298,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
 
     @Override
     protected void loadData(int page) {
+        LogUtils.e(planType, startTime, endTime, page);
         updateBarVisiable();
         if (!TextUtils.isEmpty(Net.getInstance().getToken())) {
             NetService.getInstance().plansList(planType, startTime, endTime, page)
@@ -309,6 +310,8 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             loadingComplete(false, 100000);
                             updateBarVisiable();
 //                            isLogin(ex.getCode());
+                            tvNumber.setText(String.format("(%s/%s)", 0, 0));
+                            tvDeleteAll.setText(String.format("全选(%s/%s)", 0,0));
                         }
 
                         @Override
@@ -316,10 +319,15 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                             if (cellItemEntityPageListEntity == null) {
                                 throw new ResultException(9000, "返回参数异常");
                             }
-                            List<CellItemEntity> cellItemEntities = cellItemEntityPageListEntity.getContent();
+                           cellItemEntities = cellItemEntityPageListEntity.getContent();
                             if (FIRST_PAGE == page) {
                                 mItems.clear();
 //                                mItems.add(new TimeHolder(startTime, endTime));
+                            }
+                            if (cellItemEntities.size()<=0){
+                                LogUtils.e("231132123");
+                                tvNumber.setText(String.format("(%s/%s)", 0, 0));
+                                tvDeleteAll.setText(String.format("全选(%s/%s)", 0,0));
                             }
 
                             if (cellItemEntities != null && cellItemEntities.size() > 0) {
@@ -521,7 +529,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             }
         }
         tvCellNum.setText(String.format("覆盖%s个小区", cellNum));
-        tvNumber.setText(String.format("(%s/%s)", cellNum, mItems.size()));
+        tvNumber.setText(String.format("(%s/%s)", cellNum, cellItemEntities.size()));
         tvScreenNum.setText(String.format("%s面屏", screenNum));
         imgSelectAll.setSelected(cellNum==mItems.size());
         tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(sum * FormatUtils.getInstance().getTimeDays(startTime, endTime))));
@@ -541,7 +549,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             }
         }
         tvDeleteAll.setSelected(allEdit);
-        tvDeleteAll.setText(String.format("全选(%s/%s)", editNum, mItems.size()));
+        tvDeleteAll.setText(String.format("全选(%s/%s)", editNum, cellItemEntities.size()));
         tvDeleteNumber.setText(String.format("已选：%s个小区", editNum));
     }
 

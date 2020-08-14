@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:hint="请输入标题"
         android:textColor="#000000"
-        android:textStyle="bold"
         android:paddingTop="@dimen/dp10"
         android:padding="@dimen/dp10"
         android:paddingLeft="@dimen/dp5"

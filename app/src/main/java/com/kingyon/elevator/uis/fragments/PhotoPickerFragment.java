@@ -69,9 +69,9 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
         fromType = getArguments().getInt("fromType");
         planType = getArguments().getString("planType");
         if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
-            videoTime = 15000;
+            videoTime = 15999;
         } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
-            videoTime = 60000;
+            videoTime = 60999;
         }
         mediaDataArrayList = new ArrayList<>();
         if (executorService == null) {
