@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -69,6 +70,9 @@ public class AttentionFansFragment extends FoundFragemtUtils {
     RelativeLayout rl_notlogin;
     MessageAttentionAdapter attentionAdapter;
     String extend;
+    @BindView(R.id.img_delete)
+    ImageView imgDelete;
+
     public AttentionFansFragment setIndex(String type) {
         this.type = type;
         return (this);
@@ -76,18 +80,18 @@ public class AttentionFansFragment extends FoundFragemtUtils {
 
     @Override
     protected void lazyLoad() {
-        if (smartRefreshLayout!=null){
+        if (smartRefreshLayout != null) {
             smartRefreshLayout.autoRefresh(100);
-        }else {
+        } else {
             showProgressDialog(getString(R.string.wait));
             list.clear();
-            page=1;
-            httpAttention(type, page,extend);
+            page = 1;
+            httpAttention(type, page, extend);
         }
     }
 
-    private void httpAttention(String type, int page,String extend ) {
-        NetService.getInstance().setAttention(page, type,extend)
+    private void httpAttention(String type, int page, String extend) {
+        NetService.getInstance().setAttention(page, type, extend)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<AttenionUserEntiy>>() {
                     @Override
@@ -122,12 +126,12 @@ public class AttentionFansFragment extends FoundFragemtUtils {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         addData(attenionUserEntiyConentEntity);
                         hideProgress();
-                        if (attenionUserEntiyConentEntity.getContent().size()>0||page>1) {
+                        if (attenionUserEntiyConentEntity.getContent().size() > 0 || page > 1) {
                             rvComment.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
                             rl_notlogin.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             rvComment.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
@@ -145,7 +149,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             list.add(attenionUserEntiy);
         }
         if (attentionAdapter == null || page == 1) {
-            attentionAdapter = new MessageAttentionAdapter((BaseActivity) getActivity(),type);
+            attentionAdapter = new MessageAttentionAdapter((BaseActivity) getActivity(), type);
             attentionAdapter.addData(list);
             rvComment.setAdapter(attentionAdapter);
             rvComment.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
@@ -203,7 +207,12 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             public void afterTextChanged(Editable s) {
                 list.clear();
                 extend = s.toString();
-                httpAttention(type,1,extend);
+                httpAttention(type, 1, extend);
+                if (s.length()>0){
+                    imgDelete.setVisibility(View.VISIBLE);
+                }else {
+                    imgDelete.setVisibility(View.GONE);
+                }
             }
         });
         return rootView;
@@ -217,7 +226,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 list.clear();
-                httpAttention(type, page,extend);
+                httpAttention(type, page, extend);
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -225,26 +234,29 @@ public class AttentionFansFragment extends FoundFragemtUtils {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 LogUtils.e("onLoadMore");
                 page++;
-                httpAttention(type, page,extend);
+                httpAttention(type, page, extend);
             }
         });
     }
 
-        @Override
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    @OnClick({R.id.rl_error, R.id.rl_notlogin})
+    @OnClick({R.id.rl_error, R.id.rl_notlogin,R.id.img_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_error:
                 showProgressDialog(getString(R.string.wait));
-                httpAttention(type,1,extend);
+                httpAttention(type, 1, extend);
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();
+                break;
+            case R.id.img_delete:
+                editSearch.setText("");
                 break;
         }
     }

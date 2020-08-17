@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +63,8 @@ public class AdvertisingSectionActivity extends BaseActivity {
     RelativeLayout rlNull;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.img_delete)
+    ImageView imgDelete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +95,11 @@ public class AdvertisingSectionActivity extends BaseActivity {
                 listdata.clear();
                 params = s.toString();
                 initData(page, rows, params);
+                if (s.length() > 0) {
+                    imgDelete.setVisibility(View.VISIBLE);
+                } else {
+                    imgDelete.setVisibility(View.GONE);
+                }
             }
         });
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -140,11 +148,11 @@ public class AdvertisingSectionActivity extends BaseActivity {
                     public void onNext(AdZoneEntiy adZoneEntiy) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         addData(adZoneEntiy.getData());
-                        if (adZoneEntiy.getData().size()>0||page>1) {
+                        if (adZoneEntiy.getData().size() > 0 || page > 1) {
                             rvList.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             rvList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
@@ -191,7 +199,7 @@ public class AdvertisingSectionActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_bake, R.id.rl_error})
+    @OnClick({R.id.tv_bake, R.id.rl_error,R.id.img_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_bake:
@@ -199,6 +207,9 @@ public class AdvertisingSectionActivity extends BaseActivity {
                 break;
             case R.id.rl_error:
                 initData(1, rows, params);
+                break;
+            case R.id.img_delete:
+                editSearch.setText("");
                 break;
         }
     }

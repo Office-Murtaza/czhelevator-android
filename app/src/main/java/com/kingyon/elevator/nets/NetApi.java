@@ -95,6 +95,7 @@ import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.ReportContent;
 import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
@@ -591,9 +592,9 @@ public interface NetApi {
     @POST("common/getRichText")
     @FormUrlEncoded
     Observable<DataEntity<String>> richText(@Field("type") String type);
-//获取最新版本
-    @GET("common/getLatestVersion")
-    Observable<VersionEntity> getLatestVersion(@Query("platform") String platform, @Query("versionCode") int versionCode);
+//2.0获取最新版本
+    @POST("common/getLatestVersion")
+    Observable<VersionEntity> getLatestVersion(@Query("platform") String platform/*, @Query("versionCode") int versionCode*/);
 //2.0 收入明细
     @POST("property/incomeList")
     @FormUrlEncoded
@@ -705,6 +706,16 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<String> resetPassword(@Field("phone") String phone
             , @Field("verifyCode") String vaildCode, @Field("newPassword") String newPassword);
+
+    /*2.0举报用户内容*/
+    @POST("user/getReportContent")
+    Observable<List<ReportContent>> getReportContent();
+
+    /*2.0举报用户*/
+    @POST("user/reportUser")
+    @FormUrlEncoded
+    Observable<String> reportUser(@Field("beReportAccount") String beReportAccount
+            ,@Field("reportContentId") int reportContentId);
 
 
     @POST("userSecurity/changePassword")

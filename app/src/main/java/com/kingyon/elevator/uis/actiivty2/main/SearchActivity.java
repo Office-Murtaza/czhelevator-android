@@ -1,5 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +29,6 @@ import com.kingyon.elevator.entities.entities.SearchEntuy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
-import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendtopAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.SearchAdapter;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -38,6 +40,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -82,6 +85,8 @@ public class SearchActivity extends BaseActivity {
     List<QueryRecommendEntity> recommendEntityList = new ArrayList<>();
     String account;
     String title;
+    @BindView(R.id.img_delete)
+    ImageView imgDelete;
 
     @Override
     public int getContentViewId() {
@@ -90,22 +95,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        ArrayList<String> label = new ArrayList<>();
-        List<SearchEntuy> all = DataSupport.findAll(SearchEntuy.class);
-        for (int i = 0; i < all.size(); i++) {
-            label.add(all.get(i).search);
-        }
-
-        labels.setLabels(label);
-        SearchAdapter searchAdapter = new SearchAdapter(this);
-        rcvView.setLayoutManager(new LinearLayoutManager(this));
-        rcvView.setAdapter(searchAdapter);
-        labels.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
-            @Override
-            public void onLabelClick(TextView label, Object data, int position) {
-
-            }
-        });
+        initSearch();
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,15 +110,12 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 title = s.toString();
-                if (s.length() > 0) {
-                    llTop1.setVisibility(View.VISIBLE);
-                    llTop.setVisibility(View.GONE);
-                    httpRecommend(1,title);
-                } else {
+                if (s.length() <= 0) {
                     llTop1.setVisibility(View.GONE);
                     llTop.setVisibility(View.VISIBLE);
-
-
+                    imgDelete.setVisibility(View.GONE);
+                }else {
+                    imgDelete.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -137,31 +124,75 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 recommendEntityList.clear();
-                httpRecommend(1, "");
+                httpRecommend(1, title);
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                httpRecommend(page, "");
+                httpRecommend(page, title);
             }
         });
 
-        editSearch.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (!editSearch.getText().toString().isEmpty()) {
-                        SearchEntuy searchEntuy = new SearchEntuy();
-                        searchEntuy.search = editSearch.getText().toString();
-                        searchEntuy.save();
-                    }
-                    LogUtils.e("按下");
+        editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                /*判断是否是“搜索”键*/
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    /*隐藏软键盘*/
+                    InputMethodManager imm = (InputMethodManager) v
+                            .getContext().getSystemService(
+                                    Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(
+                                v.getApplicationWindowToken(), 0);
+                    }
+                    if (!editSearch.getText().toString().isEmpty()) {
+                        String etText = editSearch.getText().toString();
+                        SearchEntuy searchEntuy = new SearchEntuy();
+                        searchEntuy.search = etText;
+                        searchEntuy.save();
+                        httpRecommend(1, etText);
+                        initSearch();
+                        llTop1.setVisibility(View.VISIBLE);
+                        llTop.setVisibility(View.GONE);
+                    } else {
+                        showToast("内容为空");
+                    }
+
+                    return true;
                 }
                 return false;
+            }
+        });
+    }
 
+
+
+    private void initSearch() {
+        ArrayList<String> label1 = new ArrayList<>();
+        List<SearchEntuy> all = DataSupport.findAll(SearchEntuy.class);
+        Collections.reverse(all);
+        label1.clear();
+        if (all.size() <= 10) {
+            for (int i = 0; i < all.size(); i++) {
+                label1.add(all.get(i).search);
+            }
+        } else {
+            for (int i = 0; i < 10; i++) {
+                label1.add(all.get(i).search);
+            }
+        }
+        labels.setLabels(label1);
+        SearchAdapter searchAdapter = new SearchAdapter(this);
+        rcvView.setLayoutManager(new LinearLayoutManager(this));
+        rcvView.setAdapter(searchAdapter);
+        labels.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
+            @Override
+            public void onLabelClick(TextView label, Object data, int position) {
+                editSearch.setText(label1.get(position));
             }
         });
     }
@@ -174,43 +205,46 @@ public class SearchActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_bake, R.id.rl_error,R.id.img_swarch_delete})
+    @OnClick({R.id.tv_bake, R.id.rl_error, R.id.img_swarch_delete,R.id.img_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_bake:
                 finish();
-
                 break;
             case R.id.rl_error:
                 /*错误*/
-
+                httpRecommend(1, title);
                 break;
             case R.id.img_swarch_delete:
                 /*清除*/
                 DataSupport.deleteAll(SearchEntuy.class);
+                initSearch();
+                break;
+            case R.id.img_delete:
+                editSearch.setText("");
                 break;
         }
     }
 
     private void httpRecommend(int page, String title) {
-        LogUtils.e(page, title,account);
-        NetService.getInstance().setQueryRecommend(page, title,account)
+        LogUtils.e(page, title, account);
+        NetService.getInstance().setQueryRecommend(page, title, account)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         closeRefresh();
-                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-                        if (ex.getCode()==-102){
-                            if (page>1) {
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        if (ex.getCode() == -102) {
+                            if (page > 1) {
                                 ToastUtils.showShort("已经没有更多了");
                                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                            }else {
+                            } else {
                                 rvAttentionList.setVisibility(View.GONE);
                                 rlError.setVisibility(View.GONE);
                                 rlNull.setVisibility(View.VISIBLE);
                             }
-                        }else {
+                        } else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
@@ -227,8 +261,9 @@ public class SearchActivity extends BaseActivity {
                     }
                 });
     }
+
     private void dataAdd(ConentEntity<QueryRecommendEntity> conentEntity) {
-        for (int i = 0;i<conentEntity.getContent().size();i++){
+        for (int i = 0; i < conentEntity.getContent().size(); i++) {
             QueryRecommendEntity queryRecommendEntity = new QueryRecommendEntity();
             queryRecommendEntity = conentEntity.getContent().get(i);
             recommendEntityList.add(queryRecommendEntity);

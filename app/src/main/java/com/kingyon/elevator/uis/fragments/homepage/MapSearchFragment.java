@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.fragments.homepage;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.uis.dialogs.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
@@ -57,6 +59,7 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.orhanobut.logger.Logger;
 
@@ -134,8 +137,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     private int[] clickPosition = new int[2];
     boolean isdisplay = true;
     private String distanceM;
-
-
+    CircleOptions circleOptions;
+    Circle circle;
     public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2, double latitude, double longitude) {
         this.entiyConentEntity = entiyConentEntity2;
         this.latitude = latitude;
@@ -178,20 +181,29 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             }
         }).start();
 
-        moveMapToPositon(longitude, latitude, cityZoomLevel + 3f);
+        moveMapToPositon(longitude, latitude, cityZoomLevel + 7f);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_nav_find_off, null);
+        new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .draggable(false)
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap1));
 
         sbPorag.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                aMap.removecache();
                 tvKm.setText("范围"+(progress/10)+"km");
-//                moveMapToPositon(longitude, latitude, cityZoomLevel + 5-(progress/10));
+//                moveMapToPositon(longitude, latitude, cityZoomLevel);
+                if (circle!=null){
+                    circle.remove();
+                }
                 LatLng latLng = new LatLng(latitude,longitude);
-                aMap.addCircle(new CircleOptions().
-                        center(latLng).
-                        radius(1000).
-                        fillColor(Color.argb(1, 1, 1, 1)).
-                        strokeColor(Color.argb(1, 1, 1, 1)).
-                        strokeWidth(progress*10));
+                circleOptions = new CircleOptions();
+                circleOptions.center(latLng);
+                circleOptions.strokeColor(Color.argb(50, 255, 0, 0));
+                circleOptions.strokeWidth(10);
+                circleOptions.radius(progress*100);
+                circle = aMap.addCircle(circleOptions);
             }
 
             @Override
@@ -204,7 +216,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
             }
         });
-
+//        Circle circle = aMap.addCircle(circleOptions);
+//                circle.remove();
     }
 
     private void initMap() {

@@ -1,104 +1,66 @@
 package com.kingyon.elevator.entities;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class AdNoticeWindowEntity {
+    
+        /**
+         * id : 24
+         * timestamp : null
+         * createAccount : czh
+         * createAccountName : null
+         * createTime : null
+         * name : SaaS
+         * isPut : 0
+         * urlImage : http://cdn.tlwgz.com/FlK1Jw7s2ny2dbYN1352P-fIoGyP
+         * urlLink : http://test.pddtv.cn
+         * position : 0
+         * type : 0
+         * isDelete : 0
+         * updateAccount : null
+         * updateAccountName : null
+         * updateTime : null
+         * popText : null
+         */
+        
+        public int id;
+        public String timestamp;
+        public String createAccount;
+        public String createAccountName;
+        public String createTime;
+        public String name;
+        public int isPut;
+        public String urlImage;
+        public String urlLink;
+        public int position;
+        public int type;
+        public int isDelete;
+        public String updateAccount;
+        public String updateAccountName;
+        public String updateTime;
+        public String popText;
 
-
-    /**
-     * id : 1
-     * position : HOME
-     * showWay : 1
-     * showType : 2
-     * showContent : http://cdn.tlwgz.com/Picture/20200116/1579172206VvlOdtEw.jpg
-     * link : false
-     * linkUrl :
-     * status : true
-     * createAccount : null
-     * createTime : 1581499993000
-     * modifyAccount : null
-     * modifyTime : null
-     * isDelete : null
-     */
-
-    private int id;
-    private String position;
-    private int showWay;
-    private int showType;
-    private String showContent;
-    private boolean link;
-    private String linkUrl;
-    private boolean status;
-    private long createTime;
-
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "AdNoticeWindowEntity{" +
+                "id=" + id +
+                ", timestamp='" + timestamp + '\'' +
+                ", createAccount='" + createAccount + '\'' +
+                ", createAccountName='" + createAccountName + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", name='" + name + '\'' +
+                ", isPut=" + isPut +
+                ", urlImage='" + urlImage + '\'' +
+                ", urlLink='" + urlLink + '\'' +
+                ", position=" + position +
+                ", type=" + type +
+                ", isDelete=" + isDelete +
+                ", updateAccount='" + updateAccount + '\'' +
+                ", updateAccountName='" + updateAccountName + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", popText='" + popText + '\'' +
+                '}';
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public int getShowWay() {
-        return showWay;
-    }
-
-    public void setShowWay(int showWay) {
-        this.showWay = showWay;
-    }
-
-    public int getShowType() {
-        return showType;
-    }
-
-    public void setShowType(int showType) {
-        this.showType = showType;
-    }
-
-    public String getShowContent() {
-        return showContent;
-    }
-
-    public void setShowContent(String showContent) {
-        this.showContent = showContent;
-    }
-
-    public boolean isLink() {
-        return link;
-    }
-
-    public void setLink(boolean link) {
-        this.link = link;
-    }
-
-    public String getLinkUrl() {
-        return linkUrl;
-    }
-
-    public void setLinkUrl(String linkUrl) {
-        this.linkUrl = linkUrl;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-
 }

@@ -147,7 +147,6 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             case "wsq":
 //               社区
                 if (queryRecommendEntity.image!=null) {
-                    LogUtils.e(queryRecommendEntity.toString());
                     List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
                     RecyclerView recyclerView = new RecyclerView(context);
                     ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
@@ -287,7 +286,12 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             @Override
             public void onClick(View v) {
 //                SharedUtils.shared(context,"内容","http://www.gzonehr.cn/","标题");
-                SharedUtils.shared(context,shareDialog,queryRecommendEntity.content,"www.baidu.com",queryRecommendEntity.title,false);
+                if (queryRecommendEntity.videoHorizontalVertical==1) {
+                    SharedUtils.shared(context, shareDialog, queryRecommendEntity.content, queryRecommendEntity.video, queryRecommendEntity.title, true);
+                }else {
+                    SharedUtils.shared(context, shareDialog, queryRecommendEntity.content, "www.baidu.com", queryRecommendEntity.title, false);
+
+                }
             }
         });
 
@@ -304,7 +308,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                         deleteShareDialog.show();
                     }else {
                         /*举报*/
-                        ReportShareDialog reportShareDialog = new ReportShareDialog(context,queryRecommendEntity.id,HOME_CONTENT);
+                        ReportShareDialog reportShareDialog = new ReportShareDialog(context,queryRecommendEntity.id,HOME_CONTENT,"");
                         reportShareDialog.show();
                     }
                 }else {

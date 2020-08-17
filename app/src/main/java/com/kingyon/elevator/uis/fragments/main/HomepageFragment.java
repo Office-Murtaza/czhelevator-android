@@ -267,21 +267,21 @@ public class HomepageFragment extends BaseStateRefreshFragment implements Banner
                         if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
                             AdNoticeWindowEntity adNoticeWindowEntity = adNoticeWindowEntities.get(0);
                             LogUtils.d("广告数据：" + GsonUtils.toJson(adNoticeWindowEntity));
-                            if (adNoticeWindowEntity.getShowType() == 2) {
-                                GlideUtils.loadImage(getContext(), adNoticeWindowEntity.getShowContent(), main_notice_img);
+                            if (adNoticeWindowEntity.type == 2) {
+                                GlideUtils.loadImage(getContext(), adNoticeWindowEntity.urlImage, main_notice_img);
 //                                main_notice_img.setVisibility(View.VISIBLE);
-                                if (adNoticeWindowEntity.isLink()) {
+//                                if (adNoticeWindowEntity.isLink()) {
                                     main_notice_img.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.getLinkUrl());
-                                            LogUtils.d("点击跳转连接：" + adNoticeWindowEntity.getLinkUrl());
+                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.urlLink);
+                                            LogUtils.d("点击跳转连接：" + adNoticeWindowEntity.urlLink);
                                         }
                                     });
-                                } else {
-
-                                    main_notice_img.setOnClickListener(null);
-                                }
+//                                } else {
+//
+//                                    main_notice_img.setOnClickListener(null);
+//                                }
                             } else {
                                 main_notice_img.setVisibility(View.GONE);
                                 main_notice_img.setOnClickListener(null);

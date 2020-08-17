@@ -508,4 +508,26 @@ public class OrdinaryActivity {
         successDialog.show();
     }
 
+
+    /*2.0举报用户*/
+
+    public static void HttpreportUser(BaseActivity baseActivity,String beReportAccount,int reportContentId,IsSuccess isSuccess){
+        baseActivity.showProgressDialog(getString(R.string.wait),true);
+        NetService.getInstance().reportUser(beReportAccount, reportContentId)
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        isSuccess.isSuccess(false);
+                        baseActivity.hideProgress();
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        isSuccess.isSuccess(true);
+                        baseActivity.hideProgress();
+                    }
+                });
+
+    }
+
 }

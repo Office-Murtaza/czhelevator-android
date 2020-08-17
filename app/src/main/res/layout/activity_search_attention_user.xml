@@ -43,7 +43,8 @@
 
             <EditText
                 android:id="@+id/edit_search"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:hint="请输入用户ID或昵称……"
@@ -55,6 +56,14 @@
                 android:inputType="text"
                 android:lines="1"
                 />
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_login_clear"
+                android:layout_marginRight="@dimen/dp5"
+                android:visibility="gone"
+                ></ImageView>
 
         </LinearLayout>
 

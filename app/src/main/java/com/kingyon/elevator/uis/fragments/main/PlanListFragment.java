@@ -45,6 +45,7 @@ import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyToastUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.utilstwo.AdUtils;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -74,6 +75,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.blankj.utilcode.util.Utils.runOnUiThread;
+import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
 
 /**
@@ -138,7 +141,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     private Long startTime;
     private Long endTime;
     private boolean editMode;
-
+    private long videoTime = 15000;
     private PlanAdapter planAdapter;
 
     private DatePickerDialog startDialog;
@@ -148,14 +151,16 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
     SelectDateEntity selectDateEntity;
     String type;
     String orderComeEntiys;
+    String thoroew;
     int num = 0;
 
     List<CellItemEntity> cellItemEntities;
-    public static PlanListFragment newInstance(String planType,String type,String orderComeEntiys) {
+    public static PlanListFragment newInstance(String planType,String type,String orderComeEntiys,String thoroew) {
         Bundle args = new Bundle();
         args.putString(CommonUtil.KEY_VALUE_1, planType);
         args.putString(CommonUtil.KEY_VALUE_2, type);
         args.putString(CommonUtil.KEY_VALUE_3, orderComeEntiys);
+        args.putString(CommonUtil.KEY_VALUE_4, thoroew);
         PlanListFragment fragment = new PlanListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -173,7 +178,15 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             planType = getArguments().getString(CommonUtil.KEY_VALUE_1);
             type = getArguments().getString(CommonUtil.KEY_VALUE_2);
             orderComeEntiys = getArguments().getString(CommonUtil.KEY_VALUE_3);
+            thoroew = getArguments().getString(CommonUtil.KEY_VALUE_4);
         }
+
+        if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
+            videoTime = 15999;
+        } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
+            videoTime = 60999;
+        }
+
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         selectDateEntity = DateUtils.getLastSelectDateDay();
         super.init(savedInstanceState);
@@ -646,16 +659,34 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         if (isCertification()){
             DialogUtils.shwoCertificationDialog(getActivity());
         }else {
+            /*便民信息*/
             if (planType.equals(Constants.PLAN_TYPE.INFORMATION)) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString(CommonUtil.KEY_VALUE_1, planType);
-//            bundle.putLong(CommonUtil.KEY_VALUE_2, startTime);
-//            bundle.putLong(CommonUtil.KEY_VALUE_3, endTime);
-//            bundle.putParcelableArrayList(CommonUtil.KEY_VALUE_4, orderCells);
-//            startActivityForResult(OrderEditActivity.class, 8101, bundle);
                 MyActivityUtils.goActivity(getActivity(), ConfirmOrderActivity.class);
             } else {
-                MyActivityUtils.goPhotoPickerActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+                /*选择资源*/
+                if (type.equals("thoroew")){
+                    /*一键投放内容*/
+                    if (getVideoDuration(thoroew) > videoTime) {
+                        RuntimeUtils.selectVideoPath = thoroew;
+                        MyActivityUtils.goVideoEditorActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+                        getActivity().finish();
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                            Intent intent = new Intent(getActivity(), EditVideoActivity.class);
+                            intent.putExtra("path",thoroew);
+                            intent.putExtra("fromType",Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN);
+                            startActivity(intent);
+                            getActivity().finish();
+
+                            }
+                        });
+
+                    }
+                }else {
+                    MyActivityUtils.goPhotoPickerActivity(getActivity(), Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN, planType);
+                }
             }
         }
     }

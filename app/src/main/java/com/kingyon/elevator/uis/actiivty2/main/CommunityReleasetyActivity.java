@@ -129,6 +129,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     private ArrayList<PhotoEntry> pic_list = new ArrayList<>();
     ArrayList<String> list1 = new ArrayList<>();
     ArrayList<String> list2 = new ArrayList<>();
+    ArrayList<String> list3 = new ArrayList<>();
     @Override
     public int getContentViewId() {
         return R.layout.activity_community_releaset;
@@ -176,7 +177,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         });
 
         mAdapter = new ChoosetAdapter(this,mCameraSdkParameterInfo);
-        mAdapter.getDataList(list1);
+        mAdapter.getDataList(list1,list3);
         rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
         rcvListImg.setAdapter(mAdapter);
         rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
@@ -198,8 +199,9 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
         mAdapter.OnItmeClickListener(new ChoosetAdapter.OnItmeClickListener() {
             @Override
             public void onItemClicked(int position) {
+                LogUtils.e(mAdapter.getItemCount(),position);
+
                 if (position == mAdapter.getItemCount()-1) {
-                    pic_list.clear();
                     RxPermissions rxPermissions = new RxPermissions(CommunityReleasetyActivity.this);
                     rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .subscribe(aBoolean -> {
@@ -322,8 +324,8 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
 
     @Override
     public void onItemClicked(int position) {
+        LogUtils.e(mAdapter.getItemCount(),position);
         if (position == mAdapter.getItemCount()-1) {
-            pic_list.clear();
             RxPermissions rxPermissions = new RxPermissions(this);
             rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .subscribe(aBoolean -> {
@@ -387,7 +389,7 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetMessage(MessageWrap message) {
         LogUtils.e(message.message.size(),message.message.get(0),message.message.toString());
-//        pic_list.clear();
+        list1.clear();
 
         LogUtils.e("11111111111111111111");
         for (int c= 0;c<message.message.size();c++){
@@ -396,15 +398,19 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             pic_list.add(photoEntry);
             list1.add(message.message.get(c));
         }
+        list2.clear();
+        list3.clear();
         for (int i = 0;i<list1.size();i++){
             if (!list1.get(i).isEmpty()) {
                 list2.add(list1.get(i));
+                list3.add(list1.get(i));
             }
         }
         list2.add("");
-        LogUtils.e(list1.toString(),list2.toString());
-        mCameraSdkParameterInfo.setImage_list(list2);
-        mAdapter.getDataList(list2);
+        LogUtils.e(list1.toString(),list2.toString(),list3.toString());
+
+        mCameraSdkParameterInfo.setImage_list(list3);
+        mAdapter.getDataList(list2,list3);
         mAdapter.notifyDataSetChanged();
 
     }
@@ -427,11 +433,11 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
                         pic_list.add(img);
                     }
                 }
-                mAdapter = new ChoosetAdapter(this,mCameraSdkParameterInfo);
-                mAdapter.getDataList(list1);
-                rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
-                rcvListImg.setAdapter(mAdapter);
-                rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
+//                mAdapter = new ChoosetAdapter(this,mCameraSdkParameterInfo);
+//                mAdapter.getDataList(list1);
+//                rcvListImg.setLayoutManager(new GridLayoutManager(this, 3));
+//                rcvListImg.setAdapter(mAdapter);
+//                rcvListImg.addItemDecoration(new GridSpacingItemDecoration(3, 4, true));
                 LogUtils.e(pic_list.size(),pic_list.toString());
             }
         }

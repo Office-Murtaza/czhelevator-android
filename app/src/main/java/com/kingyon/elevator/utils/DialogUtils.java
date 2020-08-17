@@ -10,6 +10,7 @@ import com.kingyon.elevator.customview.CashTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
+import com.kingyon.elevator.customview.MainTextDialog;
 import com.kingyon.elevator.customview.MainWindowNoticeDialog;
 import com.kingyon.elevator.customview.OrderDetailedTipsDialog;
 import com.kingyon.elevator.customview.PlanSelectDateDialog;
@@ -51,6 +52,7 @@ public class DialogUtils {
     private OrderDetailedTipsDialog orderDetailedTipsDialog;
     private CashTipsDialog cashTipsDialog;
     private MainWindowNoticeDialog mainWindowNoticeDialog;
+    private MainTextDialog mainTextDialog;
 
     private DialogUtils() {
 
@@ -412,11 +414,44 @@ public class DialogUtils {
         }
     }
 
+
+
+
     public void hideMainWindowNoticeDialog() {
         try {
             if (mainWindowNoticeDialog != null) {
                 mainWindowNoticeDialog.dismiss();
                 mainWindowNoticeDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 2.0文字广告
+     *
+     * */
+    public void showMainText(Context context, AdNoticeWindowEntity adNoticeWindowEntity){
+        try {
+            if (mainTextDialog != null && mainTextDialog.isShowing()) {
+                mainTextDialog.dismiss();
+                mainTextDialog = null;
+            }
+            mainTextDialog = new MainTextDialog(context, adNoticeWindowEntity);
+            mainTextDialog.setCancelable(true);
+            mainTextDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideMainText() {
+        try {
+            if (mainTextDialog != null) {
+                mainTextDialog.dismiss();
+                mainTextDialog = null;
             }
         } catch (Exception e) {
             e.printStackTrace();

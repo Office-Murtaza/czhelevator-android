@@ -655,18 +655,21 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                 .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.d("弹窗广告加载失败：" + GsonUtils.toJson(ex));
+                        LogUtils.e("弹窗广告加载失败：" + GsonUtils.toJson(ex));
                     }
 
                     @Override
                     public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
                         if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
-                            LogUtils.d("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities));
+                            LogUtils.e("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities),adNoticeWindowEntities.toString());
                             AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
                             if (adNoticeWindowEntity != null) {
-                                if (adNoticeWindowEntity.getShowType() == 2) {
+                                LogUtils.e(adNoticeWindowEntity.type,"********************");
+                                if (adNoticeWindowEntity.type == 0) {
                                     //展示弹窗广告
                                     DialogUtils.getInstance().showMainWindowNoticeDialog(MainActivity.this, adNoticeWindowEntity);
+                                }else if (adNoticeWindowEntity.type == 1) {
+                                    DialogUtils.getInstance().showMainText(MainActivity.this, adNoticeWindowEntity);
                                 }
                             }
                         }

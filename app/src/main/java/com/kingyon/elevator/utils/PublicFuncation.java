@@ -154,7 +154,7 @@ public class PublicFuncation {
             if (lastId >= 0) {
                 int currentPosition = 0;
                 for (int i = 0; i < adNoticeWindowEntityList.size(); i++) {
-                    if (lastId == adNoticeWindowEntityList.get(i).getId()) {
+                    if (lastId == adNoticeWindowEntityList.get(i).id) {
                         currentPosition = i;
                         break;
                     }

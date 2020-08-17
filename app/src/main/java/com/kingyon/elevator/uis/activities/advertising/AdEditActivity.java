@@ -61,6 +61,8 @@ import static com.czh.myversiontwo.utils.Constance.PREVIEW_AD_ACTIVITY;
 /**
  * Created by GongLi on 2019/1/21.
  * Email：lc824767150@163.com
+ *
+ * czh 修改广告
  */
 
 public class AdEditActivity extends BaseSwipeBackActivity {

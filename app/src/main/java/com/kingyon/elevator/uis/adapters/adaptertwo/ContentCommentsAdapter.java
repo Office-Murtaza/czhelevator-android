@@ -116,7 +116,7 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                             deleteShareDialog.show();
                         }else {
                             /*举报*/
-                            ReportShareDialog reportShareDialog = new ReportShareDialog(context,commentListEntity.id,HOME_COMMENT);
+                            ReportShareDialog reportShareDialog = new ReportShareDialog(context,commentListEntity.id,HOME_COMMENT,"");
                             reportShareDialog.show();
                         }
                     }else {

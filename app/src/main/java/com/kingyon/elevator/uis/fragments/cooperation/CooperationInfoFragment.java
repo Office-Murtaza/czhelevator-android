@@ -227,14 +227,14 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                         if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
                             AdNoticeWindowEntity adNoticeWindowEntity = adNoticeWindowEntities.get(0);
                             LogUtils.d("弹窗提现提示数据：" + GsonUtils.toJson(adNoticeWindowEntity));
-                            if (adNoticeWindowEntity.getShowType() == 1) {
+                            if (adNoticeWindowEntity.type == 1) {
                                 //展示弹窗提示
-                                DialogUtils.getInstance().showCashTipsDialog(getContext(), adNoticeWindowEntity.getShowContent(), adNoticeWindowEntity.isLink(), new OnItemClick() {
+                                DialogUtils.getInstance().showCashTipsDialog(getContext(), adNoticeWindowEntity.name, true, new OnItemClick() {
                                     @Override
                                     public void onItemClick(int position) {
-                                        if (adNoticeWindowEntity.isLink()) {
-                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.getLinkUrl());
-                                        }
+//                                        if (adNoticeWindowEntity.isLink()) {
+                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.urlLink);
+//                                        }
                                     }
                                 });
                             }

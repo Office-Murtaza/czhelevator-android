@@ -39,7 +39,7 @@ public class GlideUtils {
     public static void loadDrawable(Context context, String url, final BitmapReadyCallBack callBack) {
         GlideApp.with(context)
                 .load(url)
-                .placeholder(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
                 .dontAnimate()
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -78,7 +78,7 @@ public class GlideUtils {
     public static void loadDrawable(Context context, File file, final BitmapReadyCallBack callBack) {
         GlideApp.with(context)
                 .load(file)
-                .placeholder(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
                 .dontAnimate()
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -121,10 +121,10 @@ public class GlideUtils {
     public static void loadImage(Context context, String url, ImageView imageView) {
 //        GlideApp.with(context)
 //                .load(url)
-//                .placeholder(R.drawable.img_loading)
-//                .error(R.drawable.img_loading)
+//                .placeholder(R.drawable.bg_picture_space_article)
+//                .error(R.drawable.bg_picture_space_article)
 //                .into(imageView);
-        loadImage(context, url, imageView, R.drawable.img_loading, R.drawable.img_loading);
+        loadImage(context, url, imageView, R.drawable.bg_picture_space_article, R.drawable.bg_picture_space_article);
     }
 
     public static void loadImage(Context context, String url, ImageView imageView, int holderRes, int errorRes) {
@@ -184,8 +184,8 @@ public class GlideUtils {
         GlideApp.with(context)
                 .load(url)
                 .apply(RequestOptions.bitmapTransform(new GlideRoundTransform(url, dp)))
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .into(imageView);
     }
     /***
@@ -199,8 +199,8 @@ public class GlideUtils {
         GlideApp.with(context)
                 .load(url)
                 .apply(options)
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .into(imageView);
     }
 
@@ -211,8 +211,8 @@ public class GlideUtils {
         GlideApp.with(context)
                 .load(url)
                 .apply(RequestOptions.bitmapTransform(new GlideBlurformation(context)))
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .into(imageView);
     }
 
@@ -222,8 +222,8 @@ public class GlideUtils {
     public static void loadImage(Context context, File file, ImageView imageView) {
         GlideApp.with(context)
                 .load(file)
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView);
     }
@@ -233,8 +233,8 @@ public class GlideUtils {
      */
     public static void loadCircleImage(Context context, String url, ImageView imageView) {
         GlideApp.with(context).load(url)
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .circleCrop()
                 .into(imageView);
@@ -297,7 +297,7 @@ public class GlideUtils {
 //     * 加载普通图片（http://或者file://）
 //     */
 //    public static void loadImage(Context context, String url, ImageView imageView) {
-//        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.img_loading).error(R.drawable.img_loading).into(imageView);
+//        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.bg_picture_space_article).error(R.drawable.bg_picture_space_article).into(imageView);
 //    }
 //
 //    /**
@@ -358,8 +358,8 @@ public class GlideUtils {
                         .set(FRAME_OPTION, MediaMetadataRetriever.OPTION_CLOSEST)
                         .transform(new VideoFrameBitmapTransformation(url, timeMillis)))
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -397,8 +397,8 @@ public class GlideUtils {
                         .set(FRAME_OPTION, MediaMetadataRetriever.OPTION_CLOSEST)
                         .transform(new VideoFrameBitmapTransformation(url, timeMillis)))
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_loading)
+                .placeholder(R.drawable.bg_picture_space_article)
+                .error(R.drawable.bg_picture_space_article)
                 .dontAnimate()
                 .into(imageView);
     }

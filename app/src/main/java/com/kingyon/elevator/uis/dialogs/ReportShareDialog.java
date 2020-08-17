@@ -21,13 +21,15 @@ public class ReportShareDialog extends Dialog implements View.OnClickListener{
     protected BaseActivity mContext;
     protected int objId;
     protected String reportType;
+    protected String otherUserAccount;
     View share_btn_cancel,tv_delete;
     protected ProgressDialog promotWaitBar;
-    public ReportShareDialog(@NonNull BaseActivity context,int objId,String reportType) {
+    public ReportShareDialog(@NonNull BaseActivity context,int objId,String reportType,String otherUserAccount) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.mContext = context;
         this.objId = objId;
         this.reportType = reportType;
+        this.otherUserAccount = otherUserAccount;
         setContentView(getLayoutId());
         Window window = getWindow();
         if (window != null) {
@@ -71,8 +73,13 @@ public class ReportShareDialog extends Dialog implements View.OnClickListener{
     public void onClick(View v) {
         int id = v.getId();
         if (id == com.kingyon.library.social.R.id.tv_1) {
-            ReportContentShareDialog reportContentShareDialog = new ReportContentShareDialog(mContext,objId,reportType);
-            reportContentShareDialog.show();
+            if (reportType.equals("USER")){
+                UsersReportDialog usersReportDialog = new UsersReportDialog(mContext,otherUserAccount);
+                usersReportDialog.show();
+            }else {
+                ReportContentShareDialog reportContentShareDialog = new ReportContentShareDialog(mContext, objId, reportType);
+                reportContentShareDialog.show();
+            }
             dismiss();
         } else if (id == com.kingyon.library.social.R.id.share_btn_cancel) {
             dismiss();

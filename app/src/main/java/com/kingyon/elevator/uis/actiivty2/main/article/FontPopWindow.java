@@ -84,8 +84,8 @@ public class FontPopWindow extends PopupWindow implements View.OnClickListener {
 //        int offsetX = Math.abs(getContentView().getMeasuredWidth()-view.getWidth()) / 2;
 //        int offsetY = -(getContentView().getMeasuredHeight()+view.getHeight());
 //       showAsDropDown(view, offsetX, offsetY, Gravity.START);
-//        showAsDropDown(view, Math.abs((view.getWidth() - getWidth()) / 2), 220);
-        showAtLocation(view, Gravity.BOTTOM | Gravity.RIGHT, 400, 250);
+        showAsDropDown(view, Math.abs((view.getWidth() - getWidth()) / 2), 220);
+//        showAtLocation(view, Gravity.BOTTOM | Gravity.RIGHT, 400, 250);
     }
 
 

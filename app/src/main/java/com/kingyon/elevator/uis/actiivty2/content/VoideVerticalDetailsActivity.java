@@ -234,7 +234,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                                 deleteShareDialog.show();
                             } else {
                                 /*举报*/
-                                ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT);
+                                ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT,"");
                                 reportShareDialog.show();
                             }
                         } else {
@@ -328,7 +328,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                     break;
                 case R.id.img_share:
                     /*分享*/
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www。baidu.com", recommendEntity.title,true);
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, recommendEntity.video, recommendEntity.title,true);
                     break;
                 case R.id.input_comment:
                     /*评论*/

@@ -1,19 +1,30 @@
 package com.kingyon.elevator.utils.utilstwo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.czh.myversiontwo.utils.QuickClickUtils;
+import com.kingyon.elevator.R;
+import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NewsSharedEntity;
+import com.kingyon.elevator.uis.activities.advertising.AdEditActivity;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
+import com.kingyon.elevator.videocrop.EditVideoActivity;
+import com.kingyon.elevator.view.IsSrcSuccess;
 import com.kingyon.library.social.BaseSharePramsProvider;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.muzhi.camerasdk.model.CameraSdkParameterInfo;
+import com.zhihu.matisse.utils.FFmpet;
+
+import java.io.File;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
+import static com.kingyon.elevator.photopicker.UtilsHelper.getString;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
@@ -40,9 +51,21 @@ public class SharedUtils {
                         @Override
                         public void setOncilk(String type) {
                             if (isToken(context)) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("type","ad");
-                                context.startActivity(PlanNewFragment.class,bundle1);
+                                if (type.equals("THOROEW")) {
+
+                                    fileDown(context, shareUrl, "adrhorew.mp4", new IsSrcSuccess() {
+                                        @Override
+                                        public void onSuccess(String outpath) {
+                                            if (!outpath.isEmpty()){
+                                                LogUtils.e(outpath);
+                                                Bundle bundle1 = new Bundle();
+                                                bundle1.putString("type", "thoroew");
+                                                bundle1.putString("thoroew", outpath);
+                                                context.startActivity(PlanNewFragment.class, bundle1);
+                                            }
+                                        }
+                                    });
+                                }
                             }else {
                                 ActivityUtils.setLoginActivity();
                             }
@@ -54,5 +77,30 @@ public class SharedUtils {
         }catch (Exception e){
             ToastUtils.showToast(context,"分享没有准备好 请稍等再试",1000);
         }
+    }
+
+
+
+    public static  void fileDown(BaseActivity baseActivity, String urlVideo, String name, IsSrcSuccess isSrcSuccess) {
+        baseActivity.showProgressDialog(getString(R.string.wait),false);
+        DownloadManager.download(urlVideo, baseActivity.getExternalCacheDir() + File.separator + "/PDD/",
+                name, new DownloadManager.OnDownloadListener() {
+                    @Override
+                    public void onSuccess(File file) {
+                        baseActivity.hideProgress();
+                        LogUtils.e(file.toString(),file);
+                        isSrcSuccess.onSuccess(file.toString());
+                    }
+                    @Override
+                    public void onProgress(int progress) {
+                        LogUtils.e(progress);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        LogUtils.e("onFail");
+                    }
+                });
+
     }
 }

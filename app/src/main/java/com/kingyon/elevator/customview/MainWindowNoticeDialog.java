@@ -49,16 +49,18 @@ public class MainWindowNoticeDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_main_window_notice_dialog);
         ButterKnife.bind(this);
-        if (adNoticeWindowEntity!=null&&adNoticeWindowEntity.getShowType()==2) {
+        if (adNoticeWindowEntity!=null&&adNoticeWindowEntity.type==0) {
             DataSharedPreferences.saveLong(DataSharedPreferences.LAST_AD_TIME,System.currentTimeMillis());
-            DataSharedPreferences.saveInt(DataSharedPreferences.LAST_AD_ID,adNoticeWindowEntity.getId());
-            if (adNoticeWindowEntity.isLink()) {
+            DataSharedPreferences.saveInt(DataSharedPreferences.LAST_AD_ID,adNoticeWindowEntity.id);
+            if (adNoticeWindowEntity.urlLink!=null) {
                 iv_ad_image.setOnClickListener(view -> {
-                    MyActivityUtils.goActivity(context, WebViewActivity.class,adNoticeWindowEntity.getLinkUrl());
+                    MyActivityUtils.goActivity(context, WebViewActivity.class,adNoticeWindowEntity.urlLink);
                     DialogUtils.getInstance().hideMainWindowNoticeDialog();
                 });
+            }else {
+                DialogUtils.getInstance().hideMainWindowNoticeDialog();
             }
-            GlideUtils.loadImage(context,adNoticeWindowEntity.getShowContent(),iv_ad_image);
+            GlideUtils.loadImage(context,adNoticeWindowEntity.urlImage,iv_ad_image);
         }else {
             DialogUtils.getInstance().hideMainWindowNoticeDialog();
         }

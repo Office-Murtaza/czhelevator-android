@@ -83,6 +83,7 @@ public class DownloadApkUtil {
             baseActivity.checkPermission(new BaseActivity.CheckPermListener() {
                 @Override
                 public void agreeAllPermission() {
+                    /*检查到新版本*/
                     showHasNewVersionDialog(baseActivity, versionInfo);
                 }
             }, "检测到更新的版本，要自动下载安装新版本，请给予如下权限", perms);

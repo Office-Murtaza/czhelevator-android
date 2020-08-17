@@ -34,6 +34,7 @@ import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.VideoUtils;
+import com.kingyon.elevator.utils.utilstwo.WebViewUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.rex.editor.view.RichEditor;
@@ -609,13 +610,21 @@ public class ArticleReleaseActivity extends BaseActivity {
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
                     String atAccount = String.format(TOP_USER, user.followerAccount, user.nickname, user.nickname);
                     LogUtils.e(atAccount);
-                    richEditor.setHtml(richEditor.getHtml() + atAccount);
+                    if (richEditor.getHtml()!=null) {
+                        richEditor.setHtml(richEditor.getHtml() + atAccount);
+                    }else {
+                        richEditor.setHtml( atAccount);
+                    }
                     break;
                 case REQUEST_TAG_APPEND:
                     QueryTopicEntity.PageContentBean tag = (QueryTopicEntity.PageContentBean) data.getSerializableExtra(TagList.RESULT_TAG);
                     String newTopic = String.format(TOP_TAG, tag.getId(), tag.getTitle(), tag.getTitle());
                     LogUtils.e(newTopic);
-                    richEditor.setHtml(richEditor.getHtml() + newTopic);
+                    if (richEditor.getHtml()!=null) {
+                        richEditor.setHtml(richEditor.getHtml() + newTopic);
+                    }else {
+                        richEditor.setHtml( newTopic);
+                    }
                     break;
 
             }

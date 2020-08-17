@@ -33,6 +33,7 @@ public class ChoosetAdapter extends RecyclerView.Adapter<ChoosetAdapter.ViewHold
 
     private BaseActivity mContext;
     ArrayList<String> list = new ArrayList<>();
+    ArrayList<String> list2 = new ArrayList<>();
     private CameraSdkParameterInfo mCameraSdkParameterInfo;
     EditOniclk editOniclk;
     private OnItmeClickListener mlistener;
@@ -49,8 +50,9 @@ public class ChoosetAdapter extends RecyclerView.Adapter<ChoosetAdapter.ViewHold
         return new ViewHolder(view);
     }
 
-    public void getDataList(ArrayList<String> list) {
+    public void getDataList(ArrayList<String> list,ArrayList<String> list2) {
         this.list = list;
+        this.list2 = list2;
     }
     public List<String> getData(){
         return list.subList(0,list.size());
@@ -66,6 +68,7 @@ public class ChoosetAdapter extends RecyclerView.Adapter<ChoosetAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     mlistener.onItemClicked(position);
+                    LogUtils.e(position,list.size());
                 }
             });
         } else {
@@ -77,22 +80,25 @@ public class ChoosetAdapter extends RecyclerView.Adapter<ChoosetAdapter.ViewHold
             holder.imgDeldte.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogUtils.e(position);
                     list.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeChanged(position,list.size()-position);
+//                    notifyItemRangeChanged(position,list.size()-position);
+                    notifyDataSetChanged();
                     mCameraSdkParameterInfo.getImage_list().remove(position);
 //                    删除
+//                    mContext.showToast("开发中");
                 }
             });
             holder.tvImageEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    编辑
-                    mCameraSdkParameterInfo.setImage_list(list);
+                    mCameraSdkParameterInfo.setImage_list(list2);
                     if (editOniclk!=null) {
-                        editOniclk.editOniclk(list,position);
+                        editOniclk.editOniclk(list2,position);
                     }
-
+//                    mContext.showToast("开发中");
                 }
             });
         }

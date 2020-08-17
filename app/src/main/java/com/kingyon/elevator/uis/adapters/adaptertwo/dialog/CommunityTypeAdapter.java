@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.PointClassicEntiy;
+import com.kingyon.elevator.entities.entities.ReportContent;
 import com.kingyon.elevator.uis.dialogs.CommunityTypeDialog;
 import com.kingyon.elevator.uis.dialogs.CommunityTypeTwoDialog;
 
@@ -31,7 +32,7 @@ public class CommunityTypeAdapter extends RecyclerView.Adapter<CommunityTypeAdap
     ConentEntity<PointClassicEntiy> pointClassicEntiyConentEntity;
     public List<PointClassicEntiy.ChildBean> child;
     ItmeOnclick itmeOnclick;
-    public CommunityTypeAdapter(Context context,ConentEntity<PointClassicEntiy> pointClassicEntiyConentEntity,ItmeOnclick itmeOnclick) {
+    public CommunityTypeAdapter(Context context, ConentEntity<PointClassicEntiy> pointClassicEntiyConentEntity, ItmeOnclick itmeOnclick) {
         this.context = context;
         this.itmeOnclick = itmeOnclick;
         this.pointClassicEntiyConentEntity = pointClassicEntiyConentEntity;
@@ -46,20 +47,20 @@ public class CommunityTypeAdapter extends RecyclerView.Adapter<CommunityTypeAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            PointClassicEntiy pointClassicEntiy = pointClassicEntiyConentEntity.getContent().get(position);
-            holder.tvTitle.setText(pointClassicEntiy.pointName);
-            holder.tvTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                  itmeOnclick.itmeOnclick(pointClassicEntiy.child,pointClassicEntiy);
-                }
-            });
+        PointClassicEntiy pointClassicEntiy = pointClassicEntiyConentEntity.getContent().get(position);
+        holder.tvTitle.setText(pointClassicEntiy.pointName);
+        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itmeOnclick.itmeOnclick(pointClassicEntiy.child,pointClassicEntiy);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-       return pointClassicEntiyConentEntity.getContent().size();
+        return pointClassicEntiyConentEntity.getContent().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

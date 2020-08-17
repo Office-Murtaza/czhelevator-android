@@ -72,7 +72,6 @@ public class AttentionFragment extends FoundFragemtUtils {
 
 
     private void httpQueryAttention(int page, String title, String orderBy) {
-        LogUtils.e(page, title, orderBy);
 //        showProgressDialog("请稍后...");
         NetService.getInstance().setQueryAttention(page, title, orderBy)
                 .compose(this.bindLifeCycle())

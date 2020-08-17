@@ -122,6 +122,7 @@ import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendTopEntity;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.entities.entities.RecommendHouseEntiy;
+import com.kingyon.elevator.entities.entities.ReportContent;
 import com.kingyon.elevator.entities.entities.StatisticalEnity;
 import com.kingyon.elevator.entities.entities.TopicLabelEntity;
 import com.kingyon.elevator.entities.entities.UserCashTypeListEnity;
@@ -560,7 +561,7 @@ public class NetService {
     }
 
     public Observable<VersionEntity> getLatestVersion(Context context) {
-        return addSchedulers(getApi().getLatestVersion("ANDROID", AFUtil.getVersionCode(context)));
+        return addSchedulers(getApi().getLatestVersion("ANDROID"/*, AFUtil.getVersionCode(context)*/));
     }
 
     public Observable<PageListEntity<IncomeRecordEntity>> incomeRecordsList(String type, Long deviceId
@@ -682,6 +683,15 @@ public class NetService {
     /*2.0忘记密码*/
     public Observable<String> resetPassword(String phone, String vaildCode, String newPassword) {
         return addSchedulers(getApi().resetPassword(phone, vaildCode, newPassword));
+    }
+
+    /*2.0举报内容*/
+    public Observable<List<ReportContent>> getReportContent(){
+        return addSchedulers(getApi().getReportContent());
+    }
+    /*2.0举报用户*/
+    public Observable<String> reportUser(String beReportAccount,int reportContentId){
+        return addSchedulers(getApi().reportUser(beReportAccount, reportContentId));
     }
 
     public Observable<String> changePassword(String oldPassword, String newPasswrod) {

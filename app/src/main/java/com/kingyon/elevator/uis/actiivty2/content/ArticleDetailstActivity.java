@@ -346,7 +346,7 @@ public class ArticleDetailstActivity extends BaseActivity {
                         deleteShareDialog.show();
                     } else {
                         /*举报*/
-                        ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT);
+                        ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT,"");
                         reportShareDialog.show();
                     }
                 } else {

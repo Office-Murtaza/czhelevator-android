@@ -72,6 +72,7 @@ public class CodeType {
 
   public static final  String HOME_CONTENT  = "CONTENT";
   public static final  String HOME_COMMENT  = "COMMENT";
+  public static final  String HOME_USER  = "USER";
 
  /**
   * 获取用户类型attention/fans/friend

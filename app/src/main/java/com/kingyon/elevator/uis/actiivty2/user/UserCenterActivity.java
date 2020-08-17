@@ -48,6 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
+import static com.czh.myversiontwo.utils.CodeType.HOME_USER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
 import static com.czh.myversiontwo.utils.StringContent.ATTENTION_TO_FANS;
 
@@ -350,7 +351,7 @@ public class UserCenterActivity extends BaseActivity {
                     startActivity(UserProfileActivity.class);
                 } else {
                     /*举报*/
-                    ReportShareDialog reportShareDialog = new ReportShareDialog(this, 1, HOME_CONTENT);
+                    ReportShareDialog reportShareDialog = new ReportShareDialog(this, 1, HOME_USER,otherUserAccount);
                     reportShareDialog.show();
                 }
                 break;
