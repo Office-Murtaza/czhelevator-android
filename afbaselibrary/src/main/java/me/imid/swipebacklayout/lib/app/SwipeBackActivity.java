@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.leo.afbaselibrary.uis.activities.BaseActivity;
+
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 
@@ -21,6 +23,7 @@ public class SwipeBackActivity extends AppCompatActivity implements SwipeBackAct
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
     }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

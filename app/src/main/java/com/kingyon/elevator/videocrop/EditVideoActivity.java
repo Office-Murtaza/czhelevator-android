@@ -502,8 +502,10 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 rl_title.setVisibility(View.VISIBLE);
                 ll_bottom.setVisibility(View.VISIBLE);
                 rl_jq.setVisibility(View.INVISIBLE);
+
                 seekBar.setSelectedMinValue(minNew);
                 seekBar.setSelectedMaxValue(maxNew);
+
                 LogUtils.e(minNew,maxNew);
             }
         });

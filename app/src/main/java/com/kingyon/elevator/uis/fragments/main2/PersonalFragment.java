@@ -21,6 +21,8 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.entities.entities.FingerprintEntiy;
+import com.kingyon.elevator.entities.entities.SearchEntuy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.Net;
 import com.kingyon.elevator.nets.NetService;
@@ -40,6 +42,8 @@ import com.kingyon.elevator.utils.RoleUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.GlideUtils;
+
+import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -211,6 +215,7 @@ public class PersonalFragment extends BaseFragment implements SwipeRefreshHelper
             tvTCurrency.setText("T币：￥" + user.getUserCenterAttr().tlwMoney + "");
             tvIntegral.setText("积分：" + user.getUserCenterAttr().integral + "");
             DataSharedPreferences.saveNickName(user.getNikeName());
+            DataSharedPreferences.savePortrait(user.getAvatar());
             LogUtils.e(user.getRole());
             authStatus = user.getAuthStatus() != null ? user.getAuthStatus() : "";
             switch (authStatus) {
@@ -448,6 +453,8 @@ public class PersonalFragment extends BaseFragment implements SwipeRefreshHelper
                 break;
             case R.id.ll_activity:
                 /*活动*/
+//                DataSupport.deleteAll(FingerprintEntiy.class);
+
                 break;
             case R.id.ll_function:
                 break;

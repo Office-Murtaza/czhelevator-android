@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -18,13 +19,13 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
  * Instructions:他人举报
  */
 public class ReportShareDialog extends Dialog implements View.OnClickListener{
-    protected BaseActivity mContext;
+    protected Context mContext;
     protected int objId;
     protected String reportType;
     protected String otherUserAccount;
     View share_btn_cancel,tv_delete;
     protected ProgressDialog promotWaitBar;
-    public ReportShareDialog(@NonNull BaseActivity context,int objId,String reportType,String otherUserAccount) {
+    public ReportShareDialog(@NonNull Context context, int objId, String reportType, String otherUserAccount) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.mContext = context;
         this.objId = objId;

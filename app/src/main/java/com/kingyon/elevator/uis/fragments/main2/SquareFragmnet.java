@@ -10,9 +10,19 @@ import android.view.ViewOutlineProvider;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
+import com.kingyon.elevator.utils.DialogUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.MyLoader;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -131,5 +141,48 @@ public class SquareFragmnet extends BaseFragment implements OnBannerListener {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            if (DataSharedPreferences.getSquareDialog()){
+                loadWindowAd();
+            }else {
+                if (PublicFuncation.isIntervalSixMin()) {
+                    loadWindowAd();
+                }
+            }
+        }
+    }
 
+    /**
+     * 加载弹窗通知
+     */
+    private void loadWindowAd() {
+        NetService.getInstance().getTipsList("1")
+                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e("弹窗广告加载失败：" + GsonUtils.toJson(ex));
+                    }
+
+                    @Override
+                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
+                        if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
+                            DataSharedPreferences.saveSquareDialog(false);
+                            LogUtils.e("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities),adNoticeWindowEntities.toString());
+                            AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
+                            if (adNoticeWindowEntity != null) {
+                                LogUtils.e(adNoticeWindowEntity.type,"********************");
+                                if (adNoticeWindowEntity.type == 0) {
+                                    //展示弹窗广告
+                                    DialogUtils.getInstance().showMainWindowNoticeDialog(getActivity(), adNoticeWindowEntity);
+                                }else if (adNoticeWindowEntity.type == 1) {
+                                    DialogUtils.getInstance().showMainText(getActivity(), adNoticeWindowEntity);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
 }

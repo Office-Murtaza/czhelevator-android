@@ -65,13 +65,19 @@
             android:paddingLeft="@dimen/spacing_default"
             android:paddingRight="@dimen/spacing_twelve">
 
-            <ImageView
+            <TextView
                 android:id="@+id/img_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:paddingTop="@dimen/spacing_four"
-                tools:src="@drawable/ic_coupon_used" />
+                android:layout_gravity="right"
+                android:background="@drawable/ad_preferential"
+                android:paddingBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
+                android:paddingTop="@dimen/dp5"
+                android:text="已使用"
+                android:textColor="#ACACC5"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

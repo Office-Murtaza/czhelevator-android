@@ -14,12 +14,16 @@
         >
 
         <!--刷新-->
+        <com.leo.afbaselibrary.widgets.StateLayout
+            android:id="@+id/stateLayout"
+            android:layout_below="@+id/my_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/smart_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/my_action_bar"
             app:srlEnableAutoLoadMore="true"
             app:srlEnableRefresh="true">
 
@@ -63,7 +67,6 @@
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="手把手教你绝美的广告拍摄技巧"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/sp_18"
                         android:textStyle="bold"
@@ -82,7 +85,7 @@
                         android:id="@+id/tv_like_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12 点赞    6 评论     "
+                        android:text="0 点赞    0 评论     "
                         android:textColor="#ffb4b3b3"
                         android:textSize="@dimen/sp_12"
                         />
@@ -97,7 +100,7 @@
                         android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3天前"
+                        android:text="0天前"
                         android:textColor="#ffb4b3b3"
                         android:textSize="@dimen/sp_12"
                         />
@@ -172,12 +175,16 @@
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+        </com.leo.afbaselibrary.widgets.StateLayout>
+
         <RelativeLayout
+            android:id="@+id/rl_gj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:paddingRight="@dimen/dp10"
             android:paddingLeft="@dimen/dp10"
+            android:visibility="gone"
             >
 
 

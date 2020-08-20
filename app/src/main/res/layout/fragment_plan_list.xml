@@ -246,17 +246,21 @@
 
                     <TextView
                         android:id="@+id/tv_ensure"
-                        android:layout_width="@dimen/dp_160"
-                        android:layout_height="@dimen/dp_40"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dp_15"
                         android:background="@drawable/bg_six_btn"
+                        android:enabled="true"
                         android:gravity="center"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="@dimen/dp30"
+                        android:paddingRight="@dimen/dp30"
                         android:text="下单"
                         android:textColor="#ffffffff"
                         android:textSize="@dimen/txt_big_content"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"  />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -293,13 +297,15 @@
                     android:id="@+id/tv_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_default"
-                    android:layout_marginRight="@dimen/spacing_default"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/bg_six_btn"
-                    android:paddingLeft="@dimen/spacing_twenty_four"
-                    android:paddingTop="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_twenty_four"
-                    android:paddingBottom="@dimen/spacing_small"
+                    android:enabled="true"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="@dimen/dp30"
+                    android:paddingRight="@dimen/dp30"
                     android:text="删除小区"
                     android:textColor="#ffffffff"
                     android:textSize="@dimen/txt_big_content"

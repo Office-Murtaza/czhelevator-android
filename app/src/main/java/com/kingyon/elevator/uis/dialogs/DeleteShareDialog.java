@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ import java.util.List;
  * Instructions:自己删除
  */
 public class DeleteShareDialog extends Dialog implements View.OnClickListener{
-    protected BaseActivity mContext;
+    protected Context mContext;
     View share_btn_cancel,tv_delete;
     protected ProgressDialog promotWaitBar;
     int objId;
@@ -37,7 +38,7 @@ public class DeleteShareDialog extends Dialog implements View.OnClickListener{
      * type 1 首页条目删除  2 内容详情删除  3 评论条目删除
      *
      * */
-    public DeleteShareDialog(@NonNull BaseActivity context, int objId,
+    public DeleteShareDialog(@NonNull Context context, int objId,
                              RecyclerView.Adapter attentionAdapter, String type, int position,
                              List<QueryRecommendEntity> conentEntity, List<CommentListEntity> conentEntity1) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);

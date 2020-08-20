@@ -7,6 +7,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.CommentEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
+import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.mvpbase.BasePresenter;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -24,26 +26,27 @@ public class NewsDetailsPresenter extends BasePresenter<NewsDetailsView> {
 
     private int startPosition = 0;
     private int size = 20;
-    private List<CommentEntity> commentEntities;
+    private List<CommentListEntity> commentEntities;
 
     public NewsDetailsPresenter(Context mContext) {
         super(mContext);
         commentEntities = new ArrayList<>();
     }
 
-    public List<CommentEntity> getCommentEntities() {
+    public List<CommentListEntity> getCommentEntities() {
         return commentEntities;
     }
 
-    public void loadCommentList(int reflashType, int newsId, int sort) {
-        if (reflashType == ReflashConstants.Refalshing) {
-            startPosition = 0;
+    public void loadCommentList( int newsId, int page) {
+        if (page == 1) {
+            commentEntities.clear();
         }
-        NetService.getInstance().getCommentList(newsId, startPosition, size, sort)
-                .subscribe(new CustomApiCallback<List<CommentEntity>>() {
+        NetService.getInstance().setQueryListComment(page,newsId)
+                .subscribe(new CustomApiCallback<ConentEntity<CommentListEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         if (isViewAttached()) {
+//                            getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
                             if (startPosition == 0) {
                                 getView().showErrorView();
@@ -52,19 +55,27 @@ public class NewsDetailsPresenter extends BasePresenter<NewsDetailsView> {
                     }
 
                     @Override
-                    public void onNext(List<CommentEntity> incomeDetailsEntities) {
+                    public void onNext(ConentEntity<CommentListEntity> incomeDetailsEntities) {
                         if (isViewAttached()) {
                             getView().hideProgressDailog();
-                            if (reflashType == ReflashConstants.Refalshing) {
-                                commentEntities = incomeDetailsEntities;
-                            } else {
-                                commentEntities.addAll(incomeDetailsEntities);
-                                if (incomeDetailsEntities.size() == 0) {
-                                    getView().loadMoreIsComplete();
-                                }
+//                            if (page == 1) {
+//                                commentEntities = incomeDetailsEntities.getContent();
+//                            } else {
+                            if (incomeDetailsEntities.getContent().size() == 0) {
+                                getView().loadMoreIsComplete();
                             }
-                            startPosition = commentEntities.size();
-                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.size());
+                            for (int i = 0; i < incomeDetailsEntities.getContent().size(); i++) {
+                                CommentListEntity commentListEntity = new CommentListEntity();
+                                commentListEntity = incomeDetailsEntities.getContent().get(i);
+                                commentEntities.add(commentListEntity);
+                            }
+//                                commentEntities.addAll(incomeDetailsEntities.getContent());
+
+//                            }
+//                            commentEntities.addAll(incomeDetailsEntities.getContent());
+
+                            startPosition =incomeDetailsEntities.getTotalPages();
+                            LogUtils.d("下一次加载更多开始位置：" + startPosition, "数据长度：" + incomeDetailsEntities.getContent().size());
                             getView().showListData(commentEntities);
                         }
                     }
@@ -77,8 +88,8 @@ public class NewsDetailsPresenter extends BasePresenter<NewsDetailsView> {
      * @param newsId
      * @param content
      */
-    public void addNewsComment(Long newsId, String content) {
-        NetService.getInstance().addComment(newsId, null, null, 1, content)
+    public void addNewsComment(int newsId, String content) {
+        NetService.getInstance().setComment(newsId, 0,  content)
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -98,7 +109,6 @@ public class NewsDetailsPresenter extends BasePresenter<NewsDetailsView> {
                 });
 
     }
-
 
     /**
      * 点赞评论

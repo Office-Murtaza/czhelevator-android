@@ -11,22 +11,24 @@
     tools:context=".uis.activities.NewsDetailsActivity">
 
 
-    <com.kingyon.elevator.customview.MyActionBar
-        android:id="@+id/my_action_bar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:righticon="@mipmap/details_dingbufenxianganniu"
-        app:title="新闻" />
 
+    <include
+        android:id="@+id/my_action_bar"
+        layout="@layout/layout2_content_top"/>
+
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_below="@+id/my_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/my_action_bar"
         android:layout_marginBottom="40dp"
         app:srlEnableAutoLoadMore="false"
-        app:srlEnableRefresh="false">
+        app:srlEnableRefresh="true">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -45,6 +47,78 @@
                     android:layout_height="3dp"
                     android:progressDrawable="@drawable/progeress_bar_style" />
 
+
+                <LinearLayout
+                    android:id="@+id/ll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="14dp"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp10"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_original"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="原创"
+                        android:textColor="#ffff3049"
+                        android:textSize="10sp"
+                        android:background="@drawable/bg_ad_original"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff333333"
+                        android:textSize="@dimen/sp_18"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="@dimen/dp10"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingBottom="@dimen/dp10"
+                    >
+
+
+                    <TextView
+                        android:id="@+id/tv_like_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 点赞    0 评论     "
+                        android:textColor="#ffb4b3b3"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0天前"
+                        android:textColor="#ffb4b3b3"
+                        android:textSize="@dimen/sp_12"
+                        />
+                </LinearLayout>
+
+
+
                 <WebView
                     android:id="@+id/webview"
                     android:layout_width="match_parent"
@@ -55,14 +129,15 @@
                     android:id="@+id/comment_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="33dp"
-                    android:layout_marginEnd="37dp"
                     android:orientation="vertical"
                     android:visibility="invisible">
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="44dp">
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp10"
+                        android:background="@drawable/bg_content_pl"
+                        >
 
                         <TextView
                             android:id="@+id/comment_count"
@@ -70,8 +145,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="全部评论(0)"
-                            android:textColor="#ff353432"
-                            android:textSize="19sp" />
+                            android:textColor="#ff333333"
+                            android:textSize="12sp"
+                         />
 
 
                         <TextView
@@ -83,17 +159,26 @@
                             android:drawableStart="@mipmap/details_paixutupiao"
                             android:text="按热度排序"
                             android:textColor="#ACA9AC"
-                            android:textSize="8sp" />
+                            android:textSize="8sp"
+                            android:visibility="gone"
+                            />
 
                     </FrameLayout>
 
-                    <com.kingyon.elevator.customview.NonScrollableListView
-                        android:id="@+id/comment_list"
+<!--                    <com.kingyon.elevator.customview.NonScrollableListView-->
+<!--                        android:id="@+id/comment_list"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:divider="@color/transparent"-->
+<!--                        android:dividerHeight="10dp"-->
+<!--                        android:listSelector="@color/transparent" />-->
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginTop="@dimen/dp10"
+                        android:id="@+id/ecv_list_pl"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@color/transparent"
-                        android:dividerHeight="10dp"
-                        android:listSelector="@color/transparent" />
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -101,6 +186,7 @@
         </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    </com.leo.afbaselibrary.widgets.StateLayout>
     <LinearLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
@@ -108,71 +194,13 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:visibility="gone"-->
-<!--            >-->
-
-<!--            <LinearLayout-->
-
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_toStartOf="@+id/iv_dianzan"-->
-<!--                android:background="@drawable/shape_comment_input_bg"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@color/transparent"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:hint="说两句"-->
-<!--                    android:maxLength="100"-->
-<!--                    android:maxLines="1"-->
-<!--                    android:textSize="14sp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="50dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="发送"-->
-<!--                    android:textColor="#ffeb7a12"-->
-<!--                    android:textSize="21sp" />-->
-<!--            </LinearLayout>-->
-
-
-<!--            <ImageView-->
-<!--                android:layout_width="24dp"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginStart="21dp"-->
-<!--                android:layout_toStartOf="@+id/iv_share_news"-->
-<!--                android:src="@mipmap/details_shoucanganniu" />-->
-
-<!--            <ImageView-->
-<!--          -->
-<!--                android:layout_width="24dp"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_alignParentEnd="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginStart="36dp"-->
-<!--                android:layout_marginEnd="14dp"-->
-<!--                android:src="@mipmap/details_fengxainganniu2" />-->
-
-
-
-<!--        </RelativeLayout>-->
 
         <RelativeLayout
+            android:id="@+id/rl_gj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp10"
+            android:visibility="gone"
             >
 
 
@@ -202,13 +230,13 @@
                 android:layout_height="@dimen/dp50"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="21dp"
-                android:layout_toLeftOf="@+id/iv_dianzan"
+                android:layout_toLeftOf="@+id/iv_like"
                 android:src="@mipmap/btn_big_collect" />
 
 
 
             <ImageView
-                android:id="@+id/iv_dianzan"
+                android:id="@+id/iv_like"
                 android:layout_width="@dimen/dp50"
                 android:layout_height="@dimen/dp50"
                 android:layout_centerVertical="true"
@@ -220,5 +248,7 @@
 
 
     </LinearLayout>
+
+
 
 </RelativeLayout>

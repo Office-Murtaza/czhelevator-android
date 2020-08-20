@@ -1,9 +1,11 @@
 package com.kingyon.elevator.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.application.App;
 import com.kingyon.elevator.application.AppContent;
@@ -12,7 +14,12 @@ import com.kingyon.elevator.entities.LatLonCache;
 import com.kingyon.elevator.entities.LocationEntity;
 import com.kingyon.elevator.entities.LoginResultEntity;
 import com.kingyon.elevator.entities.UserEntity;
+import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.nets.Net;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 /**
  * Created by gongli on 2017/7/17 17:39
@@ -60,6 +67,78 @@ public class DataSharedPreferences {
     /*保存文章草稿*/
     public static final String SAVE_MICRO_ARTICLE_DRAFT = "SAVE_MICRO_ARTICLE_DRAFT";
 
+    /*保存头像*/
+    public static final String SAVE_PORTRAIT = "SAVE_PORTRAIT";
+
+    /*保存发现弹窗*/
+    public static final String SAVE_DIALOG = "SAVE_DIALOG";
+
+    /*保存广场弹窗*/
+    public static final String SAVE_SQUARE_DIALOG = "SAVE_SQUARE_DIALOG";
+
+    /*保存合伙人弹窗*/
+    public static final String SAVE_COOPERATION_DIALOG = "SAVE_COOPERATION_DIALOG";
+
+    /*保存弹窗*/
+    public static void saveDialog(boolean saveDialog){
+        getPreferences().edit().putBoolean(SAVE_DIALOG, saveDialog).apply();
+    }
+    public static boolean getDialog() {
+        return getPreferences().getBoolean(SAVE_DIALOG, false);
+    }
+
+
+
+
+    /*保存弹窗*/
+    public static void saveCooperationDialog(boolean saveDialog){
+        getPreferences().edit().putBoolean(SAVE_COOPERATION_DIALOG, saveDialog).apply();
+    }
+    public static boolean getCooperationDialog() {
+        return getPreferences().getBoolean(SAVE_COOPERATION_DIALOG, false);
+    }
+
+    /*保存指纹状态*/
+    public static void saveState(String str){
+        List<FingerprintEntiy> list = DataSupport.where("userId = ? "
+                , DataSharedPreferences.getCreatateAccount())
+                .find(FingerprintEntiy.class);
+        LogUtils.e(str,list.toString());
+
+        if (list != null && list.size() > 0) {
+            ContentValues values = new ContentValues();
+            values.put("isFin", str);
+            DataSupport.updateAll(FingerprintEntiy.class, values, "userId = ? "
+                    , DataSharedPreferences.getCreatateAccount());
+        } else {
+            try {
+                new FingerprintEntiy(DataSharedPreferences.getCreatateAccount(),str).saveThrows();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /*保存弹窗*/
+    public static void saveSquareDialog(boolean saveDialog){
+        getPreferences().edit().putBoolean(SAVE_SQUARE_DIALOG, saveDialog).apply();
+    }
+    public static boolean getSquareDialog() {
+        return getPreferences().getBoolean(SAVE_SQUARE_DIALOG, false);
+    }
+
+
+
+
+    /*保存头像*/
+    public static void savePortrait(String portrait){
+        getPreferences().edit().putString(SAVE_PORTRAIT, portrait).apply();
+    }
+    public static String getPortrait() {
+        return getPreferences().getString(SAVE_PORTRAIT, "");
+    }
 
     /*保存广告名称*/
     public static void saveAdName(String adname){
@@ -224,6 +303,7 @@ public class DataSharedPreferences {
         saveLoginResult("");
         saveToken("");
         saveCreatateAccount("");
+        saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
         AppContent.getInstance().clear();
     }
 

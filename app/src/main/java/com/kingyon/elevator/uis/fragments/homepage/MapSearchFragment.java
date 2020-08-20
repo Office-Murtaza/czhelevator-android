@@ -78,6 +78,7 @@ import butterknife.Unbinder;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_ADPOINT_DETAILS;
 import static com.czh.myversiontwo.utils.DistanceUtils.distance;
+import static com.kingyon.elevator.utils.utilstwo.ConentUtils.distanceFormat;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isCertification;
 import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
@@ -177,23 +178,31 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                             markersMap.put((long) recommendHouseEntiy.id, marker);
                         }
                     }
+                    Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.dingwei, null);
+                    aMap.addMarker( new MarkerOptions()
+                            .position(new LatLng(latitude, longitude))
+                            .draggable(false)
+                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap1)));
                 }
             }
         }).start();
 
         moveMapToPositon(longitude, latitude, cityZoomLevel + 7f);
-        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_nav_find_off, null);
-        new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
-                .draggable(false)
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap1));
 
         sbPorag.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 aMap.removecache();
-                tvKm.setText("范围"+(progress/10)+"km");
-//                moveMapToPositon(longitude, latitude, cityZoomLevel);
+                tvKm.setText("范围"+distanceFormat(progress));
+                if (500>progress){
+                    moveMapToPositon(longitude, latitude, (cityZoomLevel+6f));
+                }else if (1000<progress&&progress<2000){
+                    moveMapToPositon(longitude, latitude, (cityZoomLevel+4f));
+                } else if (2000<progress&&progress<3000){
+                    moveMapToPositon(longitude, latitude, (cityZoomLevel+3f));
+                }else if (3000<progress&&progress<5000){
+                    moveMapToPositon(longitude, latitude, (cityZoomLevel+2.7f));
+                }
                 if (circle!=null){
                     circle.remove();
                 }
@@ -201,9 +210,12 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 circleOptions = new CircleOptions();
                 circleOptions.center(latLng);
                 circleOptions.strokeColor(Color.argb(50, 255, 0, 0));
+                circleOptions.fillColor(Color.argb(50, 255, 192, 203));
                 circleOptions.strokeWidth(10);
-                circleOptions.radius(progress*100);
+                circleOptions.radius(progress);
                 circle = aMap.addCircle(circleOptions);
+
+
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.kingyon.elevator.utils.utilstwo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -51,9 +52,8 @@ public class ConentUtils {
     /**
      * 点赞取消点赞
      * */
-    public static void httpHandlerLikeOrNot(BaseActivity baseActivity, int objId, String likeType, String handleType,IsSuccess isSuccess){
+    public static void httpHandlerLikeOrNot(Context baseActivity, int objId, String likeType, String handleType,IsSuccess isSuccess){
         NetService.getInstance().setHandlerLikeOrNot(objId,likeType,handleType)
-                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -75,19 +75,22 @@ public class ConentUtils {
      * 内容举报
      * */
 
-    public static  void httpReport(BaseActivity baseActivity,int objId, String reportType, String reportContent){
+    public static  void httpReport(Context baseActivity,int objId, String reportType, String reportContent){
         LogUtils.e(objId,reportType,reportContent);
+//        baseActivity.showProgressDialog(getString(R.string.wait),false);
         NetService.getInstance().setReport(objId,reportType,reportContent)
-                .compose(baseActivity.bindLifeCycle())
+//                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         ToastUtils.showToast(baseActivity,ex.getDisplayMessage(),1000);
+//                        baseActivity.hideProgress();
                     }
 
                     @Override
                     public void onNext(String s) {
                         ToastUtils.showToast(baseActivity,"举报成功",1000);
+//                        baseActivity.hideProgress();
                     }
                 });
     }
@@ -96,11 +99,10 @@ public class ConentUtils {
     /**
      * 内容删除
      * */
-    public static void httpDelContent(BaseActivity baseActivity, int contentId, RecyclerView.Adapter attentionAdapter,
+    public static void httpDelContent(Context baseActivity, int contentId, RecyclerView.Adapter attentionAdapter,
                                       String type, int position, List<QueryRecommendEntity> conentEntity, List<CommentListEntity> conentEntity1 ){
       LogUtils.e(contentId,type,position);
         NetService.getInstance().setDelContent(contentId)
-                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -121,7 +123,7 @@ public class ConentUtils {
                         attentionAdapter.notifyItemRangeChanged(position,conentEntity1.size()-position);
 
                     }else {
-                        baseActivity.finish();
+
 
                     }
 
@@ -136,10 +138,9 @@ public class ConentUtils {
      * position 所在条数
      * */
 
-    public static void httpDelcommen(BaseActivity baseActivity,int commentId,int position, RecyclerView.Adapter attentionAdapter, List<CommentListEntity> conentEntity1){
+    public static void httpDelcommen(Context baseActivity, int commentId, int position, RecyclerView.Adapter attentionAdapter, List<CommentListEntity> conentEntity1){
       LogUtils.e(commentId,position);
         NetService.getInstance().setDelcomment(commentId)
-                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -160,22 +161,22 @@ public class ConentUtils {
      * 内容评论
      * */
 
-    public static void httpComment(BaseActivity baseActivity,int contentId,int parentId,String comment,IsSuccedListener isSuccedListener){
+    public static void httpComment(Context baseActivity,int contentId,int parentId,String comment,IsSuccedListener isSuccedListener){
         LogUtils.e(contentId,comment,parentId);
-        baseActivity.showProgressDialog(getString(R.string.wait),true);
+//        baseActivity.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().setComment(contentId,parentId,comment)
-                .compose(baseActivity.bindLifeCycle())
+//                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(),ex.getDisplayMessage());
-                        baseActivity.hideProgress();
+//                        baseActivity.hideProgress();
                         isSuccedListener.onisSucced(false);
                     }
 
                     @Override
                     public void onNext(String s) {
-                        baseActivity.hideProgress();
+//                        baseActivity.hideProgress();
                         isSuccedListener.onisSucced(true);
                     ToastUtils.showToast(baseActivity,"评论成功",1000);
                     }
@@ -187,9 +188,8 @@ public class ConentUtils {
     /**
      * 添加浏览数
      * */
-    public static void httpAddBrowse(BaseActivity baseActivity,int contentId){
+    public static void httpAddBrowse(int contentId){
         NetService.getInstance().setAddBrowse(contentId)
-                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -203,9 +203,8 @@ public class ConentUtils {
                 });
     }
 
-    public static void httpAddAttention(BaseActivity baseActivity,String handlerType,String beFollowerAccount,IsAddattention isAddattention){
+    public static void httpAddAttention(Context baseActivity,String handlerType,String beFollowerAccount,IsAddattention isAddattention){
         NetService.getInstance().setAddAttention(handlerType,beFollowerAccount,DataSharedPreferences.getCreatateAccount())
-                .compose(baseActivity.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -497,5 +496,25 @@ public class ConentUtils {
     public static String topicStr = "";
     /**获取艾特点击*/
     public static String aiteStr = "";
+
+
+
+    /**
+     * 距离只保留两位小数
+     * @param distance 以米为单位
+     * @return
+     */
+    public static String distanceFormat(double distance) {
+        String str;
+        double value = distance;
+        if (distance >= 1000) {
+            value = value / 1000;
+            str = "KM";
+        } else {
+            str = "M";
+        }
+        return String.format("%s%s",value,str);
+    }
+
 
 }

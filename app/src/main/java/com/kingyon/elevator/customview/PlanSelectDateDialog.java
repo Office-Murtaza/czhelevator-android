@@ -127,6 +127,7 @@ public class PlanSelectDateDialog extends MyBaseBottomDialog {
                             horizontalSelectDateAdapter.endSelectDateEntity);
                 }
                 DialogUtils.getInstance().hidePlanSelectDateDialog();
+
                 break;
         }
     }

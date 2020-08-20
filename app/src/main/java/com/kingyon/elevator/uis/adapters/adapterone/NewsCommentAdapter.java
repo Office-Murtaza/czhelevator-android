@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.CommentEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
@@ -24,23 +25,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class NewsCommentAdapter extends BaseAdapter {
 
-    private List<CommentEntity> commentEntities;
+    private List<CommentListEntity> commentEntities;
     private LayoutInflater mInflater;
     Context context;
-    private BaseOnItemClick<CommentEntity> baseOnItemClick;
+    private BaseOnItemClick<CommentListEntity> baseOnItemClick;
 
-    public NewsCommentAdapter(Context context, List<CommentEntity> commentEntities) {
+    public NewsCommentAdapter(Context context, List<CommentListEntity> commentEntities) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.commentEntities = commentEntities;
     }
 
-    public void reflashData(List<CommentEntity> commentEntities) {
+    public void reflashData(List<CommentListEntity> commentEntities) {
         this.commentEntities = commentEntities;
         notifyDataSetChanged();
     }
 
-    public void setBaseOnItemClick(BaseOnItemClick<CommentEntity> baseOnItemClick) {
+    public void setBaseOnItemClick(BaseOnItemClick<CommentListEntity> baseOnItemClick) {
         this.baseOnItemClick = baseOnItemClick;
     }
 
@@ -75,22 +76,22 @@ public class NewsCommentAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        CommentEntity commentEntity = commentEntities.get(position);
+        CommentListEntity commentEntity = commentEntities.get(position);
         try {
-            GlideUtils.loadImage(context, commentEntity.getPhotoUrl(), holder.user_head);
-            holder.user_name.setText(commentEntity.getNickname());
-            holder.comment_time.setText(commentEntity.getShowTime());
-            holder.comment_content.setText(commentEntity.getComment());
-            if (commentEntity.isLike()) {
+            GlideUtils.loadImage(context, commentEntity.photo, holder.user_head);
+            holder.user_name.setText(commentEntity.nickname);
+            holder.comment_time.setText(commentEntity.createTime+"");
+            holder.comment_content.setText(commentEntity.comment);
+            if (commentEntity.isLiked==1) {
                 holder.iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaoyi);
             } else {
                 holder.iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaosan);
             }
-            if (commentEntity.getComCount() > 0) {
-                holder.replay_count.setText(commentEntity.getComCount() + "回复");
-            } else {
-                holder.replay_count.setText("回复");
-            }
+//            if (commentEntity.getComCount() > 0) {
+//                holder.replay_count.setText(commentEntity.getComCount() + "回复");
+//            } else {
+//                holder.replay_count.setText("回复");
+//            }
             holder.iv_dianzan.setOnClickListener(v -> {
                 if (baseOnItemClick != null) {
                     baseOnItemClick.onItemClick(commentEntity, position);

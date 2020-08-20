@@ -243,7 +243,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     GlideUtils.loadRoundCornersImage(this, mediaPath, ad_img_preview, 20);
                 }
                 et_input_ad_name.setHint("请输入广告名称");
-                et_input_ad_name.setMaxLines(20);
+                et_input_ad_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 textNumber.setText(et_input_ad_name.getText().toString().length() + "/20");
                 et_input_ad_name.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -259,7 +259,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
-                        if (textLength < 20) {
+                        if (textLength <= 20) {
                             textNumber.setText(textLength + "/20");
                         } else {
                             ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入20字", 1000);

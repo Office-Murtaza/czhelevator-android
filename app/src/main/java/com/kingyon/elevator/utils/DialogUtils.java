@@ -407,7 +407,7 @@ public class DialogUtils {
                 mainWindowNoticeDialog = null;
             }
             mainWindowNoticeDialog = new MainWindowNoticeDialog(context, adNoticeWindowEntity);
-            mainWindowNoticeDialog.setCancelable(true);
+            mainWindowNoticeDialog.setCancelable(false);
             mainWindowNoticeDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,7 +440,7 @@ public class DialogUtils {
                 mainTextDialog = null;
             }
             mainTextDialog = new MainTextDialog(context, adNoticeWindowEntity);
-            mainTextDialog.setCancelable(true);
+            mainTextDialog.setCancelable(false);
             mainTextDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

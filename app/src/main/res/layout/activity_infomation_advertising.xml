@@ -43,7 +43,7 @@
                 android:id="@+id/tv_ad_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="商业广告"
+                android:text="便民信息"
                 android:textColor="#ff003333"
                 android:textSize="16sp"
                 />

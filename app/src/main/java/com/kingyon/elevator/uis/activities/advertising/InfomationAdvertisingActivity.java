@@ -49,7 +49,7 @@ public class InfomationAdvertisingActivity extends BaseSwipeBackActivity {
     @Override
     protected String getTitleText() {
         adEntity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
-        return "便民信息";
+        return "修改广告";
     }
 
     @Override

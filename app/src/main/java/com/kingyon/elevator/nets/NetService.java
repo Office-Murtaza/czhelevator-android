@@ -101,6 +101,7 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.ConentTxEntity;
 import com.kingyon.elevator.entities.entities.ContentLikesListEntiy;
+import com.kingyon.elevator.entities.entities.DetailsEntily;
 import com.kingyon.elevator.entities.entities.EarningsTopEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
@@ -972,6 +973,10 @@ public class NetService {
     /*2.0获取订单身份认证信息*/
     public Observable<OrderIdentityEntity> orderIdentityInfo() {
         return addSchedulers(getApi().orderIdentityInfo());
+    }
+    /*2.0订单完成详情*/
+    public Observable<DetailsEntily> orderDetailSimple(String orderSn){
+        return addSchedulers(getApi().orderDetailSimple(orderSn ));
     }
 
 

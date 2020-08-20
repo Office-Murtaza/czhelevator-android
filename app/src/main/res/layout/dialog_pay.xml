@@ -72,7 +72,7 @@
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="T币（¥200可用）"
+            android:text="T币"
             android:textColor="#ff333333"
             android:layout_gravity="center"
             android:textSize="14sp"

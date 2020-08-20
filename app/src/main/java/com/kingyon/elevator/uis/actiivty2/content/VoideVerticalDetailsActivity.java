@@ -39,6 +39,7 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
@@ -107,6 +108,8 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     QueryRecommendEntity recommendEntity;
     @BindView(R.id.tv_qw)
     TextView tvQw;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private ShareDialog shareDialog;
     int page = 1;
 
@@ -120,7 +123,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
         ConentUtils.topicStr = "";
         isRefresh = false;
         ARouter.getInstance().inject(this);
-        showProgressDialog(getString(R.string.wait),true);
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -129,12 +132,14 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         hideProgress();
                         finish();
                         ToastUtils.showToast(VoideVerticalDetailsActivity.this, ex.getDisplayMessage(), 1000);
+                        stateLayout.showErrorView();
                     }
 
                     @Override
                     public void onNext(QueryRecommendEntity queryRecommendEntity) {
+                        stateLayout.showContentView();
                         recommendEntity = queryRecommendEntity;
-                        ConentUtils.httpAddBrowse(VoideVerticalDetailsActivity.this, recommendEntity.id);
+                        ConentUtils.httpAddBrowse(recommendEntity.id);
                         Parser mTagParser = new Parser();
                         tvContent.setMovementMethod(new LinkMovementMethod());
                         tvContent.setParserConverter(mTagParser);
@@ -142,10 +147,10 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         tvName.setText(recommendEntity.nickname + "");
                         tvTitle.setText(recommendEntity.title + "");
                         tvContent.setText(recommendEntity.content);
-                        LogUtils.e(tvContent.getMaxLines(),recommendEntity.content.length());
-                        if (recommendEntity.content.length()>50){
+                        LogUtils.e(tvContent.getMaxLines(), recommendEntity.content.length());
+                        if (recommendEntity.content.length() > 50) {
                             tvQw.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             tvQw.setVisibility(View.GONE);
                         }
                         tvLikeNumer.setText(recommendEntity.likes + "");
@@ -215,166 +220,166 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     @OnClick({R.id.img_jb, R.id.btn_send,
             R.id.iv_dianzan, R.id.iv_share_news, R.id.img_like,
             R.id.img_comments, R.id.img_collect, R.id.img_share,
-            R.id.input_comment, R.id.tv_attention,R.id.img_bake,R.id.tv_qw })
+            R.id.input_comment, R.id.tv_attention, R.id.img_bake, R.id.tv_qw})
     public void onViewClicked(View view) {
 
-            switch (view.getId()) {
-                case R.id.img_bake:
-                    finish();
-                    break;
-                case R.id.tv_qw:
-                    FulltextDialog fulltextDialog = new FulltextDialog(this,recommendEntity);
-                    fulltextDialog.show();
-                    break;
-                case R.id.img_jb:
-                        if (TokenUtils.isToken(this)) {
-                            if (TokenUtils.isCreateAccount(recommendEntity.createAccount)) {
-                                /*删除*/
-                                DeleteShareDialog deleteShareDialog = new DeleteShareDialog(this, recommendEntity.id, null, "2", 0, null, null);
-                                deleteShareDialog.show();
-                            } else {
-                                /*举报*/
-                                ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT,"");
-                                reportShareDialog.show();
-                            }
-                        } else {
-                        ActivityUtils.setLoginActivity();
-                    }
-                    break;
-                case R.id.btn_send:
-
-                    break;
-                case R.id.iv_dianzan:
-                    break;
-                case R.id.iv_share_news:
-
-                    break;
-                case R.id.img_like:
-                    if (TokenUtils.isToken(this)) {
-                        if (recommendEntity.liked) {
-                            recommendEntity.liked = false;
-                            imgLike.setImageResource(R.mipmap.btn_big_like);
-                            ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                    HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
-                                        @Override
-                                        public void isSuccess(boolean success) {
-
-                                        }
-                                    });
-                        } else {
-                            recommendEntity.liked = true;
-                            imgLike.setImageResource(R.mipmap.btn_big_like_off);
-                            ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
-                                    HOME_CONTENT, LIKE, new IsSuccess() {
-                                        @Override
-                                        public void isSuccess(boolean success) {
-
-                                        }
-                                    });
-                        }
+        switch (view.getId()) {
+            case R.id.img_bake:
+                finish();
+                break;
+            case R.id.tv_qw:
+                FulltextDialog fulltextDialog = new FulltextDialog(this, recommendEntity);
+                fulltextDialog.show();
+                break;
+            case R.id.img_jb:
+                if (TokenUtils.isToken(this)) {
+                    if (TokenUtils.isCreateAccount(recommendEntity.createAccount)) {
+                        /*删除*/
+                        DeleteShareDialog deleteShareDialog = new DeleteShareDialog(this, recommendEntity.id, null, "2", 0, null, null);
+                        deleteShareDialog.show();
                     } else {
-                        ActivityUtils.setLoginActivity();
+                        /*举报*/
+                        ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT, "");
+                        reportShareDialog.show();
                     }
-                    break;
-                case R.id.img_comments:
-                    /*评论*/
-                    if (TokenUtils.isToken(this)) {
-                        if (QuickClickUtils.isFastClick()) {
-                            CommentDialog commentDialog = new CommentDialog(this, recommendEntity.id);
-                            commentDialog.show();
-                        }
-                    } else {
-                        ActivityUtils.setLoginActivity();
-                    }
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            case R.id.btn_send:
 
-                    break;
-                case R.id.img_collect:
-                    /*收藏*/
-                    if (TokenUtils.isToken(this)) {
-                        showProgressDialog(getString(R.string.wait),true);
-                        if (recommendEntity.isCollect == 0) {
-                            ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
-                                @Override
-                                public void Collect(boolean is) {
-                                    hideProgress();
-                                    if (is) {
-                                        imgCollect.setImageResource(R.mipmap.btn_big_collect_off);
-                                        recommendEntity.isCollect = 1;
-                                        ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
-                                    } else {
-                                        ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏失败", 1000);
-                                    }
-                                }
-                            });
-                        } else {
-                            ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
-                                @Override
-                                public void Collect(boolean is) {
-                                    hideProgress();
-                                    if (is) {
-                                        recommendEntity.isCollect = 0;
-                                        imgCollect.setImageResource(R.mipmap.btn_big_collect);
-                                        ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏成功", 1000);
-                                    } else {
-                                        ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏失败", 1000);
+                break;
+            case R.id.iv_dianzan:
+                break;
+            case R.id.iv_share_news:
+
+                break;
+            case R.id.img_like:
+                if (TokenUtils.isToken(this)) {
+                    if (recommendEntity.liked) {
+                        recommendEntity.liked = false;
+                        imgLike.setImageResource(R.mipmap.btn_big_like);
+                        ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
+                                HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
 
                                     }
-                                }
-                            });
-                        }
-                    }else {
-                        ActivityUtils.setLoginActivity();
+                                });
+                    } else {
+                        recommendEntity.liked = true;
+                        imgLike.setImageResource(R.mipmap.btn_big_like_off);
+                        ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
+                                HOME_CONTENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
+
+                                    }
+                                });
                     }
-                    break;
-                case R.id.img_share:
-                    /*分享*/
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, recommendEntity.video, recommendEntity.title,true);
-                    break;
-                case R.id.input_comment:
-                    /*评论*/
-                    if (TokenUtils.isToken(this)) {
-                        InputCommentActivity.openEditor(VoideVerticalDetailsActivity.this, new EditorCallback() {
-                            @Override
-                            public void onCancel() {
-                                LogUtils.d("关闭输入法-------------");
-                                KeyboardUtils.hideSoftInput(VoideVerticalDetailsActivity.this);
-                            }
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            case R.id.img_comments:
+                /*评论*/
+                if (TokenUtils.isToken(this)) {
+                    if (QuickClickUtils.isFastClick()) {
+                        CommentDialog commentDialog = new CommentDialog(this, recommendEntity.id);
+                        commentDialog.show();
+                    }
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
 
+                break;
+            case R.id.img_collect:
+                /*收藏*/
+                if (TokenUtils.isToken(this)) {
+                    showProgressDialog(getString(R.string.wait), true);
+                    if (recommendEntity.isCollect == 0) {
+                        ConentUtils.httpAddCollect(String.valueOf(recommendEntity.id), Constants.COLLECT_STATE.CONTENT, new ConentUtils.AddCollect() {
                             @Override
-                            public void onSubmit(String content) {
-                                ConentUtils.httpComment(VoideVerticalDetailsActivity.this,
-                                        recommendEntity.id, 0, content, new ConentUtils.IsSuccedListener() {
-                                            @Override
-                                            public void onisSucced(boolean isSucced) {
-                                                if (isSucced) {
-                                                    httpComment(1, recommendEntity.id);
-                                                }
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onAttached(ViewGroup rootView) {
-                            }
-
-                            @Override
-                            public void onIcon() {
-
+                            public void Collect(boolean is) {
+                                hideProgress();
+                                if (is) {
+                                    imgCollect.setImageResource(R.mipmap.btn_big_collect_off);
+                                    recommendEntity.isCollect = 1;
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏成功", 1000);
+                                } else {
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "收藏失败", 1000);
+                                }
                             }
                         });
-                    }else {
-                        ActivityUtils.setLoginActivity();
+                    } else {
+                        ConentUtils.httpCancelCollect(String.valueOf(recommendEntity.id), new ConentUtils.AddCollect() {
+                            @Override
+                            public void Collect(boolean is) {
+                                hideProgress();
+                                if (is) {
+                                    recommendEntity.isCollect = 0;
+                                    imgCollect.setImageResource(R.mipmap.btn_big_collect);
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏成功", 1000);
+                                } else {
+                                    ToastUtils.showToast(VoideVerticalDetailsActivity.this, "取消收藏失败", 1000);
+
+                                }
+                            }
+                        });
                     }
-                    break;
-                case R.id.tv_attention:
-                    if (TokenUtils.isToken(this)) {
-                        httpAddUser();
-                    }else {
-                        ActivityUtils.setLoginActivity();
-                    }
-                    break;
-                default:
-            }
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            case R.id.img_share:
+                /*分享*/
+                SharedUtils.shared(this, shareDialog, recommendEntity.content, recommendEntity.video, recommendEntity.title, true);
+                break;
+            case R.id.input_comment:
+                /*评论*/
+                if (TokenUtils.isToken(this)) {
+                    InputCommentActivity.openEditor(VoideVerticalDetailsActivity.this, new EditorCallback() {
+                        @Override
+                        public void onCancel() {
+                            LogUtils.d("关闭输入法-------------");
+                            KeyboardUtils.hideSoftInput(VoideVerticalDetailsActivity.this);
+                        }
+
+                        @Override
+                        public void onSubmit(String content) {
+                            ConentUtils.httpComment(VoideVerticalDetailsActivity.this,
+                                    recommendEntity.id, 0, content, new ConentUtils.IsSuccedListener() {
+                                        @Override
+                                        public void onisSucced(boolean isSucced) {
+                                            if (isSucced) {
+                                                httpComment(1, recommendEntity.id);
+                                            }
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onAttached(ViewGroup rootView) {
+                        }
+
+                        @Override
+                        public void onIcon() {
+
+                        }
+                    });
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            case R.id.tv_attention:
+                if (TokenUtils.isToken(this)) {
+                    httpAddUser();
+                } else {
+                    ActivityUtils.setLoginActivity();
+                }
+                break;
+            default:
+        }
     }
 
     @Override

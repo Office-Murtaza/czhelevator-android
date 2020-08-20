@@ -40,6 +40,7 @@ import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_IDENTITY_CERTIFICATION;
 import static com.kingyon.elevator.uis.actiivty2.user.CertificationActivity.certificationActivity;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * @Created By Admin  on 2020/6/11
@@ -104,6 +105,7 @@ public class IdentityCertificationActivity extends BaseActivity {
         }else if (idCardPic.isEmpty()){
             ToastUtils.showToast(this,"请上传手持身份照",1000);
         }else {
+            tvRz.setClickable(false);
             showProgressDialog(getString(R.string.wait),true);
             NetService.getInstance().setIdentyAuth(etName.getText().toString(),etNumber.getText().toString(),idCardPic,"CUSTOMER")
                     .compose(this.bindLifeCycle())
@@ -113,10 +115,13 @@ public class IdentityCertificationActivity extends BaseActivity {
                             hideProgress();
                             LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                             ToastUtils.showToast(IdentityCertificationActivity.this,ex.getDisplayMessage(),1000);
+                            tvRz.setClickable(true);
                         }
                         @Override
                         public void onNext(CertifiCationEntiy s) {
+                            tvRz.setClickable(true);
                             hideProgress();
+
                             ToastUtils.showToast(IdentityCertificationActivity.this,"提交成功",1000);
                             finish();
                             certificationActivity.finish();

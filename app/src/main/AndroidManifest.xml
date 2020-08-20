@@ -581,11 +581,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             ></activity>
         <!--        内容详情文章-->
-        <activity android:name=".uis.actiivty2.content.ArticleDetailstActivity"
-            android:screenOrientation="portrait"
-            android:hardwareAccelerated="false"
-            ></activity>
-<!--        内容详情 视频竖版-->
+        <!--        内容详情 视频竖版-->
         <activity android:name=".uis.actiivty2.content.VoideVerticalDetailsActivity"
             android:screenOrientation="portrait"
             />

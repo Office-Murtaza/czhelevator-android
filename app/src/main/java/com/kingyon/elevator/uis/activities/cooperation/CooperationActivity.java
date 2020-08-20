@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.constants.FragmentConstants;
+import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.CooperationEntity;
 import com.kingyon.elevator.entities.CooperationIdentityEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
@@ -19,7 +22,9 @@ import com.kingyon.elevator.uis.fragments.cooperation.CooperationIdentityFragmen
 import com.kingyon.elevator.uis.fragments.cooperation.CooperationInfoFragment;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.StatusBarUtil;
+import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
@@ -29,6 +34,8 @@ import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 public class CooperationActivity extends BaseStateRefreshingActivity {
 
@@ -166,4 +173,11 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
         EventBus.getDefault().unregister(this);
         DialogUtils.getInstance().hideCashTipsDialog();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.user;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -35,6 +34,7 @@ import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -47,7 +47,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.czh.myversiontwo.utils.CodeType.HOME_CONTENT;
 import static com.czh.myversiontwo.utils.CodeType.HOME_USER;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_USER_CENTER;
 import static com.czh.myversiontwo.utils.StringContent.ATTENTION_TO_FANS;
@@ -66,10 +65,6 @@ public class UserCenterActivity extends BaseActivity {
     TextView tvAttention;
     @BindView(R.id.img_more)
     ImageView imgMore;
-    //    @BindView(R.id.rl_top)
-//    RelativeLayout rlTop;
-    @BindView(R.id.img_placeholder)
-    ImageView imgPlaceholder;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_idnumber)
@@ -120,6 +115,14 @@ public class UserCenterActivity extends BaseActivity {
     ImageView imgBj;
     @BindView(R.id.img_set)
     ImageView imgSet;
+    @BindView(R.id.img_placeholder)
+    ImageView imgPlaceholder;
+    @BindView(R.id.rl_bj)
+    RelativeLayout rlBj;
+    @BindView(R.id.img_top_back1)
+    ImageView imgTopBack1;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     @Override
     public int getContentViewId() {
@@ -143,7 +146,7 @@ public class UserCenterActivity extends BaseActivity {
             imgEdit.setVisibility(View.GONE);
             tvAttention1.setVisibility(View.VISIBLE);
         }
-        showProgressDialog(getString(R.string.wait),true);
+        showProgressDialog(getString(R.string.wait), true);
         httpData(page, otherUserAccount);
         httpTop(otherUserAccount);
 
@@ -248,6 +251,7 @@ public class UserCenterActivity extends BaseActivity {
     }
 
     private void httpData(int page, String otherUserAccount) {
+        stateLayout.showProgressView(getString(com.leo.afbaselibrary.R.string.loading));
         NetService.getInstance().setUserCenterContent(page, otherUserAccount)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
@@ -266,16 +270,17 @@ public class UserCenterActivity extends BaseActivity {
                                 rlNotlogin.setVisibility(View.GONE);
                             }
 
-                        } else if (ex.getCode()==100200){
+                        } else if (ex.getCode() == 100200) {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
                             rlNotlogin.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
                             rlNotlogin.setVisibility(View.GONE);
+                            stateLayout.showErrorView(getString(com.leo.afbaselibrary.R.string.error));
                         }
                     }
 
@@ -283,14 +288,15 @@ public class UserCenterActivity extends BaseActivity {
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
                         hideProgress();
+                        stateLayout.showContentView();
                         if (conentEntity.getContent().size() <= 0 && page == 1) {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
                             rlNotlogin.setVisibility(View.GONE);
-                        } else if (conentEntity.getContent().size() <= 0 && page>1) {
+                        } else if (conentEntity.getContent().size() <= 0 && page > 1) {
                             showToast("已经没有了");
-                        }else {
+                        } else {
                             dataAdd(conentEntity);
                             rvAttentionList.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
@@ -351,14 +357,14 @@ public class UserCenterActivity extends BaseActivity {
                     startActivity(UserProfileActivity.class);
                 } else {
                     /*举报*/
-                    ReportShareDialog reportShareDialog = new ReportShareDialog(this, 1, HOME_USER,otherUserAccount);
+                    ReportShareDialog reportShareDialog = new ReportShareDialog(this, 1, HOME_USER, otherUserAccount);
                     reportShareDialog.show();
                 }
                 break;
             case R.id.rl_error:
-                if (smartRefreshLayout!=null) {
+                if (smartRefreshLayout != null) {
                     smartRefreshLayout.autoRefresh(1000);
-                }else {
+                } else {
                     httpData(1, otherUserAccount);
                     httpTop(otherUserAccount);
                 }

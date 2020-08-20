@@ -121,6 +121,7 @@ public class PayTreasureCertActivity extends BaseActivity {
         if (etName.getText().toString().isEmpty()||etNumber.getText().toString().isEmpty()){
             ToastUtils.showToast(this,"姓名身份证不能为空",1000);
         }else {
+            tvRz.setClickable(false);
             showProgressDialog("请稍后...",true);
             NetService.getInstance().setAliIdentityAuth(etName.getText().toString(),etNumber.getText().toString())
                     .compose(this.bindLifeCycle())
@@ -129,11 +130,13 @@ public class PayTreasureCertActivity extends BaseActivity {
                         protected void onResultError(ApiException ex) {
                             ToastUtils.showToast(PayTreasureCertActivity.this,ex.getDisplayMessage(),1000);
                             hideProgress();
+                            tvRz.setClickable(true);
                         }
 
                         @Override
                         public void onNext(PlanNumberEntiy planNumberEntiy) {
                             LogUtils.e(planNumberEntiy.certifyUrl,planNumberEntiy.certifyId);
+                            tvRz.setClickable(true);
                             DataSharedPreferences.saveCertifyId(planNumberEntiy.certifyId);
                             doVerify(planNumberEntiy.certifyUrl);
                             hideProgress();

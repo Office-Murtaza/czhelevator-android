@@ -33,24 +33,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <com.kingyon.elevator.uis.widgets.ProportionFrameLayout
+                            <RelativeLayout
                                 android:id="@+id/pfl_head"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="-70dp"
-                                app:proporty="1.60256">
+                                android:background="@mipmap/bg_order_detail"
+                               >
 
                                 <ImageView
                                     android:id="@+id/img_head"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:scaleType="centerCrop"
-                                    android:background="@mipmap/bg_order_detail"
+
                                     />
 
                                 <FrameLayout
@@ -68,6 +68,7 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
 
                                     <!--订单取消-->
@@ -78,6 +79,7 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
 
                                     <!--广告审核-->
@@ -88,6 +90,7 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
 
                                     <!--广告审核不通过-->
@@ -96,6 +99,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="bottom"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four" />
 
                                     <!--广告待投放-->
@@ -106,6 +110,7 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
 
                                     <!--广告投放中-->
@@ -115,7 +120,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
-                                        android:visibility="gone"/>
+                                        android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
+                                        />
 
                                     <!--当前广告推广已完成-->
                                     <include
@@ -125,6 +132,7 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
 
                                     <!--投放失败-->
@@ -135,14 +143,18 @@
                                         android:layout_gravity="bottom"
                                         android:layout_marginBottom="@dimen/spacing_twenty_four"
                                         android:visibility="gone"
+                                        android:layout_marginTop="@dimen/dp_60"
                                         />
                                 </FrameLayout>
-                            </com.kingyon.elevator.uis.widgets.ProportionFrameLayout>
+                            </RelativeLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_top"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/dp_10"
+                                android:layout_below="@+id/pfl_head"
+                                android:layout_marginTop="-90dp"
                                 android:orientation="vertical">
 
 
@@ -153,6 +165,7 @@
                                     android:orientation="vertical"
                                     android:background="@drawable/ad_order_title"
                                     android:padding="@dimen/dp_10"
+
                                     android:layout_marginLeft="@dimen/dp5"
                                     android:layout_marginRight="@dimen/dp5"
                                     >
@@ -227,14 +240,14 @@
                                         android:gravity="center"
                                         android:padding="@dimen/dp5"
                                         >
+
                                         <TextView
                                             android:id="@+id/tv_sq"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="展开"
                                             android:textColor="#ff666666"
-                                            android:textSize="12sp"
-                                            />
+                                            android:textSize="12sp" />
                                         <ImageView
                                             android:id="@+id/img_sq"
                                             android:layout_width="wrap_content"
@@ -714,7 +727,8 @@
 
 
                             </LinearLayout>
-                        </LinearLayout>
+
+                        </RelativeLayout>
                     </android.support.v4.widget.NestedScrollView>
 
 

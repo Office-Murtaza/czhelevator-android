@@ -10,7 +10,7 @@
         android:gravity="center_vertical"
         android:text="龙贤苑"
         android:textColor="#ff7f7f7f"
-        android:textSize="15sp" />
+        android:textSize="@dimen/sp_12" />
 
     <TextView
         android:id="@+id/all_price"
@@ -20,6 +20,6 @@
         android:gravity="center_vertical"
         android:text="1/台x2/天x¥0=0"
         android:textColor="#ff7f7f7f"
-        android:textSize="15sp" />
+        android:textSize="@dimen/sp_12" />
 
 </RelativeLayout>

@@ -32,6 +32,7 @@ import com.kingyon.elevator.view.AnimManager;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import java.util.ArrayList;
@@ -127,6 +128,8 @@ public class AdPointDetailsActivity extends BaseActivity {
     };
     @BindView(R.id.img_plan)
     ImageView imgPlan;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     @Override
     public int getContentViewId() {
@@ -145,8 +148,8 @@ public class AdPointDetailsActivity extends BaseActivity {
     }
 
     private void httpDetails() {
-        showProgressDialog(getString(R.string.wait),true);
         LogUtils.e(panID);
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().cellDetails(Long.parseLong(panID), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<CellDetailsEntity>() {
@@ -156,10 +159,12 @@ public class AdPointDetailsActivity extends BaseActivity {
                         ToastUtils.showToast(AdPointDetailsActivity.this, ex.getDisplayMessage(), 1000);
                         hideProgress();
                         finish();
+                        stateLayout.showErrorView();
                     }
 
                     @Override
                     public void onNext(CellDetailsEntity cellDetailsEntity) {
+                        stateLayout.showContentView();
                         cellEntity = cellDetailsEntity;
                         tvAddress.setText(cellDetailsEntity.regionName);
                         tvCommunityName.setText(cellDetailsEntity.name);
@@ -173,9 +178,9 @@ public class AdPointDetailsActivity extends BaseActivity {
                         tvElevatorsNumber.setText("电梯数：" + cellDetailsEntity.elevatorsNumber);
                         tvLowestFloor.setText("建筑面积：" + cellDetailsEntity.numberArea);
                         tvCarsNumber.setText("车位数：" + cellDetailsEntity.siteNumber);
-                        if (cellDetailsEntity.deliveryTime!= null) {
+                        if (cellDetailsEntity.deliveryTime != null) {
                             tvDeliveryTime.setText("交房时间：" + TimeUtil.getYmdDliverCh(cellDetailsEntity.deliveryTime));
-                        }else {
+                        } else {
                             tvDeliveryTime.setText("交房时间：");
                         }
                         tvUnits.setText("单元数：" + cellDetailsEntity.numberUnit);
@@ -263,8 +268,8 @@ public class AdPointDetailsActivity extends BaseActivity {
                 /*进入计划*/
                 if (isToken(this)) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("type","ad");
-                    startActivity(PlanNewFragment.class,bundle);
+                    bundle.putString("type", "ad");
+                    startActivity(PlanNewFragment.class, bundle);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -309,8 +314,8 @@ public class AdPointDetailsActivity extends BaseActivity {
                                 .endView(imgPlan)
                                 .imageUrl(imageUrl)
                                 .time(1000)
-                                .animHeight(150)
-                                .animWidth(150)
+                                .animHeight(100)
+                                .animWidth(100)
                                 .build();
                         animManager.startAnim();
                     }

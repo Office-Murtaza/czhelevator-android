@@ -100,7 +100,7 @@ public class MyCouponsNormalAdapter extends MultiItemTypeAdapter<Object> {
             String couponType = o.toString();
             boolean voucher = TextUtils.equals(Constants.CouponType.VOUCHER, couponType);
             holder.setTextNotHide(R.id.tv_name, voucher ? "代金券" : "折扣券");
-//            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.drawable.ic_coupon_voucher : R.drawable.ic_coupon_discount);
+            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.mipmap.ic_card_dai : R.mipmap.ic_card_zhe);
         }
     }
 }

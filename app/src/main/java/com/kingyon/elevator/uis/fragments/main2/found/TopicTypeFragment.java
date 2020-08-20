@@ -20,6 +20,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.TopicAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -52,9 +53,12 @@ public class TopicTypeFragment extends FoundFragemtUtils {
     @BindView(R.id.rl_null)
     RelativeLayout rlNull;
     View rootView;
+    StateLayout stateLayout;
 
-    public TopicTypeFragment setIndex(int label) {
+
+    public TopicTypeFragment setIndex(int label, StateLayout stateLayout) {
         this.label = label;
+        this.stateLayout = stateLayout;
         return (this);
     }
 
@@ -142,12 +146,14 @@ public class TopicTypeFragment extends FoundFragemtUtils {
                             rcViewTopic.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
+                            stateLayout.showErrorView();
                         }
                     }
                     @Override
                     public void onNext(ConentEntity<HomeTopicConentEntity> conentEntity) {
                         hideProgress();
                         dataAdd(conentEntity);
+                        stateLayout.showContentView();
                         rcViewTopic.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);
                         rlNull.setVisibility(View.GONE);

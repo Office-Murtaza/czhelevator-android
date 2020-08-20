@@ -40,6 +40,7 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_VOIDEVERTICAL_
  */
 public class MessageCommentMeListFragment extends BaseStateRefreshLoadingFragment<CommentLikesListEntiy> {
     Parser mTagParser = new Parser();
+    Parser mTagParse1r = new Parser();
     @Override
     public int getContentViewId() {
         return R.layout.fragment_messagr_comment_like;
@@ -57,6 +58,12 @@ public class MessageCommentMeListFragment extends BaseStateRefreshLoadingFragmen
                 mentionTextView = holder.getView(R.id.tv_content);
                 mentionTextView.setMovementMethod(new LinkMovementMethod());
                 mentionTextView.setParserConverter(mTagParser);
+
+                MentionTextView tv_comment = new MentionTextView(getActivity());
+                tv_comment = holder.getView(R.id.tv_comment);
+                tv_comment.setParserConverter(mTagParse1r);
+                tv_comment.setMovementMethod(new LinkMovementMethod());
+
                 holder.setText(R.id.tv_comment,item.comment);
                 holder.setText(R.id.tv_content,item.content);
                 holder.setText(R.id.tv_nickname,item.commentNickName);

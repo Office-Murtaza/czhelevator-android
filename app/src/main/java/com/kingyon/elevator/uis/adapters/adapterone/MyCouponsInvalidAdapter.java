@@ -78,7 +78,7 @@ public class MyCouponsInvalidAdapter extends MultiItemTypeAdapter<Object> {
             }
             holder.setTextNotHide(R.id.tv_range, String.format("适用：%s", result));
             holder.setTextNotHide(R.id.tv_expier_time, String.format("过期时间：%s", TimeUtil.getYMdTime(item.getExpiredDate())));
-            holder.setImageResource(R.id.img_status, expired ? R.drawable.ic_coupon_expired : R.drawable.ic_coupon_used);
+            holder.setText(R.id.img_status, expired ? "已过期" : "已使用");
         }
     }
 
@@ -98,7 +98,7 @@ public class MyCouponsInvalidAdapter extends MultiItemTypeAdapter<Object> {
             String couponType = o.toString();
             boolean voucher = TextUtils.equals(Constants.CouponType.VOUCHER, couponType);
             holder.setTextNotHide(R.id.tv_name, voucher ? "代金券" : "折扣券");
-            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.drawable.ic_coupon_voucher : R.drawable.ic_coupon_discount);
+            holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.mipmap.ic_card_dai : R.mipmap.ic_card_zhe);
         }
     }
 }

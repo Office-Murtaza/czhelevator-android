@@ -226,13 +226,9 @@ public class OrdinaryActivity {
                                 DataSharedPreferences.saveUserBean(userEntity);
                                 DataSharedPreferences.saveCreatateAccount(userEntity.getAccount());
                                 DataSharedPreferences.saveToken(codeEntity.getToken());
+                                DataSharedPreferences.savePortrait(avatar);
                                 Net.getInstance().setToken(DataSharedPreferences.getToken());
                                 JumpUtils.getInstance().jumpToRoleMain(baseActivity, AppContent.getInstance().getMyUserRole());
-
-                                FingerprintEntiy entiy  = new FingerprintEntiy();
-                                entiy.setIsFin("1");
-                                entiy.setUserId(DataSharedPreferences.getCreatateAccount());
-                                entiy.save();
 
                                 loginActiivty.finish();
                                 baseActivity.finish();
@@ -511,20 +507,20 @@ public class OrdinaryActivity {
 
     /*2.0举报用户*/
 
-    public static void HttpreportUser(BaseActivity baseActivity,String beReportAccount,int reportContentId,IsSuccess isSuccess){
-        baseActivity.showProgressDialog(getString(R.string.wait),true);
+    public static void HttpreportUser(Context baseActivity,String beReportAccount,int reportContentId,IsSuccess isSuccess){
+//        baseActivity.showProgressDialog(getString(R.string.wait),true);
         NetService.getInstance().reportUser(beReportAccount, reportContentId)
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         isSuccess.isSuccess(false);
-                        baseActivity.hideProgress();
+//                        baseActivity.hideProgress();
                     }
 
                     @Override
                     public void onNext(String s) {
                         isSuccess.isSuccess(true);
-                        baseActivity.hideProgress();
+//                        baseActivity.hideProgress();
                     }
                 });
 

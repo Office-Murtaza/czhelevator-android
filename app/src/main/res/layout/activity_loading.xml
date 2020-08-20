@@ -10,7 +10,6 @@
     android:visibility="invisible">
 
     <RelativeLayout
-        android:layout_marginBottom="170dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -43,7 +42,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -71,31 +72,38 @@
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_launcher" />
 
-                <TextView
-                    android:id="@+id/tv_right"
-                    style="@style/text_normal.secondary"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:textSize="@dimen/txt_tips"
-                    android:visibility="visible"
-                    tools:text="Copyright @ 2019,屏多多" />
+
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="@dimen/spacing_twenty_four"
-            android:layout_marginRight="@dimen/spacing_default"
-            android:background="@drawable/bg_skip"
-            android:paddingLeft="@dimen/spacing_twelve"
-            android:paddingTop="@dimen/spacing_four"
-            android:paddingRight="@dimen/spacing_twelve"
-            android:paddingBottom="@dimen/spacing_four"
-            android:text="跳过"
-            android:textColor="@color/white_normal"
-            android:textSize="15sp"
-            android:visibility="gone" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_right"
+        style="@style/text_normal.secondary"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textSize="@dimen/txt_tips"
+        android:visibility="visible"
+        tools:text="Copyright @ 2019,屏多多"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/spacing_twenty_four"
+        android:layout_marginRight="@dimen/spacing_default"
+        android:background="@drawable/bg_skip"
+        android:paddingLeft="@dimen/spacing_twelve"
+        android:paddingTop="@dimen/spacing_four"
+        android:paddingRight="@dimen/spacing_twelve"
+        android:paddingBottom="@dimen/spacing_four"
+        android:text="跳过"
+        android:textColor="@color/white_normal"
+        android:textSize="15sp"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>

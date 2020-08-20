@@ -29,6 +29,7 @@ import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.BindView;
@@ -70,11 +71,14 @@ public class TopicDetailsActivity extends BaseActivity {
     @BindView(R.id.img_release)
     ImageView img_release;
     HomeTopicConentEntity homeTopicConentEntity;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private ShareDialog shareDialog;
     @Autowired
     String topicid;
     @Autowired
     String title;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,26 +101,34 @@ public class TopicDetailsActivity extends BaseActivity {
         ARouter.getInstance().inject(this);
         StatusBarUtil.setTransparent(this);
         httpTopic();
+        stateLayout.setErrorAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                httpTopic();
+            }
+        });
     }
 
     private void httpTopic() {
         LogUtils.e(topicid);
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setQueryTopicConetn(1, "", "", Integer.parseInt(topicid))
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<HomeTopicConentEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        stateLayout.showErrorView();
                     }
 
                     @Override
                     public void onNext(ConentEntity<HomeTopicConentEntity> conentEntityConentEntity) {
-                        homeTopicConentEntity  = conentEntityConentEntity.getContent().get(0);
+                        homeTopicConentEntity = conentEntityConentEntity.getContent().get(0);
                         tvTopicContetn.setText(homeTopicConentEntity.content);
                         tvTopicTitle.setText(homeTopicConentEntity.title);
-                        GlideUtils.loadImage(TopicDetailsActivity.this,homeTopicConentEntity.image,imgTopimg);
+                        GlideUtils.loadImage(TopicDetailsActivity.this, homeTopicConentEntity.image, imgTopimg);
                         initData();
+
                     }
                 });
 
@@ -125,8 +137,8 @@ public class TopicDetailsActivity extends BaseActivity {
 
     private void initData() {
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TopicDetailsFragment().setIndex("create_time desc",homeTopicConentEntity.id), "最新");
-        adapter.addFrag(new TopicDetailsFragment().setIndex("likes desc",homeTopicConentEntity.id), "最热");
+        adapter.addFrag(new TopicDetailsFragment().setIndex("create_time desc", homeTopicConentEntity.id,stateLayout,img_release), "最新");
+        adapter.addFrag(new TopicDetailsFragment().setIndex("likes desc", homeTopicConentEntity.id,stateLayout,img_release), "最热");
         vp.setAdapter(adapter);
 
         vp.setOffscreenPageLimit(adapter.getCount());
@@ -134,19 +146,19 @@ public class TopicDetailsActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.img_bake, R.id.img_jb,R.id.img_release})
+    @OnClick({R.id.img_bake, R.id.img_jb, R.id.img_release})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_bake:
                 finish();
                 break;
             case R.id.img_jb:
-                SharedUtils.shared(this,shareDialog,homeTopicConentEntity.content,"www.baidu.com",homeTopicConentEntity.title,false);
+                SharedUtils.shared(this, shareDialog, homeTopicConentEntity.content, "www.baidu.com", homeTopicConentEntity.title, false);
                 break;
             case R.id.img_release:
                 ActivityUtils.setActivity(ACTIVITY_MAIN2_COMMUNITY_RELEASETY,
                         "topicId1", String.valueOf(homeTopicConentEntity.id),
-                        "title",homeTopicConentEntity.title);
+                        "title", homeTopicConentEntity.title);
                 break;
         }
     }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -22,6 +23,7 @@ import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -56,15 +58,18 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     int page = 1;
-
+    StateLayout stateLayout;
+    ImageView img_release;
     @Override
     public int getContentViewId() {
         return R.layout.fragment_topic_deatils;
     }
 
-    public TopicDetailsFragment setIndex(String type,int topicId) {
+    public TopicDetailsFragment setIndex(String type, int topicId, StateLayout stateLayout, ImageView img_release) {
         this.type = type;
         this.topicId = topicId;
+        this.stateLayout = stateLayout;
+        this.img_release = img_release;
         return (this);
     }
     @Override
@@ -87,11 +92,11 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
                 httpQueryAttention(page, topicId, type);
             }
         });
+
     }
 
     private void httpQueryAttention(int page, int  topicId, String type) {
         LogUtils.e(page, topicId, type);
-//        showProgressDialog("请稍后...");
         NetService.getInstance().steTopicAttention(page, topicId, type)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
@@ -117,12 +122,15 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
+                            stateLayout.showErrorView();
                         }
                     }
 
                     @Override
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         hideProgress();
+                        stateLayout.showContentView();
+                        img_release.setVisibility(View.VISIBLE);
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         rvAttentionList.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);

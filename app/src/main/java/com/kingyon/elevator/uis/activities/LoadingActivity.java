@@ -79,6 +79,9 @@ public class LoadingActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         tvRight.setText(String.format("Copyright @ %s,%s", TimeUtil.getYear(System.currentTimeMillis()), getString(R.string.app_name)));
         AppContent.getInstance().init(this);
+        DataSharedPreferences.saveDialog(true);
+        DataSharedPreferences.saveCooperationDialog(true);
+        DataSharedPreferences.saveSquareDialog(true);
         NetService.getInstance().getAdertising()
                 .compose(this.<AdvertisionEntity>bindLifeCycle())
                 .subscribe(new AbsAPICallback<AdvertisionEntity>() {
@@ -183,7 +186,7 @@ public class LoadingActivity extends BaseActivity {
     private void showAdertision(Drawable drawable) {
         imgAdvertision.setVisibility(View.VISIBLE);
         imgAdvertision.setImageDrawable(drawable);
-        tvAd.setVisibility(View.VISIBLE);
+        tvAd.setVisibility(View.GONE);
         tvSkip.setVisibility(View.VISIBLE);
         startCountDown();
     }

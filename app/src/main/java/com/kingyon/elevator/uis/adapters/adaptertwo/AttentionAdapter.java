@@ -33,6 +33,7 @@ import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
+import com.leo.afbaselibrary.widgets.WrapContentLinearLayoutManager;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
 
 import java.util.List;
@@ -87,114 +88,123 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
          * 4文字+图片
          * 5文字+视频
          * */
-        QueryRecommendEntity queryRecommendEntity = conentEntity.get(position);
+        try {
+            QueryRecommendEntity queryRecommendEntity = conentEntity.get(position);
 
-        holder.tv_name.setText(queryRecommendEntity.nickname);
-        holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likes ,"点赞"));
-        holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.comments ,"评论"));
-        holder.tv_search.setText(StringUtils.getNumStr(queryRecommendEntity.shares ,"分享"));
+            holder.tv_name.setText(queryRecommendEntity.nickname);
+            holder.tv_like_number.setText(StringUtils.getNumStr(queryRecommendEntity.likes ,"点赞"));
+            holder.tv_comments_number.setText(StringUtils.getNumStr(queryRecommendEntity.comments ,"评论"));
+            holder.tv_search.setText(StringUtils.getNumStr(queryRecommendEntity.shares ,"分享"));
 
-        holder.tv_like_number_bottm.setText("等"+queryRecommendEntity.likes+"人觉得很赞");
-        holder.tv_time.setText(TimeUtil.getRecentlyTime(queryRecommendEntity.createTime));
+            holder.tv_like_number_bottm.setText("等"+queryRecommendEntity.likes+"人觉得很赞");
+            holder.tv_time.setText(TimeUtil.getRecentlyTime(queryRecommendEntity.createTime));
 
 
-        holder.tv_title.setClickable(false);
-        holder.ll_conent_img.setClickable(false);
+            holder.tv_title.setClickable(false);
+            holder.ll_conent_img.setClickable(false);
 
-        GlideUtils.loadCircleImage(context, queryRecommendEntity.photo, holder.img_tx);
+            GlideUtils.loadCircleImage(context, queryRecommendEntity.photo, holder.img_tx);
 
-        if (queryRecommendEntity.content==null){
-            holder.tv_title.setVisibility(View.GONE);
-        }
-        holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
-        if (queryRecommendEntity.likes<=0||!queryRecommendEntity.liked){
-            holder.ll_like.setVisibility(View.GONE);
-        }else {
-            holder.ll_like.setVisibility(View.VISIBLE);
-            holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likes));
-            GlideUtils.loadCircleImage(context, queryRecommendEntity.likesItem.get(0).photo, holder.img_topimg);
-        }
-        if (queryRecommendEntity.liked){
-            holder.img_like.setImageResource(R.mipmap.ic_small_like);
-        }else {
-            holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
-        }
+            if (queryRecommendEntity.content==null){
+                holder.tv_title.setVisibility(View.GONE);
+            }
+            holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
+            if (queryRecommendEntity.likes<=0||!queryRecommendEntity.liked){
+                holder.ll_like.setVisibility(View.GONE);
+            }else {
+                holder.ll_like.setVisibility(View.VISIBLE);
+                holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likes));
+                GlideUtils.loadCircleImage(context, queryRecommendEntity.likesItem.get(0).photo, holder.img_topimg);
+            }
+            if (queryRecommendEntity.liked){
+                holder.img_like.setImageResource(R.mipmap.ic_small_like);
+            }else {
+                holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
+            }
 
-        if (queryRecommendEntity.uAuthStatus==1){
-            holder.tv_authstatus.setVisibility(View.VISIBLE);
-        }else {
-            holder.tv_authstatus.setVisibility(View.GONE);
-        }
-        if (queryRecommendEntity.hasMedal){
-            holder.img_talent.setVisibility(View.VISIBLE);
-        }else {
-            holder.img_talent.setVisibility(View.GONE);
-        }
+            if (queryRecommendEntity.uAuthStatus==1){
+                holder.tv_authstatus.setVisibility(View.VISIBLE);
+            }else {
+                holder.tv_authstatus.setVisibility(View.GONE);
+            }
+            if (queryRecommendEntity.hasMedal){
+                holder.img_talent.setVisibility(View.VISIBLE);
+            }else {
+                holder.img_talent.setVisibility(View.GONE);
+            }
 
-        switch (queryRecommendEntity.type){
-            case "video":
-//                视频
-                RoundImageView imageView2 = new RoundImageView(context);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
-                GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView2,20);
-                imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP );
-                holder.ll_conent_img.addView(imageView2,params);
-                holder.ll_xssjcs.setVisibility(View.VISIBLE);
-                holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次播放");
-                holder.tv_video_time.setText(TimeUtils.secondToTime(queryRecommendEntity.playTime/1000)+"");
-                holder.tv_title.setText(queryRecommendEntity.title);
-                break;
-            case "wsq":
-//               社区
-                if (queryRecommendEntity.image!=null) {
-                    List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
-                    RecyclerView recyclerView = new RecyclerView(context);
-                    ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false);
-                    gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(imagAdapter);
-                    holder.ll_conent_img.addView(recyclerView);
-                    holder.ll_xssjcs.setVisibility(View.GONE);
-                    holder.tv_title.setText(queryRecommendEntity.content);
-                }
-                holder.tv_title.setText(queryRecommendEntity.content);
-                break;
-            case "article":
-                if (queryRecommendEntity.videoCover==null){
-                    holder.ll_conent_img.setVisibility(View.GONE);
-                    holder.ll_xssjcs.setVisibility(View.GONE);
-                    holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
-                    holder.tv_video_time.setText("文章");
+            switch (queryRecommendEntity.type){
+                case "video":
+    //                视频
+                    RoundImageView imageView2 = new RoundImageView(context);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
+                    GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView2,20);
+                    imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP );
+                    holder.ll_conent_img.addView(imageView2,params);
+                    holder.ll_xssjcs.setVisibility(View.VISIBLE);
+                    holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次播放");
+                    holder.tv_video_time.setText(TimeUtils.secondToTime(queryRecommendEntity.playTime/1000)+"");
                     holder.tv_title.setText(queryRecommendEntity.title);
-                }else {
-                    if (queryRecommendEntity.videoCover.equals("")){
+                    break;
+                case "wsq":
+    //               社区
+                    if (queryRecommendEntity.image!=null) {
+                        List<Object> list = StringUtils.StringToList(queryRecommendEntity.image);
+                        RecyclerView recyclerView = new RecyclerView(context);
+                        ImagAdapter imagAdapter = new ImagAdapter(context, list,queryRecommendEntity);
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false);
+                        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(gridLayoutManager);
+                        recyclerView.setAdapter(imagAdapter);
+                        imagAdapter.notifyDataSetChanged();
+                        holder.ll_conent_img.addView(recyclerView);
+                        holder.ll_xssjcs.setVisibility(View.GONE);
+                        holder.tv_title.setText(queryRecommendEntity.content);
+                    }
+                    holder.tv_title.setText(queryRecommendEntity.content);
+
+                    break;
+                case "article":
+                    if (queryRecommendEntity.videoCover==null){
                         holder.ll_conent_img.setVisibility(View.GONE);
                         holder.ll_xssjcs.setVisibility(View.GONE);
                         holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
                         holder.tv_video_time.setText("文章");
                         holder.tv_title.setText(queryRecommendEntity.title);
                     }else {
-                        RoundImageView imageView3 = new RoundImageView(context);
-                        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
-                        GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView3,20);
-                        imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP );
-                        holder.ll_conent_img.addView(imageView3,params1);
-                        holder.ll_xssjcs.setVisibility(View.VISIBLE);
-                        holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
-                        holder.tv_video_time.setText("文章");
-                        holder.tv_title.setText(queryRecommendEntity.title);
+                        if (queryRecommendEntity.videoCover.equals("")){
+                            holder.ll_conent_img.setVisibility(View.GONE);
+                            holder.ll_xssjcs.setVisibility(View.GONE);
+                            holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
+                            holder.tv_video_time.setText("文章");
+                            holder.tv_title.setText(queryRecommendEntity.title);
+                        }else {
+                            RoundImageView imageView3 = new RoundImageView(context);
+                            LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400);
+                            GlideUtils.loadRoundCornersImage(context,queryRecommendEntity.videoCover,imageView3,20);
+                            imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP );
+                            holder.ll_conent_img.addView(imageView3,params1);
+                            holder.ll_xssjcs.setVisibility(View.VISIBLE);
+                            holder.tv_video_number.setText(queryRecommendEntity.browseTimes+"次阅读");
+                            holder.tv_video_time.setText("文章");
+                            holder.tv_title.setText(queryRecommendEntity.title);
+                        }
+
                     }
+                    break;
+                    default:
 
-                }
-                break;
-                default:
+            }
 
+            onClick(holder,queryRecommendEntity,position);
+        }catch (IndexOutOfBoundsException e){
+            LogUtils.e(e.toString());
         }
-
-        onClick(holder,queryRecommendEntity,position);
     }
-
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
     private void onClick(ViewHolder holder, QueryRecommendEntity queryRecommendEntity, int position) {
         /*进入个人资料*/
         holder.img_tx.setOnClickListener(new View.OnClickListener() {
@@ -259,7 +269,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                         likes--;
                         queryRecommendEntity.likes = likes;
                         LogUtils.e(likes + "");
-                        holder.tv_like_number.setText(likes + "");
+                        holder.tv_like_number.setText(StringUtils.getNumStr(likes ,"点赞"));
                     } else {
                         queryRecommendEntity.liked = true;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like);
@@ -273,7 +283,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                         likes++;
                         queryRecommendEntity.likes = likes;
                         LogUtils.e(likes + "");
-                        holder.tv_like_number.setText(likes + "");
+                        holder.tv_like_number.setText(StringUtils.getNumStr(likes ,"点赞"));
                     }
                 }else {
                     ActivityUtils.setLoginActivity();

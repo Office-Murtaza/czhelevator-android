@@ -46,18 +46,37 @@
                 android:textColor="@color/white_normal"
                 android:textStyle="bold"
                 android:maxLines="2"
-                tools:text="有不符合律内容上传有不符合相关法律内容请修改后重新上传" />
+                tools:text="fghvgc" />
 
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_zk"
+
+        <LinearLayout
+            android:id="@+id/ll_zk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="展开"
+            android:orientation="horizontal"
             android:gravity="center"
             android:visibility="gone"
-            android:textColor="@color/white_normal"
-            ></TextView>
+            >
+            <TextView
+                android:id="@+id/tv_zk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展开"
+                android:gravity="center"
+                android:textColor="@color/white_normal"
+                ></TextView>
+
+            <ImageView
+                android:id="@+id/img_btg_sq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_arrow_down"
+                android:layout_marginLeft="@dimen/dp5"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView

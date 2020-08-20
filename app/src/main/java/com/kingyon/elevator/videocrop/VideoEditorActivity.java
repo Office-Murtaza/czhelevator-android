@@ -61,6 +61,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
+import static com.kingyon.elevator.photopicker.MimeType.getVideoDuration;
+
 //import com.iceteck.silicompressorr.SiliCompressor;
 
 /**
@@ -113,6 +115,7 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     MyVideoEditor myVideoEditor = new MyVideoEditor();
     private TextView editorTextView;
     private Disposable frameSubscribe;
+    private int voideTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -364,17 +367,29 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
     @Override
     public void cropVideoSuccess(String path) {
 //        剪切
-        LogUtils.e((int)(startTime/1000),cropTime,seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()),startTime,endTime);
+        LogUtils.e((int)(startTime/1000),cropTime,seekBar.getSelectedMinValue()
+                ,(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue())
+                ,startTime,endTime,path);
+
+        ClipDataVideo(path);
+
+
+    }
+
+    private void ClipDataVideo(String path) {
+//        showProgressDialog(getString(R.string.wait),false);
         final String outputPath = Utils.getTrimmedVideoPath(this, "small_video/PDD",
                 "testVideo_");
-            EpVideo epVideo = new EpVideo(path);
-            EpEditor.OutputOption outputOption = new EpEditor.OutputOption(outputPath);
-            epVideo.clip((startTime/1000),cropTime);
-            EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
-                @Override
-                public void onSuccess() {
-                LogUtils.e( RuntimeUtils.selectVideoPath,outputPath);
-                    hideProgressDailog();
+        EpVideo epVideo = new EpVideo(path);
+        EpEditor.OutputOption outputOption = new EpEditor.OutputOption(outputPath);
+        epVideo.clip((startTime/1000),cropTime);
+        EpEditor.exec(epVideo, outputOption, new OnEditorListener() {
+            @Override
+            public void onSuccess() {
+                hideProgressDailog();
+                voideTime = (int) (getVideoDuration(outputPath)/1000);
+                LogUtils.e( RuntimeUtils.selectVideoPath,outputPath,voideTime,getVideoDuration(outputPath));
+                if(voideTime == cropTime){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -393,82 +408,27 @@ public class VideoEditorActivity extends MvpBaseActivity<VideoEditorPresenter> i
                             finish();
                         }
                     });
+                }else {
+                    ToastUtils.showShort("视频裁剪失败,请拖动后重新尝试！");
                 }
-                @Override
-                public void onFailure() {
-                    ToastUtils.showShort("视频裁剪失败,请重新尝试！");
-                    LogUtils.e("视频裁剪失败-----------------------");
-                      hideProgressDailog();
-                }
+            }
+            @Override
+            public void onFailure() {
+                ToastUtils.showShort("视频裁剪失败,请重新尝试！");
+                LogUtils.e("视频裁剪失败-----------------------");
+                hideProgressDailog();
+            }
 
-                @Override
-                public void onProgress(float progress) {
-                    //这里获取处理进度
-                    hideProgressDailog();
-                    LogUtils.d("onProgress=="+progress);
+            @Override
+            public void onProgress(float progress) {
+                //这里获取处理进度
+                hideProgressDailog();
+                LogUtils.d("onProgress=="+progress);
 
-                }
-            });
+            }
+        });
 
-//        mMp4Composer = new Mp4Composer(path, outputPath)
-//                // .rotation(Rotation.ROTATION_270)
-//                .size(768, 1220)
-//                .videoBitrate(2000000)
-//                .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-//                .filter(null)
-//                .mute(false)
-//                .flipHorizontal(false)
-//                .flipVertical(false)
-//                .listener(new Mp4Composer.Listener() {
-//                    @Override
-//                    public void onProgress(final double progress) {
-//                        Log.d("TAG", "filterVideo---onProgress: " + (int) (progress * 100));
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showProgressDialog("视频裁剪中..."+ (int) (progress * 100)+"%", false);
-//                            }
-//                        });
-//                    }
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.d("TAG", "filterVideo---onCompleted"+outputPath);
-
-//                    }
-//
-//                    @Override
-//                    public void onCanceled() {
-////                        NormalProgressDialog.stopLoading();
-//                    }
-//
-//                    @Override
-//                    public void onFailed(Exception exception) {
-//                        Log.e("TAG", "filterVideo---onFailed()");
-//                        hideProgressDailog();
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.MYADSELECT) {
-//                                    //            剪切完成
-//                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
-//                                    intent.putExtra("path",outputPath);
-//                                    intent.putExtra("fromType",fromType);
-//                                    startActivity(intent);
-//                                } else {
-//                                    Intent intent = new Intent(VideoEditorActivity.this, EditVideoActivity.class);
-//                                    intent.putExtra("path",outputPath);
-//                                    intent.putExtra("fromType",fromType);
-//                                    startActivity(intent);
-//
-//                                }
-//                                finish();
-//                            }
-//                        });
-//                    }
-//                })
-//                .start();
     }
-
 
 
     private static class MainHandler extends Handler {

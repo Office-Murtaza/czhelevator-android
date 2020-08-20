@@ -47,7 +47,7 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
             if (isViewAttached()) {
                 getView().showProgressDialog("视频裁剪中...", false);
             }
-            mMp4Composer = new Mp4Composer(RuntimeUtils.selectVideoPath, videoPath)
+           new Mp4Composer(RuntimeUtils.selectVideoPath, videoPath)
                     // .rotation(Rotation.ROTATION_270)
                     .size(768, 1220)
                     .videoBitrate(2000000)
@@ -86,6 +86,7 @@ public class VideoEditorPresenter extends BasePresenter<VideoEditorView> {
                         @Override
                         public void onFailed(Exception exception) {
                             Log.e("TAG", "filterVideo---onFailed()");
+                            LogUtils.e("filterVideo---onFailed()");
                             if (isViewAttached()) {
                                 getView().hideProgressDailog();
                                 getView().cropVideoSuccess(videoPath);

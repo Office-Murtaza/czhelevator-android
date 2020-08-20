@@ -130,8 +130,23 @@ public class EditCountViewIntUpDown extends FrameLayout {
                 if (onNumberChange != null) {
                     onNumberChange.onChange(getCurrentCount(), position, edInput);
                 }
+
             }
         });
+
+        edInput.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    edInput.setText("");
+                }else {
+                    if (edInput.getText().toString().equals("")){
+                        edInput.setText("0");
+                    }
+                }
+            }
+        });
+
     }
 
     private void setCount() {

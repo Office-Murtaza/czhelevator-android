@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,6 +48,7 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -134,6 +134,8 @@ public class VoideDetailsActivity extends BaseActivity {
     RelativeLayout rlBottom;
     @BindView(R.id.ll_voide_top)
     View ll_voide_top;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private ShareDialog shareDialog;
 
     @Override
@@ -157,7 +159,7 @@ public class VoideDetailsActivity extends BaseActivity {
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page=1;
+                page = 1;
                 httpComment(page, contentId);
                 initData();
                 listEntities.clear();
@@ -167,7 +169,8 @@ public class VoideDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
-        showProgressDialog(getString(R.string.wait),true);
+//        showProgressDialog(getString(R.string.wait), true);
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
@@ -180,8 +183,9 @@ public class VoideDetailsActivity extends BaseActivity {
 
                     @Override
                     public void onNext(QueryRecommendEntity queryRecommendEntity) {
+                        stateLayout.showContentView();
                         recommendEntity = queryRecommendEntity;
-                        ConentUtils.httpAddBrowse(VoideDetailsActivity.this, recommendEntity.id);
+                        ConentUtils.httpAddBrowse(recommendEntity.id);
                         Parser mTagParser = new Parser();
                         tvContent.setMovementMethod(new LinkMovementMethod());
                         tvContent.setParserConverter(mTagParser);
@@ -256,8 +260,8 @@ public class VoideDetailsActivity extends BaseActivity {
             rlBottom.setVisibility(View.VISIBLE);
             ll_voide_top.setVisibility(View.VISIBLE);
             smartRefreshLayout.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) rl.getLayoutParams();
-            linearParams.height = UIUtil.dip2px(this,180);
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) rl.getLayoutParams();
+            linearParams.height = UIUtil.dip2px(this, 180);
             rl.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
         }
         LogUtils.e("onConfigurationChanged: " + orientation);
@@ -305,7 +309,7 @@ public class VoideDetailsActivity extends BaseActivity {
         if (contentCommentsAdapter == null || page == 1) {
             ecvListPl.setNestedScrollingEnabled(false);
             ecvListPl.setFocusable(false);
-            contentCommentsAdapter = new ContentCommentsAdapter(VoideDetailsActivity.this, "1",0,
+            contentCommentsAdapter = new ContentCommentsAdapter(VoideDetailsActivity.this, "1", 0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {
@@ -345,7 +349,7 @@ public class VoideDetailsActivity extends BaseActivity {
                             deleteShareDialog.show();
                         } else {
                             /*举报*/
-                            ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT,"");
+                            ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT, "");
                             reportShareDialog.show();
                         }
                     }
@@ -399,7 +403,7 @@ public class VoideDetailsActivity extends BaseActivity {
                     });
                     break;
                 case R.id.iv_share_news:
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title,false);
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title, false);
                     break;
                 case R.id.im_collection:
                     /*收藏*/

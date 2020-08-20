@@ -1,5 +1,9 @@
 package com.kingyon.elevator.uis.fragments.cooperation;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,9 +13,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,13 +35,17 @@ import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.entities.CooperationInfoNewEntity;
 import com.kingyon.elevator.entities.IdentityInfoEntity;
+import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.PartnerIndexInfoEntity;
 import com.kingyon.elevator.interfaces.OnItemClick;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.others.OnParamsChangeInterface;
+import com.kingyon.elevator.uis.actiivty2.user.AboutActivity;
+import com.kingyon.elevator.uis.actiivty2.user.IdentityCertificationActivity;
 import com.kingyon.elevator.uis.activities.WebViewActivity;
+import com.kingyon.elevator.uis.activities.cooperation.CooperationActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationDeviceActivity;
 import com.kingyon.elevator.uis.activities.cooperation.CooperationWithdrawRecordsActivity;
 import com.kingyon.elevator.uis.activities.cooperation.WithdrawalWayActivity;
@@ -44,6 +54,7 @@ import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DialogUtils;
 import com.kingyon.elevator.utils.LeakCanaryUtils;
 import com.kingyon.elevator.utils.MyActivityUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.RuntimeUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
@@ -60,9 +71,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.czh.myversiontwo.utils.Constance.ACTIVITY_CERTIFICATION;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_EARNINGS_YESTERDAY;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_HAVE_WITHDRAWAL;
 import static com.kingyon.elevator.utils.utilstwo.HtmlUtil.delHTMLTag;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 /**
  * 合伙人首页BaseStateRefreshingActivity
@@ -131,7 +144,7 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
         StatusBarUtil.setHeadViewPadding(getActivity(), containerView);
 //        preVBack.setImageDrawable(getBackDrawable(0xFFFFFFFF));
         httpData();
-        loadCashTips();
+        loadWindowAd();
         ConentUtils.httpData(Constants.AgreementType.PARTNER_PROMPT.getValue(), new SrcSuccess() {
             @Override
             public void srcSuccess(String data) {
@@ -143,7 +156,42 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     }
 
     private void httpData() {
-//        showProgressDialog(getString(R.string.wait));
+        showProgressDialog(getString(R.string.wait));
+//        DataSharedPreferences.getUserBean().getAuthStatus();
+        NetService.getInstance().userProfile()
+                .subscribe(new CustomApiCallback<UserEntity>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        if (ex.getCode()==100200){
+                            ActivityUtils.setLoginActivity();
+                        }
+                    }
+                    @Override
+                    public void onNext(UserEntity userEntity) {
+                        DataSharedPreferences.saveUserBean(userEntity);
+                        if (userEntity!=null) {
+                            switch (userEntity.getAuthStatus()) {
+                                case Constants.IDENTITY_STATUS.AUTHING:
+                                    shwoDialog("您已提交个人认证申请，工作人员正在审核处理中，预计需要5个工作日。", false, false);
+                                    break;
+                                case Constants.IDENTITY_STATUS.FAILD:
+                                    shwoDialog("个人认证失败，请重新提交", true, false);
+                                    break;
+                                case Constants.IDENTITY_STATUS.NO_AUTH:
+                                    shwoDialog("为了更好的为您提供服务，请先完成资质认证。", true, false);
+                                    break;
+                                case Constants.IDENTITY_STATUS.AUTHED:
+                                    httpQing();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void httpQing() {
         NetService.getInstance().setPartnerIndexInfo()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<PartnerIndexInfoEntity>>() {
@@ -177,7 +225,6 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                     }
                 });
-
     }
 
     private void loadingComplete() {
@@ -214,34 +261,39 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     /**
      * 加载提现的提示
      */
-    private void loadCashTips() {
+    /**
+     * 加载弹窗通知
+     */
+    private void loadWindowAd() {
         NetService.getInstance().getTipsList("2")
                 .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.d("弹窗提现提示加载失败：" + GsonUtils.toJson(ex));
+                        LogUtils.e("弹窗广告加载失败：" + GsonUtils.toJson(ex));
                     }
 
                     @Override
                     public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
                         if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
-                            AdNoticeWindowEntity adNoticeWindowEntity = adNoticeWindowEntities.get(0);
-                            LogUtils.d("弹窗提现提示数据：" + GsonUtils.toJson(adNoticeWindowEntity));
-                            if (adNoticeWindowEntity.type == 1) {
-                                //展示弹窗提示
-                                DialogUtils.getInstance().showCashTipsDialog(getContext(), adNoticeWindowEntity.name, true, new OnItemClick() {
-                                    @Override
-                                    public void onItemClick(int position) {
-//                                        if (adNoticeWindowEntity.isLink()) {
-                                            MyActivityUtils.goActivity(getContext(), WebViewActivity.class, adNoticeWindowEntity.urlLink);
-//                                        }
-                                    }
-                                });
+                            DataSharedPreferences.saveCooperationDialog(false);
+
+                            LogUtils.e("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities),adNoticeWindowEntities.toString());
+                            AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
+                            if (adNoticeWindowEntity != null) {
+                                LogUtils.e(adNoticeWindowEntity.type,"********************");
+                                if (adNoticeWindowEntity.type == 0) {
+                                    //展示弹窗广告
+                                    DialogUtils.getInstance().showMainWindowNoticeDialog(getActivity(), adNoticeWindowEntity);
+                                }else if (adNoticeWindowEntity.type == 1) {
+                                    DialogUtils.getInstance().showMainText(getActivity(), adNoticeWindowEntity);
+                                }
                             }
                         }
                     }
                 });
     }
+
+
 
     @OnClick({R.id.btn_apply_crash, R.id.tv_device_manager, R.id.tv_right, R.id.yesterday_income,
             R.id.tv_all_income, R.id.already_crash_container, R.id.img_top_back, R.id.ll_income_today})
@@ -271,12 +323,12 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
                 if (cooperationInfoNewEntity.isDisable()) {
                     showToast("您已被禁止提现，如有问题请联系客服！");
                 } else {
-//                    if (entity.isCashing()) {
-                    LogUtils.e(cooperationInfoNewEntity.toString());
-                    bundle.putParcelable(CommonUtil.KEY_VALUE_1, cooperationInfoNewEntity);
-                    //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
-//                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
-                    MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
+//                    if (cooperationInfoNewEntity.isCashing()) {
+                            LogUtils.e(cooperationInfoNewEntity.toString());
+                            bundle.putParcelable(CommonUtil.KEY_VALUE_1, cooperationInfoNewEntity);
+                            //startActivityForResult(CooperationWithdrawActivity.class, CommonUtil.REQ_CODE_1, bundle);
+        //                        MyActivityUtils.goActivity(getActivity(), FragmentContainerActivity.class, FragmentConstants.CashMethodSettingFragment, bundle);
+                            MyActivityUtils.goActivity(getActivity(), WithdrawalWayActivity.class, bundle);
 //                    } else {
 //                        showToast("尊敬的合伙人您好，现在不在提现时间范围内，谢谢!");
 //                    }
@@ -346,5 +398,55 @@ public class CooperationInfoFragment extends BaseFragment implements OnParamsCha
     public void onResume() {
         super.onResume();
         httpData();
+    }
+
+
+    private void shwoDialog(String src,boolean isattestation,boolean is) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.show();
+        /* 添加对话框自定义布局 */
+        alertDialog.setContentView(R.layout.layout_partner);
+        /* 获取对话框窗口 */
+        Window window = alertDialog.getWindow();
+        /* 设置显示窗口的宽高 */
+        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        /* 设置窗口显示位置 */
+        window.setGravity(Gravity.CENTER);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCanceledOnTouchOutside(false);
+        TextView tv_content = window.findViewById(R.id.tv_content);
+        TextView tv_next = window.findViewById(R.id.tv_next);
+        TextView tv_cancel = window.findViewById(R.id.tv_cancel);
+        tv_content.setText(src);
+        if (isattestation){
+            tv_cancel.setVisibility(View.VISIBLE);
+            tv_next.setText("去认证");
+
+        }
+        tv_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isattestation){
+                    alertDialog.dismiss();
+//                    startActivity(IdentityInfoActivity.class);
+                    ActivityUtils.setActivity(ACTIVITY_CERTIFICATION);
+                    alertDialog.dismiss();
+//                    DialogUtils.shwoCertificationDialog(getActivity());
+                }else {
+                    if (is){
+                        alertDialog.dismiss();
+                    }else {
+                        getActivity().finish();
+                    }
+                }
+            }
+        });
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
     }
 }

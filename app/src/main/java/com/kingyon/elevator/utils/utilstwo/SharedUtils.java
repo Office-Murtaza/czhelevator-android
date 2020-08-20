@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.czh.myversiontwo.utils.QuickClickUtils;
+import com.google.android.exoplayer2.C;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.NewsSharedEntity;
@@ -19,6 +20,7 @@ import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.muzhi.camerasdk.model.CameraSdkParameterInfo;
+import com.umeng.commonsdk.debug.I;
 import com.zhihu.matisse.utils.FFmpet;
 
 import java.io.File;
@@ -35,7 +37,7 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
  */
 public class SharedUtils {
 
-    public static  void shared(BaseActivity context, ShareDialog shareDialog, String summary, String shareUrl, String title, boolean isshow ) {
+    public static  void shared(Context context, ShareDialog shareDialog, String summary, String shareUrl, String title, boolean isshow ) {
         try {
             if (QuickClickUtils.isFastClick()) {
                 NewsSharedEntity newsSharedEntity = new NewsSharedEntity();
@@ -58,10 +60,11 @@ public class SharedUtils {
                                         public void onSuccess(String outpath) {
                                             if (!outpath.isEmpty()){
                                                 LogUtils.e(outpath);
+                                                Intent intent = new Intent(context,PlanNewFragment.class);
                                                 Bundle bundle1 = new Bundle();
                                                 bundle1.putString("type", "thoroew");
                                                 bundle1.putString("thoroew", outpath);
-                                                context.startActivity(PlanNewFragment.class, bundle1);
+                                                context.startActivity(intent, bundle1);
                                             }
                                         }
                                     });
@@ -81,13 +84,13 @@ public class SharedUtils {
 
 
 
-    public static  void fileDown(BaseActivity baseActivity, String urlVideo, String name, IsSrcSuccess isSrcSuccess) {
-        baseActivity.showProgressDialog(getString(R.string.wait),false);
+    public static  void fileDown(Context baseActivity, String urlVideo, String name, IsSrcSuccess isSrcSuccess) {
+
         DownloadManager.download(urlVideo, baseActivity.getExternalCacheDir() + File.separator + "/PDD/",
                 name, new DownloadManager.OnDownloadListener() {
                     @Override
                     public void onSuccess(File file) {
-                        baseActivity.hideProgress();
+
                         LogUtils.e(file.toString(),file);
                         isSrcSuccess.onSuccess(file.toString());
                     }

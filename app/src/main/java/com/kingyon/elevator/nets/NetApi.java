@@ -74,6 +74,7 @@ import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.ConentOdjerEntity;
 import com.kingyon.elevator.entities.entities.ConentTxEntity;
 import com.kingyon.elevator.entities.entities.ContentLikesListEntiy;
+import com.kingyon.elevator.entities.entities.DetailsEntily;
 import com.kingyon.elevator.entities.entities.EarningsTopEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwoYearlistEntity;
 import com.kingyon.elevator.entities.entities.EarningsTwolistEntity;
@@ -132,7 +133,7 @@ public interface NetApi {
 //    String domainDebugName = "http://47.96.105.139:1510/";  //公司测试服
 //    2.0测试接口
     String domainDebugName = "http://test.pddtv.cn:8080/app/v2/";//公司测试服
-//    String domainDebugName = "http://192.168.1.181:8080/app/v2/";  //公司测试服
+//    String domainDebugName = "http://192.168.1.146:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.166:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.222:8080/app/v2/";  //公司测试服
 //    String domainDebugName = "http://192.168.1.190:1510/";  //公司测试服
@@ -579,6 +580,10 @@ public interface NetApi {
     @FormUrlEncoded
     Observable<ConentEntity<AttenionUserEntiy>> getMatching(@Field("page") int page ,@Field("keyWords") String keyWords);
 
+    /*2.0订单完成详情*/
+    @POST("myOrder/orderDetailSimple")
+    @FormUrlEncoded
+    Observable<DetailsEntily> orderDetailSimple(@Field("orderSn") String orderSn);
 
     //    1.0
     //静态/通用获取七牛云参数

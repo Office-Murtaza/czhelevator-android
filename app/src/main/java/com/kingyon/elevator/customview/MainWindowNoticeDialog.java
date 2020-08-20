@@ -72,6 +72,7 @@ public class MainWindowNoticeDialog extends Dialog {
         switch (view.getId()) {
             case R.id.close_dialog:
                 DialogUtils.getInstance().hideMainWindowNoticeDialog();
+                dismiss();
                 break;
         }
     }

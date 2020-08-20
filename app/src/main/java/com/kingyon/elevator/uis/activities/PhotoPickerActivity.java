@@ -104,6 +104,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
 
 
     private void initView() {
+        showProgressDialog(getString(R.string.wait),false);
         LogUtils.e(presenter.getDirectories());
         folderListAdapter = new FolderListAdapter(this, fromType, presenter.getDirectories());
         folder_list.setAdapter(folderListAdapter);
@@ -111,8 +112,10 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
             if (QuickClickUtils.isFastClick()) {
                 if (fromType == Constants.FROM_TYPE_TO_SELECT_MEDIA.PLAN) {
                     if (position == 0) {
+                        /*我的广告*/
                         jumpToAdvertising();
                     } else {
+                        /*相册详情*/
                         folder_list.setVisibility(View.GONE);
                         setItemClick(position);
                     }
@@ -167,6 +170,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
                 RuntimeUtils.currentMediaDirectory,
                 presenter.getDirectories().get(position),
                 presenter.getDirectories().get(position).getId());
+
         if (presenter.getDirectories().get(position) != null) {
             if (RuntimeUtils.currentMediaDirectory != null) {
                 if (!RuntimeUtils.currentMediaDirectory.getId().equals(presenter.getDirectories().get(position).getId())) {
@@ -250,6 +254,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
 
     @Override
     public void loadFolderListSuccess(List<MediaDirectory> mResultFolder) {
+        LogUtils.e("多媒体数据获取成功");
         runOnUiThread(() -> {
             folderListAdapter.reflashData(mResultFolder);
             hideProgressDailog();

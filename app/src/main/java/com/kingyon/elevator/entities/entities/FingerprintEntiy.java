@@ -22,6 +22,11 @@ public class FingerprintEntiy extends DataSupport {
                 '}';
     }
 
+    public FingerprintEntiy(String userId, String isFin) {
+        this.userId = userId;
+        this.isFin = isFin;
+    }
+
     public String getUserId() {
         return userId;
     }

@@ -10,14 +10,21 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.TabEntity;
+import com.kingyon.elevator.entities.entities.DetailsEntily;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
 import com.kingyon.elevator.utils.CommonUtil;
+import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.RuntimeUtils;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.ActivityUtil;
+import com.leo.afbaselibrary.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -56,7 +63,7 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
 
     @Override
     protected String getTitleText() {
-        LogUtils.e(orderId);
+
         return "支付成功";
     }
 
@@ -68,36 +75,60 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         ARouter.getInstance().inject(this);
-        LogUtils.e(payType, orderId);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        Date curDate = new Date(System.currentTimeMillis());
-        tvDiscount.setText(orderId);
-        tvPayTime.setText(formatter.format(curDate));
-        tvPaySum.setText(priceActual + "");
-//        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntity.getPayTime()));
-        switch (payType) {
-            case Constants.PayType.ALI_PAY:
-                tvPayType.setText("支付宝");
-                break;
-            case Constants.PayType.WX_PAY:
-                tvPayType.setText("微信");
-                break;
-            case Constants.PayType.BALANCE_PAY:
-                tvPayType.setText("余额");
-                break;
-            case Constants.PayType.FREE:
-                tvPayType.setText("免费");
-                break;
-            case Constants.PayType.APPLY:
-                tvPayType.setText("苹果内购");
-                break;
-            case Constants.PayType.OFFLINE:
-                tvPayType.setText("线下");
-                break;
-            default:
-                tvPayType.setText("");
-                break;
-        }
+        LogUtils.e(orderId);
+        showProgressDialog(getString(R.string.wait),false);
+        NetService.getInstance().orderDetailSimple(orderId)
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<DetailsEntily>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        hideProgress();
+                        LogUtils.e(ex.getCode(),ex.getDisplayMessage());
+                        if (ex.getCode()==100200){
+                            ActivityUtils.setLoginActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(DetailsEntily detailsEntily) {
+
+                        tvPayType.setText(FormatUtils.getInstance().getPayWay(detailsEntily.payWay));
+                        tvDiscount.setText(detailsEntily.orderSn);
+                        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntily.payTime));
+                        tvPaySum.setText(detailsEntily.realPrice + "");
+                        hideProgress();
+                    }
+                });
+//        LogUtils.e(payType, orderId);
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+//        Date curDate = new Date(System.currentTimeMillis());
+//        tvDiscount.setText(orderId);
+//        tvPayTime.setText(formatter.format(curDate));
+//        tvPaySum.setText(priceActual + "");
+////        tvPayTime.setText(TimeUtil.getAllTimeNoSecond(detailsEntity.getPayTime()));
+//        switch (payType) {
+//            case Constants.PayType.ALI_PAY:
+//                tvPayType.setText("支付宝");
+//                break;
+//            case Constants.PayType.WX_PAY:
+//                tvPayType.setText("微信");
+//                break;
+//            case Constants.PayType.BALANCE_PAY:
+//                tvPayType.setText("余额");
+//                break;
+//            case Constants.PayType.FREE:
+//                tvPayType.setText("免费");
+//                break;
+//            case Constants.PayType.APPLY:
+//                tvPayType.setText("苹果内购");
+//                break;
+//            case Constants.PayType.OFFLINE:
+//                tvPayType.setText("线下");
+//                break;
+//            default:
+//                tvPayType.setText("");
+//                break;
+//        }
 
 
     }
@@ -113,8 +144,9 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
                 break;
             case R.id.tv_homepage:
             case R.id.pre_v_back:
-                ActivityUtil.finishAllNotMain();
+//                ActivityUtil.finishAllNotMain();
                 EventBus.getDefault().post(new TabEntity(2));
+                finish();
                 break;
         }
     }
@@ -122,10 +154,10 @@ public class PaySuccessActivity extends BaseSwipeBackActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-            ActivityUtil.finishAllNotMain();
+//            ActivityUtil.finishAllNotMain();
             EventBus.getDefault().post(new TabEntity(2));
 //            startActivity(PlanNewFragment.class);
-//            finish();
+            finish();
             return true;
         }
         return super.onKeyUp(keyCode, event);

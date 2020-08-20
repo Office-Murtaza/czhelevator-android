@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.fragments.main2.found;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -16,8 +18,10 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.CustomFragmentPagerAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.view.ModifyTabLayout;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
+import com.leo.afbaselibrary.widgets.StateLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,10 +45,14 @@ public class TopicFragment extends FoundFragemtUtils {
     RelativeLayout rlError;
     @BindView(R.id.rl_null)
     RelativeLayout rlNull;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     @Override
     protected void lazyLoad() {
-        initData();
+//        if (PublicFuncation.isIntervalTenMin()) {
+            initData();
+//        }
     }
 
     @Override
@@ -58,22 +66,24 @@ public class TopicFragment extends FoundFragemtUtils {
     }
 
     private void initData() {
-        showProgressDialog("请稍等...");
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setQueryTopicLabel()
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<HomeTopicEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
 //                        ToastUtils.showToast(getActivity(), ex.getDisplayMessage(), 1000);
+                        stateLayout.showContentView();
                         hideProgress();
                         rlError.setVisibility(View.VISIBLE);
                         vp.setVisibility(View.GONE);
                         rlNull.setVisibility(View.GONE);
-                    }
 
+                    }
                     @Override
                     public void onNext(ConentEntity<HomeTopicEntity> conentEntity) {
                         LogUtils.e(conentEntity.getContent().toString());
+
                         rlError.setVisibility(View.GONE);
                         vp.setVisibility(View.VISIBLE);
                         rlNull.setVisibility(View.GONE);
@@ -91,21 +101,21 @@ public class TopicFragment extends FoundFragemtUtils {
                         tabLayout.setmTextBgSelectResId(R.drawable.bg_ad_type2);
                         tabLayout.setTextSize(16);
                         //等寬
-                        if (conentEntity.getContent().size()<=0){
+                        if (conentEntity.getContent().size() <= 0) {
                             rlError.setVisibility(View.GONE);
                             vp.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
                             hideProgress();
-                        }else {
+                        } else {
                             CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
                             adapter.cleanFrag();
                             for (int i = 0; i < conentEntity.getContent().size(); i++) {
-                                adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id),
+                                adapter.addFrag(new TopicTypeFragment().setIndex(conentEntity.getContent().get(i).id,stateLayout),
                                         conentEntity.getContent().get(i).labelName);
                             }
-                        vp.setAdapter(adapter);
-                        vp.setOffscreenPageLimit(adapter.getCount());
-                        tabLayout.setupWithViewPager(vp);
+                            vp.setAdapter(adapter);
+                            vp.setOffscreenPageLimit(adapter.getCount());
+                            tabLayout.setupWithViewPager(vp);
                         }
                     }
                 });
@@ -133,9 +143,19 @@ public class TopicFragment extends FoundFragemtUtils {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        stateLayout.setErrorAndEmptyAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData();
+            }
+        });
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-
     }
 
     @OnClick(R.id.rl_error)

@@ -10,9 +10,16 @@
         android:id="@+id/drawer_layout"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <com.leo.afbaselibrary.widgets.StateLayout
+            android:id="@+id/stateLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -355,6 +362,8 @@
                 android:visibility="gone" />
 
         </RelativeLayout>
+
+        </com.leo.afbaselibrary.widgets.StateLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

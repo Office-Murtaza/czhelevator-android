@@ -80,6 +80,7 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
         photo_grid_view.setOnItemClickListener((parent, view, position, id) -> {
             MediaData mediaData = mediaDataArrayList.get(position);
             if (showType == 1) {
+                /*选择视频*/
                 if (mediaData.getDuration() > videoTime) {
                     RuntimeUtils.selectVideoPath = mediaData.getOriginalPath();
                     MyActivityUtils.goVideoEditorActivity(getActivity(), fromType, planType);
@@ -110,6 +111,7 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
 
                 }
             } else {
+                /*选择图片*/
                 openCrop(mediaDataArrayList.get(position).getOriginalPath());
             }
         });
@@ -131,6 +133,7 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
                 pickerAdapter = new PhotoPickerAdapter(getActivity(), showType, mediaDataArrayList);
                 photo_grid_view.setAdapter(pickerAdapter);
             }
+            LogUtils.e(mediaDataArrayList.toString());
         });
     }
 
@@ -176,6 +179,8 @@ public class PhotoPickerFragment extends MvpBaseFragment<PhotoPickerPresenter> i
                     }
                 }
             }
+            LogUtils.e(showType,mediaDataArrayLists.toString());
+
             mediaDataArrayList = mediaDataArrayLists;
             if (mediaDataArrayList.size() > 0) {
                 hideNoDataTips();

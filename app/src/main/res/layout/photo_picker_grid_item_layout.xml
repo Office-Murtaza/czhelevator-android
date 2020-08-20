@@ -7,7 +7,9 @@
         android:id="@+id/iv_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_picture_space_article"
+        />
 
     <TextView
         android:id="@+id/video_time"

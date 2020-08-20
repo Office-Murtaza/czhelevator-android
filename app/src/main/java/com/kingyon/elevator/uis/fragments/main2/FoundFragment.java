@@ -2,10 +2,7 @@ package com.kingyon.elevator.uis.fragments.main2;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +10,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.AdNoticeWindowEntity;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.fragments.main2.found.AttentionFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.RecommendFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.TopicFragment;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.ConfirmPopWindow;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.CustomFragmentPagerAdapter;
+import com.kingyon.elevator.utils.DialogUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.videocrop.EditVideoActivity;
 import com.kingyon.elevator.view.ModifyTabLayout;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.zhihu.matisse.Matisse;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +71,8 @@ public class FoundFragment extends BaseFragment {
     ModifyTabLayout tabLayout;
     @BindView(R.id.fl_title)
     LinearLayout flTitle;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     @Override
     public int getContentViewId() {
@@ -81,13 +89,28 @@ public class FoundFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         ConentUtils.topicStr = "";
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (DataSharedPreferences.getDialog()) {
+                loadWindowAd();
+            } else {
+                if (PublicFuncation.isIntervalSixMin()) {
+                    loadWindowAd();
+                }
+            }
+        }
     }
 
     private void initView() {
 
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
         adapter.addFrag(new AttentionFragment(), "关注");
-        adapter.addFrag(new RecommendFragment(), "推荐");
+        adapter.addFrag(new RecommendFragment().setIndex(stateLayout), "推荐");
         adapter.addFrag(new TopicFragment(), "话题");
         viewPager.setAdapter(adapter);
 
@@ -136,16 +159,17 @@ public class FoundFragment extends BaseFragment {
             default:
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && null != data) {
             switch (requestCode) {
                 case ACCESS_VOIDE_PATH:
-                    LogUtils.e(Matisse.obtainPathResult(data),Matisse.obtainResult(data),Matisse.obtainOriginalState(data));
+                    LogUtils.e(Matisse.obtainPathResult(data), Matisse.obtainResult(data), Matisse.obtainOriginalState(data));
                     Intent intent = new Intent(getActivity(), EditVideoActivity.class);
-                    intent.putExtra("path",Matisse.obtainPathResult(data).get(0));
-                    intent.putExtra("fromType",ACCESS_VOIDE_CODE);
+                    intent.putExtra("path", Matisse.obtainPathResult(data).get(0));
+                    intent.putExtra("fromType", ACCESS_VOIDE_CODE);
                     startActivity(intent);
 //                    Uri selectedVideo = data.getData();
 //                    String[] filePathColumn = {MediaStore.Video.Media.DATA};
@@ -161,5 +185,41 @@ public class FoundFragment extends BaseFragment {
                     break;
             }
         }
+    }
+
+    /**
+     * 加载弹窗通知
+     */
+    private void loadWindowAd() {
+        NetService.getInstance().getTipsList("0")
+                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e("弹窗广告加载失败：" + GsonUtils.toJson(ex));
+                    }
+
+                    @Override
+                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
+                        if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
+                            DataSharedPreferences.saveDialog(false);
+                            LogUtils.e("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities), adNoticeWindowEntities.toString());
+                            AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
+                            if (adNoticeWindowEntity != null) {
+                                LogUtils.e(adNoticeWindowEntity.type, "********************");
+                                if (adNoticeWindowEntity.type == 0) {
+                                    //展示弹窗广告
+                                    DialogUtils.getInstance().showMainWindowNoticeDialog(getActivity(), adNoticeWindowEntity);
+                                } else if (adNoticeWindowEntity.type == 1) {
+                                    DialogUtils.getInstance().showMainText(getActivity(), adNoticeWindowEntity);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

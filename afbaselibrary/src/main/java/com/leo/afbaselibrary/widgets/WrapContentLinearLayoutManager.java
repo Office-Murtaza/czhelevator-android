@@ -31,4 +31,5 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
             e.printStackTrace();
         }
     }
+
 }

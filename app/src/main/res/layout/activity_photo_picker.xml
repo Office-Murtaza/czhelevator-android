@@ -77,7 +77,7 @@
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="28dp"
-                android:background="#EB7A12" />
+                android:background="#FF3049" />
         </RelativeLayout>
 
 
@@ -101,7 +101,7 @@
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="28dp"
-                android:background="#EB7A12"
+                android:background="#FF3049"
                 android:visibility="gone" />
         </RelativeLayout>
 

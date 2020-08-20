@@ -260,7 +260,8 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
 
 
     public void checkPayPasswordIsRight(String pwd) {
-        showProgressDialog("支付密码验证中...",true);
+        showProgressDialog("支付密码验证中...",false);
+        tv_confirm_cash.setClickable(false);
         NetService.getInstance().vaildPasswordIsRight(pwd)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -268,12 +269,14 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     protected void onResultError(ApiException ex) {
                         showToast(ex.getDisplayMessage());
                         hideProgress();
+                        tv_confirm_cash.setClickable(true);
                     }
 
                     @Override
                     public void onNext(String content) {
                         hideProgress();
                         onEnsureClick();
+                        tv_confirm_cash.setClickable(true);
 //                        if (content.equals("成功")) {
 //
 //                        } else {

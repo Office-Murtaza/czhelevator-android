@@ -79,7 +79,7 @@ public class DonateChooseActivity extends BaseStateRefreshingLoadingActivity<Cou
                         }
                     }
                 }, position);
-                editCountView.setCanEdit(false);
+                editCountView.setCanEdit(true);
                 editCountView.setMaxCount(item.getCouponsCount());
                 editCountView.setMinCount(0);
                 editCountView.setCurrentCount(item.getCacheCount());

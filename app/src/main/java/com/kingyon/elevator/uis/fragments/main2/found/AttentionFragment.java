@@ -3,7 +3,7 @@ package com.kingyon.elevator.uis.fragments.main2.found;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +19,12 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
+import com.leo.afbaselibrary.widgets.WrapContentLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -53,6 +56,8 @@ public class AttentionFragment extends FoundFragemtUtils {
     RelativeLayout rlNull;
     @BindView(R.id.rl_notlogin)
     RelativeLayout rl_notlogin;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private View view;
     // 标志位，标志已经初始化完成。
     public static boolean isRefresh = true;
@@ -73,6 +78,7 @@ public class AttentionFragment extends FoundFragemtUtils {
 
     private void httpQueryAttention(int page, String title, String orderBy) {
 //        showProgressDialog("请稍后...");
+
         NetService.getInstance().setQueryAttention(page, title, orderBy)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
@@ -81,6 +87,7 @@ public class AttentionFragment extends FoundFragemtUtils {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         hideProgress();
                         closeRefresh();
+                        stateLayout.showContentView();
                         if (ex.getCode() == -102) {
                             if (page > 1) {
                                 ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
@@ -91,12 +98,13 @@ public class AttentionFragment extends FoundFragemtUtils {
                                 rl_notlogin.setVisibility(View.GONE);
                             }
 
-                        } else if (ex.getCode()==100200){
+                        } else if (ex.getCode() == 100200) {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
                             rl_notlogin.setVisibility(View.VISIBLE);
-                        }else {
+
+                        } else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
@@ -106,6 +114,7 @@ public class AttentionFragment extends FoundFragemtUtils {
 
                     @Override
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
+                        stateLayout.showContentView();
                         hideProgress();
                         closeRefresh();
                         rvAttentionList.setVisibility(View.VISIBLE);
@@ -114,6 +123,7 @@ public class AttentionFragment extends FoundFragemtUtils {
                         rl_notlogin.setVisibility(View.GONE);
                         dataAdd(conentEntity);
 
+
                     }
                 });
 
@@ -121,19 +131,26 @@ public class AttentionFragment extends FoundFragemtUtils {
     }
 
     private void dataAdd(ConentEntity<QueryRecommendEntity> conentEntity) {
-        for (int i = 0; i < conentEntity.getContent().size(); i++) {
-            QueryRecommendEntity queryRecommendEntity = new QueryRecommendEntity();
-            queryRecommendEntity = conentEntity.getContent().get(i);
-            recommendEntityList.add(queryRecommendEntity);
-        }
-        if (attentionAdapter == null || page == 1) {
-            attentionAdapter = new AttentionAdapter((BaseActivity) getActivity());
-            attentionAdapter.addData(recommendEntityList);
-            rvAttentionList.setAdapter(attentionAdapter);
-            rvAttentionList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
-        } else {
-            attentionAdapter.addData(recommendEntityList);
-            attentionAdapter.notifyDataSetChanged();
+        try {
+            for (int i = 0; i < conentEntity.getContent().size(); i++) {
+                QueryRecommendEntity queryRecommendEntity = new QueryRecommendEntity();
+                queryRecommendEntity = conentEntity.getContent().get(i);
+                recommendEntityList.add(queryRecommendEntity);
+            }
+            if (attentionAdapter == null || page == 1) {
+                attentionAdapter = new AttentionAdapter((BaseActivity) getActivity());
+                attentionAdapter.addData(recommendEntityList);
+                attentionAdapter.setHasStableIds(true);
+                rvAttentionList.setAdapter(attentionAdapter);
+
+                rvAttentionList.setLayoutManager(new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                attentionAdapter.notifyDataSetChanged();
+            } else {
+                attentionAdapter.addData(recommendEntityList);
+                attentionAdapter.notifyDataSetChanged();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            LogUtils.e(e.toString());
         }
     }
 
@@ -150,6 +167,7 @@ public class AttentionFragment extends FoundFragemtUtils {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 recommendEntityList.clear();
+                stateLayout.showProgressView(getString(R.string.wait));
                 httpQueryAttention(1, "", "");
             }
         });
@@ -161,7 +179,13 @@ public class AttentionFragment extends FoundFragemtUtils {
                 httpQueryAttention(page, "", "");
             }
         });
-
+        stateLayout.setErrorAndEmptyAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stateLayout.showProgressView(getString(R.string.wait));
+                httpQueryAttention(1, "", "");
+            }
+        });
 
     }
 
@@ -187,11 +211,15 @@ public class AttentionFragment extends FoundFragemtUtils {
     @Override
     protected void lazyLoad() {
 //        if (recommendEntityList.size() < 0) {
-            if (smartRefreshLayout!=null) {
+//        if (PublicFuncation.isIntervalTenMin()) {
+            if (smartRefreshLayout != null) {
                 smartRefreshLayout.autoRefresh(100);
-            }else {
+            } else {
+                stateLayout.showProgressView(getString(R.string.wait));
                 httpQueryAttention(1, "", "");
             }
+
+//        }
 //        }
 
     }
@@ -199,7 +227,7 @@ public class AttentionFragment extends FoundFragemtUtils {
     @Override
     public void onResume() {
         super.onResume();
-        if (isRefresh){
+        if (isRefresh) {
             smartRefreshLayout.autoRefresh(100);
         }
 
@@ -209,11 +237,10 @@ public class AttentionFragment extends FoundFragemtUtils {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_error:
-                if (smartRefreshLayout!=null) {
-                    smartRefreshLayout.autoRefresh(100);
-                }else {
-                    httpQueryAttention(1, "", "");
+                if (stateLayout!=null){
+                    stateLayout.showProgressView(getString(R.string.wait));
                 }
+                httpQueryAttention(1, "", "");
                 break;
             case R.id.rl_notlogin:
                 ActivityUtils.setLoginActivity();

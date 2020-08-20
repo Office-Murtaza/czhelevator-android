@@ -14,7 +14,7 @@ public class StringContent {
 
     public static String STRING_PRICE1 = "¥ <font color=\"#FF3049\"><big>%s</big></font> 元/台/天 ";
 
-    public static String STRING_PRICE2 = "<span style=\"color: #333; font-size: 14px;\">合计:</span>¥ <span style=\"color: #ff3049; font-size: 14px;\"><big>%s</big></span> 元";
+    public static String STRING_PRICE2 = "<span style=\"color: #333; font-size: 14px; font-weight: normal;\">合计:</span>¥ <span style=\"color: #ff3049; font-size: 14px;\"><big>%s</big></span> 元";
 
     public static String AD_ZQSTRING = "%s 点赞    %s 评论    %s播放";
 
@@ -38,7 +38,7 @@ public class StringContent {
     public static String getHtmlData(String bodyHTML) {
         String head = "<head>" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
+                "<style>img{max-width: 100%; width:auto; height:auto!important; }font{ word-wrap: break-word;}</style>" +
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }

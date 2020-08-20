@@ -23,8 +23,10 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.RecommendtopAdapter;
 import com.kingyon.elevator.uis.fragments.main2.found.utilsf.FoundFragemtUtils;
+import com.kingyon.elevator.utils.PublicFuncation;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -56,6 +58,7 @@ public class RecommendFragment extends FoundFragemtUtils {
     RelativeLayout rlError;
     @BindView(R.id.rl_null)
     RelativeLayout rlNull;
+    StateLayout stateLayout;
     private View view;
 
     // 标志位，标志已经初始化完成。
@@ -67,6 +70,11 @@ public class RecommendFragment extends FoundFragemtUtils {
     @Override
     public int getContentViewId() {
         return R.layout.fragment_recommend;
+    }
+
+    public RecommendFragment setIndex( StateLayout stateLayout) {
+        this.stateLayout = stateLayout;
+        return (this);
     }
 
     @Override
@@ -88,6 +96,9 @@ public class RecommendFragment extends FoundFragemtUtils {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 httpTop();
                 recommendEntityList.clear();
+                if (stateLayout!=null){
+                    stateLayout.showProgressView(getString(R.string.wait));
+                }
                 httpRecommend(1, "");
             }
         });
@@ -99,6 +110,7 @@ public class RecommendFragment extends FoundFragemtUtils {
                 httpRecommend(page, "");
             }
         });
+
     }
 
     public SmartRefreshLayout getSmartRefreshLayout() {
@@ -119,6 +131,7 @@ public class RecommendFragment extends FoundFragemtUtils {
                     protected void onResultError(ApiException ex) {
                         closeRefresh();
                         LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        stateLayout.showContentView();
                         if (ex.getCode()==-102){
                             if (page>1) {
                                 ToastUtils.showShort("已经没有更多了");
@@ -138,6 +151,7 @@ public class RecommendFragment extends FoundFragemtUtils {
                     @Override
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
+                        stateLayout.showContentView();
                         rvAttentionList.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);
                         rlNull.setVisibility(View.GONE);
@@ -154,6 +168,7 @@ public class RecommendFragment extends FoundFragemtUtils {
         if (attentionAdapter == null || page == 1) {
             attentionAdapter = new AttentionAdapter((BaseActivity) getActivity());
             attentionAdapter.addData(recommendEntityList);
+            attentionAdapter.setHasStableIds(true);
             rvAttentionList.setAdapter(attentionAdapter);
             rvAttentionList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
         } else {
@@ -208,13 +223,19 @@ public class RecommendFragment extends FoundFragemtUtils {
     protected void lazyLoad() {
 //        if (recommendEntityList.size()<0) {
         account = DataSharedPreferences.getCreatateAccount();
+
+//        if (PublicFuncation.isIntervalTenMin()) {
             if (smartRefreshLayout != null) {
                 smartRefreshLayout.autoRefresh(100);
             } else {
-                httpTop();
-                httpRecommend(page, "");
-            }
-//        }
+                if (stateLayout!=null){
+                        stateLayout.showProgressView(getString(R.string.wait));
+                    }
+                    httpTop();
+                    httpRecommend(page, "");
+                }
+//            }
+
     }
 
     @OnClick(R.id.rl_error)
@@ -223,6 +244,9 @@ public class RecommendFragment extends FoundFragemtUtils {
         if (smartRefreshLayout != null) {
             smartRefreshLayout.autoRefresh(100);
         } else {
+            if (stateLayout!=null){
+                stateLayout.showProgressView(getString(R.string.wait));
+            }
             httpTop();
             httpRecommend(page, "");
         }

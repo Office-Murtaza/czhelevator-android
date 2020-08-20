@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="  广告费"
-            android:textColor="#ff404040"
+            android:textColor="#333333"
             android:drawableLeft="@mipmap/ic_line_red_s"
             android:textSize="15sp" />
 
@@ -48,7 +48,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="¥ 0"
-            android:textColor="#ff404040"
+            android:textColor="#333333"
             android:textSize="15sp" />
 
     </RelativeLayout>
@@ -83,7 +83,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="  优惠"
-            android:textColor="#ff404040"
+            android:textColor="#333333"
             android:drawableLeft="@mipmap/ic_line_red_s"
             android:textSize="15sp" />
 
@@ -95,7 +95,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="¥ 0"
-            android:textColor="#ff404040"
+            android:textColor="#333333"
             android:textSize="15sp" />
 
     </RelativeLayout>
@@ -139,8 +139,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="优惠券"
-            android:textColor="#7F7F7F"
-            android:textSize="15sp" />
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_12" />
 
 
         <TextView
@@ -150,8 +150,8 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="¥ 0"
-            android:textColor="#7F7F7F"
-            android:textSize="15sp" />
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_12" />
 
     </RelativeLayout>
 

@@ -21,6 +21,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.customview.RuleDescTipsDialog;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
@@ -28,6 +29,7 @@ import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.nets.NetUpload;
 import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
+import com.kingyon.elevator.uis.dialogs.WebAddDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
@@ -313,7 +315,20 @@ public class ArticleReleaseActivity extends BaseActivity {
                 break;
             case R.id.img_link:
                 /*添加链接*/
-                richEditor.insertLink("https://www.baidu.com", "百度");
+                WebAddDialog webAddDialog = new WebAddDialog(this);
+                webAddDialog.OnGetConent(new WebAddDialog.IsSrcSuccess() {
+                    @Override
+                    public void onSuccess(String e, String e1) {
+                        webAddDialog.dismiss();
+                        if (e1.isEmpty()){
+                            richEditor.insertLink(e, e);
+                        }else {
+                            richEditor.insertLink(e, e1);
+                        }
+                    }
+                });
+                webAddDialog.show();
+
                 break;
             case R.id.img_at:
                 /*艾特*/

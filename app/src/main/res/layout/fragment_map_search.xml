@@ -75,8 +75,8 @@
                    android:layout_marginRight="@dimen/dp_5"
                    android:progressDrawable="@drawable/bg_range_slider1"
                    android:thumb="@drawable/ic_range_slider"
-                   android:max="50"
-                   android:progress="10"
+                   android:max="5000"
+                   android:progress="1"
                    />
 
            </LinearLayout>

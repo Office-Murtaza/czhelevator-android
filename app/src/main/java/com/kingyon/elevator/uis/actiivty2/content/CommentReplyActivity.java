@@ -105,6 +105,7 @@ public class CommentReplyActivity extends BaseActivity {
     }
 
     private void httpCommentBy(int page, int contentId, int onId) {
+        showProgressDialog(getString(R.string.wait),false);
         NetService.getInstance().setCommentBy(page, contentId, onId)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<CommentListEntity>>() {
@@ -112,6 +113,7 @@ public class CommentReplyActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        hideProgress();
 
                     }
 
@@ -119,7 +121,8 @@ public class CommentReplyActivity extends BaseActivity {
                     public void onNext(ConentEntity<CommentListEntity> conentEntity) {
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
                         dataAdd(conentEntity);
-                        tvCommentsNumber.setText(conentEntity.getContent().size()+"条回复");
+                        tvCommentsNumber.setText(conentEntity.getTotalElements()+"条回复");
+                        hideProgress();
                     }
                 });
 
@@ -182,13 +185,14 @@ public class CommentReplyActivity extends BaseActivity {
 
                     @Override
                     public void onSubmit(String content) {
+                        showProgressDialog(getString(R.string.wait),false);
                         ConentUtils.httpComment(CommentReplyActivity.this,
                                 contentId, onId, content, new ConentUtils.IsSuccedListener() {
                                     @Override
                                     public void onisSucced(boolean isSucced) {
                                         if (isSucced) {
                                             listEntities.clear();
-                                            httpCommentBy(page, contentId, onId);
+                                            httpCommentBy(1, contentId, onId);
                                         }
                                     }
                                 });

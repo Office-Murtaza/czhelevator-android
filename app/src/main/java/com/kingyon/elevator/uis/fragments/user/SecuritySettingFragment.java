@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.application.AppContent;
 import com.kingyon.elevator.constants.FragmentConstants;
 import com.kingyon.elevator.data.DataSharedPreferences;
+import com.kingyon.elevator.entities.LocalMaterialEntity;
 import com.kingyon.elevator.entities.UserEntity;
 import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.finger.FingerprintCallback;
@@ -108,11 +110,10 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
                 .setMessage("指纹识别已经开启，是否需要关闭？")
                 .setPositiveButton("关闭", (dialog, which) -> {
                     DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
-                    FingerprintEntiy entiy  = new FingerprintEntiy();
-                    entiy.updateAll("userId=? and isFin=?",
-                            DataSharedPreferences.getCreatateAccount(),"1");
+                    DataSharedPreferences.saveState("1");
                     finger_status.setText("未开启");
                     showShortToast("指纹识别已经关闭");
+                    LogUtils.e("------------");
                 })
                 .setNegativeButton("取消", null)
                 .show();
@@ -132,9 +133,8 @@ public class SecuritySettingFragment extends MvpBaseFragment<SecuritySettingFrag
             showShortToast("指纹验证成功！");
             DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, true);
             finger_status.setText("已开启");
-            FingerprintEntiy entiy  = new FingerprintEntiy();
-            entiy.updateAll("userId =? and isFin =?",
-                    DataSharedPreferences.getCreatateAccount(),"2");
+            DataSharedPreferences.saveState("2");
+
         }
 
         @Override

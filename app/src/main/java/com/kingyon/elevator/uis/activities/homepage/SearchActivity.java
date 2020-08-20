@@ -54,6 +54,7 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseSwipeBackActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.zhaoss.weixinrecorded.util.EventBusConstants;
 import com.zhaoss.weixinrecorded.util.EventBusObjectEntity;
 
@@ -140,6 +141,10 @@ public class SearchActivity extends BaseSwipeBackActivity {
     TextView tvConfirm;
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+    @BindView(R.id.img_plan)
+    ImageView imgPlan;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
 
     private String keyWord;
     private AMapCityEntity cityEntity;
@@ -172,7 +177,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
                 tvBumber.setVisibility(View.VISIBLE);
 
             }
-            if (isSX == 2){
+            if (isSX == 2) {
                 httpRecommendHouse(0, String.valueOf(latitude), String.valueOf(longitude), 0, "", "", "", "");
             }
             handler.postDelayed(this, 500);
@@ -230,7 +235,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,
                                     String areaId, String pointType, String keyWord, String distance) {
         LogUtils.e(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance);
-        showProgressDialog("加载中....",true);
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setRecommendHouse(page, latitude, longitude, cityId, areaId, pointType, keyWord, distance)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<RecommendHouseEntiy>>() {
@@ -238,6 +243,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getCode(), ex.getDisplayMessage());
                         hideProgress();
+                        stateLayout.showErrorView();
                         flContent.setVisibility(View.GONE);
                         imgMenu.setVisibility(View.GONE);
                         rlError.setVisibility(View.VISIBLE);
@@ -247,6 +253,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
                     @Override
                     public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
                         LogUtils.e(conentEntity.toString(), conentEntity.getContent().toString());
+                        stateLayout.showContentView();
                         flContent.setVisibility(View.VISIBLE);
                         rlError.setVisibility(View.GONE);
                         imgMenu.setVisibility(View.VISIBLE);
@@ -368,14 +375,14 @@ public class SearchActivity extends BaseSwipeBackActivity {
             notFirstIn = true;
             updateFragment();
             if (mapMode) {
-                showProgressDialog(getString(R.string.wait),true);
+                showProgressDialog(getString(R.string.wait), true);
             }
         }
         super.onResume();
     }
 
     @OnClick({R.id.ll_city_area, R.id.ll_cell_type, R.id.tv_location_title, R.id.tv_search_title, R.id.img_clear, R.id.tv_map_title
-            , R.id.iv_gouwuche, R.id.tv_list_title, R.id.rl_plan, R.id.img_menu, R.id.tv_reset, R.id.tv_confirm,R.id.rl_error})
+            , R.id.iv_gouwuche, R.id.tv_list_title, R.id.rl_plan, R.id.img_menu, R.id.tv_reset, R.id.tv_confirm, R.id.rl_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_city_area:
@@ -426,8 +433,8 @@ public class SearchActivity extends BaseSwipeBackActivity {
             case R.id.rl_plan:
                 if (isToken(this)) {
                     Bundle bundle1 = new Bundle();
-                    bundle1.putString("type","ad");
-                    startActivity(PlanNewFragment.class,bundle1);
+                    bundle1.putString("type", "ad");
+                    startActivity(PlanNewFragment.class, bundle1);
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
@@ -581,7 +588,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
     private void updateDatas() {
         if (textFragment != null) {
             if (mapMode) {
-                showProgressDialog(getString(R.string.wait),true);
+                showProgressDialog(getString(R.string.wait), true);
             }
             EventBus.getDefault().post(new KeywordEntity(keyWord));
 //            textFragment.onParamsChange(keyWord, cityEntity, distance, areaIds, cellType);

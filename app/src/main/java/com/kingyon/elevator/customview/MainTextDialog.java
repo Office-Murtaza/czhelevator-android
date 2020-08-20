@@ -3,7 +3,6 @@ package com.kingyon.elevator.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,10 +10,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.AdNoticeWindowEntity;
 import com.kingyon.elevator.interfaces.OnItemClick;
-import com.kingyon.elevator.uis.activities.WebViewActivity;
 import com.kingyon.elevator.utils.DialogUtils;
-import com.kingyon.elevator.utils.MyActivityUtils;
-import com.leo.afbaselibrary.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +30,8 @@ public class MainTextDialog extends Dialog {
     TextView tvContent;
     @BindView(R.id.tv_next)
     TextView tvNext;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     private OnItemClick onItemClick;
 
     private Context context;
@@ -56,11 +54,11 @@ public class MainTextDialog extends Dialog {
             DataSharedPreferences.saveLong(DataSharedPreferences.LAST_AD_TIME, System.currentTimeMillis());
             DataSharedPreferences.saveInt(DataSharedPreferences.LAST_AD_ID, adNoticeWindowEntity.id);
             tvContent.setText(adNoticeWindowEntity.popText);
+            tvTitle.setText(adNoticeWindowEntity.name);
         } else {
             DialogUtils.getInstance().hideMainWindowNoticeDialog();
         }
     }
-
 
 
     @Override

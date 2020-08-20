@@ -1,6 +1,7 @@
 package com.kingyon.elevator.view;
 
 import com.kingyon.elevator.entities.CommentEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.mvpbase.BaseView;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface NewsDetailsView extends BaseView {
 
-    void showListData(List<CommentEntity> incomeDetailsEntities);
+    void showListData(List<CommentListEntity> incomeDetailsEntities);
 
     /**
      * 已经全部加载完成了

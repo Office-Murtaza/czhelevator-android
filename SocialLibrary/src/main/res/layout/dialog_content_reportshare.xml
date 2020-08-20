@@ -20,7 +20,7 @@
         android:id="@+id/tv_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="垃圾广告"
+        android:text="垃圾营销"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"
@@ -38,12 +38,13 @@
         android:id="@+id/tv_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="政治敏感"
+        android:text="淫秽色情"
         android:textColor="#ff333333"
         android:gravity="center"
         android:padding="20dp"
         android:textSize="15sp"
         />
+
 
     <TextView
         android:layout_width="match_parent"
@@ -62,7 +63,40 @@
         android:padding="20dp"
         android:textSize="15sp"
         />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E1E1E1"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="恶意谩骂"
+        android:textColor="#ff333333"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textSize="15sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E1E1E1"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="违法信息"
+        android:textColor="#ff333333"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textSize="15sp"
+        />
 
     <TextView
         android:id="@+id/share_btn_cancel"

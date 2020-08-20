@@ -147,7 +147,11 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
                             for (int i=0;i<couponItemEntityPageListEntity.getContent().size();i++){
                                 num = num + couponItemEntityPageListEntity.getContent().get(i).getCouponsCount();
                             }
-                            ((MyCouponsActivty) activity).resultNumber(status, num);
+                            if (status.equals("NORMAL")) {
+                                ((MyCouponsActivty) activity).resultNumber(status, num);
+                            }else {
+                                ((MyCouponsActivty) activity).resultNumber(status, couponItemEntityPageListEntity.getTotalElements());
+                            }
                         }
                     }
                 });

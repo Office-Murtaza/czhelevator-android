@@ -98,16 +98,16 @@ public class HousingAdPriceAdapter extends BaseAdapter {
         holder.housing_name.setText(cellItemEntity.getCellName());
         String pointText = "";
         if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
-            pointText = cellItemEntity.getChoosedScreenNum() + "/台x" +
-                    totalCount + "/天x¥" + cellItemEntity.getBusinessAdPrice()
+            pointText = cellItemEntity.getChoosedScreenNum() + "台x" +
+                    totalCount + "天x¥" + cellItemEntity.getBusinessAdPrice()
                     + "=" + cellItemEntity.getChoosedScreenNum() * cellItemEntity.getBusinessAdPrice() * totalCount;
         } else if (planType.equals(Constants.PLAN_TYPE.DIY)) {
-            pointText = cellItemEntity.getChoosedScreenNum() + "/台x" +
-                    totalCount + "/天x¥" + cellItemEntity.getDiyAdPrice()
+            pointText = cellItemEntity.getChoosedScreenNum() + "台x" +
+                    totalCount + "天x¥" + cellItemEntity.getDiyAdPrice()
                     + "=" + cellItemEntity.getChoosedScreenNum() * cellItemEntity.getDiyAdPrice() * totalCount;
         } else {
-            pointText = cellItemEntity.getChoosedScreenNum() + "/台x" +
-                    totalCount + "/天x¥" + cellItemEntity.getInformationAdPrice()
+            pointText = cellItemEntity.getChoosedScreenNum() + "台x" +
+                    totalCount + "天x¥" + cellItemEntity.getInformationAdPrice()
                     + "=" + cellItemEntity.getChoosedScreenNum() * cellItemEntity.getInformationAdPrice() * totalCount;
         }
         holder.all_price.setText(pointText);

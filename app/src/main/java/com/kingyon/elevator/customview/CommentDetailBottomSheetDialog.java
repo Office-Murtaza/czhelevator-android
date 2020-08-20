@@ -24,6 +24,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.ReflashConstants;
 import com.kingyon.elevator.entities.CommentEntity;
+import com.kingyon.elevator.entities.entities.CommentListEntity;
 import com.kingyon.elevator.interfaces.BaseOnItemClick;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -79,7 +80,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
 
     BottomSheetBehavior mDialogBehavior;
     int newsid;
-    CommentEntity commentEntity;
+    CommentListEntity commentEntity;
     private int startPosition = 0;
     private int size = 20;
 
@@ -116,27 +117,27 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
         smart_refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadCommentList(ReflashConstants.LoadMore, commentEntity.getId());
+                loadCommentList(ReflashConstants.LoadMore, commentEntity.id);
             }
         });
-        GlideUtils.loadImage(getContext(), commentEntity.getPhotoUrl(), user_head);
-        user_name.setText(commentEntity.getNickname());
-        comment_content.setText(commentEntity.getComment());
-        comment_time.setText(commentEntity.getShowTime());
-        if (commentEntity.isLike()) {
+        GlideUtils.loadImage(getContext(), commentEntity.photo, user_head);
+        user_name.setText(commentEntity.nickname);
+        comment_content.setText(commentEntity.comment);
+        comment_time.setText(commentEntity.createTime+"");
+        if (commentEntity.isLiked==1) {
             iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaoyi);
         } else {
             iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaosan);
         }
-        if (commentEntity.getComCount() > 0) {
-            title.setText(commentEntity.getComCount() + "回复");
+        if (commentEntity.child.size() > 0) {
+            title.setText(commentEntity.child.size() + "回复");
         } else {
-            title.setText("暂无回复");
+            title.setText("回复");
         }
-        loadCommentList(ReflashConstants.LoadMore, commentEntity.getId());
+        loadCommentList(ReflashConstants.LoadMore, commentEntity.id);
     }
 
-    public CommentDetailBottomSheetDialog(@NonNull Context context, int newsid, CommentEntity commentEntity) {
+    public CommentDetailBottomSheetDialog(@NonNull Context context, int newsid, CommentListEntity commentEntity) {
         super(context, R.style.BottomSheetEdit);
         this.newsid = newsid;
         this.commentEntity = commentEntity;
@@ -177,7 +178,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
     /**
      * 去回复新闻评论
      */
-    private void goReplyMainComment(CommentEntity commentEntity) {
+    private void goReplyMainComment(CommentListEntity commentEntity) {
         InputCommentActivity.openEditor(getContext(), new EditorCallback() {
             @Override
             public void onCancel() {
@@ -212,7 +213,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
                 dismiss();
                 break;
             case R.id.iv_dianzan:
-                addLikeComment(commentEntity.getId(), 1, -1);
+                addLikeComment(commentEntity.id, 1, -1);
                 break;
             case R.id.comment_container:
                 goReplyMainComment(commentEntity);
@@ -304,7 +305,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
      */
     public void addNewsReplySonComment(Long newsId, CommentEntity replayComment, String content) {
         DialogUtils.getInstance().showProgressDialogView(mContext, "数据提交中...", false);
-        NetService.getInstance().addComment(newsId, (long) commentEntity.getId(), (long) replayComment.getId(), 2, content)
+        NetService.getInstance().addComment(newsId, (long) commentEntity.id, (long) replayComment.getId(), 2, content)
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -318,7 +319,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
                         DialogUtils.getInstance().hideProgressDialogView();
                         ToastUtils.showShort("回复成功");
                         smart_refresh_layout.setEnableLoadMore(true);
-                        loadCommentList(ReflashConstants.Refalshing, commentEntity.getId());
+                        loadCommentList(ReflashConstants.Refalshing, commentEntity.id);
                     }
                 });
     }
@@ -332,7 +333,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
      */
     public void addNewsReplyMainComment(Long newsId, String content) {
         DialogUtils.getInstance().showProgressDialogView(mContext, "数据提交中...", false);
-        NetService.getInstance().addComment(newsId, (long) commentEntity.getId(), null, 2, content)
+        NetService.getInstance().addComment(newsId, (long) commentEntity.id, null, 2, content)
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -346,7 +347,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
                         DialogUtils.getInstance().hideProgressDialogView();
                         ToastUtils.showShort("评论成功");
                         smart_refresh_layout.setEnableLoadMore(true);
-                        loadCommentList(ReflashConstants.Refalshing, commentEntity.getId());
+                        loadCommentList(ReflashConstants.Refalshing, commentEntity.id);
                     }
                 });
     }
@@ -368,11 +369,11 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
                         if (mContext != null) {
                             if (from == 1) {
                                 //点赞的为主评论
-                                if (commentEntity.isLike()) {
-                                    commentEntity.setLike(false);
-                                } else {
-                                    commentEntity.setLike(true);
-                                }
+//                                if (commentEntity.isLike()) {
+//                                    commentEntity.setLike(false);
+//                                } else {
+//                                    commentEntity.setLike(true);
+//                                }
                             } else {
                                 //点赞的为列表里的评论，需要设置相应的数据然后更新数据集
                                 if (commentEntities.get(position).isLike()) {
@@ -388,7 +389,7 @@ public class CommentDetailBottomSheetDialog extends BottomSheetDialog {
     }
 
     private void updateInfo() {
-        if (commentEntity.isLike()) {
+        if (commentEntity.isLiked==1) {
             iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaoyi);
         } else {
             iv_dianzan.setImageResource(R.mipmap.details_shoucangtubiaosan);

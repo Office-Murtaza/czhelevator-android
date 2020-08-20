@@ -56,8 +56,9 @@
             android:paddingLeft="@dimen/dp10"
             android:paddingTop="@dimen/dp5"
             android:paddingBottom="@dimen/dp5"
-            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_70"
             android:visibility="gone"
+
         >
 
 
@@ -92,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_article_level"
-
+            android:visibility="gone"
             android:padding="@dimen/dp10"
             ></ImageView>
 
@@ -103,6 +104,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_article_number"
             android:padding="@dimen/dp10"
+            android:visibility="gone"
             ></ImageView>
 
 
@@ -112,6 +114,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_article_point"
             android:padding="@dimen/dp10"
+            android:visibility="gone"
             ></ImageView>
 
 
@@ -126,6 +129,7 @@
             android:layout_gravity="end"
             android:layout_marginRight="@dimen/dp_75"
             android:visibility="gone"
+
         >
 
 

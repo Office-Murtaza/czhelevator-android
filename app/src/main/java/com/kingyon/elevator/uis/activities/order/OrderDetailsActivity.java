@@ -39,18 +39,15 @@ import com.kingyon.elevator.uis.activities.advertising.AdEditActivity;
 import com.kingyon.elevator.uis.activities.advertising.InfomationAdvertisingActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.order.OrderCommunityAdapter;
 import com.kingyon.elevator.uis.fragments.main.PlanNewFragment;
-import com.kingyon.elevator.uis.widgets.ProportionFrameLayout;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.JumpUtils;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.AdUtils;
-import com.kingyon.elevator.view.AutoFoldTextView;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateRefreshingActivity;
 import com.leo.afbaselibrary.utils.AFUtil;
-import com.leo.afbaselibrary.utils.ScreenUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
@@ -116,8 +113,8 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     TextView tvFailedReason;
     @BindView(R.id.ll_order_head_failed)
     LinearLayout llOrderHeadFailed;
-    @BindView(R.id.pfl_head)
-    ProportionFrameLayout pflHead;
+    //    @BindView(R.id.pfl_head)
+//    LinearLayout pflHead;
     @BindView(R.id.tv_auth_name)
     TextView tvAuthName;
     @BindView(R.id.rcv_list)
@@ -194,6 +191,12 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     TextView tvSq;
     @BindView(R.id.img_sq)
     ImageView imgSq;
+    @BindView(R.id.ll_top)
+    LinearLayout llTop;
+    @BindView(R.id.img_btg_sq)
+    ImageView imgBtgSq;
+    @BindView(R.id.ll_zk)
+    LinearLayout llZk;
     private String orderId;
     private boolean isSq = true;
 
@@ -226,11 +229,12 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
         operateViews = new View[]{llOrderOperateWaitpay, llOrderOperateRelease};
         StatusBarUtil.setHeadViewPadding(this, llTitle);
         ((ImageView) vBack).setImageDrawable(getBackDrawable(0xFFFFFFFF));
+        llTop.bringToFront();
         nsv.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (limitedY == 0) {
-                    limitedY = ScreenUtil.getScreenWidth(OrderDetailsActivity.this) / pflHead.getProporty() - ScreenUtil.dp2px(48) - StatusBarUtil.getStatusBarHeight(OrderDetailsActivity.this);
+//                    limitedY = ScreenUtil.getScreenWidth(OrderDetailsActivity.this) / pflHead.getProporty() - ScreenUtil.dp2px(48) - StatusBarUtil.getStatusBarHeight(OrderDetailsActivity.this);
                 }
                 if (scrollY == 0) {
                     llTitle.setBackgroundColor(0x00FFFFFF);
@@ -284,25 +288,25 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         tvAuthName.setText("投放人：" + order.getCreator().getNikeName());
                         tvSq.setText("展开");
                         imgSq.setImageResource(R.mipmap.ic_arrow_down);
-                        if (order.getLstHousingBean()!= null) {
+                        if (order.getLstHousingBean() != null) {
                             OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
                             rcvList.setAdapter(orderCommunityAdapter);
                             rcvList.setLayoutManager(new GridLayoutManager(OrderDetailsActivity.this, 1, GridLayoutManager.VERTICAL, false));
                             orderCommunityAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             rcvList.setVisibility(View.GONE);
                             llSq.setVisibility(View.GONE);
                         }
-                        if (order.getAdvertising() == null || order.getAdvertising().getName() == null){
+                        if (order.getAdvertising() == null || order.getAdvertising().getName() == null) {
                             llName.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             llName.setVisibility(View.VISIBLE);
                         }
                         tvOrderType.setText(FormatUtils.getInstance().getPlanType(order.getOrderType()));
                         tvAdName.setText((order.getAdvertising() == null || order.getAdvertising().getName() == null) ? "" : order.getAdvertising().getName());
                         tvDevices.setText(String.format("%s面", order.getTotalScreen()));
                         tvDuration.setText(String.format("%s 至 %s（%s）", TimeUtil.getYMdTime(order.getAdStartTime()), TimeUtil.getYMdTime(order.getAdEndTime()),
-                                com.kingyon.elevator.utils.TimeUtil.getDayNumber((order.getAdEndTime()),(order.getAdStartTime()))));
+                                com.kingyon.elevator.utils.TimeUtil.getDayNumber((order.getAdEndTime()), (order.getAdStartTime()))));
 
                         long startDealTime = TimeUtil.getDayStartTimeMilliseconds(order.getAdStartTime());
                         long endDealTime = TimeUtil.getDayEndTimeMilliseconds(order.getAdEndTime());
@@ -318,11 +322,11 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                         llPayTime.setVisibility((order.getPayTime() != 0 && !payInvalid) ? View.VISIBLE : View.GONE);
                         tvPayWay.setText(FormatUtils.getInstance().getPayWay(order.getPayWay()));
                         llPayWay.setVisibility((payInvalid || TextUtils.isEmpty(order.getPayWay())) ? View.VISIBLE : View.VISIBLE);
-                        tvWaitpayMoney.setText("￥"+CommonUtil.getTwoFloat(order.getRealPrice()));
+                        tvWaitpayMoney.setText("￥" + CommonUtil.getTwoFloat(order.getRealPrice()));
                         llSq.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (isSq){
+                                if (isSq) {
                                     isSq = false;
                                     OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), order.getLstHousingBean().size());
                                     rcvList.setAdapter(orderCommunityAdapter);
@@ -330,7 +334,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                                     orderCommunityAdapter.notifyDataSetChanged();
                                     tvSq.setText("收起");
                                     imgSq.setImageResource(R.mipmap.ic_arrow_small_up);
-                                }else {
+                                } else {
                                     isSq = true;
                                     OrderCommunityAdapter orderCommunityAdapter = new OrderCommunityAdapter(OrderDetailsActivity.this, order.getLstHousingBean(), 1);
                                     rcvList.setAdapter(orderCommunityAdapter);
@@ -419,7 +423,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 //                closeOrderCountDown();
                 updateHeadViewVisiable(R.id.ll_order_head_failed);
                 tvFailedTitle.setText("已下播");
-                tvFailedReason.setText(!TextUtils.isEmpty(order.getFailedReason()) ? order.getFailedReason() : "用户主动申请下播");
+                tvFailedReason.setText(!TextUtils.isEmpty(order.getDownSowingReason()) ? order.getDownSowingReason() : "用户主动申请下播");
                 break;
             default:
                 closeOrderCountDown();
@@ -437,10 +441,10 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case Constants.AD_STATUS.REVIEW_FAILED:
                 updateHeadViewVisiable(R.id.ll_order_head_authfailed);
                 tvAuthfailedReason.setText((order.getAuditContent() != null) ? order.getAuditContent() : "无");
-                if (order.getAuditContent().length()>20){
-                    tv_zk.setVisibility(View.VISIBLE);
-                }else {
-                    tv_zk.setVisibility(View.GONE);
+                if (order.getAuditContent().length() > 20) {
+                    llZk.setVisibility(View.VISIBLE);
+                } else {
+                    llZk.setVisibility(View.GONE);
                 }
                 break;
             case Constants.AD_STATUS.WAIT_REVIEW:
@@ -505,7 +509,7 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     @OnClick({R.id.ll_devices, R.id.tv_authfailed_modify, R.id.tv_completed_monit,
             R.id.tv_copy_sn, R.id.tv_waitpay_cancel, R.id.tv_waitpay_pay,
-            R.id.tv_release_down, R.id.tv_release_monit,R.id.tv_ad_name,R.id.tv_zk})
+            R.id.tv_release_down, R.id.tv_release_monit, R.id.tv_ad_name, R.id.tv_zk})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_devices:
@@ -520,9 +524,9 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case R.id.tv_completed_monit:
                 if (isToken(this)) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("type","order");
-                    startActivity(PlanNewFragment.class,bundle);
-                }else {
+                    bundle.putString("type", "order");
+                    startActivity(PlanNewFragment.class, bundle);
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -549,18 +553,18 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                     Bundle bundle2 = new Bundle();
                     bundle2.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
                     startActivityForResult(OrderDownActivity.class, CommonUtil.REQ_CODE_2, bundle2);
-                }else if (tvReleaseDown.getText().toString().equals("重新投放")){
+                } else if (tvReleaseDown.getText().toString().equals("重新投放")) {
                     AdUtils.type = orderDetails.getOrderType();
                     httpOrderAgain(orderDetails.getOrderSn());
-                }else {
-                if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
-                    showToast("便民服务广告不能查看监播表");
-                    return;
-                }
-                Bundle bundle5 = new Bundle();
-                bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
-                bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
-                startActivity(OrderMonitActivity.class, bundle5);
+                } else {
+                    if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
+                        showToast("便民服务广告不能查看监播表");
+                        return;
+                    }
+                    Bundle bundle5 = new Bundle();
+                    bundle5.putString(CommonUtil.KEY_VALUE_1, orderDetails.getOrderSn());
+                    bundle5.putBoolean(CommonUtil.KEY_VALUE_2, true);
+                    startActivity(OrderMonitActivity.class, bundle5);
                 }
                 break;
             case R.id.tv_release_monit:
@@ -576,24 +580,27 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
             case R.id.tv_ad_name:
                 if (FormatUtils.getInstance().beInfomationPlan(orderDetails.getOrderType())) {
 //                    showToast("便民服务广告不能查看广告");
-                    ActivityUtils.setActivity(ORDER_INFORMATION_ACTIVITY,"content",orderDetails.getAdvertising().getName());
+                    ActivityUtils.setActivity(ORDER_INFORMATION_ACTIVITY, "content", orderDetails.getAdvertising().getName());
                     return;
                 }
-                JumpUtils.getInstance().jumpToAdPreview(this, orderDetails.getAdvertising(),"order");
+                JumpUtils.getInstance().jumpToAdPreview(this, orderDetails.getAdvertising(), "order");
                 break;
             case R.id.tv_zk:
-                if (ifZk){
+                if (ifZk) {
                     ifZk = false;
                     tv_zk.setText("收起");
+                    imgBtgSq.setImageResource(R.mipmap.ic_arrow_small_up);
                     tvAuthfailedReason.setMaxLines(Integer.MAX_VALUE);
-                }else {
+                } else {
                     ifZk = true;
                     tv_zk.setText("展开");
+                    imgBtgSq.setImageResource(R.mipmap.ic_arrow_down);
                     tvAuthfailedReason.setMaxLines(2);
                 }
                 break;
         }
     }
+
     private void httpOrderAgain(String orderSn) {
         AdUtils.orderSn = orderSn;
         NetService.getInstance().orderAgain(orderSn)
@@ -601,19 +608,21 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
                 .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
-                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                     }
+
                     @Override
                     public void onNext(List<OrderComeEntiy> orderComeEntiys) {
                         Gson gson = new Gson();
                         String jsonString = gson.toJson(orderComeEntiys);
                         Bundle bundle = new Bundle();
-                        bundle.putString("type","order");
-                        bundle.putString("orderComeEntiys",jsonString);
-                        startActivity(PlanNewFragment.class,bundle);
+                        bundle.putString("type", "order");
+                        bundle.putString("orderComeEntiys", jsonString);
+                        startActivity(PlanNewFragment.class, bundle);
                     }
                 });
     }
+
     private void jumpToAdvertising(OrderDetailsEntity orderDetails) {
         ADEntity advertising = orderDetails.getAdvertising();
         if (advertising == null) {

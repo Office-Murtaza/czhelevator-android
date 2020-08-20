@@ -110,6 +110,9 @@ public interface Constants {
         String OFFLINE = "OFFLINE";//线下支付
         /*优惠卷*/
         String COUPON = "COUPON";//线下支付
+        String ALI_COUPON = "COUPON,ALI";//支付宝加优惠卷
+        String WX_PAY_COUPON = "COUPON,WECHAT";//支付宝加优惠卷
+        String BALANCE_COUPON = "COUPON,BALANCE";//余额加优惠卷
     }
 
     interface WithdrawType {//ali，bankCard

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.photopicker.MediaData;
@@ -86,9 +87,9 @@ public class PhotoPickerAdapter extends BaseAdapter {
         }
         if (mediaData.getOriginalPath() != null) {
             GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
-            holder.iv_preview.setImageResource(R.drawable.lock);
+//            holder.iv_preview.setImageResource(R.drawable.lock);
         } else {
-            holder.iv_preview.setImageResource(R.drawable.mis_default_error);
+            holder.iv_preview.setImageResource(R.drawable.bg_picture_space_article);
         }
         return convertView;
     }

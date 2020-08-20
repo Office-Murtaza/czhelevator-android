@@ -96,6 +96,7 @@ import cn.jpush.android.service.JPushMessageReceiver;
 
 import static com.czh.myversiontwo.utils.Constance.MAIN_ACTIVITY;
 import static com.kingyon.elevator.utils.utilstwo.ConentUtils.totalNum;
+import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isToken;
 
 @Route(path = MAIN_ACTIVITY)
 public class MainActivity extends BaseActivity implements TabStripView.OnTabSelectedListener, AMapLocationListener {
@@ -233,9 +234,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         if (currentFragment != null) {
             currentFragment.setUserVisibleHint(true);
         }
-        if (PublicFuncation.isIntervalSixMin()) {
-            loadWindowAd();
-        }
+        isToken(this);
         initPushId();
         initZhiwen();
         httpPersonal();
@@ -244,10 +243,16 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         /*初始化指纹*/
         List<FingerprintEntiy> listzw = DataSupport.findAll(FingerprintEntiy.class);
         LogUtils.e(listzw.toString());
-        for (int i = 0;i<listzw.size();i++){
-            if (listzw.get(i).getUserId().equals(DataSharedPreferences.getCreatateAccount())&&listzw.get(i).getIsFin().equals("2")){
-                LogUtils.e("*****************");
-                DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, true);
+        if (listzw.size()<=0){
+            DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
+        }else {
+            for (int i = 0; i < listzw.size(); i++) {
+                if (listzw.get(i).getUserId().equals(DataSharedPreferences.getCreatateAccount()) && listzw.get(i).getIsFin().equals("2")) {
+                    LogUtils.e("*****************");
+                    DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, true);
+                } else if (listzw.get(i).getUserId().equals(DataSharedPreferences.getCreatateAccount()) && listzw.get(i).getIsFin().equals("1")) {
+                    DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_OPEN_FINGER, false);
+                }
             }
         }
 
@@ -592,6 +597,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         }
     }
 
+
     private void requestAdPubFailNumber() {
         if (TextUtils.isEmpty(Net.getInstance().getToken())) {
             tabBar.setTabUnread(2, 0);
@@ -647,35 +653,6 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
     }
 
 
-    /**
-     * 加载弹窗通知
-     */
-    private void loadWindowAd() {
-        NetService.getInstance().getTipsList("0")
-                .subscribe(new CustomApiCallback<List<AdNoticeWindowEntity>>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        LogUtils.e("弹窗广告加载失败：" + GsonUtils.toJson(ex));
-                    }
-
-                    @Override
-                    public void onNext(List<AdNoticeWindowEntity> adNoticeWindowEntities) {
-                        if (adNoticeWindowEntities != null && adNoticeWindowEntities.size() > 0) {
-                            LogUtils.e("弹窗广告数据：" + GsonUtils.toJson(adNoticeWindowEntities),adNoticeWindowEntities.toString());
-                            AdNoticeWindowEntity adNoticeWindowEntity = PublicFuncation.getLastAdItem(adNoticeWindowEntities);
-                            if (adNoticeWindowEntity != null) {
-                                LogUtils.e(adNoticeWindowEntity.type,"********************");
-                                if (adNoticeWindowEntity.type == 0) {
-                                    //展示弹窗广告
-                                    DialogUtils.getInstance().showMainWindowNoticeDialog(MainActivity.this, adNoticeWindowEntity);
-                                }else if (adNoticeWindowEntity.type == 1) {
-                                    DialogUtils.getInstance().showMainText(MainActivity.this, adNoticeWindowEntity);
-                                }
-                            }
-                        }
-                    }
-                });
-    }
 
 
     public void showMessageUnreadCount(int count) {

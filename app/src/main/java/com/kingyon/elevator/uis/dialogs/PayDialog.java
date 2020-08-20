@@ -529,17 +529,20 @@ public class PayDialog extends Dialog implements IWeakHandler,TipDialog.OnOperat
                     dismiss();
                     if (AdUtils.ordinaryType.equals("ordina")) {
                         EventBus.getDefault().post(new FreshOrderEntity());
-                        LogUtils.e(orderEntiy.getOrderId() + "==" + i++);
+                        i++;
+                        LogUtils.e(orderEntiy.getOrderId() + "==" + i);
 //                    ActivityUtils.setActivity(ACTIVITY_PAY_SUCCESS,"orderId",orderEntiy.getOrderId(),
 //                            "payType",Constants.PayType.WX_PAY,);
-                        ARouter.getInstance().build(ACTIVITY_PAY_SUCCESS)
-                                .withString("orderId", orderEntiy.getOrderId())
-                                .withString("payType", Constants.PayType.WX_PAY)
-                                .withString("priceActual", String.valueOf(priceActual))
-                                .navigation();
-                        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
-                        setPayEnable();
-                        context.finish();
+                        if (i == 2) {
+                            ARouter.getInstance().build(ACTIVITY_PAY_SUCCESS)
+                                    .withString("orderId", orderEntiy.getOrderId())
+                                    .withString("payType", Constants.PayType.WX_PAY)
+                                    .withString("priceActual", String.valueOf(priceActual))
+                                    .navigation();
+                            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ReflashPlanList, null));
+                            setPayEnable();
+                            context.finish();
+                        }
                     }else {
                         context.finish();
                     }

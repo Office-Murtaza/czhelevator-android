@@ -49,7 +49,7 @@ public class GraffitiActivity extends BaseActivity implements OnSeekBarChangeLis
     
     private int brush_progress=10;
     private int eraser_progress=10;
-    private int brush_color=Color.parseColor("#20FD3C56");
+    private int brush_color=Color.parseColor("#00000000");
     
     private PopupWindow mpopupWindow;
     
@@ -168,7 +168,7 @@ public class GraffitiActivity extends BaseActivity implements OnSeekBarChangeLis
 	private void initBrush(){	
 		Options option = new Options();
 		option.inSampleSize = brush_progress;
-		Bitmap paintBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.camerasdk_brush, option);
+		Bitmap paintBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bg_white, option);
 		casualWaterUtil.creatDrawPainter(DrawAttribute.DrawStatus.PEN_WATER, paintBitmap,brush_color);
     }
 	

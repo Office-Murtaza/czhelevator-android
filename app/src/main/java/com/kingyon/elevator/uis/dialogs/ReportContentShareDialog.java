@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -20,15 +21,17 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
  * Instructions:
  */
 public class ReportContentShareDialog extends Dialog implements View.OnClickListener{
-    protected BaseActivity mContext;
+    protected Context mContext;
     protected int objId;
     protected String reportType;
     View share_btn_cancel;
      TextView tv_delete;
      TextView tv_delete1;
      TextView tv_delete2;
+     TextView tv_delete3;
+     TextView tv_delete4;
     protected ProgressDialog promotWaitBar;
-    public ReportContentShareDialog(@NonNull BaseActivity context,int objId,String reportType) {
+    public ReportContentShareDialog(@NonNull Context context, int objId, String reportType) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.mContext = context;
         this. objId =  objId;
@@ -68,11 +71,15 @@ public class ReportContentShareDialog extends Dialog implements View.OnClickList
         tv_delete = findViewById(com.kingyon.library.social.R.id.tv_1);
         tv_delete1 = findViewById(com.kingyon.library.social.R.id.tv_2);
         tv_delete2 = findViewById(com.kingyon.library.social.R.id.tv_3);
+        tv_delete3 = findViewById(com.kingyon.library.social.R.id.tv_4);
+        tv_delete4 = findViewById(com.kingyon.library.social.R.id.tv_5);
         share_btn_cancel = findViewById(com.kingyon.library.social.R.id.share_btn_cancel);
 
         tv_delete.setOnClickListener(this);
         tv_delete1.setOnClickListener(this);
         tv_delete2.setOnClickListener(this);
+        tv_delete3.setOnClickListener(this);
+        tv_delete4.setOnClickListener(this);
         share_btn_cancel.setOnClickListener(this);
     }
 
@@ -83,10 +90,16 @@ public class ReportContentShareDialog extends Dialog implements View.OnClickList
             ConentUtils.httpReport(mContext,objId,reportType,tv_delete.getText().toString());
             dismiss();
         } else if (id == com.kingyon.library.social.R.id.tv_2) {
-            ConentUtils.httpReport(mContext,objId,reportType,tv_delete.getText().toString());
+            ConentUtils.httpReport(mContext,objId,reportType,tv_delete1.getText().toString());
             dismiss();
         }else if (id == com.kingyon.library.social.R.id.tv_3) {
-            ConentUtils.httpReport(mContext,objId,reportType,tv_delete.getText().toString());
+            ConentUtils.httpReport(mContext,objId,reportType,tv_delete2.getText().toString());
+            dismiss();
+        }else if (id == com.kingyon.library.social.R.id.tv_4) {
+            ConentUtils.httpReport(mContext,objId,reportType,tv_delete3.getText().toString());
+            dismiss();
+        }else if (id == com.kingyon.library.social.R.id.tv_5) {
+            ConentUtils.httpReport(mContext,objId,reportType,tv_delete4.getText().toString());
             dismiss();
         }else if (id == com.kingyon.library.social.R.id.share_btn_cancel) {
             dismiss();

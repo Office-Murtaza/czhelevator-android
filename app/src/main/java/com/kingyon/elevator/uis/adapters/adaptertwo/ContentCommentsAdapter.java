@@ -1,5 +1,7 @@
 package com.kingyon.elevator.uis.adapters.adaptertwo;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -48,18 +50,18 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_COMMENT_TWO;
  */
 public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentCommentsAdapter.ViewHolder> {
 
-    BaseActivity context;
+    Context context;
     List<CommentListEntity> conentEntity;
     String type;
     GetRefresh getRefresh;
-    int likeNum;
+    int likeNum = 0;
     int onId;
     private String TOP_USER = "&nbsp;<user id='%s' style='color: #4dacee;' name='%s'>@%s</user>&nbsp;";
     Parser mTagParser = new Parser();
     /**
      * type 1 一级 2 子级
      * */
-    public ContentCommentsAdapter(BaseActivity context,String type,int onId, GetRefresh getRefresh){
+    public ContentCommentsAdapter(Context context, String type, int onId, GetRefresh getRefresh){
         this.context = context;
         this.type = type;
         this.getRefresh = getRefresh;
@@ -87,7 +89,6 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
             }else {
                 holder.tv_comment_hf.setText("回复");
             }
-            likeNum = commentListEntity.likesNum;
             holder.tv_like_number.setText(StringUtils.getNumStr(commentListEntity.likesNum,"点赞"));
             holder.tv_name.setText(commentListEntity.nickname);
             holder.tv_time.setText(TimeUtil.getRecentlyTime(commentListEntity.createTime));
@@ -128,6 +129,7 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
             holder.img_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    likeNum = commentListEntity.likesNum;
                     if (commentListEntity.isLiked==0) {
                         commentListEntity.isLiked = 1;
                         holder.img_like.setImageResource(R.mipmap.ic_small_like);
@@ -135,9 +137,9 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                                 HOME_COMMENT, LIKE, new IsSuccess() {
                                     @Override
                                     public void isSuccess(boolean success) {
-                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum+1,"点赞"));
-                                        commentListEntity.likesNum = likeNum+1;
-
+                                        likeNum++;
+                                        commentListEntity.likesNum = likeNum;
+                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum,"点赞"));
                                     }
                                 });
                     }else {
@@ -147,8 +149,9 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                                 HOME_COMMENT, CANCEL_LIKE, new IsSuccess() {
                                     @Override
                                     public void isSuccess(boolean success) {
-                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum-1,"点赞"));
-                                        commentListEntity.likesNum = likeNum-1;
+                                        likeNum--;
+                                        commentListEntity.likesNum = likeNum;
+                                        holder.tv_like_number.setText(StringUtils.getNumStr(likeNum,"点赞"));
                                     }
                                 });
                     }
@@ -174,7 +177,7 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                     @Override
                     public void onCancel() {
                         LogUtils.d("关闭输入法-------------");
-                        KeyboardUtils.hideSoftInput(context);
+                        KeyboardUtils.hideSoftInput((Activity) context);
                     }
 
                     @Override
@@ -204,7 +207,8 @@ public class ContentCommentsAdapter extends RecyclerView.Adapter<ContentComments
                 @Override
                 public void onCancel() {
                     LogUtils.d("关闭输入法-------------");
-                    KeyboardUtils.hideSoftInput(context);
+//                    KeyboardUtils.hideSoftInput(context);
+                    KeyboardUtils.hideSoftInput((Activity) context);
                 }
                 @Override
                 public void onSubmit(String content) {

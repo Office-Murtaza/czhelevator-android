@@ -105,7 +105,6 @@ public class MessageFragmentg extends BaseFragment {
         StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
 //        list.clear();
 //        httpHomeData(1);
-        LogUtils.e("789789789789789789789789789789789789789");
 
     }
 

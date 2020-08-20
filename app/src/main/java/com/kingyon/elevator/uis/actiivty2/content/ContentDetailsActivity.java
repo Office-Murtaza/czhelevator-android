@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -48,6 +49,7 @@ import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -113,6 +115,10 @@ public class ContentDetailsActivity extends BaseActivity {
     LinearLayout llTitle;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
+    @BindView(R.id.rl_gj)
+    RelativeLayout rlGj;
     private ShareDialog shareDialog;
     QueryRecommendEntity recommendEntity;
     int page = 1;
@@ -131,7 +137,6 @@ public class ContentDetailsActivity extends BaseActivity {
         ConentUtils.topicStr = "";
         isRefresh = false;
         LogUtils.e(contentId);
-        showProgressDialog(getString(R.string.wait),true);
         initData();
         httpComment(page, contentId);
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -154,20 +159,24 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
+        stateLayout.showProgressView(getString(R.string.wait));
         NetService.getInstance().setQueryContentById(String.valueOf(contentId), DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<QueryRecommendEntity>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         hideProgress();
+                        stateLayout.showErrorView();
                         finish();
                         ToastUtils.showToast(ContentDetailsActivity.this, ex.getDisplayMessage(), 1000);
                     }
 
                     @Override
                     public void onNext(QueryRecommendEntity queryRecommendEntity) {
+                        stateLayout.showContentView();
+                        rlGj.setVisibility(View.VISIBLE);
                         recommendEntity = queryRecommendEntity;
-                        ConentUtils.httpAddBrowse(ContentDetailsActivity.this, recommendEntity.id);
+                        ConentUtils.httpAddBrowse(recommendEntity.id);
                         LogUtils.e(recommendEntity.content);
                         if (recommendEntity.title == null) {
                             llTitle.setVisibility(View.GONE);
@@ -264,7 +273,7 @@ public class ContentDetailsActivity extends BaseActivity {
         if (contentCommentsAdapter == null || page == 1) {
             ecvListPl.setNestedScrollingEnabled(false);
             ecvListPl.setFocusable(false);
-            contentCommentsAdapter = new ContentCommentsAdapter(ContentDetailsActivity.this, "1",0,
+            contentCommentsAdapter = new ContentCommentsAdapter(ContentDetailsActivity.this, "1", 0,
                     new ContentCommentsAdapter.GetRefresh() {
                         @Override
                         public void onRefresh(boolean isSucced) {
@@ -336,7 +345,7 @@ public class ContentDetailsActivity extends BaseActivity {
                     });
                     break;
                 case R.id.iv_share_news:
-                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title,false);
+                    SharedUtils.shared(this, shareDialog, recommendEntity.content, "www.baidu.com", recommendEntity.title, false);
                     break;
                 case R.id.im_collection:
                     /*收藏*/
@@ -401,7 +410,7 @@ public class ContentDetailsActivity extends BaseActivity {
                             deleteShareDialog.show();
                         } else {
                             /*举报*/
-                            ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT,"");
+                            ReportShareDialog reportShareDialog = new ReportShareDialog(this, recommendEntity.id, HOME_CONTENT, "");
                             reportShareDialog.show();
                         }
                     } else {

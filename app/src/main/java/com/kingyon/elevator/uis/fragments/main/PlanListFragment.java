@@ -542,7 +542,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             }
         }
         tvCellNum.setText(String.format("覆盖%s个小区", cellNum));
-        tvNumber.setText(String.format("(%s/%s)", cellNum, cellItemEntities.size()));
+        if (cellItemEntities!=null) {
+            tvNumber.setText(String.format("(%s/%s)", cellNum, cellItemEntities.size()));
+        }
         tvScreenNum.setText(String.format("%s面屏", screenNum));
         imgSelectAll.setSelected(cellNum==mItems.size());
         tvPrice.setText(getPriceSpan(CommonUtil.getTwoFloat(sum * FormatUtils.getInstance().getTimeDays(startTime, endTime))));

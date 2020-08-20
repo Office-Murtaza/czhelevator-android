@@ -74,6 +74,7 @@ public class OrderDetailsEntity implements Parcelable {
     private int numberScreen;
     private String auditState;
     private String auditContent;
+    private String downSowingReason;
     private float throwProportion;
     private List<OrderCommunityEntiy> lstHousingBean;
 
@@ -111,6 +112,14 @@ public class OrderDetailsEntity implements Parcelable {
                 ", isInvoice=" + isInvoice +
                 ", invoiceId='" + invoiceId + '\'' +
                 '}';
+    }
+
+    public String getDownSowingReason() {
+        return downSowingReason;
+    }
+
+    public void setDownSowingReason(String downSowingReason) {
+        this.downSowingReason = downSowingReason;
     }
 
     public String getAuditContent() {

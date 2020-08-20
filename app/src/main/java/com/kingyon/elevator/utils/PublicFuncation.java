@@ -141,7 +141,26 @@ public class PublicFuncation {
             return true;
         }
     }
-
+    /**
+     * 判断上一次刷新是否大于10分钟
+     *
+     * @return
+     */
+    public static boolean isIntervalTenMin() {
+        long currentTime = System.currentTimeMillis();
+        long lastTime = DataSharedPreferences.getLong(DataSharedPreferences.LAST_AD_TIME);
+        if (lastTime > 0) {
+            long diff = (currentTime - lastTime) / 1000 / 10;
+            LogUtils.d("当前时间差：" + diff + "分");
+            if (diff >= 10) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 
     /**
      * 获取下一条需要展示广告

@@ -216,7 +216,7 @@ public class DonateCouponsActivity extends BaseStateRefreshingLoadingActivity<Co
 
     private void requestDonate(String phone, String couponCounts, String couponsParam) {
         tvEnsure.setEnabled(false);
-        showProgressDialog(getString(R.string.wait),true);
+        showProgressDialog(getString(R.string.wait),false);
         NetService.getInstance().donateCoupons(phone, couponCounts, couponsParam)
                 .compose(this.<String>bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {

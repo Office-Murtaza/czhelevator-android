@@ -595,7 +595,7 @@ public static String incomeType(String  source){
                 result = "余额支付";
                 break;
             case Constants.PayType.FREE:
-                result = "余额支付";
+                result = "免费";
                 break;
             case Constants.PayType.APPLY:
                 result = "苹果支付";
@@ -604,7 +604,16 @@ public static String incomeType(String  source){
                 result = "线下支付";
                 break;
             case Constants.PayType.COUPON:
-                result = "优惠卷支付";
+                result = "优惠券支付";
+                break;
+            case Constants.PayType.ALI_COUPON:
+                result = "支付宝+优惠券支付";
+                break;
+            case Constants.PayType.WX_PAY_COUPON:
+                result = "微信+优惠券支付";
+                break;
+            case Constants.PayType.BALANCE_COUPON:
+                result = "余额+优惠券支付";
                 break;
             default:
                 result = "";

@@ -42,10 +42,10 @@ public class UsersReportDialog extends Dialog {
     RecyclerView rlList;
     @BindView(R.id.share_btn_cancel)
     TextView shareBtnCancel;
-    BaseActivity context;
+    Context context;
     String beReportAccount;
 
-    public UsersReportDialog(@NonNull BaseActivity context,String beReportAccount ) {
+    public UsersReportDialog(@NonNull Context context,String beReportAccount ) {
         super(context, com.kingyon.library.social.R.style.ShareDialog);
         this.context =context;
         this.beReportAccount =beReportAccount;
@@ -77,7 +77,7 @@ public class UsersReportDialog extends Dialog {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         NetService.getInstance().getReportContent()
-                .compose(context.bindLifeCycle())
+
                 .subscribe(new CustomApiCallback<List<ReportContent>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
@@ -95,9 +95,11 @@ public class UsersReportDialog extends Dialog {
                                     public void isSuccess(boolean success) {
                                         dismiss();
                                         if (success){
-                                            context.showToast("举报成功");
+
+                                            ToastUtils.showToast(context,"举报成功",1000);
                                         }else {
-                                            context.showToast("举报失败");
+
+                                            ToastUtils.showToast(context,"举报成功",1000);
                                         }
                                     }
                                 });
