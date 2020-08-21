@@ -74,6 +74,7 @@ public class RecommendHouseAdapter extends RecyclerView.Adapter<RecommendHouseAd
                             AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog(context, data.id, data.name,
                                     holder.img_add,imageView,data.urlCover,type);
                             advertisPutDialog.show();
+                            advertisPutDialog.setCancelable(false);
                         }
                     }else {
                         ActivityUtils.setLoginActivity();

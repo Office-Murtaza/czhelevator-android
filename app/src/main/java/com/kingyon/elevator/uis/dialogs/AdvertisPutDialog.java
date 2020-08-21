@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
@@ -38,12 +39,13 @@ import static com.kingyon.elevator.utils.utilstwo.TokenUtils.isLogin;
  */
 public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
     protected BaseActivity mContext;
-    View tv_day,tv_business,tv_convenience,share_btn_cancel;
+    TextView tv_day,tv_business,tv_convenience,share_btn_cancel;
     protected ProgressDialog promotWaitBar;
     private int planId;
     private String planName;
     View startView,endView;
     String imageUrl,typestast;
+    boolean  diy,bus,con ,btn= true;
 
     /**
      *  planId 小区id
@@ -68,9 +70,7 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
             window.setWindowAnimations(com.kingyon.library.social.R.style.dialog_show_anim);
             window.setGravity(Gravity.BOTTOM);
         }
-        promotWaitBar = new ProgressDialog(mContext);
-        promotWaitBar.setMessage(getContext().getResources().getString(
-                com.kingyon.library.social.R.string.hold_on));
+
     }
 
 
@@ -110,26 +110,59 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
         switch (v.getId()){
             case R.id.tv_convenience:
                 /*便民*/
-                httpAdd(ADV_INFORMATION);
+                initTview();
+//                if (con) {
+                    httpAdd(ADV_INFORMATION);
+//                }else {
+//                    ToastUtils.showToast(mContext,"请稍后网络延迟",1000);
+//                }
                 break;
             case R.id.tv_day:
                 /*day*/
-                httpAdd(ADV_DAY);
+                initTview();
+//                if (diy) {
+                    httpAdd(ADV_DAY);
+//                }else {
+//                    ToastUtils.showToast(mContext,"请稍后网络延迟",1000);
+//                }
                 break;
             case R.id.tv_business:
                 /*商业*/
-                httpAdd(ADV_BUSINESS);
+                initTview();
+//                if (bus) {
+                    httpAdd(ADV_BUSINESS);
+//                }else {
+//                    ToastUtils.showToast(mContext,"请稍后网络延迟",1000);
+//                }
                 break;
             case R.id.share_btn_cancel:
-                dismiss();
+//                if (btn) {
+                    dismiss();
+//                }else {
+//                    ToastUtils.showToast(mContext,"请稍后网络延迟",1000);
+//                }
                 break;
 
         }
 
     }
 
+    private void initTview() {
+      diy = false;
+      bus= false;
+      con = false;
+      btn = false;
+    }
+    private void initJview() {
+        diy = true;
+        bus= true;
+        con = true;
+        btn = true;
+    }
+
     public void httpAdd(String type) {
         LogUtils.e(planId,planName,type);
+        mContext.showProgressDialog("请稍后",false);
         NetService.getInstance().plansAddCells(type, String.valueOf(planId))
                 .compose(mContext.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
@@ -137,12 +170,17 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
                     protected void onResultError(ApiException ex) {
                         ToastUtils.showToast(mContext,ex.getDisplayMessage(),1000);
                         isLogin(ex.getCode());
+                        mContext.hideProgress();
+                        dismiss();
+                        initJview();
                     }
 
                     @Override
                     public void onNext(String s) {
+                        mContext.hideProgress();
                         ToastUtils.showToast(mContext,"添加成功",1000);
                         dismiss();
+                        initJview();
                         AdUtils.httpPlannuber();
                         AdUtils.type = type;
                         if (typestast.equals("1")) {
@@ -152,8 +190,8 @@ public class AdvertisPutDialog extends Dialog implements View.OnClickListener{
                                     .endView(endView)
                                     .imageUrl(imageUrl)
                                     .time(1000)
-                                    .animHeight(150)
-                                    .animWidth(150)
+                                    .animHeight(40)
+                                    .animWidth(40)
                                     .build();
                             animManager.startAnim();
                         }

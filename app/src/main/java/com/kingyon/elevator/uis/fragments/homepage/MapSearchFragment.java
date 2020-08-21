@@ -33,6 +33,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.android.exoplayer2.C;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.uis.dialogs.DialogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
@@ -134,12 +135,16 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     private UiSettings mUiSettings;
     private double latitude;
     private double longitude;
+    private double latitude1 = 0;
+    private double longitude1 = 0;
     private AddCellToPlanPresenter addCellToPlanPresenter;
     private int[] clickPosition = new int[2];
     boolean isdisplay = true;
+    boolean isPositioning = false;
     private String distanceM;
     CircleOptions circleOptions;
     Circle circle;
+
     public MapSearchFragment newInstance(AMapCityEntity entity, ConentEntity<RecommendHouseEntiy> entiyConentEntity2, double latitude, double longitude) {
         this.entiyConentEntity = entiyConentEntity2;
         this.latitude = latitude;
@@ -150,6 +155,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 //            args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
 //        }
 //        fragment.setArguments(args);
+
         return (this);
     }
 
@@ -163,50 +169,44 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     @Override
     public void init(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
+        if (DataSharedPreferences.getLatLon()!=null){
+            latitude1 = DataSharedPreferences.getLatLon().getLatitude();
+            longitude1 = DataSharedPreferences.getLatLon().getLongitude();
+        }
+
         /*地图*/
         initMap();
+
         /*标点*/
-        new Thread(new TimerTask() {
-            @Override
-            public void run() {
-                if (entiyConentEntity!=null) {
-                    for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
-                        RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
-                        MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
-                        if (markerOptions != null) {
-                            Marker marker = aMap.addMarker(markerOptions);
-                            markersMap.put((long) recommendHouseEntiy.id, marker);
-                        }
-                    }
-                    Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.dingwei, null);
-                    aMap.addMarker( new MarkerOptions()
-                            .position(new LatLng(latitude, longitude))
-                            .draggable(false)
-                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap1)));
-                }
-            }
-        }).start();
+        initMake();
 
-        moveMapToPositon(longitude, latitude, cityZoomLevel + 7f);
+        /*定位*/
+        moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, cityZoomLevel + 7f);
 
+        /*范围*/
+        initPorag();
+
+    }
+
+    private void initPorag() {
         sbPorag.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 aMap.removecache();
                 tvKm.setText("范围"+distanceFormat(progress));
                 if (500>progress){
-                    moveMapToPositon(longitude, latitude, (cityZoomLevel+6f));
+                    moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, (cityZoomLevel+6f));
                 }else if (1000<progress&&progress<2000){
-                    moveMapToPositon(longitude, latitude, (cityZoomLevel+4f));
+                    moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, (cityZoomLevel+4f));
                 } else if (2000<progress&&progress<3000){
-                    moveMapToPositon(longitude, latitude, (cityZoomLevel+3f));
+                    moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, (cityZoomLevel+3f));
                 }else if (3000<progress&&progress<5000){
-                    moveMapToPositon(longitude, latitude, (cityZoomLevel+2.7f));
+                    moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, (cityZoomLevel+2.7f));
                 }
                 if (circle!=null){
                     circle.remove();
                 }
-                LatLng latLng = new LatLng(latitude,longitude);
+                LatLng latLng = new LatLng(isPositioning?latitude1:latitude,isPositioning?longitude1:longitude);
                 circleOptions = new CircleOptions();
                 circleOptions.center(latLng);
                 circleOptions.strokeColor(Color.argb(50, 255, 0, 0));
@@ -228,8 +228,33 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
             }
         });
-//        Circle circle = aMap.addCircle(circleOptions);
-//                circle.remove();
+
+
+    }
+
+    private void initMake() {
+        new Thread(new TimerTask() {
+            @Override
+            public void run() {
+                if (entiyConentEntity!=null) {
+                    for (int i = 0; i < entiyConentEntity.getContent().size(); i++) {
+                        RecommendHouseEntiy recommendHouseEntiy = entiyConentEntity.getContent().get(i);
+                        MarkerOptions markerOptions = createMarkerOptions(recommendHouseEntiy);
+                        if (markerOptions != null) {
+                            Marker marker = aMap.addMarker(markerOptions);
+                            markersMap.put((long) recommendHouseEntiy.id, marker);
+                        }
+                    }
+
+                    Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.dingwei, null);
+                    aMap.addMarker( new MarkerOptions()
+                            .position(new LatLng( latitude1 == 0 ||!isPositioning? latitude:latitude1 , longitude1 == 0||!isPositioning ? longitude:longitude1))
+                            .draggable(false)
+                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap1)));
+                }
+            }
+        }).start();
+
     }
 
     private void initMap() {
@@ -238,6 +263,8 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             aMap = mapView.getMap();
             mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
             mUiSettings.setZoomControlsEnabled(false);
+//            aMap.setMyLocationEnabled(true);
+//            aMap.getUiSettings().setMyLocationButtonEnabled(true);
             AMapCityEntity cityEntity = getArguments() != null ? (AMapCityEntity) getArguments().getParcelable(CommonUtil.KEY_VALUE_1) : null;
             if (cityEntity != null && !TextUtils.isEmpty(cityEntity.getCenter())) {
                 double[] centerLatLon = FormatUtils.getInstance().getCenterLatLon(cityEntity.getCenter());
@@ -255,7 +282,6 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 public void onCameraChange(CameraPosition cameraPosition) {
 
                 }
-
                 @Override
                 public void onCameraChangeFinish(CameraPosition cameraPosition) {
                     float curZoomLevel = cameraPosition.zoom;
@@ -627,7 +653,13 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
                 break;
             case R.id.img_current:
-                moveMapToPositon(longitude, latitude, cityZoomLevel + 7f);
+                isPositioning = true;
+                initMake();
+                if (circle!=null){
+                    circle.remove();
+                }
+                llFw.setVisibility(View.GONE);
+                moveMapToPositon(longitude1 == 0 ? longitude:longitude1, latitude1 == 0 ? latitude:latitude1 , cityZoomLevel + 7f);
                 break;
             case R.id.img_zoom:
                 if (isdisplay){
@@ -655,6 +687,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                         AdvertisPutDialog advertisPutDialog = new AdvertisPutDialog((BaseActivity) getActivity(),
                                 planId, communityName,imgAdd,imageView,urlCover,"1");
                         advertisPutDialog.show();
+                        advertisPutDialog.setCancelable(false);
                     }
                 }else {
                     ActivityUtils.setLoginActivity();

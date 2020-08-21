@@ -17,6 +17,10 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.leo.afbaselibrary.R;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -106,7 +110,7 @@ public class DownloadApkUtil {
     }
 
     private void showHasNewVersionDialog(final BaseActivity baseActivity, final VersionInfo versionInfo) {
-        String versionName = TextUtils.isEmpty(versionInfo.getVersionName()) ? "" : "版本名称：\nV" + versionInfo.getVersionName();
+        String versionName = TextUtils.isEmpty(versionInfo.getVersionName()) ? "" : "v：\nV" + versionInfo.getVersionName();
         String timeInfo = versionInfo.getUpdateTime() == 0 ? "" : "更新时间：\n" + TimeUtil.getAllTimeNoSecond(versionInfo.getUpdateTime());
         String contentInfo = TextUtils.isEmpty(versionInfo.getContent()) ? "" : "更新内容：\n" + versionInfo.getContent();
 
@@ -136,21 +140,44 @@ public class DownloadApkUtil {
         SpannableString titleSpanString = new SpannableString(title);
         AbsoluteSizeSpan titleSizeSpan = new AbsoluteSizeSpan(ScreenUtil.sp2px(18));
         titleSpanString.setSpan(titleSizeSpan, 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        ForegroundColorSpan titleColorSpan = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorAccent));
-//        titleSpanString.setSpan(titleColorSpan, 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        final AlertDialog dialog = new AlertDialog.Builder(baseActivity).create();
+        dialog.show();  //注意：必须在window.setContentView之前show
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.version_dialog);
+        TextView tv_content =  window.findViewById(R.id.tv_content);
+        ImageView tv_close =  window.findViewById(R.id.tv_close);
+        TextView tv_version =  window.findViewById(R.id.tv_version);
+        TextView tv_next =  window.findViewById(R.id.tv_next);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(baseActivity).setTitle(titleSpanString)
-                .setMessage(messageSpanString)
-                .setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        downloadNewApk(baseActivity, versionInfo.getUrl(), versionInfo.isMandatory());
-                    }
-                });
+        tv_content.setText(contentInfo);
+        tv_version.setText(versionName);
+        //点击确定按钮让对话框消失
+        tv_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadNewApk(baseActivity, versionInfo.getUrl(), versionInfo.isMandatory());
+            }
+        });
+        tv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(baseActivity).setTitle(titleSpanString)
+//                .setMessage(messageSpanString)
+//                .setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
         if (!versionInfo.isMandatory()) {
-            builder.setNegativeButton("暂不更新", null);
+//            builder.setNegativeButton("暂不更新", null);
+            tv_close.setVisibility(View.VISIBLE);
         } else {
-            builder.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
                 @Override
                 public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                     boolean result;
@@ -167,10 +194,10 @@ public class DownloadApkUtil {
                 }
             });
         }
-        AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(!versionInfo.isMandatory());
-        alertDialog.setCanceledOnTouchOutside(!versionInfo.isMandatory());
-        alertDialog.show();
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.setCancelable(!versionInfo.isMandatory());
+//        alertDialog.setCanceledOnTouchOutside(!versionInfo.isMandatory());
+//        alertDialog.show();
     }
 
     private void downloadNewApk(final Context context, String url, boolean mandatory) {

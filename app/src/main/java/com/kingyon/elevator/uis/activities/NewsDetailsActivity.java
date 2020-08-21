@@ -166,7 +166,16 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
             }
         });
         webview.setWebViewClient(new WebViewClient() {
-
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String  url) {
+                LogUtils.e(url);
+//                Intent intent = new Intent(NewsDetailsActivity.this,AdvertisionActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(BaseHtmlActivity.TITLE, "    ");
+//                bundle.putString(BaseHtmlActivity.URL, url);
+//                startActivity(intent, bundle);
+                return true;
+            }
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.proceed();
@@ -190,16 +199,7 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
                 comment_container.setVisibility(VISIBLE);
                 httpComment(1, contentId);
             }
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String  url) {
-                LogUtils.e(url);
-//                Intent intent = new Intent(NewsDetailsActivity.this,AdvertisionActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString(BaseHtmlActivity.TITLE, "    ");
-//                bundle.putString(BaseHtmlActivity.URL, url);
-//                startActivity(intent, bundle);
-                return true;
-            }
+
         });
 
         loadNewInfo();

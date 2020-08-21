@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bg_bj"
     android:padding="@dimen/spacing_default">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="版本更新中，请稍候片刻"
+        android:textColor="#ff333333"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v 1.2.4"
+        android:textColor="#ff277cef"
+        android:textSize="14sp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_bb"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        />
 
     <TextView
         android:id="@+id/tv_tips"
@@ -13,19 +39,20 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:text="等待中"
+        android:visibility="gone"
         android:textColor="@color/black_normal"
         android:textSize="@dimen/txt_tips" />
 
     <com.leo.afbaselibrary.utils.download.RoundProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="@dimen/spacing_float_btn"
-        android:layout_height="@dimen/spacing_float_btn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         app:progressMax="100"
         app:progressTextColor="@color/colorAccent"
         app:progressTextSize="@dimen/txt_normal_content"
-        app:roundColor="@color/black_hint"
-        app:roundProgressColor="@color/black_normal"
-        app:roundWidth="@dimen/spacing_four"
+        app:roundColor="#F5F5F5"
+        app:roundProgressColor="@drawable/bg_loading"
+        app:roundWidth="8dp"
         app:textIsDisplayable="true" />
-</RelativeLayout>
+</LinearLayout>

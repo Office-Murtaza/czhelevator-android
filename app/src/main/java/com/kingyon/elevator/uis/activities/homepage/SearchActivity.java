@@ -229,7 +229,7 @@ public class SearchActivity extends BaseSwipeBackActivity {
             name = String.format("%s…", name.substring(0, 4));
         }
         tvLocationTitle.setText(name);
-        tvSearchTitle.setText(keyWord);
+        tvSearchTitle.setText("");
     }
 
     private void httpRecommendHouse(int page, String latitude, String longitude, int cityId,

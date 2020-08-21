@@ -120,6 +120,8 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
             handler.postDelayed(this, 500);
         }
     };
+    Boolean isShow = DataSharedPreferences.getBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_main;
@@ -136,7 +138,9 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         initTab(savedInstanceState);
         initPushId();
         dealOpenActivity(getIntent().getParcelableExtra("pushEntity"));
-        checkVersion();
+        if (isShow) {
+            checkVersion();
+        }
         // 请选择您的初始化方式
         OCRUtil.getInstance().initAccessToken(this);
         tabBar.postDelayed(() -> loadUserPrivacy(), 400);
@@ -234,7 +238,6 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
         if (currentFragment != null) {
             currentFragment.setUserVisibleHint(true);
         }
-        isToken(this);
         initPushId();
         initZhiwen();
         httpPersonal();
@@ -624,7 +627,6 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
      * 首页弹出用户协议框，YYB审核需要做首次启动弹出处理
      */
     private void loadUserPrivacy() {
-        Boolean isShow = DataSharedPreferences.getBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
         if (!isShow) {
             NetService.getInstance().richText(Constants.AgreementType.PRIVACY_POLICY.getValue())
                     .compose(this.<DataEntity<String>>bindLifeCycle())
@@ -639,7 +641,7 @@ public class MainActivity extends BaseActivity implements TabStripView.OnTabSele
                             DialogUtils.getInstance().showUserPrivacyTipsDialog(MainActivity.this, dataEntity.getData(), new PrivacyTipsListener() {
                                 @Override
                                 public void onNoAgree() {
-
+                                    finish();
                                 }
 
                                 @Override

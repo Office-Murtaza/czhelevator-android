@@ -280,13 +280,16 @@ public class AdPointDetailsActivity extends BaseActivity {
                 break;
             case R.id.tv_program:
                 /*加入计划*/
+                tvProgram.setClickable(false);
                 if (isToken(this)) {
                     if (isCertification()) {
                         DialogUtils.shwoCertificationDialog(this);
+                        tvProgram.setClickable(true);
                     } else {
                         addPlan(adtype, panID);
                     }
                 } else {
+                    tvProgram.setClickable(true);
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -294,16 +297,21 @@ public class AdPointDetailsActivity extends BaseActivity {
     }
 
     private void addPlan(String type, String panID) {
+        showProgressDialog(getString(R.string.wait),false);
         NetService.getInstance().plansAddCells(type, panID)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<String>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        hideProgress();
                         ToastUtils.showToast(AdPointDetailsActivity.this, ex.getDisplayMessage(), 1000);
+                        tvProgram.setClickable(true);
                     }
 
                     @Override
                     public void onNext(String s) {
+                        tvProgram.setClickable(true);
+                        hideProgress();
                         ToastUtils.showToast(AdPointDetailsActivity.this, "添加成功", 1000);
                         AdUtils.httpPlannuber();
                         LogUtils.e(imageUrl);
@@ -314,8 +322,8 @@ public class AdPointDetailsActivity extends BaseActivity {
                                 .endView(imgPlan)
                                 .imageUrl(imageUrl)
                                 .time(1000)
-                                .animHeight(100)
-                                .animWidth(100)
+                                .animHeight(40)
+                                .animWidth(40)
                                 .build();
                         animManager.startAnim();
                     }

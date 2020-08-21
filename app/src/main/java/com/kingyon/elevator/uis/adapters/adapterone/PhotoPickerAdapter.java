@@ -1,6 +1,7 @@
 package com.kingyon.elevator.uis.adapters.adapterone;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,17 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.photopicker.MediaData;
 import com.kingyon.elevator.utils.DensityUtil;
+import com.kingyon.elevator.utils.utilstwo.VideoUtils;
 import com.leo.afbaselibrary.utils.GlideUtils;
 import com.zhaoss.weixinrecorded.util.TimeUtils;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -76,18 +82,15 @@ public class PhotoPickerAdapter extends BaseAdapter {
         MediaData mediaData = mediaDataList.get(position);
         if (showType == 1) {
             holder.video_time.setVisibility(View.VISIBLE);
-//            holder.video_time.setText(TimeUtils.getRemainingTimeFormat(mediaData.getDuration()));(int) (getVideoDuration(outputPath)/1000)
             holder.video_time.setText(TimeUtils.secondToTime( (int) mediaData.getDuration()/1000));
-
-//            holder.video_time.setText(TimeUtils.getRemainingTimeFormat((getVideoDuration(mediaData.getOriginalPath()))));
-
+            Glide.with(context).load(Uri.fromFile(new File(mediaData.getOriginalPath())))
+                    .into(holder.iv_preview);
         } else {
             holder.video_time.setVisibility(View.GONE);
             holder.video_time.setText("");
+            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
         }
         if (mediaData.getOriginalPath() != null) {
-            GlideUtils.loadLocalFrame(context, mediaData.getOriginalPath(), holder.iv_preview);
-//            holder.iv_preview.setImageResource(R.drawable.lock);
         } else {
             holder.iv_preview.setImageResource(R.drawable.bg_picture_space_article);
         }
