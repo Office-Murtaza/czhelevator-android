@@ -16,7 +16,7 @@
     <com.marvhong.videoeffect.GlVideoView
         android:id="@+id/glsurfaceview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"/>
 
 
@@ -24,12 +24,15 @@
         android:id="@+id/rl_tuya"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        >
 
         <RelativeLayout
             android:id="@+id/rl_touch_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             >
 
             <com.zhaoss.weixinrecorded.view.TuyaView

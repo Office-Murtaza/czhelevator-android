@@ -745,7 +745,6 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
         mEffectAnimator.start();
     }
     private void initMediaPlay(SurfaceTexture surface,String path){
-        Log.e("TAG","====111"+path);
         try {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setDataSource(path);
@@ -761,7 +760,6 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
 
             mMediaPlayer.prepareAsync();
         }catch (Exception e){
-            Log.e("TAG","===="+e.toString());
             e.printStackTrace();
         }
         initVideoSize();

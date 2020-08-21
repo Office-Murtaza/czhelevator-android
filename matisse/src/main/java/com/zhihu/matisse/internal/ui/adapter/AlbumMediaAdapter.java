@@ -110,16 +110,11 @@ public class AlbumMediaAdapter extends
                 }
             }
             captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
-            Log.e("TAG","===========================");
         } else if (holder instanceof MediaViewHolder) {
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
 
             final Item item = Item.valueOf(cursor);
-            Log.e("TAG",item.mimeType+"==\n=="+item.uri
-                    +"==\n=="+item.duration+"==\n=="+item.id+"==\n=="+item.size
-                    +"==\n=="+item.isVideo()+"==\n=="+item.describeContents()+"==\n=="+item.getContentUri()
-                    +"==\n=="+item.hashCode()+"==\n=="+item.isCapture()+"==\n=="+item.isGif()+"==\n=="+item.isImage()+"\n"+ item.uri.getPath());
 
 //            if (item.isVideo()) {
 //                if (item.duration>1000) {

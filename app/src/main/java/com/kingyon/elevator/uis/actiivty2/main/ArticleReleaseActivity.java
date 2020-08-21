@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -21,8 +23,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.customview.RuleDescTipsDialog;
-import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.QueryTopicEntity;
 import com.kingyon.elevator.nets.NetService;
@@ -36,7 +36,6 @@ import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.VideoUtils;
-import com.kingyon.elevator.utils.utilstwo.WebViewUtils;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.rex.editor.view.RichEditor;
@@ -54,7 +53,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.widget.TextView.BufferType.SPANNABLE;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_IMAGE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.ACCESS_VOIDE_PATH;
 import static com.czh.myversiontwo.utils.CodeType.REQUEST_TAG_APPEND;
@@ -62,7 +60,6 @@ import static com.czh.myversiontwo.utils.CodeType.REQUEST_USER_APPEND;
 import static com.czh.myversiontwo.utils.CodeType.TYPE_ARTICLE;
 import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_ARTICLE_RELEASETY;
 import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_ARTICLE_DRAFT;
-import static com.kingyon.elevator.data.DataSharedPreferences.SAVE_MICRO_COMMUNITY_DRAFT;
 
 
 /**
@@ -133,6 +130,10 @@ public class ArticleReleaseActivity extends BaseActivity {
     LinearLayout llSz;
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
+    @BindView(R.id.tv_number)
+    TextView tvNumber;
+    @BindView(R.id.tv_number1)
+    TextView tvNumber1;
     private boolean isblue = true;
     private boolean istilt = true;
     private boolean isbold = true;
@@ -150,7 +151,7 @@ public class ArticleReleaseActivity extends BaseActivity {
 
     List<String> userList = new ArrayList<>();
     List<String> tagList = new ArrayList<>();
-    String topicId ;
+    String topicId;
     String atAccount;
 
     @Override
@@ -182,12 +183,12 @@ public class ArticleReleaseActivity extends BaseActivity {
     }
 
     private void initData() {
-        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context .MODE_PRIVATE);
-        String content=sharedPreferences.getString("content","");
-        String title=sharedPreferences.getString("title","");
-        imageCover=sharedPreferences.getString("imageCover","");
-        isOriginal=sharedPreferences.getBoolean("isOriginal",false);
-        editTitle.setText(title+"");
+        SharedPreferences sharedPreferences = getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+        String content = sharedPreferences.getString("content", "");
+        String title = sharedPreferences.getString("title", "");
+        imageCover = sharedPreferences.getString("imageCover", "");
+        isOriginal = sharedPreferences.getBoolean("isOriginal", false);
+        editTitle.setText(title + "");
         richEditor.setHtml(content);
 
     }
@@ -201,17 +202,38 @@ public class ArticleReleaseActivity extends BaseActivity {
                 if (!hasFocus) {
                     initCancel();
                     llBottom.setVisibility(View.GONE);
-                }else {
+                } else {
                     llBottom.setVisibility(View.VISIBLE);
                 }
             }
         });
+
         editTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     initCancel();
                 }
+            }
+        });
+
+        editTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvNumber.setText(s.length()+"/30");
+            }
+        });
+
+        richEditor.setOnTextChangeListener(new RichEditorNew.OnTextChangeNewListener() {
+            @Override
+            public void onTextChange(String text) {
+                tvNumber1.setText(text.length()+"/500");
             }
         });
     }
@@ -320,9 +342,9 @@ public class ArticleReleaseActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String e, String e1) {
                         webAddDialog.dismiss();
-                        if (e1.isEmpty()){
+                        if (e1.isEmpty()) {
                             richEditor.insertLink(e, e);
-                        }else {
+                        } else {
                             richEditor.insertLink(e, e1);
                         }
                     }
@@ -463,18 +485,18 @@ public class ArticleReleaseActivity extends BaseActivity {
 
     private void initDialogBack() {
 
-        if (editTitle.getText().toString().isEmpty()){
+        if (editTitle.getText().toString().isEmpty()) {
             finish();
-        }else {
+        } else {
             SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);
             saveDraftsDialog.show();
             saveDraftsDialog.Clicked(new IsSuccess() {
                 @Override
                 public void isSuccess(boolean success) {
-                    if (success){
+                    if (success) {
                         saveContent();
-                    }else {
-                        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+                    } else {
+                        SharedPreferences sharedPreferences = getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
                         editor.commit();
@@ -492,12 +514,12 @@ public class ArticleReleaseActivity extends BaseActivity {
         } else {
 
             tagList = StringUtils.getTagString(String.valueOf(richEditor.getHtml()));
-            String topicId1 = tagList.toString().replace("[","");
-            topicId = topicId1.replace("]","");
+            String topicId1 = tagList.toString().replace("[", "");
+            topicId = topicId1.replace("]", "");
             userList = StringUtils.getUserString(String.valueOf(richEditor.getHtml()));
-            String atAccount1 = userList.toString().replace("[","");
-            atAccount = atAccount1.replace("]","");
-            LogUtils.e(topicId,atAccount,tagList.toString(),userList.toString());
+            String atAccount1 = userList.toString().replace("[", "");
+            atAccount = atAccount1.replace("]", "");
+            LogUtils.e(topicId, atAccount, tagList.toString(), userList.toString());
             OrdinaryActivity.httpContentPublish(this, editTitle.getText().toString(), richEditor.getHtml(), "", ""
                     , TYPE_ARTICLE, "1", topicId, atAccount, 0, imageCover, 0, 3, isOriginal);
 
@@ -576,7 +598,7 @@ public class ArticleReleaseActivity extends BaseActivity {
                             files.add(file);
                         }
                     }
-                    showProgressDialog("图片上传中....",false);
+                    showProgressDialog("图片上传中....", false);
                     NetService.getInstance().uploadFiles(this, files, new NetUpload.OnUploadCompletedListener() {
                         @Override
                         public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -599,8 +621,8 @@ public class ArticleReleaseActivity extends BaseActivity {
                     break;
                 case ACCESS_VOIDE_PATH:
                     LogUtils.e(Matisse.obtainPathResult(data), Matisse.obtainResult(data), Matisse.obtainOriginalState(data));
-                    String videoCover = VideoUtils.saveBitmap(this,VideoUtils.getVideoThumb(Matisse.obtainPathResult(data).get(0)));
-                    showProgressDialog("视频上传中....",false);
+                    String videoCover = VideoUtils.saveBitmap(this, VideoUtils.getVideoThumb(Matisse.obtainPathResult(data).get(0)));
+                    showProgressDialog("视频上传中....", false);
                     NetService.getInstance().uploadFile(this, new File(videoCover), new NetUpload.OnUploadCompletedListener() {
                         @Override
                         public void uploadSuccess(List<String> images, List<String> hash, JSONObject response) {
@@ -625,20 +647,20 @@ public class ArticleReleaseActivity extends BaseActivity {
                     AttenionUserEntiy user = (AttenionUserEntiy) data.getSerializableExtra(UserSelectionActiivty.RESULT_USER);
                     String atAccount = String.format(TOP_USER, user.followerAccount, user.nickname, user.nickname);
                     LogUtils.e(atAccount);
-                    if (richEditor.getHtml()!=null) {
+                    if (richEditor.getHtml() != null) {
                         richEditor.setHtml(richEditor.getHtml() + atAccount);
-                    }else {
-                        richEditor.setHtml( atAccount);
+                    } else {
+                        richEditor.setHtml(atAccount);
                     }
                     break;
                 case REQUEST_TAG_APPEND:
                     QueryTopicEntity.PageContentBean tag = (QueryTopicEntity.PageContentBean) data.getSerializableExtra(TagList.RESULT_TAG);
                     String newTopic = String.format(TOP_TAG, tag.getId(), tag.getTitle(), tag.getTitle());
                     LogUtils.e(newTopic);
-                    if (richEditor.getHtml()!=null) {
+                    if (richEditor.getHtml() != null) {
                         richEditor.setHtml(richEditor.getHtml() + newTopic);
-                    }else {
-                        richEditor.setHtml( newTopic);
+                    } else {
+                        richEditor.setHtml(newTopic);
                     }
                     break;
 
@@ -668,13 +690,13 @@ public class ArticleReleaseActivity extends BaseActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             initDialogBack();
             return false;
-        }else {
+        } else {
             return super.onKeyDown(keyCode, event);
         }
     }
 
     private void saveContent() {
-        SharedPreferences sharedPreferences= getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("title", editTitle.getText().toString());
         editor.putString("content", richEditor.getHtml());
@@ -684,7 +706,7 @@ public class ArticleReleaseActivity extends BaseActivity {
         editor.putString("videoCover", imageCover);
         editor.putBoolean("isOriginal", isOriginal);
         editor.putInt("videoHorizontalVertical", 3);
-        editor.putBoolean("marrid",false);
+        editor.putBoolean("marrid", false);
         editor.commit();
         finish();
 
