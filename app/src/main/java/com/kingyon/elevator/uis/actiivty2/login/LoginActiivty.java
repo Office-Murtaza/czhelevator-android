@@ -19,6 +19,7 @@ import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.uis.activities.AgreementActivity;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.library.social.AuthorizeUser;
 import com.kingyon.library.social.AuthorizeUtils;
 import com.kingyon.paylibrary.ALiLoginUtils;
@@ -125,8 +126,7 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                 });
             }
         });
-//        EditTextUtils.setEditTextInhibitInputSpace(etPhone);
-//        EditTextUtils.setEditTextInhibitInputSpeChat(etPhone);
+
 
     }
 
@@ -136,6 +136,8 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         OrdinaryActivity.loginActiivty = this;
+        tvLoginNext.setClickable(false);
+        EditTextUtils.setEditTextInhibitInputSpeChat(etPhone,11);
     }
 
     @OnClick({R.id.img_top_back, R.id.tv_dl, R.id.img_yesyhxy, R.id.tv_login_next,
@@ -161,38 +163,51 @@ public class LoginActiivty extends BaseActivity implements AuthorizeUtils.Author
                 httpNext();
                 break;
             case R.id.img_wx:
-                if (authorizeUtils == null) {
-                    authorizeUtils = new AuthorizeUtils(this, null);
-                    authorizeUtils.setAuthorizeListener(this);
+                if (TokenUtils.checkAppInstalled(this,"com.tencent.mm")) {
+                    if (authorizeUtils == null) {
+                        authorizeUtils = new AuthorizeUtils(this, null);
+                        authorizeUtils.setAuthorizeListener(this);
+                    }
+                    setThirdLoginEnabled(false);
+                    showProgressDialog(getString(R.string.wait), true);
+                    authorizeUtils.authWechat();
+                }else {
+                    showToast("还没有安装微信，请安装后再试");
                 }
-                setThirdLoginEnabled(false);
-                showProgressDialog(getString(R.string.wait),true);
-                authorizeUtils.authWechat();
                 break;
             case R.id.img_qq:
-                if (authorizeUtils == null) {
-                    authorizeUtils = new AuthorizeUtils(this, null);
-                    authorizeUtils.setAuthorizeListener(this);
+                if (TokenUtils.checkAppInstalled(this,"com.tencent.mobileqq")) {
+                    if (authorizeUtils == null) {
+                        authorizeUtils = new AuthorizeUtils(this, null);
+                        authorizeUtils.setAuthorizeListener(this);
+                    }
+                    setThirdLoginEnabled(false);
+                    showProgressDialog(getString(R.string.wait), true);
+                    authorizeUtils.authQQ();
+                }else {
+                    showToast("还没有安装QQ，请安装后再试");
                 }
-                setThirdLoginEnabled(false);
-                showProgressDialog(getString(R.string.wait),true);
-                authorizeUtils.authQQ();
+
                 break;
             case R.id.img_wb:
-                ALiLoginUtils aLiLogin = new ALiLoginUtils(this) {
-                    @Override
-                    protected void getOpentid(String unique1) {
-                        LogUtils.e(unique1);
-                        unique = unique1;
-                        avatar = "";
-                        nickName = "";
-                        loginType = ALI;
-                        OrdinaryActivity.httpLogin(LoginActiivty.this,
-                                "", "", ALI, unique1, "", ""
-                                , llSf, tvLoginUser,null);
-                    }
-                };
-                aLiLogin.authV2();
+                if (TokenUtils.checkAppInstalled(this,"com.eg.android.AlipayGphone")) {
+                    ALiLoginUtils aLiLogin = new ALiLoginUtils(this) {
+                        @Override
+                        protected void getOpentid(String unique1) {
+                            LogUtils.e(unique1);
+                            unique = unique1;
+                            avatar = "";
+                            nickName = "";
+                            loginType = ALI;
+                            OrdinaryActivity.httpLogin(LoginActiivty.this,
+                                    "", "", ALI, unique1, "", ""
+                                    , llSf, tvLoginUser, null);
+                        }
+                    };
+                    aLiLogin.authV2();
+                }else {
+                    showToast("还没有安装支付宝，请安装后再试");
+                }
                 break;
             case R.id.tv_djyhxy:
                 AgreementActivity.start(this, "屏多多用户协议", Constants.AgreementType.USER_RULE.getValue());

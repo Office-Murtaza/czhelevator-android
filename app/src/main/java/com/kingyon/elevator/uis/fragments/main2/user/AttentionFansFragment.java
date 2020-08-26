@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -174,7 +175,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
                 return false;
             }
         });
-
+        EditTextUtils.setEditTextInhibitInputSpace(editSearch);
     }
 
     @Override

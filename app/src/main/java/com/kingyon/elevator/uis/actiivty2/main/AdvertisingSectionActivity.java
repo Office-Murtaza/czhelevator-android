@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.AdZoneEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -70,6 +71,8 @@ public class AdvertisingSectionActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        EditTextUtils.setEditTextInhibitInputSpace(editSearch);
+
     }
 
     @Override

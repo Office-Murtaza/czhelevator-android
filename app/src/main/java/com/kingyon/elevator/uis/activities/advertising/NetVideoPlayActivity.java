@@ -12,6 +12,8 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GongLi on 2019/1/22.
@@ -110,6 +112,18 @@ public class NetVideoPlayActivity extends BaseSwipeBackActivity {
 //        }
         GSYVideoManager.releaseAllVideos();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.img_clear)
+    public void onViewClicked() {
+        finish();
     }
 
 //    public AVOptions createAVOptions() {

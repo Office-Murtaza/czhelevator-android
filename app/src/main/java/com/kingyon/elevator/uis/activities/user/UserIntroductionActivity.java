@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
@@ -78,7 +79,7 @@ public class UserIntroductionActivity extends BaseActivity {
                 tvZinumber.setText(s.length()+"/30");
             }
         });
-
+        EditTextUtils.setEditTextInhibitInputSpace(etNick);
     }
 
     @Override

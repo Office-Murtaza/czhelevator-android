@@ -190,8 +190,12 @@ public class VoideReleasetyActiivty extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-            tvZhiNumber.setText(s.toString().length()+"/30");
-
+                if ((s.toString().length()==1?s.toString():"").equals(" ")){
+                    showToast("标题开头不能为空格");
+                    editTitle.setText("");
+                }else {
+                    tvZhiNumber.setText(s.length() + "/30");
+                }
             }
         });
         

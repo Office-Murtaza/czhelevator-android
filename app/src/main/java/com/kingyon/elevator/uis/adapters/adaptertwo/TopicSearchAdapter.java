@@ -58,9 +58,9 @@ public class TopicSearchAdapter extends RecyclerView.Adapter<TopicSearchAdapter.
             holder.tv_title.setText(pageContentBeanQueryTopicEntity.get(position).getTitle());
             holder.tv_peoplenum.setText(pageContentBeanQueryTopicEntity.get(position).getPeopleNum()+"");
             if (pageContentBeanQueryTopicEntity.get(position).getLatestImage()==null) {
-                GlideUtils.loadImage(context, pageContentBeanQueryTopicEntity.get(position).getImage(), holder.imageView);
+                GlideUtils.loadRoundCornersImage(context, pageContentBeanQueryTopicEntity.get(position).getImage(), holder.imageView,20);
             }else {
-                GlideUtils.loadImage(context, pageContentBeanQueryTopicEntity.get(position).getLatestImage(), holder.imageView);
+                GlideUtils.loadRoundCornersImage(context, pageContentBeanQueryTopicEntity.get(position).getLatestImage(), holder.imageView,20);
             }
 
             // 点击事件一般都写在绑定数据这里，当然写到上边的创建布局时候也是可以的

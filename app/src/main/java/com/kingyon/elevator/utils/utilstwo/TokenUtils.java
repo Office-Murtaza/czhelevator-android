@@ -10,7 +10,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.widget.EditText;
 
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.constants.Constants;
@@ -24,6 +27,8 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
@@ -112,5 +117,54 @@ public class TokenUtils {
         boolean setToken(boolean is);
     }
 
+    public static boolean checkAppInstalled(Context context,String pkgName) {
+        if (pkgName== null || pkgName.isEmpty()) {
+            return false;
+        }
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if(packageInfo == null) {
+            return false;
+        } else {
+            return true;//true为安装了，false为未安装
+        }
+    }
+    /**
+     * 禁止EditText输入空格
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpace(EditText editText){
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if(source.equals(" "))return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
 
+    /**
+     * 禁止EditText输入特殊字符
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText,int num){
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                if(source.equals(" "))return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter,new InputFilter.LengthFilter(num)});
+    }
 }

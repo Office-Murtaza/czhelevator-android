@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.donkingliang.labels.LabelsView;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -202,6 +203,7 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        EditTextUtils.setEditTextInhibitInputSpace(editSearch);
     }
 
 

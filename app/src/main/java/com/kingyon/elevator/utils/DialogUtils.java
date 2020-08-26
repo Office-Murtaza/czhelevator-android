@@ -6,7 +6,6 @@ import android.support.annotation.ColorRes;
 
 
 import com.blankj.utilcode.util.LogUtils;
-import com.kingyon.elevator.customview.CashTipsDialog;
 import com.kingyon.elevator.customview.EditSuccessTipsDialog;
 import com.kingyon.elevator.customview.FingerCheckDailog;
 import com.kingyon.elevator.customview.InputPayPwdToCashDailog;
@@ -50,7 +49,6 @@ public class DialogUtils {
     private RuleDescTipsDialog ruleDescTipsDialog;
     private PreviewVideoBackTipsDialog previewVideoBackTipsDialog;
     private OrderDetailedTipsDialog orderDetailedTipsDialog;
-    private CashTipsDialog cashTipsDialog;
     private MainWindowNoticeDialog mainWindowNoticeDialog;
     private MainTextDialog mainTextDialog;
 
@@ -365,35 +363,6 @@ public class DialogUtils {
     }
 
 
-    /**
-     * 显示合伙人信息提示框
-     *
-     * @param context
-     */
-    public void showCashTipsDialog(Context context, String content, boolean isLink, OnItemClick onItemClick) {
-        try {
-            if (cashTipsDialog != null && cashTipsDialog.isShowing()) {
-                cashTipsDialog.dismiss();
-                cashTipsDialog = null;
-            }
-            cashTipsDialog = new CashTipsDialog(context, content, isLink, onItemClick);
-            cashTipsDialog.setCancelable(true);
-            cashTipsDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void hideCashTipsDialog() {
-        try {
-            if (cashTipsDialog != null) {
-                cashTipsDialog.dismiss();
-                cashTipsDialog = null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 显示合伙人信息提示框
@@ -418,6 +387,7 @@ public class DialogUtils {
 
 
     public void hideMainWindowNoticeDialog() {
+        LogUtils.e("1322");
         try {
             if (mainWindowNoticeDialog != null) {
                 mainWindowNoticeDialog.dismiss();
@@ -425,6 +395,7 @@ public class DialogUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.e("e",e.toString());
         }
     }
 

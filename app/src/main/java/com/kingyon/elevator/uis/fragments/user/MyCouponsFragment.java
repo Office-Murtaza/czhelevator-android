@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
 import com.kingyon.elevator.entities.CouponItemEntity;
@@ -35,6 +36,7 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
     private String status;
     private boolean normal;
 
+    private boolean isShow = true;
     private List<CouponItemEntity> discountCoupons = new ArrayList<>();
     private List<CouponItemEntity> voucherCoupons = new ArrayList<>();
     private ArrayList<CouponItemEntity> choosedCoupons;
@@ -81,10 +83,21 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, Object item, int position) {
         super.onItemClick(view, holder, item, position);
+        LogUtils.e(normal,item);
         if (normal && item != null && item instanceof CouponItemEntity) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(CommonUtil.KEY_VALUE_1, (CouponItemEntity) item);
             startActivity(CouponDetailsActivity.class, bundle);
+        }else {
+            CouponItemEntity couponItemEntity = new CouponItemEntity();
+            if (isShow) {
+                isShow = false;
+                couponItemEntity.setExpand(false);
+            }else {
+                isShow = true;
+                couponItemEntity.setExpand(true);
+            }
+            mAdapter.notifyItemChanged(mItems.indexOf(couponItemEntity));
         }
     }
 
@@ -116,6 +129,7 @@ public class MyCouponsFragment extends BaseStateRefreshLoadingFragment<Object> {
                             voucherCoupons.clear();
                         }
                         for (CouponItemEntity item : datas) {
+                            item.setExpand(true);
                             if (choosedCoupons != null) {
                                 for (CouponItemEntity choosedCache : choosedCoupons) {
                                     if (item.getObjctId() == choosedCache.getObjctId()) {

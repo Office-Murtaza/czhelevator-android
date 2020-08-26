@@ -81,6 +81,24 @@ public class ReportContentShareDialog extends Dialog implements View.OnClickList
         tv_delete3.setOnClickListener(this);
         tv_delete4.setOnClickListener(this);
         share_btn_cancel.setOnClickListener(this);
+        if(reportType.equals("COMMENT")){
+            tv_delete.setVisibility(View.VISIBLE);
+            tv_delete1.setVisibility(View.VISIBLE);
+            tv_delete2.setVisibility(View.VISIBLE);
+            tv_delete3.setVisibility(View.VISIBLE);
+            tv_delete4.setVisibility(View.VISIBLE);
+            tv_delete.setText("垃圾广告");
+            tv_delete1.setText("淫秽色情");
+            tv_delete2.setText("有害信息");
+            tv_delete3.setText("恶意谩骂");
+            tv_delete4.setText("违法信息");
+        }else {
+            tv_delete.setText("垃圾广告");
+            tv_delete1.setText("政治敏感");
+            tv_delete2.setText("有害信息");
+            tv_delete4.setVisibility(View.GONE);
+            tv_delete3.setVisibility(View.GONE);
+        }
     }
 
     @Override

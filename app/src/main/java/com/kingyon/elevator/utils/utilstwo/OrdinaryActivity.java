@@ -189,7 +189,7 @@ public class OrdinaryActivity {
                     @Override
                     public void onNext(CodeEntity codeEntity) {
                         baseActivity.hideProgress();
-                        ToastUtils.showToast(baseActivity, "成功", 1000);
+
                         if (codeEntity != null) {
                             if (codeEntity.isNeedSetPwd()) {
                                 UserEntity userEntity = codeEntity.getUser();
@@ -219,7 +219,7 @@ public class OrdinaryActivity {
                                     ActivityUtils.setActivity(ACTIVITY_MAIN2_PASSSWORD_SETTING, "phone", phone);
                                 }
                             } else {
-
+                                ToastUtils.showToast(baseActivity, "登录成功", 1000);
                                 UserEntity userEntity = codeEntity.getUser();
                                 LogUtils.e(codeEntity.getToken(), codeEntity.getUser(), codeEntity.isNeedFill(),userEntity.getAccount());
                                 DataSharedPreferences.saveLoginName(phone);

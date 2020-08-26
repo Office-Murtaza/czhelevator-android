@@ -73,7 +73,7 @@ public class EditPassWordFragment extends MvpBaseFragment<EditPayPasswordFragmen
     }
 
     @Override
-    public void payPasswordEditSuccess() {
+    public void payPasswordEditSuccess(boolean isSuccess) {
 
     }
 

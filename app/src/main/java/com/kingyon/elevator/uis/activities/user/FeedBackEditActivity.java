@@ -102,7 +102,7 @@ public class FeedBackEditActivity extends BaseSwipeBackActivity implements BaseA
     }
 
     private void publishRequest(String pictures) {
-        showProgressDialog(getString(R.string.wait),true);
+        showProgressDialog(getString(R.string.wait),false);
         try {
         PackageManager manager = getPackageManager();
         PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);

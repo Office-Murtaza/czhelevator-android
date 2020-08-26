@@ -2,6 +2,7 @@ package com.kingyon.elevator.uis.adapters.adapterone;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.application.AppContent;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 
 public class MyCouponsNormalAdapter extends MultiItemTypeAdapter<Object> {
+
+    CouponItemEntity item;
     public MyCouponsNormalAdapter(Context context, List<Object> mItems) {
         super(context, mItems);
         addItemViewDelegate(1, new CouponItemDelegate());
@@ -41,9 +44,10 @@ public class MyCouponsNormalAdapter extends MultiItemTypeAdapter<Object> {
 
         @Override
         public void convert(CommonHolder holder, Object o, int position) {
-            CouponItemEntity item = (CouponItemEntity) o;
+            item = (CouponItemEntity) o;
 
             holder.setSelected(R.id.ll_bg, item.isChoosed());
+            holder.setVisible(R.id.ll_bg, item.isExpand());
 
             boolean discount = TextUtils.equals(Constants.CouponType.DISCOUNT, item.getCoupontype());
             holder.setTextNotHide(R.id.tv_discounts_1, discount ? CommonUtil.getMayTwoFloat(item.getDiscount()) : "￥");
@@ -101,6 +105,15 @@ public class MyCouponsNormalAdapter extends MultiItemTypeAdapter<Object> {
             boolean voucher = TextUtils.equals(Constants.CouponType.VOUCHER, couponType);
             holder.setTextNotHide(R.id.tv_name, voucher ? "代金券" : "折扣券");
             holder.setTextDrawableLeft(R.id.tv_name, voucher ? R.mipmap.ic_card_dai : R.mipmap.ic_card_zhe);
+            holder.setVisible(R.id.tv_num,false);
+            int num = 0;
+//            if (voucher) {
+//                num = item.getCouponsCount()+num;
+//                holder.setText(R.id.tv_num, num+"");
+//            }else {
+//                num = item.getCouponsCount()+num;
+//                holder.setText(R.id.tv_num, num+"");
+//            }
         }
     }
 }

@@ -92,7 +92,7 @@ public class CheckPayVerCodeFragment extends MvpBaseFragment<EditPayPasswordFrag
     }
 
     @Override
-    public void payPasswordEditSuccess() {
+    public void payPasswordEditSuccess(boolean isSuccess) {
 
     }
 
@@ -114,6 +114,7 @@ public class CheckPayVerCodeFragment extends MvpBaseFragment<EditPayPasswordFrag
                 }
                 RuntimeUtils.payVerCode = tv_input_code.getText().toString().trim();
                 MyActivityUtils.goFragmentContainerActivity(getActivity(), FragmentConstants.EditPayPasswordFragment, false);
+                getActivity().finish();
                 break;
             default:
         }

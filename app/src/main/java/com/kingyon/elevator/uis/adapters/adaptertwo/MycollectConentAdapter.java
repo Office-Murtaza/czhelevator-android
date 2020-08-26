@@ -25,6 +25,7 @@ import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.JsonUtils;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
 import com.kingyon.elevator.utils.utilstwo.StringUtils;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.GlideUtils;
@@ -57,7 +58,7 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
     Parser mTagParser = new Parser();
 
     private ShareDialog shareDialog;
-
+    int likes = 0;
     public MycollectConentAdapter(BaseActivity context) {
         this.context = context;
     }
@@ -208,32 +209,49 @@ public class MycollectConentAdapter extends RecyclerView.Adapter<MycollectConent
 
             }
         });
+
+
+        /*点赞*/
         holder.img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (queryRecommendEntity.isLiked==1) {
-                    queryRecommendEntity.isLiked =0;
-                    holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
-                    ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                            HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
-                                @Override
-                                public void isSuccess(boolean success) {
+                if (TokenUtils.isToken(context)) {
+                    likes = queryRecommendEntity.likeNum;
+                    if (queryRecommendEntity.isLiked==1) {
+                        queryRecommendEntity.isLiked =0;
+                        holder.img_like.setImageResource(R.mipmap.ic_small_like_off);
+                        ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
+                                HOME_CONTENT, CANCEL_LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
 
-                                }
-                            });
-                } else {
-                    queryRecommendEntity.isLiked =1;
-                    holder.img_like.setImageResource(R.mipmap.ic_small_like);
-                    ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
-                            HOME_CONTENT, LIKE, new IsSuccess() {
-                                @Override
-                                public void isSuccess(boolean success) {
+                                    }
+                                });
+                        likes--;
+                        queryRecommendEntity.likeNum = likes;
+                        LogUtils.e(likes + "");
+                        holder.tv_like_number.setText(StringUtils.getNumStr(likes ,"点赞"));
+                    } else {
+                        queryRecommendEntity.isLiked =1;
+                        holder.img_like.setImageResource(R.mipmap.ic_small_like);
+                        ConentUtils.httpHandlerLikeOrNot(context, queryRecommendEntity.id,
+                                HOME_CONTENT, LIKE, new IsSuccess() {
+                                    @Override
+                                    public void isSuccess(boolean success) {
 
-                                }
-                            });
+                                    }
+                                });
+                        likes++;
+                        queryRecommendEntity.likeNum = likes;
+                        LogUtils.e(likes + "");
+                        holder.tv_like_number.setText(StringUtils.getNumStr(likes ,"点赞"));
+                    }
+                }else {
+                    ActivityUtils.setLoginActivity();
                 }
             }
         });
+
 
         holder.img_shared.setOnClickListener(new View.OnClickListener() {
             @Override

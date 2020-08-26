@@ -109,20 +109,20 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                         holder.setVisible(R.id.tv_again, true);
                         holder.setVisible(R.id.img_delete, true);
                         holder.setText(R.id.tv_again, "再来一单");
-                        switch (item.getAuditState()) {
-                            case WAITREVIEW:
-                                /*审核中*/
-                                holder.setVisible(R.id.img_status, true);
-                                holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_wait);
-                                break;
-                            case REVIEWFAILD:
-                                /*未通过*/
-                                holder.setVisible(R.id.img_status, true);
-                                holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_fail);
-                                break;
-                            default:
-                                holder.setVisible(R.id.img_status, false);
-                        }
+//                        switch (item.getAuditState()) {
+//                            case WAITREVIEW:
+//                                /*审核中*/
+//                                holder.setVisible(R.id.img_status, true);
+//                                holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_wait);
+//                                break;
+//                            case REVIEWFAILD:
+//                                /*未通过*/
+//                                holder.setVisible(R.id.img_status, true);
+//                                holder.setImageResource(R.id.img_status, R.mipmap.im_order_audit_fail);
+//                                break;
+//                            default:
+//                                holder.setVisible(R.id.img_status, false);
+//                        }
                         break;
                     case OEDER_SOWING:
                         holder.setText(R.id.tv_status, "已完成");

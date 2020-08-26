@@ -47,7 +47,7 @@ public class AdvertisStyleActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CommercialFragment().setIndex("create_time desc","1"), "商业广告");
-        adapter.addFrag(new CommercialFragment().setIndex("likes desc","2"), "DAY广告");
+        adapter.addFrag(new CommercialFragment().setIndex("likes desc","2"), "DIY广告");
         adapter.addFrag(new CommercialFragment().setIndex("likes desc","3"), "便民广告");
         vpStyle.setAdapter(adapter);
         vpStyle.setOffscreenPageLimit(adapter.getCount());

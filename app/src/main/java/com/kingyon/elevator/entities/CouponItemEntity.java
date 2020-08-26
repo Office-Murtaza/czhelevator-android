@@ -33,50 +33,15 @@ public class CouponItemEntity extends OnChoosedInterface implements Parcelable {
     private String adType;
     private long expiredDate;
     private String status;
+    private Boolean expand;
 
-    protected CouponItemEntity(Parcel in) {
-        cacheCount = in.readInt();
-        couponsCount = in.readInt();
-        objctId = in.readLong();
-        coupontype = in.readString();
-        couponCondition = in.readFloat();
-        money = in.readFloat();
-        discount = in.readFloat();
-        adType = in.readString();
-        expiredDate = in.readLong();
-        status = in.readString();
+    public boolean isExpand() {
+        return expand;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(cacheCount);
-        dest.writeInt(couponsCount);
-        dest.writeLong(objctId);
-        dest.writeString(coupontype);
-        dest.writeFloat(couponCondition);
-        dest.writeFloat(money);
-        dest.writeFloat(discount);
-        dest.writeString(adType);
-        dest.writeLong(expiredDate);
-        dest.writeString(status);
+    public void setExpand(boolean expand) {
+        this.expand = expand;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<CouponItemEntity> CREATOR = new Creator<CouponItemEntity>() {
-        @Override
-        public CouponItemEntity createFromParcel(Parcel in) {
-            return new CouponItemEntity(in);
-        }
-
-        @Override
-        public CouponItemEntity[] newArray(int size) {
-            return new CouponItemEntity[size];
-        }
-    };
 
     public int getCacheCount() {
         return cacheCount;
@@ -166,4 +131,49 @@ public class CouponItemEntity extends OnChoosedInterface implements Parcelable {
     public CouponItemEntity() {
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.cacheCount);
+        dest.writeInt(this.couponsCount);
+        dest.writeLong(this.objctId);
+        dest.writeString(this.coupontype);
+        dest.writeFloat(this.couponCondition);
+        dest.writeFloat(this.money);
+        dest.writeFloat(this.discount);
+        dest.writeString(this.adType);
+        dest.writeLong(this.expiredDate);
+        dest.writeString(this.status);
+        dest.writeValue(this.expand);
+    }
+
+    protected CouponItemEntity(Parcel in) {
+        this.cacheCount = in.readInt();
+        this.couponsCount = in.readInt();
+        this.objctId = in.readLong();
+        this.coupontype = in.readString();
+        this.couponCondition = in.readFloat();
+        this.money = in.readFloat();
+        this.discount = in.readFloat();
+        this.adType = in.readString();
+        this.expiredDate = in.readLong();
+        this.status = in.readString();
+        this.expand = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    }
+
+    public static final Creator<CouponItemEntity> CREATOR = new Creator<CouponItemEntity>() {
+        @Override
+        public CouponItemEntity createFromParcel(Parcel source) {
+            return new CouponItemEntity(source);
+        }
+
+        @Override
+        public CouponItemEntity[] newArray(int size) {
+            return new CouponItemEntity[size];
+        }
+    };
 }

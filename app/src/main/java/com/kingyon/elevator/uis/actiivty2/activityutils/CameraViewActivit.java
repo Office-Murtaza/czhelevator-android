@@ -83,6 +83,7 @@ public class CameraViewActivit extends AppCompatActivity {
                 });
             }
         });
+
         getPermissions();
     }
 

@@ -10,8 +10,12 @@ import android.widget.ImageView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.R;
+import com.gerry.scaledelete.DeletedImageScanDialog;
+import com.gerry.scaledelete.ScanleImageUrl;
+import com.kingyon.elevator.entities.ImageScan;
 import com.leo.afbaselibrary.utils.GlideUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,16 +27,19 @@ import java.util.List;
 public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapter.ViewHolder> {
     Context context;
     List<Object> list;
+    List<ScanleImageUrl> urls = new ArrayList<>();
     public ContentImageAdapter(Context context,List<Object> list){
         this.context = context;
         this.list = list;
+        for (Object obj : list) {
+            urls.add(new ImageScan(obj.toString()));
+        }
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_content_image,parent,false);
-
         return new ContentImageAdapter.ViewHolder(view);
     }
 
@@ -40,6 +47,13 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LogUtils.e(list.get(position));
         GlideUtils.loadImage(context, String.valueOf(list.get(position)),holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeletedImageScanDialog dialog = new DeletedImageScanDialog(context, urls, position, null);
+                dialog.show(position, false, false);
+            }
+        });
     }
 
     @Override

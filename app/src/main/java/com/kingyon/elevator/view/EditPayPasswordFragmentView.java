@@ -13,7 +13,7 @@ public interface EditPayPasswordFragmentView extends BaseView {
 
     void showCountDownTime(int downtime);
 
-    void payPasswordEditSuccess();
+    void payPasswordEditSuccess(boolean isSuccess);
 
 
     void  clearAllInputPwd();

@@ -788,6 +788,10 @@ public static String incomeType(String  source){
                 case Constants.WithdrawType.WX:
                     result = "微信";
                     break;
+                case Constants.WithdrawType.WCHAT:
+                    result = "微信";
+
+                    break;
                 default:
                     result = "";
                     break;

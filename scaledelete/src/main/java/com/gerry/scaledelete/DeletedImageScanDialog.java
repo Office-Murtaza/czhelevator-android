@@ -57,6 +57,7 @@ public class DeletedImageScanDialog extends Dialog implements ViewPager.OnPageCh
     protected LinearLayout head;
     protected ImageView back;
     protected ImageView deleted;
+    protected ImageView img_clear;
     protected TextView indicator;
     protected TouchImageAdapter mAdaptar;
     protected ExtendedViewPager mViewPager;
@@ -148,14 +149,6 @@ public class DeletedImageScanDialog extends Dialog implements ViewPager.OnPageCh
 
     public void showOne() {
         show(0, false, false);
-//        if (mViewPager != null) {
-//            mViewPager.setCurrentItem(0, false);
-//        }
-//        this.deletedable = false;
-//        if (!isShowing()) {
-//            show();
-//            getWindow().setWindowAnimations(R.style.BL_PopupAnimation);
-//        }
         if (llindicator != null) {
             llindicator.setVisibility(View.GONE);
         }
@@ -197,9 +190,16 @@ public class DeletedImageScanDialog extends Dialog implements ViewPager.OnPageCh
         head = findViewById(R.id.head);
         root = findViewById(R.id.root);
         back = (ImageView) findViewById(R.id.img_back);
+        img_clear = (ImageView) findViewById(R.id.img_clear);
         deleted = (ImageView) findViewById(R.id.img_delete);
         indicator = (TextView) findViewById(R.id.tv_indicator);
         back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeletedImageScanDialog.this.dismiss();
+            }
+        });
+        img_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DeletedImageScanDialog.this.dismiss();
@@ -215,6 +215,7 @@ public class DeletedImageScanDialog extends Dialog implements ViewPager.OnPageCh
         });
         deleted.setVisibility(deletedable ? View.VISIBLE : View.GONE);
         head.setVisibility(showTitle ? View.VISIBLE : View.GONE);
+        img_clear.setVisibility(showTitle ? View.GONE : View.VISIBLE);
         llindicator.setVisibility(showTitle ? View.GONE : View.VISIBLE);
         mViewPager = (ExtendedViewPager) findViewById(R.id.evp_containar);
         mAdaptar = new TouchImageAdapter(scanImageUrls, this, getContext(), showTitle);
@@ -328,6 +329,7 @@ public class DeletedImageScanDialog extends Dialog implements ViewPager.OnPageCh
             final SubsamplingScaleImageView imageView = new SubsamplingScaleImageView(mContext);
             imageView.setQuickScaleEnabled(true);
             imageView.setBackgroundColor(Color.BLACK);
+
             container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             //手势回调
             final GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {

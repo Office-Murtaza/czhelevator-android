@@ -226,14 +226,21 @@ public class ArticleReleaseActivity extends BaseActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                tvNumber.setText(s.length()+"/30");
+                if ((s.toString().length()==1?s.toString():"").equals(" ")){
+                    showToast("标题开头不能为空格");
+                    editTitle.setText("");
+                }else {
+                    tvNumber.setText(s.length() + "/30");
+                }
             }
         });
+        richEditor.setFadingEdgeLength(500);
 
         richEditor.setOnTextChangeListener(new RichEditorNew.OnTextChangeNewListener() {
             @Override
             public void onTextChange(String text) {
-                tvNumber1.setText(text.length()+"/500");
+
+                tvNumber1.setText(text.length()+"");
             }
         });
     }

@@ -15,7 +15,7 @@ public class GoPlaceAnOrderEntity {
     private Long startTime;
     private Long endTime;
     private String planType;
-    private int totalDayCount = 0;
+    private Long totalDayCount = 0L;
 
     public GoPlaceAnOrderEntity(ArrayList<CellItemEntity> cellItemEntityArrayList, Long startTime, Long endTime, String planType) {
         this.cellItemEntityArrayList = cellItemEntityArrayList;
@@ -56,11 +56,11 @@ public class GoPlaceAnOrderEntity {
         this.planType = planType;
     }
 
-    public int getTotalDayCount() {
+    public Long getTotalDayCount() {
         return totalDayCount;
     }
 
-    public void setTotalDayCount(int totalDayCount) {
+    public void setTotalDayCount(Long totalDayCount) {
         this.totalDayCount = totalDayCount;
     }
 }

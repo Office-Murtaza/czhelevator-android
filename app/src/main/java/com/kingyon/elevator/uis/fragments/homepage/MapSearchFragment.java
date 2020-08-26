@@ -654,6 +654,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 break;
             case R.id.img_current:
                 isPositioning = true;
+                aMap.clear();
                 initMake();
                 if (circle!=null){
                     circle.remove();

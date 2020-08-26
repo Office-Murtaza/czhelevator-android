@@ -97,7 +97,6 @@ public class WithdrawalWayActivity extends BaseActivity {
                 /*添加账户*/
                 AppAccountDialog appAccountDialog = new AppAccountDialog(this, entity);
                 appAccountDialog.show();
-
                 break;
 
         }

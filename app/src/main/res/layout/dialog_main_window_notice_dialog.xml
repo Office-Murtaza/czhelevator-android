@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cra"
         android:layout_width="300dp"
         android:layout_height="400dp"
+        android:layout_gravity="center"
         app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
@@ -23,11 +26,13 @@
 
 
     <ImageView
-        android:id="@+id/close_dialog"
-        android:layout_marginTop="16dp"
+        android:id="@+id/close_dialog1"
         android:layout_gravity="center_horizontal"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_120"
+        android:padding="@dimen/dp_45"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/cra"
         android:src="@mipmap/closedialog" />
 
 

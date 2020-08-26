@@ -1098,12 +1098,14 @@ public interface NetApi {
 //    Observable<String> cooperationApply(@Field("partnerName") String partnerName, @Field("phone") String phone, @Field("city") String city);
     Observable<String> cooperationApply(@Field("cityCode") String city);
 
+    /*2.0申请提现*/
     @POST("partner/withdraw")
     @FormUrlEncoded
     Observable<String> partnerWithdraw(@Field("amount") double amount, @Field("withDrawWay") String withDrawWay
             , @Field("aliAcount") String aliAcount, @Field("wChatAcount") String wChatAcount, @Field("bankName") String bankName
             , @Field("cardNo") String cardNo, @Field("cardholder") String cardholder);
 
+    /*2.0提现列表*/
     @POST("partner/withdrawList")
     @FormUrlEncoded
     Observable<WithdrawEntily<WithdrawEntily.PageContentBean<WithdrawItemEntity>> > partnerWithdrawList(@Field("page") int page);

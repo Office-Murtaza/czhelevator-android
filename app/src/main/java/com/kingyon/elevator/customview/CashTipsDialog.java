@@ -23,52 +23,13 @@ import butterknife.OnClick;
  */
 public class CashTipsDialog extends Dialog {
 
-    private OnItemClick onItemClick;
-    private String content;
-    @BindView(R.id.tv_tips_content)
-    TextView tv_tips_content;
-    @BindView(R.id.tv_go_cat_content)
-    TextView tv_go_cat_content;
 
-    private Boolean isLink=false;
 
     public CashTipsDialog(Context context,String content,boolean isLink, OnItemClick onItemClick) {
         super(context, R.style.MyDialog);
-        this.onItemClick = onItemClick;
-        this.content=content;
-        this.isLink=isLink;
+
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_cash_tips_layout);
-        ButterKnife.bind(this);
-        if (content.isEmpty()) {
-            content="";
-        }
-        tv_tips_content.setText(content);
-        if (!isLink) {
-            tv_go_cat_content.setText("确定");
-        }
-    }
 
-
-    @OnClick({R.id.tv_go_cat_content})
-    public void OnClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_go_cat_content:
-                onItemClick.onItemClick(0);
-                DialogUtils.getInstance().hideCashTipsDialog();
-                break;
-        }
-    }
-
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-        
-    }
 }

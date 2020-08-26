@@ -54,7 +54,7 @@ public class ImageDialog extends Dialog {
         imageView.setImage(ImageSource.uri(fileName), new ImageViewState(ScreenUtil.getScreenWidth(getContext()) / (float) width, new PointF(0, 0), 0));
     }
 
-    @OnClick(R.id.imageView)
+    @OnClick(R.id.img_clear)
     public void onViewClicked() {
         dismiss();
     }

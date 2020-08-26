@@ -171,7 +171,7 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
                     public void onNext(String content) {
                         getView().hideProgressDailog();
                         getView().showShortToast("支付密码修改成功");
-                        getView().payPasswordEditSuccess();
+                        getView().payPasswordEditSuccess(true);
 //                        if (isViewAttached()) {
 //                            if (content.equals("成功")) {
 //
@@ -195,6 +195,7 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
                         if (isViewAttached()) {
                             getView().showShortToast(ex.getDisplayMessage());
                             getView().hideProgressDailog();
+                            getView().payPasswordEditSuccess(false);
                         }
                     }
 
@@ -202,7 +203,7 @@ public class EditPayPasswordFragmentPresenter extends BasePresenter<EditPayPassw
                     public void onNext(String content) {
                         getView().hideProgressDailog();
                         getView().showShortToast("支付密码修改成功");
-                        getView().payPasswordEditSuccess();
+                        getView().payPasswordEditSuccess(true);
 //                        if (isViewAttached()) {
 //                            if (content.equals("成功")) {
 //

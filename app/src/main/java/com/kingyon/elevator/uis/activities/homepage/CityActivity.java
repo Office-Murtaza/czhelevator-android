@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.kingyon.elevator.R;
@@ -129,6 +130,7 @@ public class CityActivity extends BaseStateRefreshingActivity implements BaseAda
                         Logger.e(ex.getDisplayMessage());
                     }
                 });
+        EditTextUtils.setEditTextInhibitInputSpace(etSearch);
     }
 
     private List<? extends AMapCityEntity> getSearchResult(String search) {

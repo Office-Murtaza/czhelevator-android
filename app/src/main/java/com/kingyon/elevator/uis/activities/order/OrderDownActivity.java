@@ -15,10 +15,12 @@ import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
 import com.kingyon.elevator.uis.adapters.BaseAdapterWithHF;
 import com.kingyon.elevator.uis.adapters.adapterone.DownReasonsAdapter;
+import com.kingyon.elevator.uis.dialogs.OfflineDialog;
 import com.kingyon.elevator.uis.widgets.FullyGridLayoutManager;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.DealScrollRecyclerView;
 import com.kingyon.elevator.utils.GridSpacingItemDecoration;
+import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.nets.exceptions.ResultException;
 import com.leo.afbaselibrary.uis.activities.BaseStateLoadingActivity;
@@ -126,29 +128,38 @@ public class OrderDownActivity extends BaseStateLoadingActivity {
             showToast("请选择一个原因");
             return;
         }
-        showProgressDialog(getString(R.string.wait),true);
-        tvEnsure.setEnabled(false);
-        NetService.getInstance().downAd(orderId, reason.getObjectId(), etRemark.getText().toString())
-                .compose(this.<String>bindLifeCycle())
-                .subscribe(new CustomApiCallback<String>() {
-                    @Override
-                    protected void onResultError(ApiException ex) {
-                        showToast(ex.getDisplayMessage());
-                        tvEnsure.setEnabled(true);
-                        hideProgress();
+        OfflineDialog dialog = new OfflineDialog(this);
+        dialog.onSuccessful(new IsSuccess() {
+            @Override
+            public void isSuccess(boolean success) {
+                if (success){
+                    showProgressDialog(getString(R.string.wait),false);
+                    tvEnsure.setEnabled(false);
+                    NetService.getInstance().downAd(orderId, reason.getObjectId(), etRemark.getText().toString())
+                            .compose(OrderDownActivity.this.<String>bindLifeCycle())
+                            .subscribe(new CustomApiCallback<String>() {
+                                @Override
+                                protected void onResultError(ApiException ex) {
+                                    showToast(ex.getDisplayMessage());
+                                    tvEnsure.setEnabled(true);
+                                    hideProgress();
+                                }
+                                @Override
+                                public void onNext(String s) {
+                                    showToast("申请下播成功");
+                                    tvEnsure.setEnabled(true);
+                                    hideProgress();
+                                    Intent intent = new Intent();
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                }
+                            });
                     }
-
-                    @Override
-                    public void onNext(String s) {
-                        showToast("申请下播成功");
-                        tvEnsure.setEnabled(true);
-                        hideProgress();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                });
+                }
+            });
+        dialog.show();
     }
+
 
     private NormalElemEntity getChoosedReason() {
         NormalElemEntity result = null;

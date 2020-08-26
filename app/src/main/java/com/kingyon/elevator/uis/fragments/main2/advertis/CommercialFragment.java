@@ -49,7 +49,7 @@ public class CommercialFragment extends BaseFragment {
         switch (type){
             case "1":
                 /*商业广告*/
-                tvContent.setText("广告时长30秒，以轮流播放的方式投放，经济实惠。");
+                tvContent.setText("广告时长15秒，以轮流播放的方式投放，经济实惠。");
                 tvContent1.setText("推荐投放尺寸——7（宽）: 11（高）\n视频大小≤15M，支持MP4格式\n图片大小≤5M，支持png、jpg格式");
                 imgImage.setImageResource(R.mipmap.im_style_business_l);
                 break;

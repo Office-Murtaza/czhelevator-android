@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
@@ -280,6 +281,7 @@ public class TopicSelectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        EditTextUtils.setEditTextInhibitInputSpace(editSearch);
     }
 
     @OnClick({R.id.tv_bake, R.id.rl_error})

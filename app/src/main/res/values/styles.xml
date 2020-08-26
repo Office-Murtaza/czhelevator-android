@@ -9,7 +9,7 @@
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="NoTitle_FullScreen" parent="AppTheme">

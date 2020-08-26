@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.entities.AttenionUserEntiy;
 import com.kingyon.elevator.entities.entities.ConentEntity;
@@ -53,7 +54,7 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
     TextView tvBake;
     public static final String RESULT_USER = "RESULT_USER";
     String extend;
-    String keyWords;
+    String keyWords = "";
     @Override
     public int getContentViewId() {
         return R.layout.activity_search_attention_user;
@@ -122,6 +123,7 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        EditTextUtils.setEditTextInhibitInputSpace(editSearch);
     }
 
     @OnClick({R.id.tv_bake})
@@ -153,7 +155,11 @@ public class UserSelectionActiivty extends BaseStateRefreshingLoadingActivity<At
     @Override
     protected void loadData(int page) {
         LogUtils.e(page);
-        httpData(page,ATTENTION,extend);
+        if (keyWords.length()>0){
+            httpDataAll(page, keyWords);
+        }else {
+            httpData(page, ATTENTION, extend);
+        }
     }
 
     private void httpData(int page,String handlerType,String extend) {

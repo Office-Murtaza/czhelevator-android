@@ -21,7 +21,7 @@
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_tx"
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
@@ -247,14 +247,14 @@
             ></ImageView>
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_topimg"
             android:layout_width="@dimen/dp20"
             android:layout_height="@dimen/dp20"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dp10"
             android:src="@mipmap/ic_launcher"
-            ></ImageView>
+            ></de.hdodenhof.circleimageview.CircleImageView>
 
 
         <TextView

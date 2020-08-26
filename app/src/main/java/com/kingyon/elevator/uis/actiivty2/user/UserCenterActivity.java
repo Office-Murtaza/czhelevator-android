@@ -200,6 +200,9 @@ public class UserCenterActivity extends BaseActivity {
                     @Override
                     protected void onResultError(ApiException ex) {
                         hideProgress();
+                        if (ex.getCode() == 100200) {
+                            ActivityUtils.setLoginActivity();
+                        }
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         appBar.setVisibility(View.GONE);
                     }
@@ -271,10 +274,7 @@ public class UserCenterActivity extends BaseActivity {
                             }
 
                         } else if (ex.getCode() == 100200) {
-                            rvAttentionList.setVisibility(View.GONE);
-                            rlError.setVisibility(View.GONE);
-                            rlNull.setVisibility(View.GONE);
-                            rlNotlogin.setVisibility(View.VISIBLE);
+                           ActivityUtils.setLoginActivity();
                         } else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);

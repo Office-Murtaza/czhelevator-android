@@ -21,6 +21,7 @@ import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.CommonUtil;
 import com.kingyon.elevator.utils.FormatUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
@@ -82,6 +83,7 @@ public class PasswordSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+
     }
 
     @OnClick({R.id.img_top_back, R.id.img_password, R.id.img_sweep, R.id.tv_login_next})
@@ -140,6 +142,7 @@ public class PasswordSettingActivity extends BaseActivity {
                     LogUtils.e(deviceStr,deviceNo);
                     if (!TextUtils.isEmpty(deviceStr)) {
                         edRecommendedCode.setText(deviceStr);
+                        showToast("获取推荐码成功");
                     } else {
                         showToast("没有获取到推荐码");
                     }

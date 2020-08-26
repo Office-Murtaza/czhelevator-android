@@ -8,7 +8,7 @@
     android:background="@color/white"
     >
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_photo"
         android:layout_width="@dimen/dp30"
         android:layout_height="@dimen/dp30"

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.gerry.scaledelete.DeletedImageScanDialog;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
@@ -151,6 +152,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
         ButterKnife.bind(this);
+        EditTextUtils.setEditTextInhibitInputSpace(et_input_ad_name);
         setStateLayout();
         initInstructions();
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -818,13 +820,15 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             if (resultPrice > 0) {
                 tv_discount_money.setText("已优惠" + couponsSum + "元");
 //                tv_order_money.setText("¥" + resultPrice + "元");
-                tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
+//                tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
+                LogUtils.e(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
                 realPayPrice = resultPrice;
                 couponsAllPrice = zheKouPrice + couponsPrice;
             } else {
-                tv_discount_money.setText("已优惠" + totalPrice + "元");
+//                tv_discount_money.setText("已优惠" + totalPrice + "元");
 //                tv_order_money.setText("¥ 0.0元");
                 tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, "0.0")));
+                LogUtils.e("----------------");
                 realPayPrice = 0;
                 couponsAllPrice = zheKouPrice + couponsPrice;
             }
@@ -836,6 +840,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             tv_discount_money.setText("已优惠" + couponsSum + "元");
 //            tv_order_money.setText("¥" + resultPrice + "元");
             tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
+            LogUtils.e(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
             if (autoCalculationDiscountEntity.getCons() != null && autoCalculationDiscountEntity.getCons().size() > 0) {
 //            if (autoCalculationDiscountEntity.getCons().size() > 0) {
                 autoCalculationDiscountEntity.setHasMore(true);

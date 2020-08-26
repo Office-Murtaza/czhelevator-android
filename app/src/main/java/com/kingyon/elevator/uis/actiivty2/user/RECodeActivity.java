@@ -66,7 +66,7 @@ public class RECodeActivity extends BaseActivity {
                     public void onNext(UserEntity userEntity) {
                         hideProgress();
                         GlideUtils.loadCircleImage(RECodeActivity.this,userEntity.getAvatar(),imgPhoto);
-                        tvId.setText("("+userEntity.getObjctId()+")");
+                        tvId.setText("ID:"+userEntity.getObjctId());
                         tvName.setText(userEntity.getNikeName());
                         imgReCode.setImageBitmap(ZXingUtils.createQRImage(userEntity.getObjctId(),320,320));
                     }

@@ -232,6 +232,7 @@
                 android:layout_width="24dp"
                 android:layout_height="22dp"
                 android:layout_marginRight="@dimen/dp30"
+                android:visibility="gone"
                 android:src="@mipmap/btn_comments_expression" />
 
 

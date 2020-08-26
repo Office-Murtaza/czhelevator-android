@@ -7,15 +7,9 @@
 
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
 
-        <com.kingyon.elevator.uis.widgets.AdScreenProportionFrame
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center">
+
+
 
             <LinearLayout
                 android:id="@+id/ll_incise"
@@ -26,8 +20,8 @@
                 <FrameLayout
                     android:id="@+id/fl_video"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                   >
 
                     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
                         android:id="@+id/video_view"
@@ -41,12 +35,9 @@
                 <ImageView
                     android:id="@+id/img_image"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
             </LinearLayout>
-        </com.kingyon.elevator.uis.widgets.AdScreenProportionFrame>
-    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/rl_top"

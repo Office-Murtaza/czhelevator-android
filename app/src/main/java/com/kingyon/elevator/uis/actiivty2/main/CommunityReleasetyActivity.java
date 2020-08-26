@@ -158,15 +158,20 @@ public class CommunityReleasetyActivity extends BaseActivity implements ChooseAd
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count == 1 && !TextUtils.isEmpty(s)) {
-                    char mentionChar = s.toString().charAt(start);
-                    int selectionStart = editContent.getSelectionStart();
-                    if (mentionChar == '@') {
-                        startActivityForResult(UserSelectionActiivty.getIntent(CommunityReleasetyActivity.this), REQUEST_USER_APPEND);
-                        editContent.getText().delete(selectionStart - 1, selectionStart);
-                    } else if (mentionChar == '#') {
-                        startActivityForResult(TopicSelectionActivity.getIntent(CommunityReleasetyActivity.this), REQUEST_TAG_APPEND);
-                        editContent.getText().delete(selectionStart - 1, selectionStart);
+                if ((s.toString().length()==1?s.toString():"").equals(" ")){
+                    showToast("标题开头不能为空格");
+                    editContent.setText("");
+                }else {
+                    if (count == 1 && !TextUtils.isEmpty(s)) {
+                        char mentionChar = s.toString().charAt(start);
+                        int selectionStart = editContent.getSelectionStart();
+                        if (mentionChar == '@') {
+                            startActivityForResult(UserSelectionActiivty.getIntent(CommunityReleasetyActivity.this), REQUEST_USER_APPEND);
+                            editContent.getText().delete(selectionStart - 1, selectionStart);
+                        } else if (mentionChar == '#') {
+                            startActivityForResult(TopicSelectionActivity.getIntent(CommunityReleasetyActivity.this), REQUEST_TAG_APPEND);
+                            editContent.getText().delete(selectionStart - 1, selectionStart);
+                        }
                     }
                 }
             }

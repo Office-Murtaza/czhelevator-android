@@ -132,6 +132,7 @@ public class PlanNewFragment extends BaseTabFragment<TabPagerEntity> {
         orderComeEntiys = getIntent().getStringExtra("orderComeEntiys");
         thoroew = getIntent().getStringExtra("thoroew");
         selectedIndex = 0;
+        LogUtils.e(type,"111111111111111111");
         updateMode();
         initDateView();
         ConentUtils.httpData(Constants.AgreementType.PLAN_PROMPT.getValue(), new SrcSuccess() {

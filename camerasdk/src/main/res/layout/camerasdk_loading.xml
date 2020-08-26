@@ -4,7 +4,8 @@
       android:layout_width="match_parent" 
       android:layout_height="match_parent"
       android:background="#90000000"
-      android:visibility="gone">
+      android:visibility="gone"
+      >
       
  	<RelativeLayout
        android:layout_width="wrap_content"
@@ -21,7 +22,9 @@
            android:id="@android:id/progress"
            style="?android:attr/progressBarStyle"
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
+           android:layout_height="wrap_content"
+           android:indeterminateTint="#e1e1e1"
+           />
 
        <TextView
            android:id="@android:id/message"
@@ -31,7 +34,7 @@
            android:layout_marginLeft="10dip"
            android:layout_toRightOf="@android:id/progress"
            android:text="@string/camerasdk_images_building"
-           android:textColor="@android:color/white"
+           android:textColor="@android:color/black"
            android:textSize="18sp" />
    </RelativeLayout>
    

@@ -26,9 +26,9 @@ public class HousingAdPriceAdapter extends BaseAdapter {
     Context context;
     private MediaDirectory myAdMediaDirectory;
     private String planType;
-    private int totalCount;
+    private Long totalCount;
 
-    public HousingAdPriceAdapter(Context context, int totalCount, String planType, List<CellItemEntity> cellItemEntityList) {
+    public HousingAdPriceAdapter(Context context, Long totalCount, String planType, List<CellItemEntity> cellItemEntityList) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.cellItemEntityList = cellItemEntityList;

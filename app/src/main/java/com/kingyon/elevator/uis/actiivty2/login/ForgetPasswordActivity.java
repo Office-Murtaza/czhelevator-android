@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import butterknife.BindView;
@@ -96,6 +97,8 @@ public class ForgetPasswordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        TokenUtils.setEditTextInhibitInputSpace(etPhone);
+        TokenUtils.setEditTextInhibitInputSpeChat(etPhone,11);
     }
 
     @OnClick({R.id.img_top_back, R.id.tv_code_dao, R.id.img_remove, R.id.tv_get_code, R.id.tv_login_next,R.id.img_password})

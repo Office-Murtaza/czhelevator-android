@@ -63,7 +63,7 @@
                         android:textColor="#333333"
                         android:textColorHint="#ABABAB"
                         android:gravity="top"
-                        android:maxLength="10"
+                        android:maxLength="50"
                         android:enabled="true"
                         android:textSize="@dimen/txt_normal_content"
                         android:textStyle="bold" />

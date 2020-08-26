@@ -179,6 +179,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
             type = getArguments().getString(CommonUtil.KEY_VALUE_2);
             orderComeEntiys = getArguments().getString(CommonUtil.KEY_VALUE_3);
             thoroew = getArguments().getString(CommonUtil.KEY_VALUE_4);
+            LogUtils.e(type,"ttttttttttttttttttt");
         }
 
         if (planType.equals(Constants.PLAN_TYPE.BUSINESS)) {
@@ -209,8 +210,6 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
 
     private void httpOrderAgain(List<CellItemEntity> cellItemEntities) {
         if (type.equals("order")){
-            if (type.equals("order")) {
-//                LogUtils.e(orderComeEntiys,item,mItems);
                 Type listType = new TypeToken<ArrayList<OrderComeEntiy>>() {}.getType();
                 ArrayList<OrderComeEntiy> accsList = new Gson().fromJson(orderComeEntiys, listType);
                 StringBuffer sb = new StringBuffer();
@@ -245,37 +244,6 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                 LogUtils.e(sb.toString());
                 mAdapter.notifyDataSetChanged();
                 updatePriceUI();
-            }
-
-//            NetService.getInstance().orderAgain(  AdUtils.orderSn)
-//                    .compose(this.bindLifeCycle())
-//                    .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
-//                        @Override
-//                        protected void onResultError(ApiException ex) {
-//                            LogUtils.e(ex.getDisplayMessage(),ex.getCode());
-//                        }
-//                        @Override
-//                        public void onNext(List<OrderComeEntiy> orderComeEntiys) {
-//                            LogUtils.e(orderComeEntiys.toString());
-//                            for (int i=0;i<orderComeEntiys.size();i++){
-//                                for (Object obj : mItems) {
-//                                    if (obj instanceof CellItemEntity) {
-//                                        CellItemEntity item1 = (CellItemEntity) obj;
-//                                        ArrayList<PointItemEntity> allPoints = item.getAllPoints();
-//                                        ArrayList<PointItemEntity> points = item.getPoints();
-//                                        if (item1.getObjctId()==orderComeEntiys.get(i).housingInfoId){
-//                                            item1.setAllPoints(allPoints);
-//                                            item1.setPoints(points);
-//                                            item1.setChoosed(true);
-//                                            item1.setChoosedScreenNum(orderComeEntiys.get(i).facilityIds.size());
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            mAdapter.notifyDataSetChanged();
-//                            updatePriceUI();
-//                        }
-//                    });
         }else {
             cellItemEntities.get(0).setChoosedScreenNum(1);
         }
@@ -348,7 +316,9 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
                                     item.setPlanTypeCache(planType);
                                     //改为默认只选择一台设备
 //                                    item.setChoosedScreenNum(item.getTargetScreenNum());
+                                    LogUtils.e(type,"11111111111111");
                                     httpOrderAgain(cellItemEntities);
+
 
                                 }
                                 mItems.addAll(cellItemEntities);
@@ -657,7 +627,7 @@ public class PlanListFragment extends BaseStateRefreshLoadingFragment<Object> im
         }
         LogUtils.e(planType);
         RuntimeUtils.goPlaceAnOrderEntity = new GoPlaceAnOrderEntity(orderCells, startTime, endTime, planType);
-        RuntimeUtils.goPlaceAnOrderEntity.setTotalDayCount(FormatUtils.getInstance().getTimeDays(startTime, endTime));
+        RuntimeUtils.goPlaceAnOrderEntity.setTotalDayCount((long) FormatUtils.getInstance().getTimeDays(startTime, endTime));
         if (isCertification()){
             DialogUtils.shwoCertificationDialog(getActivity());
         }else {

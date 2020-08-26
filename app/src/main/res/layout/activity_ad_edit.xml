@@ -184,7 +184,7 @@
                 android:id="@+id/tv_text_updata"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上传视频"
+                android:text="上传内容"
                 android:textColor="#fffd6509"
                 android:visibility="gone"
                 android:layout_below="@+id/img_updata"

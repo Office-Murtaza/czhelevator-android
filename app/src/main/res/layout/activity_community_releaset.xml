@@ -28,7 +28,7 @@
                         <com.bobomee.android.mentions.edit.MentionEditText
                             android:id="@+id/edit_content"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp"
+                            android:layout_height="200dp"
                             android:background="#ffffff"
                             android:focusableInTouchMode="true"
                             android:gravity="top"
@@ -114,7 +114,9 @@
             android:layout_width="24dp"
             android:layout_height="22dp"
             android:layout_marginRight="@dimen/dp30"
-            android:src="@mipmap/btn_comments_expression" />
+            android:src="@mipmap/btn_comments_expression"
+            android:visibility="gone"
+            />
 
 
         <ImageView

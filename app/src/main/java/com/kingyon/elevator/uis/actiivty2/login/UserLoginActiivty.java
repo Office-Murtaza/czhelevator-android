@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
@@ -75,6 +76,7 @@ public class UserLoginActiivty extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ButterKnife.bind(this);
         OrdinaryActivity.userLoginActiivty = this;
+        TokenUtils.setEditTextInhibitInputSpeChat(edPhon,11);
     }
 
     @OnClick({R.id.img_top_back, R.id.tv_login_next, R.id.tv_porgot_password, R.id.tv_code, R.id.img_password})
@@ -85,8 +87,14 @@ public class UserLoginActiivty extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_login_next:
-                httpUserLogin(edPhon.getText().toString(),
-                        edPassword.getText().toString());
+                if (edPhon.getText().toString().isEmpty()){
+                    showToast("请输入手机号");
+                }else if (edPassword.getText().toString().isEmpty()){
+                    showToast("请输入密码");
+                }else {
+                    httpUserLogin(edPhon.getText().toString(),
+                            edPassword.getText().toString());
+                }
 
                 break;
             case R.id.tv_porgot_password:

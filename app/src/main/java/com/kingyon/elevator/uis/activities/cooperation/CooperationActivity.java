@@ -72,6 +72,8 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
                         if (ex.getCode()==-102){
                             loadingComplete(STATE_CONTENT);
                             showFragment(false, null, null);
+                        }else if (ex.getCode()==1002){
+                            LogUtils.e("");
                         }else {
                             showToast(ex.getDisplayMessage());
                             finish();
@@ -171,7 +173,6 @@ public class CooperationActivity extends BaseStateRefreshingActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        DialogUtils.getInstance().hideCashTipsDialog();
     }
 
     @Override

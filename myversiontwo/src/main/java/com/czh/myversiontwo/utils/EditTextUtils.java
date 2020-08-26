@@ -34,8 +34,7 @@ public class EditTextUtils {
      * 禁止EditText输入特殊字符
      * @param editText
      */
-    public static void setEditTextInhibitInputSpeChat(EditText editText){
-
+    public static void setEditTextInhibitInputSpeChat(EditText editText,int num){
         InputFilter filter=new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -43,10 +42,11 @@ public class EditTextUtils {
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
                 if(matcher.find())return "";
+                if(source.equals(" "))return "";
                 else return null;
             }
         };
-        editText.setFilters(new InputFilter[]{filter});
+        editText.setFilters(new InputFilter[]{filter,new InputFilter.LengthFilter(num)});
     }
 
 }

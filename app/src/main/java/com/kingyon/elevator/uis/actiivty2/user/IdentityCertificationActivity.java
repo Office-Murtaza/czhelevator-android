@@ -106,7 +106,7 @@ public class IdentityCertificationActivity extends BaseActivity {
             ToastUtils.showToast(this,"请上传手持身份照",1000);
         }else {
             tvRz.setClickable(false);
-            showProgressDialog(getString(R.string.wait),true);
+            showProgressDialog(getString(R.string.wait),false);
             NetService.getInstance().setIdentyAuth(etName.getText().toString(),etNumber.getText().toString(),idCardPic,"CUSTOMER")
                     .compose(this.bindLifeCycle())
                     .subscribe(new CustomApiCallback<CertifiCationEntiy>() {
@@ -146,7 +146,7 @@ public class IdentityCertificationActivity extends BaseActivity {
                                 hideProgress();
                                 if (images != null && images.size() > 0) {
                                     idCardPic = images.get(0);
-                                    GlideUtils.loadImage(IdentityCertificationActivity.this,idCardPic,imgIdcard);
+                                    GlideUtils.loadRoundCornersImage(IdentityCertificationActivity.this,idCardPic,imgIdcard,20);
                                 } else {
                                     hideProgress();
                                     showToast("上传失败");

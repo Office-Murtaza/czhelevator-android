@@ -54,20 +54,7 @@ public class SharedUtils {
                         public void setOncilk(String type) {
                             if (isToken(context)) {
                                 if (type.equals("THOROEW")) {
-
-                                    fileDown(context, shareUrl, "adrhorew.mp4", new IsSrcSuccess() {
-                                        @Override
-                                        public void onSuccess(String outpath) {
-                                            if (!outpath.isEmpty()){
-                                                LogUtils.e(outpath);
-                                                Intent intent = new Intent(context,PlanNewFragment.class);
-                                                Bundle bundle1 = new Bundle();
-                                                bundle1.putString("type", "thoroew");
-                                                bundle1.putString("thoroew", outpath);
-                                                context.startActivity(intent, bundle1);
-                                            }
-                                        }
-                                    });
+                                    fileDown((BaseActivity) context, shareUrl, "adrhorew.mp4");
                                 }
                             }else {
                                 ActivityUtils.setLoginActivity();
@@ -84,15 +71,20 @@ public class SharedUtils {
 
 
 
-    public static  void fileDown(Context baseActivity, String urlVideo, String name, IsSrcSuccess isSrcSuccess) {
-
+    public static  void fileDown(BaseActivity baseActivity, String urlVideo, String name) {
+        baseActivity.showProgressDialog(getString(R.string.wait),false);
         DownloadManager.download(urlVideo, baseActivity.getExternalCacheDir() + File.separator + "/PDD/",
                 name, new DownloadManager.OnDownloadListener() {
                     @Override
                     public void onSuccess(File file) {
-
+                        baseActivity.hideProgress();
                         LogUtils.e(file.toString(),file);
-                        isSrcSuccess.onSuccess(file.toString());
+
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("type", "thoroew");
+                        bundle1.putString("thoroew", file.toString());
+                        baseActivity.startActivity(PlanNewFragment.class, bundle1);
+
                     }
                     @Override
                     public void onProgress(int progress) {
@@ -101,6 +93,8 @@ public class SharedUtils {
 
                     @Override
                     public void onFail() {
+                        baseActivity.hideProgress();
+                        baseActivity.showToast("添加视频，请稍后重试");
                         LogUtils.e("onFail");
                     }
                 });

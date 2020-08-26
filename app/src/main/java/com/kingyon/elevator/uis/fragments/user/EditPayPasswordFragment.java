@@ -132,10 +132,11 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
             });
             if (isRememberPwd) {
                 input_pwd_tips.setText(getString(R.string.input_old_pwd));
+                tvWjmi.setVisibility(View.VISIBLE);
             } else {
                 input_pwd_tips.setText(getString(R.string.input_pwd));
                 verCode = RuntimeUtils.payVerCode;
-
+                tvWjmi.setVisibility(View.GONE);
             }
             pay_password_input_view.postDelayed(() -> KeyBoardUtils.openKeybord(pay_password_input_view.getEt_input_password(), getActivity()), 150);
         } else {
@@ -169,9 +170,14 @@ public class EditPayPasswordFragment extends MvpBaseFragment<EditPayPasswordFrag
     }
 
     @Override
-    public void payPasswordEditSuccess() {
-        EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ClosePayPwdVerCodeSence, null));
-        getActivity().finish();
+    public void payPasswordEditSuccess(boolean isSuccess) {
+        if (isSuccess) {
+            EventBus.getDefault().post(new EventBusObjectEntity(EventBusConstants.ClosePayPwdVerCodeSence, null));
+            getActivity().finish();
+        }else {
+            MyActivityUtils.goFragmentContainerActivity(getContext(), FragmentConstants.CheckPayVerCodeFragment);
+            getActivity().finish();
+        }
     }
 
     @Override

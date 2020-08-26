@@ -136,6 +136,8 @@ public class VoideDetailsActivity extends BaseActivity {
     View ll_voide_top;
     @BindView(R.id.stateLayout)
     StateLayout stateLayout;
+    @BindView(R.id.img_bake1)
+    ImageView imgBake1;
     private ShareDialog shareDialog;
 
     @Override
@@ -334,7 +336,7 @@ public class VoideDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv_attention, R.id.img_jb, R.id.img_screen, R.id.tv_like_comments, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like})
+    @OnClick({R.id.tv_attention, R.id.img_jb, R.id.img_screen, R.id.tv_like_comments, R.id.input_comment_container, R.id.iv_share_news, R.id.im_collection, R.id.iv_like,R.id.img_bake1})
     public void onViewClicked(View view) {
         if (TokenUtils.isToken(this)) {
             switch (view.getId()) {
@@ -359,14 +361,20 @@ public class VoideDetailsActivity extends BaseActivity {
 //                    GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
                     if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                         //切换竖屏
+                        imgBake1.setVisibility(View.GONE);
                         VoideDetailsActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     } else {
                         //切换横屏
+                        imgBake1.setVisibility(View.VISIBLE);
                         VoideDetailsActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
 
                     break;
                 case R.id.tv_like_comments:
+                    break;
+                case R.id.img_bake1:
+                    imgBake1.setVisibility(View.GONE);
+                    VoideDetailsActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     break;
                 case R.id.input_comment_container:
 
