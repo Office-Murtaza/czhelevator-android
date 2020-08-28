@@ -138,7 +138,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_60"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     >
 
@@ -156,24 +156,21 @@
                         android:ellipsize="end"
                         />
 
-                    <TextView
-                        android:id="@+id/tv_qw"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="全文"
-                        android:textColor="#4DACEE"
-                        android:layout_gravity="bottom"
-                        android:textSize="14sp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:padding="@dimen/dp5"
-                        android:visibility="gone"
-                        android:layout_marginRight="@dimen/sp_10"
-                        android:layout_marginBottom="@dimen/dp10"
-                        ></TextView>
+
                 </RelativeLayout>
 
-
+                <TextView
+                    android:id="@+id/tv_qw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">>>查看全文"
+                    android:textColor="#4DACEE"
+                    android:layout_gravity="bottom"
+                    android:textSize="14sp"
+                    android:padding="@dimen/dp5"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/dp10"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -187,6 +184,7 @@
                         android:layout_width="24dp"
                         android:layout_height="22dp"
                         android:layout_marginRight="@dimen/dp20"
+                        android:visibility="gone"
                         android:src="@mipmap/btn_comments_expression" />
 
                     <EditText

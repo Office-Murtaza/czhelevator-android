@@ -47,10 +47,6 @@
 
     </LinearLayout>
 
-    <com.leo.afbaselibrary.widgets.StateLayout
-        android:id="@+id/stateLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
@@ -59,7 +55,6 @@
             android:layout_weight="1"
             />
 
-    </com.leo.afbaselibrary.widgets.StateLayout>
 
 
 </LinearLayout>

@@ -83,6 +83,7 @@ public class CommentDialog extends Dialog{
     private void initView() {
         rvComment = findViewById(com.kingyon.library.social.R.id.rv_comment);
         smartRefreshLayout = findViewById(com.kingyon.library.social.R.id.smart_refresh_layout);
+        listEntities.clear();
         httpComment(page,objId);
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override

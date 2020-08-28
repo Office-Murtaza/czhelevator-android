@@ -278,7 +278,7 @@ public class EfectFragment extends Fragment {
 	}
 	
 	//将所有的贴纸修改成不可编辑的模式(外框全部去掉贴)
-	private void hideStickEditMode(){
+	public static void hideStickEditMode(){
 		for (int i = 0; i < sticklist.size(); i++) {
 			sticklist.get(i).setStickEditMode(false);
 			sticklist.get(i).invalidate();

@@ -60,9 +60,9 @@ public class OrderDetailedTipsDialog extends Dialog {
         setContentView(R.layout.order_detailed_tips_dialog_layout);
         ButterKnife.bind(this);
         LogUtils.e(allPrice,zhekouPrice,couponsPrice,realMoney);
-        if (allPrice>couponsPrice) {
-            all_coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
-            coupons_money.setText("-¥" + (zhekouPrice + couponsPrice));
+        if (allPrice>couponsPrice||allPrice>zhekouPrice) {
+            all_coupons_money.setText("-¥" +(zhekouPrice>0 ? zhekouPrice:couponsPrice) );
+            coupons_money.setText("-¥" + (zhekouPrice>0 ? zhekouPrice:couponsPrice));
         }else {
             all_coupons_money.setText("-¥" + (allPrice));
             coupons_money.setText("-¥" + (allPrice));

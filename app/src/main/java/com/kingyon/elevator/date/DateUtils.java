@@ -1,5 +1,6 @@
 package com.kingyon.elevator.date;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.entities.SelectDateEntity;
 
 import java.text.ParseException;
@@ -197,5 +198,25 @@ public class DateUtils {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, 1);
         return new SelectDateEntity(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public static int seconds(String titme){
+        if (titme.isEmpty()){
+            return 0;
+        }
+
+
+        return 0;
+    }
+
+    public static int returnSeconde(String instr){
+        String[] a=instr.split("\\.");
+        String[] b=a[0].split(":");
+        LogUtils.e(b.length);
+        if (b.length==2) {
+            return Integer.valueOf(b[0]) * 60 + Integer.valueOf(b[1]);
+        }else {
+            return Integer.valueOf(b[0])*60*60 + Integer.valueOf(b[1])*60 + Integer.valueOf(b[2]);
+        }
     }
 }

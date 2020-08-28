@@ -173,7 +173,6 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             latitude1 = DataSharedPreferences.getLatLon().getLatitude();
             longitude1 = DataSharedPreferences.getLatLon().getLongitude();
         }
-
         /*地图*/
         initMap();
 
@@ -233,6 +232,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
     }
 
     private void initMake() {
+        aMap.clear();
         new Thread(new TimerTask() {
             @Override
             public void run() {
@@ -654,7 +654,6 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
                 break;
             case R.id.img_current:
                 isPositioning = true;
-                aMap.clear();
                 initMake();
                 if (circle!=null){
                     circle.remove();

@@ -50,7 +50,7 @@ public class SeekRangeBar extends View {
     private double defaultScreenHigh = 100;  //默认后滑块位置百分比
     private OnSeekBarChangeListener mBarChangeListener;
     private boolean editable=false;//是否处于可编辑状态
-    private int miniGap=5;//AB的最小间隔
+    private int miniGap=1;//AB的最小间隔
     private double progressLow;//起点(百分比)
     private double progressHigh;//终点
 
@@ -59,14 +59,16 @@ public class SeekRangeBar extends View {
         //这里设置背景图及滑块图，自定义过进度条的同学应该很熟悉了
         notScrollBarBg = ContextCompat.getDrawable(_context,R.color.black);
         hasScrollBarBg = ContextCompat.getDrawable(_context, R.color.white);
+
         mThumbLow = ContextCompat.getDrawable(_context,R.mipmap.video_thumbnail);
+
         mThumbHigh = ContextCompat.getDrawable(_context,R.mipmap.video_thumbnail);
         int width = mThumbLow.getIntrinsicWidth();
         int height = mThumbHigh.getIntrinsicHeight();
         int newWidth = dip2px(11);
-        int newHeight = dip2px(55);
+        int newHeight = dip2px(1000);
         float scaleWidth = newWidth * 1.0f / width;
-        float scaleHeight = newHeight * 1.0f / height;
+        float scaleHeight = newHeight*1.0f /height;
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         mThumbLow.setState(STATE_NORMAL);

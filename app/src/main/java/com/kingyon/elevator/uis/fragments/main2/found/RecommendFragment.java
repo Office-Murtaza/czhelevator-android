@@ -72,10 +72,6 @@ public class RecommendFragment extends FoundFragemtUtils {
         return R.layout.fragment_recommend;
     }
 
-    public RecommendFragment setIndex( StateLayout stateLayout) {
-        this.stateLayout = stateLayout;
-        return (this);
-    }
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -91,6 +87,7 @@ public class RecommendFragment extends FoundFragemtUtils {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LogUtils.e("推荐");
+        stateLayout = getView().findViewById(R.id.stateLayout);
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -152,10 +149,16 @@ public class RecommendFragment extends FoundFragemtUtils {
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
                         stateLayout.showContentView();
-                        rvAttentionList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()==0&& page==1){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }else {
+                            rvAttentionList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
                     }
                 });
     }

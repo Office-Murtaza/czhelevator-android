@@ -105,15 +105,16 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
+                        stateLayout.showContentView();
                         if (ex.getCode() == -102) {
                             if (page > 1) {
-                                ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
+                                ToastUtils.showToast(getContext(), "已经加载完了哦", 1000);
                             } else {
                                 rvAttentionList.setVisibility(View.GONE);
                                 rlError.setVisibility(View.GONE);
                                 rlNull.setVisibility(View.VISIBLE);
                             }
-
+                            img_release.setVisibility(View.VISIBLE);
                         } else if (ex.getCode() == 100200) {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
@@ -132,11 +133,16 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
                         stateLayout.showContentView();
                         img_release.setVisibility(View.VISIBLE);
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        rvAttentionList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
-
+                        if (conentEntity.getContent().size()==0&&page==1){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }else {
+                            rvAttentionList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
                     }
                 });
 

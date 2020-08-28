@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import com.kingyon.elevator.uis.actiivty2.input.TagList;
 import com.kingyon.elevator.uis.dialogs.SaveDraftsDialog;
 import com.kingyon.elevator.uis.dialogs.WebAddDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
+import com.kingyon.elevator.utils.utilstwo.HtmlUtil;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SoftkeyboardUtils;
@@ -239,10 +241,18 @@ public class ArticleReleaseActivity extends BaseActivity {
         richEditor.setOnTextChangeListener(new RichEditorNew.OnTextChangeNewListener() {
             @Override
             public void onTextChange(String text) {
-
-                tvNumber1.setText(text.length()+"");
+                LogUtils.e(text);
+                tvNumber1.setText(HtmlUtil.delHTMLTag(text).length()+"");
+                if (HtmlUtil.delHTMLTag(text).length()==0){
+                    richEditor.setPlaceholder("请输入文章内容");
+                }
+                if (text.equals("<br>")){
+                    richEditor.setHtml("");
+                    richEditor.setPlaceholder("请输入文章内容");
+                }
             }
         });
+
     }
 
     @OnClick({R.id.img_bake, R.id.tv_title, R.id.tv_releaset, R.id.edit_title, R.id.richEditor,
@@ -266,8 +276,17 @@ public class ArticleReleaseActivity extends BaseActivity {
             case R.id.tv_releaset:
                 initCancel();
                 LogUtils.e(richEditor.getHtml());
-                httpReleaset();
+                if (HtmlUtil.idVideoImage(richEditor.getHtml())){
+                    httpReleaset();
+                }else {
+                    if (!HtmlUtil.delHTMLTag(richEditor.getHtml()).isEmpty()){
+                        httpReleaset();
+                    }else {
+                        showToast("请输入内容");
+                    }
+                }
 
+                LogUtils.e(HtmlUtil.delHTMLTag(richEditor.getHtml()),"11111111111111",HtmlUtil.idVideoImage(richEditor.getHtml()));
                 break;
             case R.id.img_blue:
                 /*加粗*/
@@ -491,8 +510,12 @@ public class ArticleReleaseActivity extends BaseActivity {
     }
 
     private void initDialogBack() {
-
-        if (editTitle.getText().toString().isEmpty()) {
+        LogUtils.e(richEditor.getHtml().isEmpty(),"111111111111111",richEditor.getHtml());
+        if (editTitle.getText().toString().isEmpty()&&richEditor.getHtml().isEmpty()||richEditor.getHtml().equals("<br>")) {
+            SharedPreferences sharedPreferences = getSharedPreferences(SAVE_MICRO_ARTICLE_DRAFT, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
             finish();
         } else {
             SaveDraftsDialog saveDraftsDialog = new SaveDraftsDialog(this);

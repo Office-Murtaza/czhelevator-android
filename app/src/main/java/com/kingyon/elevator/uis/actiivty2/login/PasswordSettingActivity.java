@@ -25,6 +25,9 @@ import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.utils.ToastUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -141,13 +144,25 @@ public class PasswordSettingActivity extends BaseActivity {
                     String deviceNo = FormatUtils.getInstance().getDeviceNo(deviceStr);
                     LogUtils.e(deviceStr,deviceNo);
                     if (!TextUtils.isEmpty(deviceStr)) {
-                        edRecommendedCode.setText(deviceStr);
-                        showToast("获取推荐码成功");
+                        if (isNumeric(deviceStr)&&deviceStr.length()==6){
+                            edRecommendedCode.setText(deviceStr);
+                            showToast("获取推荐码成功");
+                        }else {
+                            showToast("请检查推荐码是否正确");
+                        }
                     } else {
                         showToast("没有获取到推荐码");
                     }
                     break;
             }
         }
+    }
+    public boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() ){
+            return false;
+        }
+        return true;
     }
 }

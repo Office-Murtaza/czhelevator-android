@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -30,6 +31,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.acker.simplezxing.R;
 import com.acker.simplezxing.assit.AmbientLightManager;
@@ -92,6 +94,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
+    private ImageView img_clear;
     private boolean hasSurface;
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
@@ -175,6 +178,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
         cameraManager = new CameraManager(getApplication(), needExposure, needFullScreen);
         viewfinderView = findViewById(R.id.viewfinder_view);
+        img_clear = findViewById(R.id.img_clear);
         viewfinderView.setCameraManager(cameraManager);
         viewfinderView.setNeedDrawText(needScanHintText);
         viewfinderView.setScanAreaFullScreen(needFullScreen);
@@ -193,6 +197,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             // Install the callback and wait for surfaceCreated() to init the camera.
             surfaceHolder.addCallback(this);
         }
+        img_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

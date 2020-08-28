@@ -1,10 +1,13 @@
 package com.kingyon.elevator.uis.activities.devices;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.czh.myversiontwo.utils.EditTextUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.entities.LiftElemEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -56,7 +59,7 @@ public class LiftEditActivity extends BaseSwipeBackActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         if (edit && entity != null) {
-
+            EditTextUtils.setEditTextInhibitInputSpace(etName);
             etSn.setText(entity.getLiftNo() != null ? entity.getLiftNo() : "");
             etSn.setSelection(etSn.getText().length());
 
@@ -71,6 +74,25 @@ public class LiftEditActivity extends BaseSwipeBackActivity {
 
             etBase.setText(entity.getBase() != null ? String.valueOf(entity.getBase()) : "");
             etBase.setSelection(etBase.getText().length());
+            etMax.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (Integer.parseInt(s.toString())>100){
+                        showToast("最高楼层不能大于100");
+                        etMax.setText("100");
+                    }
+                }
+            });
         }
     }
 

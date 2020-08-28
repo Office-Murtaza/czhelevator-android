@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -50,7 +51,9 @@ public class AddSalesActiviry extends BaseActivity {
         parentId = getIntent().getLongExtra(CommonUtil.KEY_VALUE_1, 0);
         superior = getIntent().getStringExtra(CommonUtil.KEY_VALUE_2);
         type = getIntent().getIntExtra(CommonUtil.KEY_VALUE_3, 0);
+        LogUtils.e(parentId,superior,type);
         tvTopTitle.setText("添加" + superior);
+        tvAdd.setText("添加" + superior);
         tvName.setText(superior+"名称");
         etConent.setHint("请输入"+superior+"名称");
     }

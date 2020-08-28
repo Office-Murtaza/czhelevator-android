@@ -7,6 +7,10 @@
     android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <com.leo.afbaselibrary.widgets.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
@@ -54,5 +58,7 @@
         </android.support.v4.widget.NestedScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </com.leo.afbaselibrary.widgets.StateLayout>
 
 </LinearLayout>

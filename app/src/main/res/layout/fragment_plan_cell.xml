@@ -115,8 +115,8 @@
                         android:layout_width="@dimen/dp1"
                         android:layout_height="match_parent"
                         android:background="#333333"
-                        android:layout_marginRight="@dimen/dp_20"
-                        android:layout_marginLeft="@dimen/dp_20"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_10"
                         ></TextView>
 
                     <TextView
@@ -130,13 +130,13 @@
                         android:textColor="#333333"
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        tools:text="15面屏" />
+                        tools:text="0面屏" />
 
                     <TextView
                         android:id="@+id/tv_screen_ky"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="（12可用）"
+                        android:text="（0可用）"
                         android:textColor="#ff2d6ef2"
                         android:layout_marginLeft="@dimen/dp10"
                         android:textSize="14sp"

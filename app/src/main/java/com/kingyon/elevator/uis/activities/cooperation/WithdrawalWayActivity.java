@@ -42,7 +42,7 @@ public class WithdrawalWayActivity extends BaseActivity {
     RecyclerView rcvList;
     private int page = 0;
     private CooperationInfoNewEntity entity;
-
+    public  static  WithdrawalWayActivity withdrawalWayActivity;
     @Override
     public int getContentViewId() {
         return R.layout.activity_withdrawal_way;
@@ -50,6 +50,7 @@ public class WithdrawalWayActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        withdrawalWayActivity = this;
         entity = getIntent().getParcelableExtra(CommonUtil.KEY_VALUE_1);
         if (entity == null) {
             entity = new CooperationInfoNewEntity();

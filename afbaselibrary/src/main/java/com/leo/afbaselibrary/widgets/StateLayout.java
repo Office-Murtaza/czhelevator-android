@@ -147,6 +147,7 @@ public class StateLayout extends FrameLayout {
              * 暂无数据时的图片
              */
             emptyImageView.setImageResource(R.drawable.im_blank_empty);
+            emptyTipView.setVisibility(View.GONE);
 //            emptyImageView.setImageResource(R.drawable.img_empty_statelayout);
         }
         addView(emptyView);

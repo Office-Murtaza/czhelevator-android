@@ -81,7 +81,7 @@ public class DialogUtils {
                 userPrivacyTipsDialog = null;
             }
             userPrivacyTipsDialog = new UserPrivacyTipsDialog(context, data, privacyTipsListener);
-            userPrivacyTipsDialog.setCancelable(true);
+            userPrivacyTipsDialog.setCancelable(false);
             userPrivacyTipsDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,10 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.kingyon.elevator.R;
-import com.kingyon.elevator.entities.entities.FingerprintEntiy;
 import com.kingyon.elevator.entities.entities.MassageHomeEntiy;
 import com.kingyon.elevator.entities.entities.MassageLitsEntiy;
-import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
-import com.kingyon.elevator.uis.activities.property.PropertyActivity;
-import com.kingyon.elevator.uis.adapters.adaptertwo.AttentionAdapter;
 import com.kingyon.elevator.uis.adapters.adaptertwo.MessageAdapter;
 import com.kingyon.elevator.utils.StatusBarUtil;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
@@ -32,12 +27,11 @@ import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.leo.afbaselibrary.uis.fragments.BaseFragment;
 import com.leo.afbaselibrary.utils.ToastUtils;
+import com.leo.afbaselibrary.widgets.StateLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,9 +86,12 @@ public class MessageFragmentg extends BaseFragment {
     RelativeLayout rlNotlogin;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     private int page = 1;
 
     private List<MassageLitsEntiy> list = new ArrayList<>();
+
     @Override
     public int getContentViewId() {
         return R.layout.fragment_message;
@@ -105,6 +102,9 @@ public class MessageFragmentg extends BaseFragment {
         StatusBarUtil.setHeadViewPadding(getActivity(), rlBj);
 //        list.clear();
 //        httpHomeData(1);
+        stateLayout.showProgressView(getString(R.string.wait));
+        list.clear();
+        httpHomeData(1);
 
     }
 
@@ -134,7 +134,8 @@ public class MessageFragmentg extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         LogUtils.e();
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
+            stateLayout.showProgressView(getString(R.string.wait));
             list.clear();
             httpHomeData(1);
 
@@ -151,12 +152,13 @@ public class MessageFragmentg extends BaseFragment {
 
     private void httpHomeData(int page) {
         ConentUtils.httpHomeData(1);
-        NetService.getInstance().getMsgOverview(page,20)
+        NetService.getInstance().getMsgOverview(page, 20)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<MassageHomeEntiy<MassageLitsEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         hideProgress();
+                        stateLayout.showContentView();
                         closeRefresh();
                         if (ex.getCode() == -102) {
                             if (page > 1) {
@@ -168,12 +170,12 @@ public class MessageFragmentg extends BaseFragment {
                                 rlNotlogin.setVisibility(View.GONE);
                             }
 
-                        } else if (ex.getCode()==100200){
+                        } else if (ex.getCode() == 100200) {
                             rcvListMassage.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.GONE);
                             rlNotlogin.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             rcvListMassage.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
@@ -181,21 +183,23 @@ public class MessageFragmentg extends BaseFragment {
                         }
                         initAngle(null);
                     }
+
                     @Override
                     public void onNext(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
+                        stateLayout.showContentView();
                         hideProgress();
                         closeRefresh();
                         initAngle(conentEntity);
-                        if (conentEntity.pushMessage.size()<=0&&page==1){
+                        if (conentEntity.pushMessage.size() <= 0 && page == 1) {
                             rcvListMassage.setVisibility(View.GONE);
                             rlError.setVisibility(View.GONE);
                             rlNull.setVisibility(View.VISIBLE);
                             rlNotlogin.setVisibility(View.GONE);
-                        }else if (conentEntity.pushMessage.size()<=0&&page>1){
-                           showToast("已经没有了");
-                        }else {
-                            if (page==1){
-                              list.clear();
+                        } else if (conentEntity.pushMessage.size() <= 0 && page > 1) {
+                            showToast("已经没有了");
+                        } else {
+                            if (page == 1) {
+                                list.clear();
                             }
                             rcvListMassage.setVisibility(View.VISIBLE);
                             rlError.setVisibility(View.GONE);
@@ -208,7 +212,7 @@ public class MessageFragmentg extends BaseFragment {
     }
 
     private void initAngle(MassageHomeEntiy<MassageLitsEntiy> conentEntity) {
-        if (conentEntity!=null) {
+        if (conentEntity != null) {
 
             if (conentEntity.followerNum <= 0) {
                 tvAttentionNumber.setVisibility(View.GONE);
@@ -246,7 +250,7 @@ public class MessageFragmentg extends BaseFragment {
                 tvMassageNumber.setVisibility(View.VISIBLE);
                 tvMassageNumber.setText(conentEntity.unreadMessages + "");
             }
-        }else {
+        } else {
             tvAttentionNumber.setVisibility(View.GONE);
             tvMassageNumber.setVisibility(View.GONE);
             tvLikeNumber.setVisibility(View.GONE);
@@ -274,7 +278,7 @@ public class MessageFragmentg extends BaseFragment {
     @Override
     protected void dealLeackCanary() {
     }
-    
+
     public void closeRefresh() {
         smartRefreshLayout.finishRefresh();
         smartRefreshLayout.finishLoadMore();
@@ -289,7 +293,7 @@ public class MessageFragmentg extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_read, R.id.ll_msagger, R.id.ll_attention, R.id.ll_like, R.id.ll_comment,R.id.rl_error, R.id.rl_notlogin})
+    @OnClick({R.id.tv_read, R.id.ll_msagger, R.id.ll_attention, R.id.ll_like, R.id.ll_comment, R.id.rl_error, R.id.rl_notlogin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_read:
@@ -312,7 +316,7 @@ public class MessageFragmentg extends BaseFragment {
                             }
                         }
                     });
-                }else {
+                } else {
                     ActivityUtils.setLoginActivity();
                 }
                 break;
@@ -346,9 +350,9 @@ public class MessageFragmentg extends BaseFragment {
                 }
                 break;
             case R.id.rl_error:
-                if (smartRefreshLayout!=null){
+                if (smartRefreshLayout != null) {
                     smartRefreshLayout.autoRefresh(100);
-                }else {
+                } else {
                     list.clear();
                     httpHomeData(1);
                 }

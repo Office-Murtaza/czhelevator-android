@@ -113,6 +113,7 @@ public class ConentUtils {
                     public void onNext(String s) {
                     ToastUtils.showToast(baseActivity,"删除成功",1000);
                     if (type.equals("1")){
+
                         conentEntity.remove(position);
                         attentionAdapter.notifyItemRemoved(position);
                         attentionAdapter.notifyItemRangeChanged(position,conentEntity.size()-position);
@@ -121,7 +122,6 @@ public class ConentUtils {
                         conentEntity1.remove(position);
                         attentionAdapter.notifyItemRemoved(position);
                         attentionAdapter.notifyItemRangeChanged(position,conentEntity1.size()-position);
-
                     }else {
 
 

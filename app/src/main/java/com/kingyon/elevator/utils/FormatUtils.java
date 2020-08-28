@@ -615,6 +615,9 @@ public static String incomeType(String  source){
             case Constants.PayType.BALANCE_COUPON:
                 result = "余额+优惠券支付";
                 break;
+            case Constants.PayType.FINGERPRINT_PAY:
+                result = "指纹支付";
+                break;
             default:
                 result = "";
                 break;

@@ -109,12 +109,17 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
                 holder.tv_title.setVisibility(View.GONE);
             }
             holder.tv_title.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
-            if (queryRecommendEntity.likes<=0||!queryRecommendEntity.liked){
+            if (queryRecommendEntity.likes<=0){
                 holder.ll_like.setVisibility(View.GONE);
             }else {
                 holder.ll_like.setVisibility(View.VISIBLE);
-                holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likes));
-                GlideUtils.loadCircleImage(context, queryRecommendEntity.likesItem.get(0).photo, holder.img_topimg);
+                if (queryRecommendEntity.liked){
+                    holder.tv_like_number_bottm.setText(String.format("等%s人觉得很赞",queryRecommendEntity.likes));
+                    GlideUtils.loadCircleImage(context, DataSharedPreferences.getPortrait(), holder.img_topimg);
+                }else {
+                    holder.img_topimg.setVisibility(View.GONE);
+                    holder.tv_like_number_bottm.setText(String.format("%s人觉得很赞",queryRecommendEntity.likes));
+                }
             }
             if (queryRecommendEntity.liked){
                 holder.img_like.setImageResource(R.mipmap.ic_small_like);

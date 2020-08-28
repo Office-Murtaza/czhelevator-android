@@ -385,14 +385,14 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("TAG-MatisseActivity","******************"+position);
-//        mAlbumCollection.setStateCurrentSelection(position);
-//        mAlbumsAdapter.getCursor().moveToPosition(position);
-//        Album album = Album.valueOf(mAlbumsAdapter.getCursor());
-//        Log.e("TAG-MatisseActivity","******************"+album.getCoverUri().toString());
-//        if (album.isAll() && SelectionSpec.getInstance().capture) {
-//            album.addCaptureCount();
-//        }
-//        onAlbumSelected(album);
+        mAlbumCollection.setStateCurrentSelection(position);
+        mAlbumsAdapter.getCursor().moveToPosition(position);
+        Album album = Album.valueOf(mAlbumsAdapter.getCursor());
+        Log.e("TAG-MatisseActivity","******************"+album.getCoverUri().toString());
+        if (album.isAll() && SelectionSpec.getInstance().capture) {
+            album.addCaptureCount();
+        }
+        onAlbumSelected(album);
     }
 
     @Override

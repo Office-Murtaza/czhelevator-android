@@ -117,12 +117,18 @@ public class AttentionFragment extends FoundFragemtUtils {
                         stateLayout.showContentView();
                         hideProgress();
                         closeRefresh();
-                        rvAttentionList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        rl_notlogin.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
-
+                        if (conentEntity.getContent().size()==0&&page==1){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                            rl_notlogin.setVisibility(View.GONE);
+                        }else {
+                            rvAttentionList.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            rl_notlogin.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
 
                     }
                 });
@@ -215,8 +221,13 @@ public class AttentionFragment extends FoundFragemtUtils {
             if (smartRefreshLayout != null) {
                 smartRefreshLayout.autoRefresh(100);
             } else {
+                if (stateLayout!=null){
                 stateLayout.showProgressView(getString(R.string.wait));
                 httpQueryAttention(1, "", "");
+                }else {
+                    httpQueryAttention(1, "", "");
+                }
+
             }
 
 //        }

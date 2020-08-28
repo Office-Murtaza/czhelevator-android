@@ -257,9 +257,15 @@ public class SearchActivity extends BaseActivity {
                     public void onNext(ConentEntity<QueryRecommendEntity> conentEntity) {
                         closeRefresh();
                         rvAttentionList.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()==0&& page==1){
+                            rvAttentionList.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }else {
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
                     }
                 });
     }

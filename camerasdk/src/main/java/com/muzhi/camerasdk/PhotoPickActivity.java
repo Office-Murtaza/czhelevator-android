@@ -524,12 +524,13 @@ public class PhotoPickActivity extends BaseActivity {
     
     //选择完成实现跳转
     private void selectComplate(){
-    	
+    	int num = mCameraSdkParameterInfo.getImage_list().size()-1;
+    	Log.e("TAG",num+"==");
     	mCameraSdkParameterInfo.setImage_list(resultList);
 		Bundle b=new Bundle();
 		b.putSerializable(CameraSdkParameterInfo.EXTRA_PARAMETER, mCameraSdkParameterInfo);
-		b.putInt("num",0);
-
+		b.putInt("num",num);
+		Log.e("TAG",num+"====");
 		Intent intent = new Intent();
 		intent.putExtras(b);
 		

@@ -1,5 +1,8 @@
 package com.kingyon.elevator.utils.utilstwo;
 
+import android.text.TextUtils;
+import android.util.Patterns;
+
 import com.blankj.utilcode.util.LogUtils;
 
 import java.util.ArrayList;
@@ -8,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.util.Patterns.DOMAIN_NAME;
+import static android.util.Patterns.GOOD_IRI_CHAR;
 
 /**
  * @Created By Admin  on 2020/5/11
@@ -211,5 +217,24 @@ public class StringUtils {
         }
     }
 
+    public static final Pattern WEB_URL = Pattern.compile(
+            "((?:(http|https|Http|Https|rtsp|Rtsp):\\/\\/(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)"
+                    + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
+                    + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?"
+                    + "(?:" + DOMAIN_NAME + ")"
+                    + "(?:\\:\\d{1,5})?)" // plus option port number
+                    + "(\\/(?:(?:[" + GOOD_IRI_CHAR + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus option query params
+                    + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*)?"
+                    + "(?:\\b|$)"); // and finally, a word boundary or end of
+    // input.  This is to stop foo.sure from
+    // matching as foo.su
 
+    /**
+     * 判断是否是一个合法的URL 网址
+     * @param url
+     * @return
+     */
+    private boolean isValidUrl(String url){
+        return TextUtils.isEmpty(url) == false && url.matches(WEB_URL.pattern());
+    }
 }

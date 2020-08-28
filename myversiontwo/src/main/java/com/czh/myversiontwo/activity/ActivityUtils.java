@@ -19,11 +19,11 @@ import static com.czh.myversiontwo.utils.Constance.ACTIVITY_MAIN2_LOGIN;
 public class ActivityUtils {
 
     public static void setLoginActivity(){
-        if (QuickClickUtils.isFastClick()){
+//        if (QuickClickUtils.isFastClick()){
             ARouter.getInstance()
                     .build(ACTIVITY_MAIN2_LOGIN)
                     .navigation();
-        }
+//        }
     }
 
     public static void setActivity(String Url ){

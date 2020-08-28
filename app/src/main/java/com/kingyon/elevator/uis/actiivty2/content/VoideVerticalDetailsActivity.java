@@ -33,6 +33,7 @@ import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.library.social.ShareDialog;
 import com.leo.afbaselibrary.nets.exceptions.ApiException;
@@ -112,6 +113,8 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
     StateLayout stateLayout;
     private ShareDialog shareDialog;
     int page = 1;
+    int likenum = 0;
+    int commentnum = 0;
 
     @Override
     public int getContentViewId() {
@@ -153,7 +156,9 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                         } else {
                             tvQw.setVisibility(View.GONE);
                         }
-                        tvLikeNumer.setText(recommendEntity.likes + "");
+                        tvLikeNumer.setText(StringUtils.getNumStr(recommendEntity.likes ,"点赞") + "");
+                        likenum = recommendEntity.likes;
+                        commentnum = recommendEntity.comments;
                         tvCommentsNumber.setText(recommendEntity.comments + "");
                         tvContent.setMovementMethod(ConentUtils.CustomMovementMethod.getInstance());
                         GlideUtils.loadCircleImage(VoideVerticalDetailsActivity.this, recommendEntity.photo, imgPortrait);
@@ -255,6 +260,7 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
 
                 break;
             case R.id.img_like:
+                LogUtils.e(likenum);
                 if (TokenUtils.isToken(this)) {
                     if (recommendEntity.liked) {
                         recommendEntity.liked = false;
@@ -266,7 +272,12 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
 
                                     }
                                 });
+                        likenum = likenum - 1;
+                        recommendEntity.likes = likenum;
+                        LogUtils.e(likenum);
+                        tvLikeNumer.setText(StringUtils.getNumStr(likenum ,"点赞"));
                     } else {
+
                         recommendEntity.liked = true;
                         imgLike.setImageResource(R.mipmap.btn_big_like_off);
                         ConentUtils.httpHandlerLikeOrNot(this, recommendEntity.id,
@@ -276,6 +287,10 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
 
                                     }
                                 });
+                        likenum = likenum + 1;
+                        recommendEntity.likes = likenum;
+                        LogUtils.e(likenum);
+                        tvLikeNumer.setText(StringUtils.getNumStr(likenum ,"点赞"));
                     }
                 } else {
                     ActivityUtils.setLoginActivity();
@@ -291,7 +306,6 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
                 } else {
                     ActivityUtils.setLoginActivity();
                 }
-
                 break;
             case R.id.img_collect:
                 /*收藏*/
@@ -347,12 +361,15 @@ public class VoideVerticalDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onSubmit(String content) {
+
                             ConentUtils.httpComment(VoideVerticalDetailsActivity.this,
                                     recommendEntity.id, 0, content, new ConentUtils.IsSuccedListener() {
                                         @Override
                                         public void onisSucced(boolean isSucced) {
                                             if (isSucced) {
-                                                httpComment(1, recommendEntity.id);
+                                                commentnum = commentnum+1;
+                                                recommendEntity.comments = commentnum;
+                                                tvCommentsNumber.setText(commentnum+"");
                                             }
                                         }
                                     });

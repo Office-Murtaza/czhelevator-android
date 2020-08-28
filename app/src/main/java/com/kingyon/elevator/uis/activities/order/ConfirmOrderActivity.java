@@ -191,11 +191,17 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
-                        if (textLength <= 60) {
-                            textNumber.setText(textLength + "/60");
-                        } else {
-                            ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入60字", 1000);
+                        if ((s.toString().length()==1?s.toString():"").equals(" ")) {
+                            ToastUtils.showToast(ConfirmOrderActivity.this,"开头不能为空格",1000);
+                            et_input_ad_name.setText("");
+                        }else {
+                            if (textLength <= 60) {
+                                textNumber.setText(textLength + "/60");
+                            } else {
+                                ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入60字", 1000);
+                            }
                         }
+
                     }
                 });
             } else if (goPlaceAnOrderEntity.getPlanType().equals(Constants.PLAN_TYPE.DIY)) {
@@ -226,10 +232,15 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
                     @Override
                     public void afterTextChanged(Editable s) {
                         int textLength = s.toString().trim().length();
-                        if (textLength <= 20) {
-                            textNumber.setText(textLength + "/20");
-                        } else {
-                            ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入20字", 1000);
+                        if ((s.toString().length()==1?s.toString():"").equals(" ")) {
+                            ToastUtils.showToast(ConfirmOrderActivity.this,"开头不能为空格",1000);
+                            et_input_ad_name.setText("");
+                        }else {
+                            if (textLength <= 20) {
+                                textNumber.setText(textLength + "/20");
+                            } else {
+                                ToastUtils.showToast(ConfirmOrderActivity.this, "最多输入20字", 1000);
+                            }
                         }
                     }
                 });
@@ -818,7 +829,7 @@ public class ConfirmOrderActivity extends MvpBaseActivity<ConfirmOrderPresenter>
             }
             float resultPrice = totalPrice - couponsSum;
             if (resultPrice > 0) {
-                tv_discount_money.setText("已优惠" + couponsSum + "元");
+//                tv_discount_money.setText("已优惠" + couponsSum + "元");
 //                tv_order_money.setText("¥" + resultPrice + "元");
 //                tv_order_money.setText(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));
                 LogUtils.e(Html.fromHtml(String.format(STRING_PRICE2, resultPrice)));

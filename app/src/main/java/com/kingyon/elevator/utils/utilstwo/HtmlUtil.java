@@ -1,6 +1,9 @@
 package com.kingyon.elevator.utils.utilstwo;
 
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.blankj.utilcode.util.LogUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,6 +124,23 @@ public class HtmlUtil {
         return getTextFromHtml(source);
     }
 
+
+    /*正则匹配是否有视频合图片*/
+
+    public static boolean idVideoImage(String html){
+
+        String reg = "<video.*src\\s*=\\s*(.*?)[^>]*?>";
+        String reg1 = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(html);//数据
+
+        Pattern pattern1 = Pattern.compile(reg1);
+        Matcher matcher1 = pattern1.matcher(html);//数据
+//使用find()方法查找第一个匹配的对象
+        boolean result = matcher.find();
+        boolean result1 = matcher1.find();
+        return result||result1;
+    }
 
 
 }

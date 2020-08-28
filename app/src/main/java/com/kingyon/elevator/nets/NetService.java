@@ -516,6 +516,11 @@ public class NetService {
         return addSchedulers(getApi().getWikipedia());
     }
 
+    /*2.0添加点击量*/
+    public Observable<String> increaseReadNum(int  id){
+        return addSchedulers(getApi().increaseReadNum(id));
+    }
+
     //验证码
     public Observable<String> sendVerifyCode(String mobile, CheckCodePresenter.VerifyCodeType type) {
         return addSchedulers(getApi().getVerifyCode(mobile, type.getValue()));

@@ -21,6 +21,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.nets.CustomApiCallback;
+import com.kingyon.elevator.nets.NetService;
+import com.leo.afbaselibrary.nets.exceptions.ApiException;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 
 import java.io.IOException;
@@ -56,6 +59,8 @@ public class WebActivity extends BaseActivity {
     String content;
     @Autowired
     String type;
+    @Autowired
+    String conentid;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
@@ -75,7 +80,18 @@ public class WebActivity extends BaseActivity {
         } else {
             webview.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "utf-8", null);
         }
-
+        NetService.getInstance().increaseReadNum(Integer.parseInt(conentid))
+                .compose(this.bindLifeCycle())
+                .subscribe(new CustomApiCallback<String>() {
+                    @Override
+                    protected void onResultError(ApiException ex) {
+                        LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                    }
+                    @Override
+                    public void onNext(String s) {
+                        LogUtils.e(s,"成功");
+                    }
+                });
     }
 
     private void initView() {

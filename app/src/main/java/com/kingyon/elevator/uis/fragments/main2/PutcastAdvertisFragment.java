@@ -223,10 +223,16 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
                     public void onNext(ConentEntity<RecommendHouseEntiy> conentEntity) {
                         hideProgress();
                         OrdinaryActivity.closeRefresh(smartRefreshLayout);
-                        rvRecommended.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
-                        dataAdd(conentEntity);
+                        if (conentEntity.getContent().size()==0&&page==1){
+                            rvRecommended.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }else {
+                            rvRecommended.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                            dataAdd(conentEntity);
+                        }
                     }
                 });
 

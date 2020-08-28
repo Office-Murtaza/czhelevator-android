@@ -173,7 +173,12 @@ public class VoideReleasetyActiivty extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvNumber.setText(s.toString().length()+"/500");
+                if ((s.toString().length()==1?s.toString():"").equals(" ")) {
+                    showToast("开头不能为空格");
+                    editConent.setText("");
+                }else {
+                    tvNumber.setText(s.toString().length() + "/500");
+                }
             }
         });
 

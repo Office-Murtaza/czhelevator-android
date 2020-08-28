@@ -60,6 +60,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.guyj.BidirectionalSeekBar;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.uis.activities.advertising.PreviewVideoActivity;
 import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
@@ -244,18 +245,20 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
         voideTime = (int) (getVideoDuration(path)/1000);
         maxNew = voideTime;
         seekBarLayout = findViewById(R.id.id_seekBarLayout);
-        seekBar = new RangeSeekBar(this, 0, voideTime);
+        LogUtils.e( minNew, voideTime);
+        seekBar = new RangeSeekBar(this, minNew, voideTime);
         seekBar.setMin_cut_time(1);//设置最小裁剪时间
         seekBar.setNotifyWhileDragging(true);
+        LogUtils.e(minNew,maxNew);
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, long minValue, long maxValue, int action, boolean isMin, RangeSeekBar.Thumb pressedThumb) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.e("前"+minValue,"后"+maxValue);
-//                    seekBar.setSelectedMaxValue(maxValue);
-//                    seekBar.setSelectedMinValue(minValue);
+                        LogUtils.e("前"+minValue, "后"+maxValue, action,isMin,
+                                seekBar.getSelectedMinValue(),seekBar.getSelectedMaxValue());
+
                         tvStratText.setText(TimeUtils.secondToTime(minValue)+"");
                         tvEndText.setText(TimeUtils.secondToTime(maxValue)+"");
                         tvCenterText.setText(TimeUtils.secondToTime((maxValue-minValue))+"");
@@ -263,7 +266,10 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                         if (action==MotionEvent.ACTION_UP) {
                             if (mMediaPlayer != null) {
                                 mMediaPlayer.seekTo((int) (minValue));
+                                mMediaPlayer.start();
                             }
+                            LogUtils.e(maxValue,minValue);
+
                         }
                     }
                 });
@@ -461,14 +467,21 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 ll_bottom.setVisibility(View.GONE);
                 rl_jq.setVisibility(View.VISIBLE);
 
-//                LogUtils.e(minNew,maxNew,seekBar.getSelectedMinValue(), seekBar.getSelectedMaxValue());
-//
-                seekBar.setSelectedMinValue(minNew);
-                seekBar.setSelectedMaxValue(maxNew);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        seekBar.setSelectedMinValue(minNew);
+                        seekBar.setSelectedMaxValue(maxNew);
+
+                    }
+                });
+
+                LogUtils.e(minNew,maxNew,(maxNew-minNew));
+
                 tvStratText.setText(TimeUtils.secondToTime(minNew)+"");
                 tvEndText.setText(TimeUtils.secondToTime(maxNew)+"");
                 tvCenterText.setText(TimeUtils.secondToTime((maxNew-minNew))+"");
-                LogUtils.e(minNew,maxNew,(maxNew-minNew));
+
 //                ((ViewGroup.MarginLayoutParams)mSurfaceView.getLayoutParams()).setMargins(120, 0, 120, 600);
 //                    tvCenterText.setText(TimeUtils.secondToTime(((Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (doubleSeekbar.getMaxValue() / jisuna))))
 //                            -Integer.parseInt(dateToStamp(TimeUtils.secondToTime((long) (doubleSeekbar.getMinValue() / jisuna)))))/1000)-1) + "");
@@ -485,11 +498,15 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                         rl_title.setVisibility(View.VISIBLE);
                         ll_bottom.setVisibility(View.VISIBLE);
                         rl_jq.setVisibility(View.INVISIBLE);
-                        minNew =  seekBar.getSelectedMinValue();
-                        maxNew =  seekBar.getSelectedMaxValue();
+
+                        minNew =  DateUtils.returnSeconde(tvStratText.getText().toString());
+                        maxNew =  DateUtils.returnSeconde(tvEndText.getText().toString());
 //                        seekBar.setSelectedMinValue(seekBar.getSelectedMinValue());
 //                        seekBar.setSelectedMaxValue(seekBar.getSelectedMaxValue());
-                        LogUtils.e(minNew,maxNew,seekBar.getSelectedMinValue(),seekBar.getSelectedMaxValue() );
+                        LogUtils.e(minNew,maxNew
+                                ,seekBar.getSelectedMinValue(),seekBar.getSelectedMaxValue()
+                                ,tvStratText.getText().toString(),tvEndText.getText().toString());
+                        LogUtils.e(DateUtils.returnSeconde(tvEndText.getText().toString()));
                     }
                 });
 
@@ -502,10 +519,6 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                 rl_title.setVisibility(View.VISIBLE);
                 ll_bottom.setVisibility(View.VISIBLE);
                 rl_jq.setVisibility(View.INVISIBLE);
-
-                seekBar.setSelectedMinValue(minNew);
-                seekBar.setSelectedMaxValue(maxNew);
-
                 LogUtils.e(minNew,maxNew);
             }
         });
@@ -669,6 +682,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
                     tvCenterText.setText(TimeUtils.secondToTime((maxValue-minValue))+"");
                     if (mMediaPlayer!=null){
                         mMediaPlayer.seekTo((int) (minValue));
+                        mMediaPlayer.start();
                     }
                 }
             });
@@ -960,7 +974,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
             String videoPath1 = Utils.getTrimmedVideoPath(this, "czh_video/PDD", "voide1");
             EpVideo epVideo = new EpVideo(path);
             EpEditor.OutputOption outputOption = new EpEditor.OutputOption(videoPath);
-            epVideo.clip(seekBar.getSelectedMinValue(),(seekBar.getSelectedMaxValue()-seekBar.getSelectedMinValue()));
+            epVideo.clip(DateUtils.returnSeconde(tvStratText.getText().toString()),DateUtils.returnSeconde(tvCenterText.getText().toString()));
             EpDraw epDraw = new EpDraw(mergeImage1(),0,0,
                     mMediaPlayer.getVideoWidth(),
                     mMediaPlayer.getVideoHeight(),false);
@@ -1051,6 +1065,7 @@ public class EditVideoActivity extends BaseActivity implements ColorBar.ColorCha
      * 添加表情到界面上
      */
     private void addExpressionToWindow(int result) {
+        LogUtils.e(result);
         TouchView touchView = new TouchView(this);
         touchView.setBackgroundResource(result);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp100, dp100);

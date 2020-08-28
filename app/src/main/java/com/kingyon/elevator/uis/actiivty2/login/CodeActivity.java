@@ -155,7 +155,7 @@ public class CodeActivity extends BaseActivity {
         /* 设置窗口显示位置 */
         window.setGravity(Gravity.CENTER);
         Captcha captcha  = window.findViewById(R.id.captCha);
-        captcha.setBitmap(R.mipmap.ic_launcher);
+        captcha.setBitmap(R.mipmap.im_square_banner1);
         captcha.setCaptchaListener(new Captcha.CaptchaListener() {
             @Override
             public String onAccess(long time) {

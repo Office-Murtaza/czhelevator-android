@@ -132,6 +132,7 @@ public class TopicTypeFragment extends FoundFragemtUtils {
                 .subscribe(new CustomApiCallback<ConentEntity<HomeTopicConentEntity>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
+                        stateLayout.showContentView();
                         hideProgress();
                         if (ex.getCode()==-102){
                             if (page>1) {
@@ -146,17 +147,22 @@ public class TopicTypeFragment extends FoundFragemtUtils {
                             rcViewTopic.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
-                            stateLayout.showErrorView();
                         }
                     }
                     @Override
                     public void onNext(ConentEntity<HomeTopicConentEntity> conentEntity) {
                         hideProgress();
-                        dataAdd(conentEntity);
                         stateLayout.showContentView();
-                        rcViewTopic.setVisibility(View.VISIBLE);
-                        rlError.setVisibility(View.GONE);
-                        rlNull.setVisibility(View.GONE);
+                        if (conentEntity.getContent().size()==0&&page==1){
+                            rcViewTopic.setVisibility(View.GONE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.VISIBLE);
+                        }else {
+                            dataAdd(conentEntity);
+                            rcViewTopic.setVisibility(View.VISIBLE);
+                            rlError.setVisibility(View.GONE);
+                            rlNull.setVisibility(View.GONE);
+                        }
                         LogUtils.e(conentEntity.getContent().toString());
 
                     }

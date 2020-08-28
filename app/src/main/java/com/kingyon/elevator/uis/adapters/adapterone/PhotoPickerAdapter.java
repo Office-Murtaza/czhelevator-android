@@ -41,7 +41,7 @@ public class PhotoPickerAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(context);
         this.mediaDataList = mediaDataList;
         this.showType = showType;
-        width = (ScreenUtils.getScreenWidth() - DensityUtil.dip2px(25)) / 4;
+        width = (ScreenUtils.getScreenWidth() - DensityUtil.dip2px(15)) / 3;
     }
 
     public void reflashData(List<MediaData> mediaDataList) {

@@ -205,9 +205,9 @@ public class RichEditorNew extends RichEditor {
     public void insertVideo(String videoUrl, String customStyle, String posterUrl) {
         if (TextUtils.isEmpty(customStyle)) {
             customStyle =             //增加进度控制
-//                    "controls=\"controls\"" + //已修改到video标签里面
-                    //视频显示第一帧
-//                            " initial-time=\"0.01\" " +//客户端无效
+//                    "controls=\"false\"" + //已修改到video标签里面
+//                    视频显示第一帧
+//                    " initial-time=\"0.01\" " +//客户端无效
                     //宽高
                     "height=\"300\" width=\"100%\" " +
                             //样式

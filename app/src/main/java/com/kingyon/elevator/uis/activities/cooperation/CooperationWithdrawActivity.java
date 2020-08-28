@@ -54,6 +54,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.czh.myversiontwo.utils.CodeType.KEYBOARD_PAY;
+import static com.kingyon.elevator.uis.activities.cooperation.WithdrawalWayActivity.withdrawalWayActivity;
 
 /**
  * Created by GongLi on 2019/1/14.
@@ -431,6 +432,7 @@ public class CooperationWithdrawActivity extends BaseSwipeBackActivity {
                     tvEnsure.setEnabled(true);
                     setResult(RESULT_OK);
                     finish();
+                    withdrawalWayActivity.finish();
                 }
             });
         }

@@ -412,7 +412,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 
 		fAdapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), mViewPager,fragments);
 		mViewPager.setAdapter(fAdapter);
-
+		mViewPager.setOffscreenPageLimit(imageList.size());
 		//mViewPager.setOffscreenPageLimit(imageList.size());
 		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			//position当前页面，positionOffset当前页面偏移百分比，positionOffsetPixels当前页面偏移像素
@@ -481,7 +481,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 
 
 	private void complate(){
-        
+		EfectFragment.hideStickEditMode();
 		loading_layout.setVisibility(View.VISIBLE);
 		complate_runnable(3*1000);
 		
@@ -495,13 +495,14 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 				if(mCameraSdkParameterInfo.getRet_type()==0){
 					//返回一个路径
 					for(int i=0;i<imageList.size();i++){
-						Fragment mFragment=fragments.get(i);
+						Fragment mFragment = fragments.get(i);
 						if(mFragment.isAdded()){
 							String path=((EfectFragment)fragments.get(i)).getFilterImage();
 							list.add(path);
-						}
-						else{
+							Log.e("TAG222",path);
+						} else{
 							list.add(imageList.get(i));
+							Log.e("TAG111",imageList.get(i));
 						}
 					}
 					Log.e("TAG=========",imageList.toString());
@@ -528,8 +529,7 @@ public class FilterImageActivity extends BaseActivity implements ColorBar.ColorC
 					intent.putExtras(b);
 					setResult(RESULT_OK, intent);
 			        finish();
-				}
-				else{
+				} else{
 					Log.e("TAG++++++++++++",list.toString());
 					EventBus.getDefault().post(MessageWrap.getInstance(list));
 					try {

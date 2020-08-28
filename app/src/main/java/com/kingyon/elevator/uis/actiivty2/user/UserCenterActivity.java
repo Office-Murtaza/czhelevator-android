@@ -123,6 +123,7 @@ public class UserCenterActivity extends BaseActivity {
     ImageView imgTopBack1;
     @BindView(R.id.stateLayout)
     StateLayout stateLayout;
+    int onclick = 1;
 
     @Override
     public int getContentViewId() {
@@ -201,7 +202,11 @@ public class UserCenterActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         hideProgress();
                         if (ex.getCode() == 100200) {
-                            ActivityUtils.setLoginActivity();
+                            if (onclick==1) {
+                                ActivityUtils.setLoginActivity();
+                                finish();
+                            }
+                            onclick = onclick+1;
                         }
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         appBar.setVisibility(View.GONE);
@@ -254,7 +259,9 @@ public class UserCenterActivity extends BaseActivity {
     }
 
     private void httpData(int page, String otherUserAccount) {
-        stateLayout.showProgressView(getString(com.leo.afbaselibrary.R.string.loading));
+        if (page==1) {
+            stateLayout.showProgressView(getString(com.leo.afbaselibrary.R.string.loading));
+        }
         NetService.getInstance().setUserCenterContent(page, otherUserAccount)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
@@ -262,6 +269,7 @@ public class UserCenterActivity extends BaseActivity {
                     protected void onResultError(ApiException ex) {
                         closeRefresh();
                         hideProgress();
+                        stateLayout.showContentView();
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
                         if (ex.getCode() == -102) {
                             if (page > 1) {
@@ -273,14 +281,11 @@ public class UserCenterActivity extends BaseActivity {
                                 rlNotlogin.setVisibility(View.GONE);
                             }
 
-                        } else if (ex.getCode() == 100200) {
-                           ActivityUtils.setLoginActivity();
                         } else {
                             rvAttentionList.setVisibility(View.GONE);
                             rlError.setVisibility(View.VISIBLE);
                             rlNull.setVisibility(View.GONE);
                             rlNotlogin.setVisibility(View.GONE);
-                            stateLayout.showErrorView(getString(com.leo.afbaselibrary.R.string.error));
                         }
                     }
 

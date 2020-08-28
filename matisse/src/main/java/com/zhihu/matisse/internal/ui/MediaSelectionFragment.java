@@ -94,7 +94,7 @@ public class MediaSelectionFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Album album = getArguments().getParcelable(EXTRA_ALBUM);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mAdapter = new AlbumMediaAdapter(getContext(),
@@ -113,7 +113,7 @@ public class MediaSelectionFragment extends Fragment implements
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
-        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
+        mRecyclerView.addItemDecoration(new MediaGridInset(3, spacing, false));
         mRecyclerView.setAdapter(mAdapter);
         mAlbumMediaCollection.onCreate(getActivity(), this);
         mAlbumMediaCollection.load(album, selectionSpec.capture);

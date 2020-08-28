@@ -70,6 +70,7 @@ public class UserPrivacyTipsDialog extends Dialog {
             privacyTipsListener.onNoAgree();
             DataSharedPreferences.saveBoolean(DataSharedPreferences.IS_SHOW_ALREADY_PRIVACY_DIALOG, false);
             DialogUtils.getInstance().hideUserPrivacyTipsDialog();
+
         });
     }
 

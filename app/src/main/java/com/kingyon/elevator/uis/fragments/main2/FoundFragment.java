@@ -71,8 +71,7 @@ public class FoundFragment extends BaseFragment {
     ModifyTabLayout tabLayout;
     @BindView(R.id.fl_title)
     LinearLayout flTitle;
-    @BindView(R.id.stateLayout)
-    StateLayout stateLayout;
+
 
     @Override
     public int getContentViewId() {
@@ -110,7 +109,7 @@ public class FoundFragment extends BaseFragment {
 
         CustomFragmentPagerAdapter adapter = new CustomFragmentPagerAdapter(getChildFragmentManager());
         adapter.addFrag(new AttentionFragment(), "关注");
-        adapter.addFrag(new RecommendFragment().setIndex(stateLayout), "推荐");
+        adapter.addFrag(new RecommendFragment(), "推荐");
         adapter.addFrag(new TopicFragment(), "话题");
         viewPager.setAdapter(adapter);
 

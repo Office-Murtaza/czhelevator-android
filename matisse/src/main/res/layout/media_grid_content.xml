@@ -27,6 +27,7 @@
         android:id="@+id/check_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         android:layout_gravity="top|right"/>
 
     <ImageView
@@ -34,9 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_gif"
+        android:layout_margin="2dp"
         android:visibility="gone"/>
 
     <TextView
