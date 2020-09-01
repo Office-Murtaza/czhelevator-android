@@ -228,7 +228,7 @@ public class PhotoPickerActivity extends MvpBaseActivity<PhotoPickerPresenter> i
                 finish();
                 break;
             case R.id.rule_desc:
-                DialogUtils.getInstance().showRuleDescTipsDialog(this);
+                DialogUtils.getInstance().showRuleDescTipsDialog(this,"规格说明","屏幕尺寸：","视频/图片——768(宽)  X  1220(高)");
                 break;
             case R.id.tv_action_title:
                 if (folder_list.getVisibility() == View.GONE) {

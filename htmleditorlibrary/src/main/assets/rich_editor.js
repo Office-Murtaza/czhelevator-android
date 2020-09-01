@@ -198,7 +198,7 @@ RE.insertImage = function(url, alt,style) {
 }
 //&nbsp; 让其可以继续进去编辑模式
 RE.insertVideo = function(url,custom,posterUrl) {
-    var html = '&nbsp;<video controls="controls" poster="' +posterUrl+ '" src="' + url + '" ' + custom +'></video>&nbsp;<br></br>';
+    var html = '&nbsp;<video controls="controls" controlsList="nodownload" poster="' +posterUrl+ '" src="' + url + '" ' + custom +'></video>&nbsp;<br></br>';
     RE.insertHTML(html);
     RE.editor.scrollIntoView(false)
 }

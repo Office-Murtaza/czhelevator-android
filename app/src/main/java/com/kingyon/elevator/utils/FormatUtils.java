@@ -245,7 +245,7 @@ public static String incomeType(String  source){
             result = "光纤";
             break;
         default:
-            result = "";
+            result = source+"";
             break;
     }
     return result;

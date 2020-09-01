@@ -125,8 +125,8 @@ import rx.Observable;
 public interface NetApi {
     String socketDomainName = "wss://gate.tlwgz.com:8282";
 //    String domainReleaseName = "https://api.pddtv.cn/";//外网正式服地址
-//    String domainReleaseName = "http://test.pddtv.cn:8080/app/v2/";//外网正式服地址
-    String domainReleaseName = "http://192.168.1.146:8080/app/v2/";//外网正式服地址
+    String domainReleaseName = "http://test.pddtv.cn:8080/app/v2/";//外网正式服地址
+//    String domainReleaseName = "http://192.168.1.146:8080/app/v2/";//外网正式服地址
 
 
 //    1.0测试接口
@@ -306,7 +306,7 @@ public interface NetApi {
     @POST("topic/queryTopicAttention")
     @FormUrlEncoded
     Observable<ConentEntity<QueryRecommendEntity>> getTopicAttention(@Field("page") int page,@Field("topicId") int topicId ,
-                                         @Field("orderBy") String orderBy);
+                                         @Field("orderBy") String orderBy,@Field("account") String account);
 
 
     /*2.0投放首页*/
@@ -576,7 +576,7 @@ public interface NetApi {
     Observable<WikipediaEntiy> getWikipedia();
 
     /*2.0添加访问量*/
-    @POST("ustomSv/increaseReadNum")
+    @POST("customSv/increaseReadNum")
     @FormUrlEncoded
     Observable<String> increaseReadNum(@Field("id") int id);
 
@@ -843,7 +843,8 @@ public interface NetApi {
     /*2.0再来一单*/
     @POST("order/orderAgain")
     @FormUrlEncoded
-    Observable<List<OrderComeEntiy>>orderAgain(@Field("orderSn") String orderSn);
+    Observable<List<OrderComeEntiy>>orderAgain(@Field("orderSn") String orderSn,@Field("startTime") Long startTime
+            , @Field("endTime") Long endTime);
 
 
     /*2.0查看订单点位列表*/

@@ -44,10 +44,12 @@ import com.kingyon.elevator.uis.activities.inputcomment.InputCommentActivity;
 import com.kingyon.elevator.uis.adapters.adaptertwo.ContentCommentsAdapter;
 import com.kingyon.elevator.uis.dialogs.DeleteShareDialog;
 import com.kingyon.elevator.uis.dialogs.ReportShareDialog;
+import com.kingyon.elevator.utils.MyActivityUtils;
 import com.kingyon.elevator.utils.utilstwo.ConentUtils;
 import com.kingyon.elevator.utils.utilstwo.IsSuccess;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
 import com.kingyon.elevator.utils.utilstwo.SharedUtils;
+import com.kingyon.elevator.utils.utilstwo.StringUtils;
 import com.kingyon.elevator.utils.utilstwo.TokenUtils;
 import com.kingyon.elevator.view.NewsDetailsView;
 import com.kingyon.library.social.ShareDialog;
@@ -169,11 +171,10 @@ public class NewsDetailsActivity extends MvpBaseActivity<NewsDetailsPresenter> i
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String  url) {
                 LogUtils.e(url);
-//                Intent intent = new Intent(NewsDetailsActivity.this,AdvertisionActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString(BaseHtmlActivity.TITLE, "    ");
-//                bundle.putString(BaseHtmlActivity.URL, url);
-//                startActivity(intent, bundle);
+                if (StringUtils.isValidUrl(url)) {
+                    LogUtils.e("****************");
+                    MyActivityUtils.goActivity(NewsDetailsActivity.this, WebViewActivity.class, url);
+                }
                 return true;
             }
             @Override

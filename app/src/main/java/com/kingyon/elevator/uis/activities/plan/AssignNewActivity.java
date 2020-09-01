@@ -259,7 +259,7 @@ public class AssignNewActivity extends BaseStateRefreshingLoadingActivity<PlanPo
 
     private void httpAssign(List<PointItemEntity> pointItemEntities) {
         if (type1.equals("order")) {
-            NetService.getInstance().orderAgain(AdUtils.orderSn)
+            NetService.getInstance().orderAgain(AdUtils.orderSn,startTime,endTime)
                     .compose(this.bindLifeCycle())
                     .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
                         @Override

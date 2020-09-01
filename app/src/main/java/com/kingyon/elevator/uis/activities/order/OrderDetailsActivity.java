@@ -28,9 +28,11 @@ import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.constants.Constants;
+import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.ADEntity;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
 import com.kingyon.elevator.entities.OrderIdentityEntity;
+import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
 import com.kingyon.elevator.nets.NetService;
@@ -51,6 +53,8 @@ import com.leo.afbaselibrary.utils.AFUtil;
 import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.widgets.StateLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -209,7 +213,10 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
     private boolean notFirstIn;
     private boolean ifZk = true;
 
-
+    SimpleDateFormat simpleDateFormat;
+    SelectDateEntity selectDateEntity;
+    private Long startTime;
+    private Long endTime;
     @Override
     protected String getTitleText() {
         orderId = getIntent().getStringExtra(CommonUtil.KEY_VALUE_1);
@@ -229,6 +236,17 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
         operateViews = new View[]{llOrderOperateWaitpay, llOrderOperateRelease};
         StatusBarUtil.setHeadViewPadding(this, llTitle);
         ((ImageView) vBack).setImageDrawable(getBackDrawable(0xFFFFFFFF));
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        selectDateEntity = DateUtils.getLastSelectDateDay();
+        String startDate = selectDateEntity.getDate() + " 00:00:00.000";
+        String endDate = selectDateEntity.getDate() + " 23:59:59.999";
+        try {
+            startTime = simpleDateFormat.parse(startDate).getTime();
+            //TimeUtil.getDayStartTimeMilliseconds(curTime);
+            endTime = simpleDateFormat.parse(endDate).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         llTop.bringToFront();
         nsv.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -603,16 +621,21 @@ public class OrderDetailsActivity extends BaseStateRefreshingActivity {
 
     private void httpOrderAgain(String orderSn) {
         AdUtils.orderSn = orderSn;
-        NetService.getInstance().orderAgain(orderSn)
+        AdUtils.isnumm = 0;
+        showProgressDialog(getString(R.string.wait),false);
+        NetService.getInstance().orderAgain(orderSn,startTime,endTime)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(), ex.getCode());
+                        showToast(ex.getDisplayMessage());
+                        hideProgress();
                     }
 
                     @Override
                     public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        hideProgress();
                         Gson gson = new Gson();
                         String jsonString = gson.toJson(orderComeEntiys);
                         Bundle bundle = new Bundle();

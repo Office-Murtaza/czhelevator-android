@@ -189,7 +189,7 @@ dependencies {
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     implementation 'com.github.kaxi4it:BidirectionalSeekBar:1.0'
     implementation 'com.github.yujinzhao123:DoubleHeadedDragonBar:1.0.4'
-    implementation 'com.luozm.captcha:captcha:1.1.2'
+
     implementation 'com.github.donkingliang:LabelsView:1.6.1'
 //    路由
     implementation 'com.alibaba:arouter-api:1.4.1'
@@ -219,6 +219,7 @@ dependencies {
     implementation project(path: ':htmleditorlibrary')
     implementation 'cjt.library.wheel:camera:1.1.9'
     implementation project(path: ':camerasdk')
+    implementation project(path: ':captcha')
 
 //    implementation 'com.github.xuexiangjys.XPush:xpush-core:1.0.1'
 //    implementation 'com.github.xuexiangjys.XPush:keeplive:1.0.1'

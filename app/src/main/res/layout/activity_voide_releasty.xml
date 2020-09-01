@@ -105,7 +105,7 @@
                                         android:layout_height="wrap_content"
                                         android:hint="请输入标题"
                                         android:textColor="#000000"
-                                        android:textSize="@dimen/sp_14"
+                                        android:textSize="@dimen/sp_18"
                                         android:background="#00000000"
                                         android:padding="@dimen/dp_10"
                                         android:maxLength="30"
@@ -140,6 +140,7 @@
                                     android:gravity="top"
                                     android:padding="@dimen/dp_10"
                                     android:maxLength="500"
+                                    android:textSize="@dimen/sp_18"
                                     />
 
 

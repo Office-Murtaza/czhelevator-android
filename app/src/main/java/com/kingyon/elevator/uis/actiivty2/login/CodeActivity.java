@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.kingyon.elevator.R;
 import com.kingyon.elevator.utils.utilstwo.CountDownTimerUtils;
 import com.kingyon.elevator.utils.utilstwo.OrdinaryActivity;
+import com.kingyon.elevator.view.CodeCaptchaStrategy;
 import com.leo.afbaselibrary.uis.activities.BaseActivity;
 import com.luozm.captcha.Captcha;
 import com.zhaoss.weixinrecorded.view.PhoneCode;
@@ -79,6 +80,8 @@ public class CodeActivity extends BaseActivity {
     String isbinding;
     @Autowired
     String loginType;
+    private int sendcode = 0;
+    private int onFailed = 0;
 
 
     @Override
@@ -130,7 +133,12 @@ public class CodeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_sendcode:
-                httpCode();
+                sendcode++;
+                if (sendcode>2) {
+                    httpCode();
+                }else {
+                    OrdinaryActivity.CodeTextviewActivity(CodeActivity.this,REGISTER,phone,tvSendcode);
+                }
                 break;
             case R.id.tv_code_next:
                 String phoneCode = pc1.getPhoneCode();
@@ -144,7 +152,8 @@ public class CodeActivity extends BaseActivity {
     }
 
     private void httpCode() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.ShareDialog).create();
+
         alertDialog.show();
         /* 添加对话框自定义布局 */
         alertDialog.setContentView(R.layout.layout_captcha);
@@ -156,6 +165,7 @@ public class CodeActivity extends BaseActivity {
         window.setGravity(Gravity.CENTER);
         Captcha captcha  = window.findViewById(R.id.captCha);
         captcha.setBitmap(R.mipmap.im_square_banner1);
+//        captcha.setCaptchaStrategy(new CodeCaptchaStrategy(CodeActivity.this));
         captcha.setCaptchaListener(new Captcha.CaptchaListener() {
             @Override
             public String onAccess(long time) {
@@ -167,8 +177,14 @@ public class CodeActivity extends BaseActivity {
 
             @Override
             public String onFailed(int failedCount) {
-                Toast.makeText(CodeActivity.this, "验证失败", Toast.LENGTH_SHORT).show();
-                captcha.reset(true);
+                onFailed++;
+                if (onFailed<10) {
+                    Toast.makeText(CodeActivity.this, "验证失败" + onFailed, Toast.LENGTH_SHORT).show();
+                    captcha.reset(true);
+                }else {
+                    alertDialog.dismiss();
+                    Toast.makeText(CodeActivity.this, "验证超过次数，你的帐号被封锁", Toast.LENGTH_SHORT).show();
+                }
                 return "验证失败,已失败" + failedCount + "次";
             }
 

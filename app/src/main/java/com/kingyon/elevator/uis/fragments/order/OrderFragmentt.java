@@ -1,6 +1,8 @@
 package com.kingyon.elevator.uis.fragments.order;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import com.blankj.utilcode.util.LogUtils;
 import com.czh.myversiontwo.activity.ActivityUtils;
 import com.google.gson.Gson;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.date.DateUtils;
 import com.kingyon.elevator.entities.OrderDetailsEntity;
+import com.kingyon.elevator.entities.SelectDateEntity;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.OrderComeEntiy;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -35,6 +39,8 @@ import com.leo.afbaselibrary.utils.TimeUtil;
 import com.leo.afbaselibrary.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,7 +67,10 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
 
     Unbinder unbinder;
     String type, type1;
-
+    SimpleDateFormat simpleDateFormat;
+    SelectDateEntity selectDateEntity;
+    private Long startTime;
+    private Long endTime;
     public OrderFragmentt setIndex(String type, String type1) {
             this.type = type;
             this.type1 = type1;
@@ -185,16 +194,21 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
     }
 
     private void httpOrderAgain(String orderSn) {
+        AdUtils.isnumm = 0;
         AdUtils.orderSn = orderSn;
-        NetService.getInstance().orderAgain(orderSn)
+        showProgressDialog(getString(R.string.wait));
+        NetService.getInstance().orderAgain(orderSn,startTime,endTime)
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<List<OrderComeEntiy>>() {
                     @Override
                     protected void onResultError(ApiException ex) {
                         LogUtils.e(ex.getDisplayMessage(),ex.getCode());
+                        showToast(ex.getDisplayMessage());
+                        hideProgress();
                     }
                     @Override
                     public void onNext(List<OrderComeEntiy> orderComeEntiys) {
+                        hideProgress();
                         Gson gson = new Gson();
                         String jsonString = gson.toJson(orderComeEntiys);
                         Bundle bundle = new Bundle();
@@ -203,6 +217,22 @@ public class OrderFragmentt extends BaseStateRefreshLoadingFragment<OrderDetails
                         startActivity(PlanNewFragment.class,bundle);
                     }
                 });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        selectDateEntity = DateUtils.getLastSelectDateDay();
+        String startDate = selectDateEntity.getDate() + " 00:00:00.000";
+        String endDate = selectDateEntity.getDate() + " 23:59:59.999";
+        try {
+            startTime = simpleDateFormat.parse(startDate).getTime();
+            //TimeUtil.getDayStartTimeMilliseconds(curTime);
+            endTime = simpleDateFormat.parse(endDate).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

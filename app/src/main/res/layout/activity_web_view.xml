@@ -10,7 +10,7 @@
 
     <com.kingyon.elevator.customview.MyActionBar
         android:layout_width="match_parent"
-        app:title="内容详情"
+        app:title=""
         android:layout_height="48dp" />
 
     <com.leo.afbaselibrary.widgets.ProgressWebView

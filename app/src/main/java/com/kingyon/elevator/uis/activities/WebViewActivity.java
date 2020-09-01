@@ -3,7 +3,9 @@ package com.kingyon.elevator.uis.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.util.UIUtil;
 import com.kingyon.elevator.utils.MyStatusBarUtils;
 import com.leo.afbaselibrary.widgets.ProgressWebView;
 
@@ -24,6 +26,7 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
         url = getIntent().getStringExtra("value1");
+        LogUtils.e(url,"********");
         if (url!=null) {
             webview.loadUrl(url);
         }

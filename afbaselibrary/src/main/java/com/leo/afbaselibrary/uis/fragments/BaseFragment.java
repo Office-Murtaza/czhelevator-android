@@ -147,7 +147,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
     public void showProgressDialog(String message) {
         if (getActivity() instanceof BaseActivity) {
             BaseActivity baseActivity = (BaseActivity) getActivity();
-            baseActivity.showProgressDialog(message,true);
+            baseActivity.showProgressDialog(message,false);
         }
     }
 

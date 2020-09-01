@@ -374,8 +374,8 @@ public class NetService {
     }
     /*2.0获取话题内容*/
 
-    public Observable<ConentEntity<QueryRecommendEntity>>steTopicAttention(int page,int topicId ,String orderBy){
-        return addSchedulers(getApi().getTopicAttention(page,topicId,orderBy));
+    public Observable<ConentEntity<QueryRecommendEntity>>steTopicAttention(int page,int topicId ,String orderBy,String account){
+        return addSchedulers(getApi().getTopicAttention(page,topicId,orderBy,account));
     }
 
     /*2.0评论删除*/
@@ -1005,8 +1005,8 @@ public class NetService {
     }
 
     /*2.0再来一单*/
-    public Observable<List<OrderComeEntiy>> orderAgain(String orderSn){
-        return addSchedulers(getApi().orderAgain(orderSn));
+    public Observable<List<OrderComeEntiy>> orderAgain(String orderSn,Long startTime,Long endTime){
+        return addSchedulers(getApi().orderAgain(orderSn,startTime,endTime));
     }
 
     /*2.0合同下载地址*/

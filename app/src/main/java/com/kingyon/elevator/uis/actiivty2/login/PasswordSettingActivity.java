@@ -1,5 +1,6 @@
 package com.kingyon.elevator.uis.actiivty2.login;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -109,9 +110,15 @@ public class PasswordSettingActivity extends BaseActivity {
                 }
                 break;
             case R.id.img_sweep:
-                Intent intent = new Intent(this, CaptureActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent, CommonUtil.REQ_CODE_7);
+                String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+                checkPermission(new BaseActivity.CheckPermListener() {
+                    @Override
+                    public void agreeAllPermission() {
+                        Intent intent = new Intent(PasswordSettingActivity.this, CaptureActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivityForResult(intent, CommonUtil.REQ_CODE_7);
+                    }
+                }, "扫描二维码需要以下权限", perms);
 
                 break;
             case R.id.tv_login_next:

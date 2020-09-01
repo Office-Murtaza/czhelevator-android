@@ -20,6 +20,7 @@ public class AdUtils {
     public static String ordinaryType = "ordina";
     public static String  type  = "BUSINESS";
     public static String orderSn;
+    public static int isnumm = 0;
 
 
     public static void httpPlannuber() {

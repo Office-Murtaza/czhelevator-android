@@ -3,6 +3,7 @@
     <string name="app_slogan" translatable="false">屏多多_广告精准投放平台</string>
     <string name="wait" translatable="false">请稍候&#8230;</string>
     <string name="operate_success" translatable="false">操作成功</string>
+    <string name="complete" translatable="false">已经没有了</string>
     <string name="pay_Success" translatable="false">支付成功</string>
     <string name="pay_failed" translatable="false">支付失败</string>
     <string name="pay_canceled" translatable="false">支付取消</string>

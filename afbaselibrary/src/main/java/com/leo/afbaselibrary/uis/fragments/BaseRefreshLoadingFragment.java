@@ -113,10 +113,13 @@ public abstract class BaseRefreshLoadingFragment<T> extends BaseFragment impleme
     }
 
     public void autoRefresh() {
+
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 mSwipeRefreshHelper.autoRefresh();
+
             }
         }, 100);
     }

@@ -148,7 +148,7 @@ public class PlanAdapter extends MultiItemTypeAdapter<Object> {
             editCountView.setOnNumberChange(new EditCountViewInList.OnNumberChange() {
                 @Override
                 public void onChange(int num, int position, EditText text) {
-                    LogUtils.e(num,points,text.getText().toString());
+//                    LogUtils.e(num,points,text.getText().toString());
                     if (position >= 0 && mItems.size() > position) {
                         Object obj = mItems.get(position);
                         if (obj instanceof CellItemEntity) {

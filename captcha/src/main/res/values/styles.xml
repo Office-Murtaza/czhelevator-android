@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MySeekbarSytle" parent="Base.Widget.AppCompat.SeekBar">
+        <item name="android:thumb">@drawable/btn_login_puzzile_slider</item>
+        <item name="android:progressDrawable">@drawable/bg_login_puzzile_slider</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:hint">请拖动完成拼图验证</item>
+    </style>
+</resources>

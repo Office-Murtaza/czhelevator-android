@@ -40,9 +40,6 @@ public class StringContent {
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
                 "<style>img{max-width: 100%; width:auto; height:auto!important; }font{ word-wrap: break-word;}" +
                 "video::-webkit-media-controls-fullscreen-button {display: none;}" +
-                "video::-webkit-media-controls-play-button {display: none;}  " +
-                "video::-webkit-media-controls-mute-button { display: none;}" +
-                "video::-internal-media-controls-download-button {display:none;}" +
                 "</style>" +
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";

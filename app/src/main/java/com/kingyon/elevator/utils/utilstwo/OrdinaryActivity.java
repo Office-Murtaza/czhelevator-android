@@ -66,7 +66,6 @@ public class OrdinaryActivity {
     public static void CodeActivity(BaseActivity activity, String type, String phone,String unique, String avatar, String nickName ,String isbinding,String loginType) {
         activity.showProgressDialog(activity.getString(R.string.wait),true);
             NetService.getInstance().setSendCheckConde(type, phone)
-                    .compose(activity.bindLifeCycle())
                     .subscribe(new CustomApiCallback<String>() {
                         @Override
                         protected void onResultError(ApiException ex) {

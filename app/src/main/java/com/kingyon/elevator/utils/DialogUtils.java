@@ -105,13 +105,13 @@ public class DialogUtils {
      *
      * @param context
      */
-    public void showRuleDescTipsDialog(Context context) {
+    public void showRuleDescTipsDialog(Context context,String title,String title1,String content) {
         try {
             if (ruleDescTipsDialog != null && ruleDescTipsDialog.isShowing()) {
                 ruleDescTipsDialog.dismiss();
                 ruleDescTipsDialog = null;
             }
-            ruleDescTipsDialog = new RuleDescTipsDialog(context);
+            ruleDescTipsDialog = new RuleDescTipsDialog(context,title,title1,content);
             ruleDescTipsDialog.setCancelable(true);
             ruleDescTipsDialog.show();
         } catch (Exception e) {

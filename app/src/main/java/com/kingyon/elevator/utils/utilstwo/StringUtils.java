@@ -217,7 +217,7 @@ public class StringUtils {
         }
     }
 
-    public static final Pattern WEB_URL = Pattern.compile(
+    public static final Pattern WEB_URL = Pattern.compile(/*"^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$"*/
             "((?:(http|https|Http|Https|rtsp|Rtsp):\\/\\/(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)"
                     + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
                     + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?"
@@ -234,7 +234,7 @@ public class StringUtils {
      * @param url
      * @return
      */
-    private boolean isValidUrl(String url){
+    public static  boolean isValidUrl(String url){
         return TextUtils.isEmpty(url) == false && url.matches(WEB_URL.pattern());
     }
 }

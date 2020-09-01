@@ -101,7 +101,7 @@ public class AttentionFansFragment extends FoundFragemtUtils {
                         hideProgress();
                         if (ex.getCode() == -102) {
                             if (page > 1) {
-                                ToastUtils.showToast(getContext(), ex.getDisplayMessage(), 1000);
+                                ToastUtils.showToast(getContext(), getString(R.string.complete), 1000);
                             } else {
                                 rvComment.setVisibility(View.GONE);
                                 rlError.setVisibility(View.GONE);

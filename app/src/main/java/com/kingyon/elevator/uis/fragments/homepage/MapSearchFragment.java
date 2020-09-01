@@ -149,7 +149,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
         this.entiyConentEntity = entiyConentEntity2;
         this.latitude = latitude;
         this.longitude = longitude;
-//        Bundle args = new Bundle();
+        Bundle args = new Bundle();
 //        MapSearchFragment fragment = new MapSearchFragment();
 //        if (entity != null) {
 //            args.putParcelable(CommonUtil.KEY_VALUE_1, entity);
@@ -173,14 +173,15 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             latitude1 = DataSharedPreferences.getLatLon().getLatitude();
             longitude1 = DataSharedPreferences.getLatLon().getLongitude();
         }
+        LogUtils.e("*****************************");
         /*地图*/
         initMap();
 
-        /*标点*/
-        initMake();
-
         /*定位*/
         moveMapToPositon(isPositioning?longitude1:longitude, isPositioning?latitude1:latitude, cityZoomLevel + 7f);
+
+        /*标点*/
+        initMake();
 
         /*范围*/
         initPorag();
@@ -233,6 +234,7 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
 
     private void initMake() {
         aMap.clear();
+
         new Thread(new TimerTask() {
             @Override
             public void run() {
@@ -702,4 +704,5 @@ public class MapSearchFragment extends BaseFragment implements OnParamsChangeInt
             default:
         }
     }
+
 }

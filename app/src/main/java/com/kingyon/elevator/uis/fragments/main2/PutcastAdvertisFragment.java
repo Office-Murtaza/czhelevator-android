@@ -163,6 +163,7 @@ public class PutcastAdvertisFragment extends BaseFragment implements EasyPermiss
         }
     }
     private void initRefresh() {
+        list.clear();
         httpAdcertis(provinceCode, cityCode, countyCode);
         httpRecommendHouse(page, latitude, longitude, cityId, "", "", "", "");
 

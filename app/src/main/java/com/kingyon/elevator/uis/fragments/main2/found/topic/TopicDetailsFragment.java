@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.kingyon.elevator.R;
+import com.kingyon.elevator.data.DataSharedPreferences;
 import com.kingyon.elevator.entities.entities.ConentEntity;
 import com.kingyon.elevator.entities.entities.QueryRecommendEntity;
 import com.kingyon.elevator.nets.CustomApiCallback;
@@ -97,7 +98,7 @@ public class TopicDetailsFragment extends FoundFragemtUtils {
 
     private void httpQueryAttention(int page, int  topicId, String type) {
         LogUtils.e(page, topicId, type);
-        NetService.getInstance().steTopicAttention(page, topicId, type)
+        NetService.getInstance().steTopicAttention(page, topicId, type,DataSharedPreferences.getCreatateAccount())
                 .compose(this.bindLifeCycle())
                 .subscribe(new CustomApiCallback<ConentEntity<QueryRecommendEntity>>() {
                     @Override
